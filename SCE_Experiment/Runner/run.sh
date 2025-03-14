@@ -13,17 +13,17 @@ if [ ! -d "chaostk" ]; then
     python3 -m venv chaostk
     source chaostk/bin/activate
     
-    # Instalar dependencias desde requirements.txt
+    # Install dependencies from requirements.txt
     pip install -r ../requirements.txt
 else
     echo "Existing venv, activating..."
     source chaostk/bin/activate
 fi
 
-# Obtener la ruta del módulo chaosaws/ec2
+# Obtain the path for chaosaws/ec2 module
 MODULE_PATH=$(python3 -c "import chaosaws.ec2; print(chaosaws.ec2.__path__[0])")
 
-# Copiar los archivos al directorio del módulo
+# Copy the files to the module path
 cp probes/probes.py "$MODULE_PATH/"
 cp actions/actions.py "$MODULE_PATH/"
 

@@ -33,7 +33,7 @@ Contains curated prompts used to guide LLMs in generating attack trees, followin
 
 ## Experimental Validation
 **SCE Experiment** (`SCE_Experiment/`)  
-Contains complete materials to reproduce our security scenario evaluation:
+Contains complete materials to reproduce our security scenario evaluation with ChaosXploit framework:
 
 ### Overview 
 
@@ -57,6 +57,7 @@ To modify the experiment behavior, edit these files:
 ### Prerequisites
 
 - Python 3.x
+- Valid AWS Account with proper attacker permissions configured
 
 ### Note
 

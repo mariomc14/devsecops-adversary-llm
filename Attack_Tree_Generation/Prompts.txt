@@ -1,0 +1,37 @@
+[New prompt] What is application security?, What is threat modeling?, What is threat modeling using
+attack trees?, What is DevSecOps?
+
+[New prompt] I will share with you a set of structured prompts with which I need you to generate an
+Attack Tree in DOT format composed of 3 branches with a root node, a set of attacks nodes and an attack goal node.
+
+[New prompt] SYSTEM CONTEXT: A secure cloud-native system, following a DevSecOps methodology for a military logistics branch to efficiently track and manage essential warfighter supplies (e.g., ammunition, medical kits, rations) across global bases, ensuring system functionality even in adverse cyberattack conditions. Regarding Operational Threat Scenarios, take into account adversary infiltration techniques and nation-state cyber espionage targeting military logistics systems. Emphasize advanced persistent threats (APTs) and privilege escalation attempts.
+
+[New prompt] COMPONENT LIST: “AWS EC2 (monitored by Amazon GuardDuty to detect anomalous accesses)”, “AWS CodeBuild (protected through continuous scanning by Amazon GuardDuty)”, “AWS CodeGuru (AI-powered code security analysis protecting AWS CodePipeline)".
+
+[New prompt] ATTACK GOALS: “Privilege Escalation Attack”.
+
+[New prompt] TREE ROOT: “Cloud-based supply chain System”.
+
+[New prompt] Requirements for each attack branch:
+1. The attack nodes must be based on TTPs or real incidents.
+2. Attack nodes must be ordered (Root Node → Attack Node(s) → Final Attack Goal Node).
+3. Each attack node must include commands to execute, input arguments and expected results.
+
+//Σ Branch i
+[New prompt]  Generate the [COMPONENT LIST] (e.g: “AWS EC2 (monitored by Amazon GuardDuty to detect anomalous accesses)”) branch of the tree, considering the attack documented in the next attached file. Create a path with the sequence of attacks to reach the attack goals, bypassing safeguards specific to the component.
+
+//Optional in case the LLM doesn't format the branch properly
+[New prompt] Concatenates the attacks vertically demonstrating the sequence of attacks to reach the attack goals.
+
+[New prompt] Now you will receive an Attack Tree in DOT format. Apply the following cosmetic changes:
+1. Use Arial as the font.
+2. Use #ACCFF2 and black letters for attack nodes.
+3. Use #0683FF and white letters for security control nodes.
+4. No element should be filled with black color; it must be light and easy to visualize.
+5. It should be possible to track the branches and they should not be curved.
+6. The nodes must be rectangular.
+7. There must be a legend/convention for the colors that represent attacks and countermeasures.
+8. The TTP being followed must be indicated in the attack node (by code).
+9. Avoid overlapping branches and nodes, and maintain spacing between branches.
+
+[New prompt] Please relocate the branches from left to right in an increasing order considering the effort required for the execution.

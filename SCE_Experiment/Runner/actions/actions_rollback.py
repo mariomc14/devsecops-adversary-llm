@@ -8,10 +8,6 @@ sess = boto3.session.Session(profile_name='raynor')
 client = sess.client('iam')
 bucks = sess.client('s3')
 
-<<<<<<< HEAD
-=======
-
->>>>>>> dbd70a4 (README Update)
 def checkOpen(arn, id):
     getVersion = client.get_policy_version(
             PolicyArn=arn,

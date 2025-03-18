@@ -1,0 +1,48 @@
+{
+    "title": "Privelege Scalation",
+    "description": "A set of policies misconfigured that allows an attacker to launch a new EC2 instance passing an existing EC2 profile. ",
+    "steady-state-hypothesis": {
+        "title": "AWS GuardDuty detects the use of an instance profile credentials",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "GuarDuty-Findings",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.probes",
+                    "func": "find_changes",
+                    "arguments": {
+                        "input_file": "selected.json"
+                    }
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "Creating_instance",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.actions",
+                "func": "create_instance_spot",
+                "arguments": {
+                    "instance_type": "t2.micro",
+                    "iam_instance_profile": "EC2-CloudWatch-Agent-Role"
+                }
+            }
+        },
+        {
+            "type": "action",
+            "name": "*******Extracting/Using credentials*******",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.actions",
+                "func": "extract_credentials_file",
+                "arguments": {"keys": "remote_output.json"}
+            }
+        }
+    ],
+    "rollbacks": []
+}

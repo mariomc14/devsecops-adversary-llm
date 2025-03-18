@@ -44,7 +44,7 @@ The purpose of this experiment is to evaluate the resilience of an AWS environme
 1. Navigate to the Runner folder and execute the installation script:
 ```bash
 cd SCE_Experiment/Runner
-./run.sh experiment.json
+./run.sh SCE_Experiment.json
 ```
 
 ### Making Changes

@@ -47,6 +47,11 @@ cd SCE_Experiment/Runner
 ./run.sh SCE_Experiment.json
 ```
 
+The script will automatically:
+- Create a virtual environment if it doesn't exist
+- Install required dependencies
+- Copy the modified files to the appropriate module location
+
 ### Making Changes
 
 To modify the experiment behavior, edit these files:
@@ -56,16 +61,60 @@ To modify the experiment behavior, edit these files:
 
 ### Prerequisites
 
-- Python 3.x
-- Valid AWS Account with proper attacker permissions configured
+**1. AWS CLI Setup**  
 
-### Note
+```bash
+aws configure set aws_access_key_id 
+aws configure set aws_secret_access_key 
+aws configure set region us-east-1
+```
 
-The script will automatically:
-- Create a virtual environment if it doesn't exist
-- Install required dependencies
-- Copy the modified files to the appropriate module location
+**2. IAM Policy Creation**
+
+1. Navigate to [IAM Policies Console](https://console.aws.amazon.com/iam/)
+2. Create policy ➔ JSON tab ➔ Paste:
+
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ec2:RequestSpotInstances",
+                "iam:PassRole",
+                "iam:ListUsers"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+```
+
+1. Name: `EC2-CloudWatch-Agent-Policy` ➔ Create  
+
+**3. IAM Role Creation**  
+1. Create role ➔ Trusted entity: **AWS service** ➔ Use case: **EC2** 
+2. Attach policy `EC2-CloudWatch-Agent-Policy`  
+3. Name: `EC2-CloudWatch-Agent-Role`  
+*(An IAM Instance Profile with matching name auto-generates)*  
+
+**4. Token Configuration**  
+```python
+# In actions.py
+NGROK_AUTHTOKEN = ""  # From https://dashboard.ngrok.com/get-started/your-authtoken
+```
+
+
+### 🛠️ Environment Checks  
+| Tool               | Requirement          | Verification Command     |  
+|--------------------|----------------------|--------------------------|  
+| AWS CLI            | ≥ v2.22.12            | `aws --version`          |  
+| Python             | ≥ 3.12                | `python3 --version`      |   
+
+💡 **Key Notes**  
+- IAM profile name must match role name for EC2 recognition  
+- Region must remain **us-east-1** for experiment consistency
 
 ## Contact  
 For technical questions: [mario.m.c@um.es](mailto:mario.m.c@um.es)
-

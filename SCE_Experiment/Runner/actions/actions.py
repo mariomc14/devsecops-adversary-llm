@@ -17,7 +17,8 @@ logger = get_logger()
 HOST = "0.0.0.0"  # Listen on all interfaces
 PORT = 12345      # Port to wait for remote connection
 OUTPUT_FILE = "remote_output.json" # File to save output
-NGROK_AUTHTOKEN='YOUR_TOKEN' # NGROK_TOKEN
+NGROK_AUTHTOKEN='' # NGROK_TOKEN
+INSTANCE_ID=''
 
 def wait_connect():
     """listening port indicated and save the output in a file."""
@@ -175,8 +176,9 @@ def create_instance_spot(instance_type, iam_instance_profile):
                 }
             }
         )
-        instance_id = response['Instances'][0]['InstanceId']
-        print(f"[+] Spot Instance created with ID: {instance_id}") 
+        global INSTANCE_ID
+        INSTANCE_ID = response['Instances'][0]['InstanceId']
+        print(f"[+] Spot Instance created with ID: {INSTANCE_ID}") 
         #print("[+] Waiting 60s, executing the payload...")
         #time.sleep(60) 
         create_tunel()
@@ -215,3 +217,23 @@ def get_latest_ami():
     images = sorted(response['Images'], key=lambda x: x['CreationDate'], reverse=True)
     ami_id = images[0]['ImageId']
     return ami_id
+
+def terminate_instance_spot(force_termination: bool = True):
+    
+    global INSTANCE_ID
+    if not INSTANCE_ID:
+        raise ValueError("INSTANCE_ID is not defined")
+    client = boto3.client('ec2', region_name='us-east-1')
+    
+    response = client.terminate_instances(
+        InstanceIds=[INSTANCE_ID],
+        DryRun=False
+    )
+    
+    if force_termination:
+        waiter = client.get_waiter('instance_terminated')
+        waiter.wait(InstanceIds=[INSTANCE_ID])
+        
+    INSTANCE_ID = None    
+    return response
+

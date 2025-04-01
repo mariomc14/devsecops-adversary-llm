@@ -27,4 +27,4 @@ MODULE_PATH=$(python3 -c "import chaosaws.ec2; print(chaosaws.ec2.__path__[0])")
 cp probes/probes.py "$MODULE_PATH/"
 cp actions/actions.py "$MODULE_PATH/"
 
-chaos run $1
+chaos run $1 --hypothesis-strategy=after-method-only

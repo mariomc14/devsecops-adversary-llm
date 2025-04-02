@@ -36,7 +36,7 @@ def find_changes(finding_types, iam_instance_profile):
         print(f"\n--- Attempt {attempt}/{max_attempts} [{datetime.now().strftime('%H:%M:%S')}] ---")    
         # Define the time range for the last 5 minutes
         end_time = datetime.now(timezone.utc)
-        start_time = end_time - timedelta(minutes=5)
+        start_time = end_time - timedelta(minutes=10)
 
         # Convert to Unix timestamp in milliseconds
         start_time_ms = int(start_time.timestamp() * 1000)

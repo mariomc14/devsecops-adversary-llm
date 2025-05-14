@@ -91,6 +91,28 @@ To modify the experiment behavior, edit these files:
 
 ### Prerequisites
 
+### System Topology on AWS
+
+The diagram below illustrates the high-level topology of our cloud infrastructure hosted on Amazon Web Services (AWS). The architecture is designed for scalability, high availability, and security.
+
+![AWS System Topology](SCE_Experiment/aws-topology-diagram.png)
+
+**Description:**
+
+This cloud-based architecture integrates various AWS services to support a secure, automated, and observable CI/CD pipeline. Key components include:
+
+- **AWS IAM:** Manages access and permissions for services and users across the environment.
+- **AWS GuardDuty:** Provides continuous security monitoring to detect threats.
+- **AWS CodeGuru:** Offers code quality reviews and performance recommendations.
+- **AWS CodePipeline:** Orchestrates the CI/CD workflow across:
+  - **CodeCommit:** Git-based source control.
+  - **CodeBuild:** Compiles source code and runs tests.
+  - **CodeDeploy:** Automates deployment to compute resources.
+- **AWS Spot EC2 (within a VPC):** Executes workloads in a cost-efficient compute environment.
+- **AWS CloudWatch:** Monitors system health, collects logs, and triggers alerts.
+
+The architecture is optimized for cost efficiency (via EC2 Spot instances), security (with IAM and GuardDuty), and automation (through CodePipeline). Monitoring is centralized in CloudWatch, ensuring visibility into system performance and operations.
+
 **1. AWS CLI Setup**  
 
 ```bash

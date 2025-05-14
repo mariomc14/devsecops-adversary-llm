@@ -93,25 +93,24 @@ To modify the experiment behavior, edit these files:
 
 ### System Topology on AWS
 
-The diagram below illustrates the high-level topology of our cloud infrastructure hosted on Amazon Web Services (AWS). The architecture is designed for scalability, high availability, and security.
+The diagram below illustrates the CI/CD-centric architecture deployed in the AWS public cloud:
 
 ![AWS System Topology](SCE_Experiment/aws-topology-diagram.png)
 
 **Description:**
 
-This cloud-based architecture integrates various AWS services to support a secure, automated, and observable CI/CD pipeline. Key components include:
+This architecture focuses on a secure and automated continuous integration and deployment pipeline using AWS services:
 
-- **AWS IAM:** Manages access and permissions for services and users across the environment.
-- **AWS GuardDuty:** Provides continuous security monitoring to detect threats.
-- **AWS CodeGuru:** Offers code quality reviews and performance recommendations.
-- **AWS CodePipeline:** Orchestrates the CI/CD workflow across:
-  - **CodeCommit:** Git-based source control.
-  - **CodeBuild:** Compiles source code and runs tests.
-  - **CodeDeploy:** Automates deployment to compute resources.
-- **AWS Spot EC2 (within a VPC):** Executes workloads in a cost-efficient compute environment.
-- **AWS CloudWatch:** Monitors system health, collects logs, and triggers alerts.
+- **AWS CodePipeline:** Central orchestration service for the CI/CD workflow.
+  - **CodeCommit:** Manages source code with a Git-based repository.
+  - **CodeBuild:** Compiles source code, runs tests, and prepares artifacts.
+  - **CodeDeploy:** Automates deployment to production or staging environments.
+- **AWS IAM:** Manages authentication and authorization across services.
+- **AWS CodeGuru:** Provides intelligent code reviews and recommendations.
+- **AWS GuardDuty:** Detects threats and anomalies for enhanced security monitoring.
+- **AWS CloudWatch:** Collects logs, metrics, and events for observability and alerting.
 
-The architecture is optimized for cost efficiency (via EC2 Spot instances), security (with IAM and GuardDuty), and automation (through CodePipeline). Monitoring is centralized in CloudWatch, ensuring visibility into system performance and operations.
+This topology emphasizes automation, security, and observability by tightly integrating AWS-native services.
 
 **1. AWS CLI Setup**  
 

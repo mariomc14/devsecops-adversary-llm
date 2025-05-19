@@ -152,7 +152,6 @@ This architecture focuses on a secure and automated continuous integration and d
 - **AWS CodeGuru**  
   Analyzes source code for bugs, security flaws, and poor coding practices. In the experiment, it helps validate the attack hypothesis by flagging risky code patterns or configurations.
 
-
 **1. AWS CLI Setup**  
 
 ```bash

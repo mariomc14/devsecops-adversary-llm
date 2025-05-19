@@ -101,16 +101,57 @@ The diagram below illustrates the CI/CD-centric architecture deployed in the AWS
 
 This architecture focuses on a secure and automated continuous integration and deployment pipeline using AWS services:
 
-- **AWS CodePipeline:** Central orchestration service for the CI/CD workflow.
-  - **CodeCommit:** Manages source code with a Git-based repository.
-  - **CodeBuild:** Compiles source code, runs tests, and prepares artifacts.
-  - **CodeDeploy:** Automates deployment to production or staging environments.
-- **AWS IAM:** Manages authentication and authorization across services.
-- **AWS CodeGuru:** Provides intelligent code reviews and recommendations.
-- **AWS GuardDuty:** Detects threats and anomalies for enhanced security monitoring.
-- **AWS CloudWatch:** Collects logs, metrics, and events for observability and alerting.
+- **Develop Team**  
+  A team of developers responsible for DevOps tasks. They are assigned an IAM role that grants them permissions to download, modify, and build artifacts stored in S3, as well as deploy compute instances.
 
-This topology emphasizes automation, security, and observability by tightly integrating AWS-native services.
+- **IAM (Identity and Access Management)**  
+  This service enables the configuration of roles and policies that govern access to integrated AWS services. In this cloud topology, a hypothetical scenario is proposed where a misconfigured role, assigned to a highly privileged user, allows an attacker impersonating a developer to exploit vulnerabilities.
+
+- **CodePipeline**  
+  Orchestrates services like CodeCommit or GitHub, CodeBuild, and CodeDeploy to implement the CI/CD workflow for the development team.
+
+- **CodeCommit / GitHub**  
+  Version control repositories used to manage changes and updates to the application logic.
+
+- **CodeBuild**  
+  A service that builds and compiles source code automatically whenever a change is detected in the repository.
+
+- **CodeDeploy**  
+  Deploys the built code to a defined target, such as an S3 bucket or compute environment.
+
+- **S3 (Simple Storage Service)**  
+  Used to store artifacts produced by CodeBuild, as well as configuration files, static assets, and application packages. In this threat scenario, these artifacts may be compromised and downloaded or injected with malicious content by an attacker using stolen IAM credentials.
+
+- **AWS CloudFormation**  
+  An Infrastructure as Code (IaC) service used to define, provision, and manage AWS resources through JSON or YAML templates. It is triggered by CodePipeline to create or modify infrastructure components automatically.
+
+- **AWS CloudFront** *(not implemented in experiments)*  
+  A content delivery network (CDN) service that distributes static content from S3 to end users efficiently and securely. While not part of the experimental setup, it represents a realistic production component.
+
+- **AWS WAF (Web Application Firewall)** *(not implemented in experiments)*  
+  Protects applications by filtering traffic and blocking common threats such as SQL injection and cross-site scripting (XSS). Though not used in the experiments, it is part of a realistic secure architecture.
+
+- **API Gateway** *(not implemented in experiments)*  
+  Handles incoming requests to microservices or backend services and acts as a secure proxy. In this architecture, it routes traffic to the Network Load Balancer. It is not active in the experiment but reflects a real-world deployment.
+
+- **Network Load Balancer** *(not implemented in experiments)*  
+  Distributes network traffic to EC2 instances within a private VPC, ensuring high availability and low latency. While not implemented in the test scenario, it is a common production component.
+
+- **EC2 Spot Instances**  
+  Low-cost compute instances used for processing tasks or hosting microservices. In the proposed experiment, these instances are created as a result of a corrupted configuration file, allowing an attacker to deploy their own payload.
+
+- **RDS (Relational Database Service)**  
+  Managed relational database service that stores critical application data. It may become a target if compromised credentials are obtained from other services.
+
+- **AWS GuardDuty**  
+  A threat detection service that analyzes VPC Flow Logs, CloudTrail, and DNS logs to identify suspicious activity. In this scenario, it helps validate the attack hypothesis by generating relevant alerts or logs.
+
+- **AWS CloudWatch**  
+  Monitoring service that collects logs, metrics, and events from AWS resources. It plays a role in attack validation by generating alerts or logs associated with anomalous behavior.
+
+- **AWS CodeGuru**  
+  Analyzes source code for bugs, security flaws, and poor coding practices. In the experiment, it helps validate the attack hypothesis by flagging risky code patterns or configurations.
+
 
 **1. AWS CLI Setup**  
 

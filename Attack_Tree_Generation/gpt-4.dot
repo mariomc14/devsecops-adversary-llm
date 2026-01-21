@@ -1,0 +1,104 @@
+digraph AttackTree {
+    rankdir=TB;
+    fontname="Helvetica";
+
+    graph [
+        nodesep=0.25,
+        ranksep=0.35
+    ];
+
+    node [
+        shape=box,
+        style=filled,
+        fillcolor="#b7d7f5",
+        fontname="Helvetica"
+    ];
+
+    edge [fontname="Helvetica"];
+
+    /* Root */
+    root [
+        label="Cloud-based Supply Chain System",
+        fillcolor="#0a84ff",
+        fontcolor="white"
+    ];
+
+    /* Security controls */
+    ec2_ctrl [
+        label="AWS EC2 Security Control",
+        fillcolor="#0a84ff",
+        fontcolor="white"
+    ];
+
+    cb_ctrl [
+        label="AWS CodeBuild Security Control",
+        fillcolor="#0a84ff",
+        fontcolor="white"
+    ];
+
+    cg_ctrl [
+        label="AWS CodeGuru Security Control",
+        fillcolor="#0a84ff",
+        fontcolor="white"
+    ];
+
+    root -> ec2_ctrl;
+    root -> cb_ctrl;
+    root -> cg_ctrl;
+
+    /* EC2 branch */
+    initial_access [
+        label="Initial Access\n(TA0001)\nCommand: aws ec2 describe-instances\nInput: None\nResult: List of EC2 instances"
+    ];
+
+    exploit_api [
+        label="Exploit API\n(T1190)\nCommand: curl -X POST https://api.target.com/vuln-endpoint\nInput: Malicious payload\nResult: Unauthorized API access"
+    ];
+
+    priv_ec2 [
+        label="Privilege Escalation\n(T1068)\nCommand: sudo su\nInput: Exploited vulnerability\nResult: Root access on EC2"
+    ];
+
+    ec2_ctrl -> initial_access -> exploit_api -> priv_ec2;
+
+    /* CodeBuild branch */
+    inject_code [
+        label="Inject Code\n(T1059)\nCommand: echo 'malicious_code' >> build_script.sh\nInput: Modified build script\nResult: Malicious execution"
+    ];
+
+    modify_artifacts [
+        label="Modify Artifacts\n(Tampering)\nCommand: cp backdoor.exe build_output/\nInput: Injected malicious artifact\nResult: Compromised package"
+    ];
+
+    priv_cb [
+        label="Privilege Escalation\n(T1068)\nCommand: chmod +s /bin/bash\nInput: Modified permissions\nResult: Privileged shell access"
+    ];
+
+    cb_ctrl -> inject_code -> modify_artifacts -> priv_cb;
+
+    /* CodeGuru branch */
+    bypass_analysis [
+        label="Bypass Analysis\n(T1070)\nCommand: git commit -m \"Bypass AI analysis\"\nInput: Obfuscated code\nResult: Malicious code undetected"
+    ];
+
+    malicious_dep [
+        label="Malicious Dependency\n(T1195)\nCommand: npm install fake-package@1.0.0\nInput: Malicious package\nResult: Backdoor execution"
+    ];
+
+    priv_cg [
+        label="Privilege Escalation\n(T1068)\nCommand: python3 exploit.py --target aws_codeguru\nInput: Exploited supply chain vulnerability\nResult: Elevated privileges"
+    ];
+
+    cg_ctrl -> bypass_analysis -> malicious_dep -> priv_cg;
+
+    /* Final */
+    final [
+        label="Privilege Escalation Attack",
+        fillcolor="#0a84ff",
+        fontcolor="white"
+    ];
+
+    priv_ec2 -> final;
+    priv_cb  -> final;
+    priv_cg  -> final;
+}

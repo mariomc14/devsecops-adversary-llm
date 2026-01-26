@@ -2,3 +2,5 @@ SCE_Experiment/Runner/chaostk/
 SCE_Experiment/Runner/chaostoolkit.log
 SCE_Experiment/Runner/journal.json
 SCE_Experiment/Runner/remote_output.json
+automate/.venv/
+automate/.vscode/

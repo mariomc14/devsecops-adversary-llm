@@ -130,8 +130,7 @@ class SCEAutomationAPI:
         if not hasattr(self, 'attack_template'):
             return None # type: ignore
             
-        return f"""Please populate the template using the threat intelligence information provided.
-
+        return f"""Please populate the template using it strictly as a schema, not as content. Complete every applicable field in the template with information specific to the following attack:
             THREAT INTELLIGENCE:
             {threat_intelligence}
 
@@ -139,23 +138,26 @@ class SCEAutomationAPI:
             {self.attack_template}
 
             Instructions:
-            - Use the threat intelligence to fill all template fields
-            - Keep the exact template structure
-            - Return the completed YAML in your response"""
+            - Preserve the structure, section order, and field names exactly as they appear in the template.
+            - Replace all placeholder or example text with concrete details for this attack only
+            - If a field is not applicable or the information is unavailable, leave the field present and explicitly mark it as N/A rather than deleting it.
+            - Use clear, concise, technically accurate language suitable for threat modeling and repeteable testing.
+            
+            Return the completed content in yaml format, ready to be stored as an attack record."""
 
     def _build_attack_defense_tree_prompt(self, attacks_yaml: str, structure_dot: str) -> str:
         """Build the attack-defense tree generation prompt"""
         return f"""Imagine you are a lead cyber-defense analyst tasked with turning raw intelligence into actionable insight for senior leadership and incident-response teams. Under this premise:
 
     - Start from the detailed scenario and safeguard logic classes (Preventive, Detective, Reactive) you have already defined and stored.
-    - Scrutinize the attacks described in the attached file attacks.md.
+    - Scrutinize the attacks described in the attached file @attacks.yaml.
     - Consider, integrate, and visualize possible countermeasures for that scenario using the previously defined safeguard logic.
-    - Follow the hierarchy, connectors and colors defined in the attached file structure.dot as your base template.
+    - Follow the hierarchy, connectors and colors defined in the attached file @structure.dot as your base template.
 
     Your assignment is to:
 
     1. Build the attack-defense tree
-    - Construct an attack-defense tree that, from root to attack goal, explicitly shows every command, dependency, result and TTP from attacks.md
+    - Construct an attack-defense tree that, from root to attack goal, explicitly shows every command, dependency, result and TTP from @attacks.yaml
     - Adapt each attack to the specifics of the described scenario (mission, tech stack, environment), while preserving the original steps and intent
 
     2. Map each attack step to safeguard logic
@@ -170,15 +172,93 @@ class SCEAutomationAPI:
 
     4. Produce the final DOT representation
     - Group the resulting attack–defense tree into numeric branches (for example: branch 1.x, 2.x, etc.) that reflect distinct attack paths and their associated safeguards.
-    - Output the final result in DOT format, ready for rendering, using the hierarchy, connectors, and color conventions defined in structure.dot.
+    - Output the final result in DOT format, ready for rendering, using the hierarchy, connectors, and color conventions defined in @structure.dot.
     - Ensure all special characters are properly escaped as in standard HTML to avoid rendering problems in downstream visualization tools.
 
-    ATTACKS FILE CONTENT:
+    @attacks.yaml:
     {attacks_yaml}
 
-    STRUCTURE DOT TEMPLATE:
+    @structure.dot:
     {structure_dot}
     """
+
+    def _build_sce_experiment_prompt(self, sce_node : str, probe_type : str, attack_nodes : str, template_json: str) -> str:
+        """Build SCE experiment generation prompt"""
+        return f"""Input:
+
+- SCE Experiment node: {sce_node}
+- Type of probe: {probe_type}
+- Attack Node/s: {attack_nodes}
+
+Goal: Generate an end-to-end Security Chaos Engineering unit test that validates exactly this one probe, by.
+- Translating each associated attack step into safe, scoped AWS actions against only the resources created by the experiment
+- Implementing the probe's security intent (Preventive / Detective / Reactive as an AWS-native control in the experiment)
+- Verifying, programatically, that this control behaves as described in the probe's label and classification.
+
+Environment:
+- The script runs in a real but completely clean AWS account (no existing IAM roles, policies, buckets, parameters, alarms, etc)-
+- Standard AWS credentials are already available via environment variables (AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, etc.). Use AWS_REGION if present; otherwise default to us-east-1.
+
+Deliverables (return two artifacts):
+Produce exactly two files, in this order:
+1. Python script implementing the experiment logic
+2. JSON experiment manifest for the chaostoolkit runner, it must follow the structure of the file @template.json
+
+Script structure (must follow this flow):
+The script is self-contained: no CLI arguments, no external config files, no pre-existing AWS resources. Use only the standard library unless unavoidable; if needed, install boto3 at runtime programmatically and keep the footprint minimal. Implement basic retries/backoff for eventual consistency using time.monotonic(). All functions take no parameters. Finally, log every error encountered.
+
+1. Preparation block (executes on import/run)
+- Function: steady_state()
+- Provision everything the test needs from scratch to emulate the provided attack step:
+    - Create only the AWS resources required for the specified attack step.
+    - Generate any sample data needed and set environment variables or acquire temporary tokens if required.
+- Reliability: add bounded retries/backoff for IAM policy propagation, CloudWatch/EventBridge delays, etc.
+- Tagging: tag every provisioned resource with the corresponding tag to ensure safe teardown.
+
+2. attack() -> bool: Execute the provided attack step in order and only those steps, operating strictly on resources created in steady_state()
+3. hypothesis_verification() -> bool: Verify countermeasure based on probe type from the SCE experiment node.
+4. rollback(): Complete teardown that undoes every provisioned change in reverse dependency order:
+- Disable/stop services, detach policies, delete roles/users, remove data, drop buckets/tables, delete alarms/rules/log groups, restore settings.
+- Scope restriction: rollback must act only on resources deployed and tagged in the steady state section, identified exclusively by the experiment tag.
+- Be safe and tolerant: catch NotFound/NoSuchEntity and proceed; never touch untagged/untracked resources.
+- The test function must always attempt rollback, even on failure (e.g., try/finally).
+- If execution is halted midway due to an error, it must still be possible to recover the initial state correctly.
+
+@template.json:
+{template_json}
+"""
+    def _save_sce_experiment_output(self, response_text: str) -> bool:
+        """Extract and save Python script and JSON manifest from response"""
+        try:
+            # Extract Python script
+            python_start = response_text.find("```python")
+            if python_start != -1:
+                python_start += 9
+                python_end = response_text.find("```", python_start)
+                if python_end != -1:
+                    python_content = response_text[python_start:python_end].strip()
+                    python_filepath = os.path.join(self.workspace_path, "sce_experiment.py")
+                    with open(python_filepath, 'w', encoding='utf-8') as f:
+                        f.write(python_content)
+                    print(f"✅ Python script saved to: {python_filepath}")
+            
+            # Extract JSON manifest
+            json_start = response_text.find("```json")
+            if json_start != -1:
+                json_start += 7
+                json_end = response_text.find("```", json_start)
+                if json_end != -1:
+                    json_content = response_text[json_start:json_end].strip()
+                    json_filepath = os.path.join(self.workspace_path, "experiment_manifest.json")
+                    with open(json_filepath, 'w', encoding='utf-8') as f:
+                        f.write(json_content)
+                    print(f"✅ JSON manifest saved to: {json_filepath}")
+                    return True
+            
+            return False
+        except Exception as e:
+            print(f"❌ Error saving SCE experiment files: {e}")
+            return False   
 
     def _save_dot_output(self, response_text: str) -> bool:
         """Extract and save DOT content from response"""
@@ -332,6 +412,48 @@ class SCEAutomationAPI:
             return
             
         print("✅ Attack-defense tree generated and saved as DOT file")
+
+        # Stage 4: Generate SCE experiments (loop)
+        print("\n🧪 Stage 4: Generating SCE experiments...")
+                
+        while True:
+            print("\n🧪 Enter SCE Node name:")
+            sce_node = input("> ")
+
+            print("\n🔍 Enter Probe Type (Preventive/Detective/Reactive):")
+            probe_type = input("> ")
+
+            print("\n🎯 Enter Attack Nodes:")
+            attack_nodes = input("> ")
+
+            print("\n📋 Enter Template JSON filename:")
+            template_json = input("> ")
+            
+            template_json_content = self._load_file(template_json)
+            if not template_json_content:
+                print("❌ Failed to load template.json")
+                continue
+            
+            sce_prompt = self._build_sce_experiment_prompt(sce_node, probe_type, attack_nodes,template_json_content)
+            
+            sce_response = self._call_amazon_q(sce_prompt, use_context=True)
+            
+            if not sce_response:
+                print("❌ Failed to generate SCE experiment")
+                continue
+            
+            if not self._save_sce_experiment_output(sce_response):
+                print("❌ Failed to save SCE experiment files")
+                continue
+                
+            print("✅ SCE experiment generated and saved")
+            
+            print("\n🔄 Generate another SCE experiment? (y/n):")
+            if input("> ").lower() != 'y':
+                break
+
+        print("🎉 All SCE experiments completed!")
+
 
 
 def test_bedrock_connection() -> bool:

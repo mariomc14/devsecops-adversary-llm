@@ -11,6 +11,7 @@ import time
 import subprocess
 from typing import Dict, List, Optional
 import yaml
+import re
 
 try:
     import boto3
@@ -30,7 +31,12 @@ class SCEAutomationAPI:
         )
         self.bedrock = boto3.client('bedrock-runtime', config=bedrock_config)
         self.conversation_history = []
-        
+
+    def _sanitize_name(self, name: str) -> str:
+        """Sanitize name for safe filename usage"""
+        return re.sub(r'[^\w\-_]', '_', name.lower()).strip('_')
+
+
     def _load_yaml(self, yaml_path: str) -> Dict:
         """Load mission configuration from YAML file"""
         try:
@@ -171,7 +177,7 @@ class SCEAutomationAPI:
     - Reactive probe: How the countermeasure is expected to respond.
 
     4. Produce the final DOT representation
-    - Group the resulting attack–defense tree into numeric branches (for example: branch 1.x, 2.x, etc.) that reflect distinct attack paths and their associated safeguards.
+    - Group the resulting attack-defense tree into numeric branches (for example: branch 1.x, 2.x, etc.) that reflect distinct attack paths and their associated safeguards.
     - Output the final result in DOT format, ready for rendering, using the hierarchy, connectors, and color conventions defined in @structure.dot.
     - Ensure all special characters are properly escaped as in standard HTML to avoid rendering problems in downstream visualization tools.
 
@@ -202,7 +208,10 @@ Environment:
 Deliverables (return two artifacts):
 Produce exactly two files, in this order:
 1. Python script implementing the experiment logic
-2. JSON experiment manifest for the chaostoolkit runner, it must follow the structure of the file @template.json
+2. JSON experiment manifest for the chaostoolkit runner, it must follow the structure of the file @template.json, replace:
+    - [SCE_NODE] with: {self._sanitize_name(sce_node)}
+    - [PROBE_TYPE] with: {self._sanitize_name(probe_type)}
+    - Keep "chaosaws.ec2" prefix fixed in all module paths
 
 Script structure (must follow this flow):
 The script is self-contained: no CLI arguments, no external config files, no pre-existing AWS resources. Use only the standard library unless unavoidable; if needed, install boto3 at runtime programmatically and keep the footprint minimal. Implement basic retries/backoff for eventual consistency using time.monotonic(). All functions take no parameters. Finally, log every error encountered.
@@ -224,12 +233,15 @@ The script is self-contained: no CLI arguments, no external config files, no pre
 - The test function must always attempt rollback, even on failure (e.g., try/finally).
 - If execution is halted midway due to an error, it must still be possible to recover the initial state correctly.
 
-@template.json:
+@template.json (update the placeholders):
 {template_json}
 """
-    def _save_sce_experiment_output(self, response_text: str) -> bool:
+    def _save_sce_experiment_output(self, response_text: str, sce_node : str, probe_type : str) -> bool:
         """Extract and save Python script and JSON manifest from response"""
         try:
+            safe_sce_node = self._sanitize_name(sce_node)
+            safe_probe_type = self._sanitize_name(probe_type)
+
             # Extract Python script
             python_start = response_text.find("```python")
             if python_start != -1:
@@ -237,7 +249,7 @@ The script is self-contained: no CLI arguments, no external config files, no pre
                 python_end = response_text.find("```", python_start)
                 if python_end != -1:
                     python_content = response_text[python_start:python_end].strip()
-                    python_filepath = os.path.join(self.workspace_path, "sce_experiment.py")
+                    python_filepath = os.path.join(self.workspace_path, f"{safe_sce_node}_{safe_probe_type}.py")
                     with open(python_filepath, 'w', encoding='utf-8') as f:
                         f.write(python_content)
                     print(f"✅ Python script saved to: {python_filepath}")
@@ -249,7 +261,7 @@ The script is self-contained: no CLI arguments, no external config files, no pre
                 json_end = response_text.find("```", json_start)
                 if json_end != -1:
                     json_content = response_text[json_start:json_end].strip()
-                    json_filepath = os.path.join(self.workspace_path, "experiment_manifest.json")
+                    json_filepath = os.path.join(self.workspace_path, f"{safe_sce_node}_{safe_probe_type}.json")
                     with open(json_filepath, 'w', encoding='utf-8') as f:
                         f.write(json_content)
                     print(f"✅ JSON manifest saved to: {json_filepath}")
@@ -442,7 +454,7 @@ The script is self-contained: no CLI arguments, no external config files, no pre
                 print("❌ Failed to generate SCE experiment")
                 continue
             
-            if not self._save_sce_experiment_output(sce_response):
+            if not self._save_sce_experiment_output(sce_response, sce_node, probe_type):
                 print("❌ Failed to save SCE experiment files")
                 continue
                 

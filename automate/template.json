@@ -11,7 +11,7 @@
                 "tolerance": true,
                 "provider": {
                     "type": "python",
-                    "module": "chaosaws.ec2.probes",
+                    "module": "chaosaws.ec2.[SCE_NODE]_[PROBE_TYPE]",
                     "func": "name of the function"
                 }
             }
@@ -23,7 +23,7 @@
             "name": "name of the attack step",
             "provider": {
                 "type": "python",
-                "module": "chaosaws.ec2.actions",
+                "module": "chaosaws.ec2.[SCE_NODE]_[PROBE_TYPE]",
                 "func": "name of the function"
             }
         },
@@ -32,7 +32,7 @@
             "name": "name of the attack step",
             "provider": {
                 "type": "python",
-                "module": "chaosaws.ec2.actions",
+                "module": "chaosaws.ec2.[SCE_NODE]_[PROBE_TYPE]",
                 "func": "name of the function"
             }
         }
@@ -43,7 +43,7 @@
             "name": "name of the rollback",
             "provider": {
                 "type": "python",
-                "module": "chaosaws.ec2.actions",
+                "module": "chaosaws.ec2.[SCE_NODE]_[PROBE_TYPE]",
                 "func": "name of the function"
             }
         }

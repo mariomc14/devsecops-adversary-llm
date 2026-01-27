@@ -1,0 +1,69 @@
+{
+    "title": "SCE 2.4 - Reactive Probe: Automated EC2 Instance Termination & ECS Cluster Isolation",
+    "description": "Validates automated incident response workflow for unauthorized EC2 instance launch with ECS registration. Tests Step Functions orchestration, Lambda-based remediation, forensic data capture, quarantine security group application, and instance termination. Simulates attack steps: (1) Create user data script for ECS cluster registration, (2) Launch malicious EC2 instance with ECS configuration. Verifies reactive safeguards execute within MTTR targets and preserve forensic evidence.",
+    "tags": [
+        "security-chaos-engineering",
+        "reactive-safeguard",
+        "ec2-incident-response",
+        "ecs-security",
+        "automated-remediation",
+        "step-functions",
+        "forensic-capture",
+        "defense-supply-chain"
+    ],
+    "steady-state-hypothesis": {
+        "title": "Reactive safeguards automatically respond to unauthorized EC2 instance launch",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "Verify Step Functions workflow executes incident response",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.2_4_security_chaos_engineering_experiment_reactive",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "Establish steady state - Provision experiment infrastructure",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.2_4_security_chaos_engineering_experiment_reactive",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "Attack Step 1 - Create user data script for ECS cluster registration",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.2_4_security_chaos_engineering_experiment_reactive",
+                "func": "attack"
+            }
+        },
+        {
+            "type": "action",
+            "name": "Attack Step 2 - Launch malicious EC2 instance with ECS configuration",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.2_4_security_chaos_engineering_experiment_reactive",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "Complete teardown of all provisioned resources",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.2_4_security_chaos_engineering_experiment_reactive",
+                "func": "rollback"
+            }
+        }
+    ]
+}

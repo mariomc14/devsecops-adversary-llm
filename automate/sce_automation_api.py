@@ -177,7 +177,7 @@ class SCEAutomationAPI:
     - Reactive probe: How the countermeasure is expected to respond.
 
     4. Produce the final DOT representation
-    - Group the resulting attack-defense tree into numeric branches (for example: branch 1.x, 2.x, etc.) that reflect distinct attack paths and their associated safeguards.
+    - Label each node has a unique identifier using hierarchical numbering.
     - Output the final result in DOT format, ready for rendering, using the hierarchy, connectors, and color conventions defined in @structure.dot.
     - Ensure all special characters are properly escaped as in standard HTML to avoid rendering problems in downstream visualization tools.
 
@@ -218,20 +218,24 @@ The script is self-contained: no CLI arguments, no external config files, no pre
 
 1. Preparation block (executes on import/run)
 - Function: steady_state()
-- Provision everything the test needs from scratch to emulate the provided attack step:
-    - Create only the AWS resources required for the specified attack step.
-    - Generate any sample data needed and set environment variables or acquire temporary tokens if required.
-- Reliability: add bounded retries/backoff for IAM policy propagation, CloudWatch/EventBridge delays, etc.
-- Tagging: tag every provisioned resource with the corresponding tag to ensure safe teardown.
+- Generate a unique timestamp suffix using int(time.time()) to append to stack name (e.g., "sce-experiment-1703123456")
+- Use AWS CloudFormation to provision everything the test needs:
+    - Create a CloudFormation template defining only the AWS resources required for the specified attack step
+    - Deploy the stack with timestamped name to avoid conflicts
+    - Generate any sample data needed and set environment variables or acquire temporary tokens if required
+    - Handle stack conflicts gracefully: if stack already exists, log warning and continue
+- Reliability: add bounded retries/backoff for stack creation completion, IAM policy propagation, etc.
+- Tagging: tag the CloudFormation stack and all resources with experiment tag and timestamp
+- Wait until CloudFormation complete execution to continue with the experiment
 
 2. attack() -> bool: Execute the provided attack step in order and only those steps, operating strictly on resources created in steady_state()
 3. hypothesis_verification() -> bool: Verify countermeasure based on probe type from the SCE experiment node.
-4. rollback(): Complete teardown that undoes every provisioned change in reverse dependency order:
-- Disable/stop services, detach policies, delete roles/users, remove data, drop buckets/tables, delete alarms/rules/log groups, restore settings.
-- Scope restriction: rollback must act only on resources deployed and tagged in the steady state section, identified exclusively by the experiment tag.
-- Be safe and tolerant: catch NotFound/NoSuchEntity and proceed; never touch untagged/untracked resources.
-- The test function must always attempt rollback, even on failure (e.g., try/finally).
-- If execution is halted midway due to an error, it must still be possible to recover the initial state correctly.
+4. rollback(): Complete teardown using CloudFormation:
+- Delete the CloudFormation stack created in steady_state() using the timestamped stack name
+- Wait for stack deletion to complete with proper error handling
+- Be safe and tolerant: catch stack not found errors and proceed
+- The test function must always attempt rollback, even on failure (e.g., try/finally)
+- If execution is halted midway, stack deletion will still clean up all resources automatically
 
 @template.json (update the placeholders):
 {template_json}
@@ -310,7 +314,27 @@ The script is self-contained: no CLI arguments, no external config files, no pre
             else:
                 full_prompt = prompt
             
-            response = self.bedrock.invoke_model(
+            response = self.bedrock.converse(
+                modelId="global.anthropic.claude-sonnet-4-5-20250929-v1:0",
+                messages=[
+                    {
+                        "role" : "user",
+                        "content" : [
+                            {
+                                "text" : full_prompt
+                            }
+                        ]
+                    }
+                ],
+                inferenceConfig={
+                    "maxTokens" : 64000,
+                    "temperature" : 0.1,
+                },
+            )
+
+            response_text = response["output"]["message"]["content"][0]["text"] 
+
+            """response = self.bedrock.invoke_model(
                 modelId='global.anthropic.claude-sonnet-4-5-20250929-v1:0',
                 body=json.dumps({
                     'anthropic_version': 'bedrock-2023-05-31',
@@ -326,7 +350,7 @@ The script is self-contained: no CLI arguments, no external config files, no pre
             )
             
             result = json.loads(response['body'].read())
-            response_text = result['content'][0]['text']
+            response_text = result['content'][0]['text']"""
             
             if use_context:
                 # Store in conversation history

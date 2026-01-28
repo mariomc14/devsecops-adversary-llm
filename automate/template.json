@@ -1,18 +1,18 @@
 {
-    "title": "Title of the experiment",
-    "description": "Description of the experiment",
+    "title": "[Title of the experiment]",
+    "description": "[Description of the experiment]",
     "tags": [""],
     "steady-state-hypothesis": {
-        "title": "Title of the hypothesis",
+        "title": "[Title of the hypothesis]",
         "probes": [
             {
                 "type": "probe",
-                "name": "Name of the probe",
+                "name": "[Name of the probe]",
                 "tolerance": true,
                 "provider": {
                     "type": "python",
                     "module": "chaosaws.ec2.[SCE_NODE]_[PROBE_TYPE]",
-                    "func": "name of the function"
+                    "func": "hypothesis_verification"
                 }
             }
         ]
@@ -20,31 +20,31 @@
     "method": [
         {
             "type": "action",
-            "name": "name of the attack step",
+            "name": "[name of the steady-state]",
             "provider": {
                 "type": "python",
                 "module": "chaosaws.ec2.[SCE_NODE]_[PROBE_TYPE]",
-                "func": "name of the function"
+                "func": "steady_state"
             }
         },
         {
             "type": "action",
-            "name": "name of the attack step",
+            "name": "[name of attacks]",
             "provider": {
                 "type": "python",
                 "module": "chaosaws.ec2.[SCE_NODE]_[PROBE_TYPE]",
-                "func": "name of the function"
+                "func": "attack"
             }
         }
     ],
     "rollbacks": [
         {
             "type": "action",
-            "name": "name of the rollback",
+            "name": "[name of the rollback]",
             "provider": {
                 "type": "python",
                 "module": "chaosaws.ec2.[SCE_NODE]_[PROBE_TYPE]",
-                "func": "name of the function"
+                "func": "rollback"
             }
         }
     ]

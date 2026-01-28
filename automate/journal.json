@@ -1,0 +1,149 @@
+{
+  "chaoslib-version": "1.44.0",
+  "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.41",
+  "node": "PC-INF-MAMA",
+  "experiment": {
+    "title": "SCE Experiment 1.3 - Reactive Probe: Automated Response to Malicious EC2 Launch",
+    "description": "Validates reactive safeguards that automatically isolate, snapshot, and tag compromised EC2 instances launched by attackers attempting to infiltrate the military supply chain ECS cluster. Tests Lambda-based automated response triggered by EventBridge detection of unauthorized RunInstances API calls.",
+    "tags": [
+      "ec2",
+      "reactive",
+      "incident-response",
+      "isolation",
+      "forensics",
+      "ecs-privilege-escalation",
+      "military-supply-chain"
+    ],
+    "steady-state-hypothesis": {
+      "title": "Reactive controls successfully respond to malicious EC2 instance launch",
+      "probes": [
+        {
+          "type": "probe",
+          "name": "verify-automated-isolation-and-forensics",
+          "tolerance": true,
+          "provider": {
+            "type": "python",
+            "module": "chaosaws.ec2.1_3_reactive",
+            "func": "hypothesis_verification"
+          }
+        }
+      ]
+    },
+    "method": [
+      {
+        "type": "action",
+        "name": "deploy-reactive-response-infrastructure",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_reactive",
+          "func": "steady_state"
+        }
+      },
+      {
+        "type": "action",
+        "name": "execute-malicious-ec2-launch-attack",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_reactive",
+          "func": "attack"
+        }
+      }
+    ],
+    "rollbacks": [
+      {
+        "type": "action",
+        "name": "cleanup-all-experiment-resources",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_reactive",
+          "func": "rollback"
+        }
+      }
+    ],
+    "dry": null
+  },
+  "start": "2026-01-28T16:03:57.815095+00:00",
+  "status": "completed",
+  "deviated": true,
+  "steady_states": {
+    "before": null,
+    "after": {
+      "steady_state_met": false,
+      "probes": [
+        {
+          "activity": {
+            "type": "probe",
+            "name": "verify-automated-isolation-and-forensics",
+            "tolerance": true,
+            "provider": {
+              "type": "python",
+              "module": "chaosaws.ec2.1_3_reactive",
+              "func": "hypothesis_verification"
+            }
+          },
+          "output": false,
+          "start": "2026-01-28T16:07:22.535595+00:00",
+          "status": "succeeded",
+          "end": "2026-01-28T16:07:22.536078+00:00",
+          "duration": 0.000483,
+          "tolerance_met": false
+        }
+      ]
+    },
+    "during": []
+  },
+  "run": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "deploy-reactive-response-infrastructure",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_reactive",
+          "func": "steady_state"
+        }
+      },
+      "output": true,
+      "start": "2026-01-28T16:03:57.827307+00:00",
+      "status": "succeeded",
+      "end": "2026-01-28T16:07:21.530456+00:00",
+      "duration": 203.703149
+    },
+    {
+      "activity": {
+        "type": "action",
+        "name": "execute-malicious-ec2-launch-attack",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_reactive",
+          "func": "attack"
+        }
+      },
+      "output": false,
+      "start": "2026-01-28T16:07:21.530597+00:00",
+      "status": "succeeded",
+      "end": "2026-01-28T16:07:22.535346+00:00",
+      "duration": 1.004749
+    }
+  ],
+  "rollbacks": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "cleanup-all-experiment-resources",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_reactive",
+          "func": "rollback"
+        }
+      },
+      "output": true,
+      "start": "2026-01-28T16:07:22.547522+00:00",
+      "status": "succeeded",
+      "end": "2026-01-28T16:08:42.600211+00:00",
+      "duration": 80.052689
+    }
+  ],
+  "end": "2026-01-28T16:08:42.600331+00:00",
+  "duration": 284.8027241230011
+}

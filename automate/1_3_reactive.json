@@ -1,0 +1,51 @@
+{
+    "title": "SCE Experiment 1.3 - Reactive Probe: Automated Response to Malicious EC2 Launch",
+    "description": "Validates reactive safeguards that automatically isolate, snapshot, and tag compromised EC2 instances launched by attackers attempting to infiltrate the military supply chain ECS cluster. Tests Lambda-based automated response triggered by EventBridge detection of unauthorized RunInstances API calls.",
+    "tags": ["ec2", "reactive", "incident-response", "isolation", "forensics", "ecs-privilege-escalation", "military-supply-chain"],
+    "steady-state-hypothesis": {
+        "title": "Reactive controls successfully respond to malicious EC2 instance launch",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "verify-automated-isolation-and-forensics",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.1_3_reactive",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "deploy-reactive-response-infrastructure",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_3_reactive",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "execute-malicious-ec2-launch-attack",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_3_reactive",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "cleanup-all-experiment-resources",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_3_reactive",
+                "func": "rollback"
+            }
+        }
+    ]
+}

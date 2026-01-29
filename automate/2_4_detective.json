@@ -1,0 +1,68 @@
+{
+    "title": "SCE 2.4 Detective Probe - ECS Container Instance Registration Detection",
+    "description": "Security Chaos Engineering experiment validating that EventBridge rules detect unauthorized ECS container instance registration. This simulates Attack Steps 1.4 (Create EC2 Instance with ECS Configuration) and 2.3 (Configure User Data for ECS Cluster Registration) where an attacker launches a rogue EC2 instance that auto-registers with a target ECS cluster. The detective control should detect the RegisterContainerInstance event and generate an alert within 3 minutes.",
+    "tags": [
+        "sce",
+        "detective",
+        "ecs",
+        "ec2",
+        "eventbridge",
+        "container-instance-registration",
+        "attack-1.4",
+        "attack-2.3",
+        "military-supply-chain",
+        "ecs-privilege-escalation"
+    ],
+    "steady-state-hypothesis": {
+        "title": "Detective control detects ECS container instance registration from rogue EC2 instance within 3 minutes",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "verify-ecs-registration-detection-alert",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.2_4_detective",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "deploy-ecs-cluster-and-detection-infrastructure",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.2_4_detective",
+                "func": "steady_state"
+            },
+            "pauses": {
+                "after": 10
+            }
+        },
+        {
+            "type": "action",
+            "name": "execute-rogue-ec2-instance-with-ecs-registration",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.2_4_detective",
+                "func": "attack"
+            },
+            "pauses": {
+                "after": 30
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "cleanup-ecs-cluster-and-experiment-resources",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.2_4_detective",
+                "func": "rollback"
+            }
+        }
+    ]
+}

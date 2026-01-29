@@ -179,7 +179,7 @@ class SCEAutomationAPI:
     4. Produce the final DOT representation
     - Label each node has a unique identifier using hierarchical numbering.
     - Output the final result in DOT format, ready for rendering, using the hierarchy, connectors, and color conventions defined in @structure.dot.
-    - Ensure all special characters are properly escaped as in standard HTML to avoid rendering problems in downstream visualization tools.
+    - Generate a Graphviz DOT graph using HTML-like labels label=<...> (do not add an extra > at the end), always escape & < > \" as &amp; &lt; &gt; &quot; when they appear as literal text, and validate the </> balance in each label before returning the code.
 
     @attacks.yaml:
     {attacks_yaml}
@@ -315,7 +315,7 @@ The script is self-contained: no CLI arguments, no external config files, no pre
                 full_prompt = prompt
             
             response = self.bedrock.converse(
-                modelId="global.anthropic.claude-sonnet-4-5-20250929-v1:0",
+                modelId="global.anthropic.claude-opus-4-5-20251101-v1:0",
                 messages=[
                     {
                         "role" : "user",

@@ -1,0 +1,70 @@
+{
+    "title": "SCE 3.5 Reactive Probe - Credential Revocation on GuardDuty Detection",
+    "description": "Security Chaos Engineering experiment validating that IAM credentials are automatically revoked when GuardDuty detects credential exfiltration. This simulates Attack Steps 1.4 (Create EC2 Instance with ECS Configuration), 2.3 (Configure User Data for ECS Cluster Registration), and 3.4 (Access Containers & Steal Task Role Credentials). The reactive control should detect credential use from external IP via GuardDuty and revoke the credentials within 10 minutes by attaching a deny-all inline policy to the compromised role.",
+    "tags": [
+        "sce",
+        "reactive",
+        "ecs",
+        "ec2",
+        "guardduty",
+        "iam",
+        "credential-revocation",
+        "attack-1.4",
+        "attack-2.3",
+        "attack-3.4",
+        "military-supply-chain",
+        "ecs-privilege-escalation"
+    ],
+    "steady-state-hypothesis": {
+        "title": "Reactive control revokes stolen ECS task role credentials within 10 minutes of GuardDuty detection",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "verify-credential-revocation-on-guardduty-finding",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.3_5_reactive",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "deploy-ecs-cluster-guardduty-and-revocation-infrastructure",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.3_5_reactive",
+                "func": "steady_state"
+            },
+            "pauses": {
+                "after": 15
+            }
+        },
+        {
+            "type": "action",
+            "name": "execute-credential-theft-and-simulate-external-use",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.3_5_reactive",
+                "func": "attack"
+            },
+            "pauses": {
+                "after": 10
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "cleanup-ecs-guardduty-and-experiment-resources",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.3_5_reactive",
+                "func": "rollback"
+            }
+        }
+    ]
+}

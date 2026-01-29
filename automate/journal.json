@@ -3,27 +3,32 @@
   "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.41",
   "node": "PC-INF-MAMA",
   "experiment": {
-    "title": "SCE Experiment 1.3 - Reactive Probe: Automated Response to Malicious EC2 Launch",
-    "description": "Validates reactive safeguards that automatically isolate, snapshot, and tag compromised EC2 instances launched by attackers attempting to infiltrate the military supply chain ECS cluster. Tests Lambda-based automated response triggered by EventBridge detection of unauthorized RunInstances API calls.",
+    "title": "SCE 3.5 Reactive Probe - Credential Revocation on GuardDuty Detection",
+    "description": "Security Chaos Engineering experiment validating that IAM credentials are automatically revoked when GuardDuty detects credential exfiltration. This simulates Attack Steps 1.4 (Create EC2 Instance with ECS Configuration), 2.3 (Configure User Data for ECS Cluster Registration), and 3.4 (Access Containers & Steal Task Role Credentials). The reactive control should detect credential use from external IP via GuardDuty and revoke the credentials within 10 minutes by attaching a deny-all inline policy to the compromised role.",
     "tags": [
-      "ec2",
+      "sce",
       "reactive",
-      "incident-response",
-      "isolation",
-      "forensics",
-      "ecs-privilege-escalation",
-      "military-supply-chain"
+      "ecs",
+      "ec2",
+      "guardduty",
+      "iam",
+      "credential-revocation",
+      "attack-1.4",
+      "attack-2.3",
+      "attack-3.4",
+      "military-supply-chain",
+      "ecs-privilege-escalation"
     ],
     "steady-state-hypothesis": {
-      "title": "Reactive controls successfully respond to malicious EC2 instance launch",
+      "title": "Reactive control revokes stolen ECS task role credentials within 10 minutes of GuardDuty detection",
       "probes": [
         {
           "type": "probe",
-          "name": "verify-automated-isolation-and-forensics",
+          "name": "verify-credential-revocation-on-guardduty-finding",
           "tolerance": true,
           "provider": {
             "type": "python",
-            "module": "chaosaws.ec2.1_3_reactive",
+            "module": "chaosaws.ec2.3_5_reactive",
             "func": "hypothesis_verification"
           }
         }
@@ -32,61 +37,67 @@
     "method": [
       {
         "type": "action",
-        "name": "deploy-reactive-response-infrastructure",
+        "name": "deploy-ecs-cluster-guardduty-and-revocation-infrastructure",
         "provider": {
           "type": "python",
-          "module": "chaosaws.ec2.1_3_reactive",
+          "module": "chaosaws.ec2.3_5_reactive",
           "func": "steady_state"
+        },
+        "pauses": {
+          "after": 15
         }
       },
       {
         "type": "action",
-        "name": "execute-malicious-ec2-launch-attack",
+        "name": "execute-credential-theft-and-simulate-external-use",
         "provider": {
           "type": "python",
-          "module": "chaosaws.ec2.1_3_reactive",
+          "module": "chaosaws.ec2.3_5_reactive",
           "func": "attack"
+        },
+        "pauses": {
+          "after": 10
         }
       }
     ],
     "rollbacks": [
       {
         "type": "action",
-        "name": "cleanup-all-experiment-resources",
+        "name": "cleanup-ecs-guardduty-and-experiment-resources",
         "provider": {
           "type": "python",
-          "module": "chaosaws.ec2.1_3_reactive",
+          "module": "chaosaws.ec2.3_5_reactive",
           "func": "rollback"
         }
       }
     ],
     "dry": null
   },
-  "start": "2026-01-28T16:03:57.815095+00:00",
-  "status": "completed",
-  "deviated": true,
+  "start": "2026-01-29T09:17:28.088564+00:00",
+  "status": "interrupted",
+  "deviated": false,
   "steady_states": {
     "before": null,
     "after": {
-      "steady_state_met": false,
+      "steady_state_met": true,
       "probes": [
         {
           "activity": {
             "type": "probe",
-            "name": "verify-automated-isolation-and-forensics",
+            "name": "verify-credential-revocation-on-guardduty-finding",
             "tolerance": true,
             "provider": {
               "type": "python",
-              "module": "chaosaws.ec2.1_3_reactive",
+              "module": "chaosaws.ec2.3_5_reactive",
               "func": "hypothesis_verification"
             }
           },
-          "output": false,
-          "start": "2026-01-28T16:07:22.535595+00:00",
+          "output": true,
+          "start": "2026-01-29T09:27:43.609781+00:00",
           "status": "succeeded",
-          "end": "2026-01-28T16:07:22.536078+00:00",
-          "duration": 0.000483,
-          "tolerance_met": false
+          "end": "2026-01-29T09:27:45.263834+00:00",
+          "duration": 1.654053,
+          "tolerance_met": true
         }
       ]
     },
@@ -96,54 +107,59 @@
     {
       "activity": {
         "type": "action",
-        "name": "deploy-reactive-response-infrastructure",
+        "name": "deploy-ecs-cluster-guardduty-and-revocation-infrastructure",
         "provider": {
           "type": "python",
-          "module": "chaosaws.ec2.1_3_reactive",
+          "module": "chaosaws.ec2.3_5_reactive",
           "func": "steady_state"
+        },
+        "pauses": {
+          "after": 15
         }
       },
       "output": true,
-      "start": "2026-01-28T16:03:57.827307+00:00",
+      "start": "2026-01-29T09:17:28.089650+00:00",
       "status": "succeeded",
-      "end": "2026-01-28T16:07:21.530456+00:00",
-      "duration": 203.703149
+      "end": "2026-01-29T09:20:42.940413+00:00",
+      "duration": 194.850763
     },
     {
       "activity": {
         "type": "action",
-        "name": "execute-malicious-ec2-launch-attack",
+        "name": "execute-credential-theft-and-simulate-external-use",
         "provider": {
           "type": "python",
-          "module": "chaosaws.ec2.1_3_reactive",
+          "module": "chaosaws.ec2.3_5_reactive",
           "func": "attack"
+        },
+        "pauses": {
+          "after": 10
         }
       },
-      "output": false,
-      "start": "2026-01-28T16:07:21.530597+00:00",
+      "output": true,
+      "start": "2026-01-29T09:20:57.941100+00:00",
       "status": "succeeded",
-      "end": "2026-01-28T16:07:22.535346+00:00",
-      "duration": 1.004749
+      "end": "2026-01-29T09:27:33.599781+00:00",
+      "duration": 395.658681
     }
   ],
   "rollbacks": [
     {
       "activity": {
         "type": "action",
-        "name": "cleanup-all-experiment-resources",
+        "name": "cleanup-ecs-guardduty-and-experiment-resources",
         "provider": {
           "type": "python",
-          "module": "chaosaws.ec2.1_3_reactive",
+          "module": "chaosaws.ec2.3_5_reactive",
           "func": "rollback"
         }
       },
-      "output": true,
-      "start": "2026-01-28T16:07:22.547522+00:00",
-      "status": "succeeded",
-      "end": "2026-01-28T16:08:42.600211+00:00",
-      "duration": 80.052689
+      "output": null,
+      "start": "2026-01-29T09:27:45.264496+00:00",
+      "end": "2026-01-29T09:30:19.268075+00:00",
+      "duration": 154.003579
     }
   ],
-  "end": "2026-01-28T16:08:42.600331+00:00",
-  "duration": 284.8027241230011
+  "end": "2026-01-29T09:30:19.282623+00:00",
+  "duration": 771.1980268955231
 }

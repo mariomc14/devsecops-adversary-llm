@@ -1188,3 +1188,254 @@
 [36m[2026-01-28 17:08:42 DEBUG] [__init__:472][39m No controls to apply on 'experiment'
 [36m[2026-01-28 17:08:42 DEBUG] [__init__:106][39m Cleaning up controls
 [36m[2026-01-28 17:08:42 DEBUG] [caching:42][39m Clearing activities cache
+[36m[2026-01-29 09:42:02 DEBUG] [__init__:101][39m ###############################################################################
+[36m[2026-01-29 09:42:02 DEBUG] [__init__:102][39m Running command 'run'
+[36m[2026-01-29 09:42:02 DEBUG] [__init__:106][39m Using settings file '/home/mmc/.chaostoolkit/settings.yaml'
+[36m[2026-01-29 09:42:02 DEBUG] [settings:31][39m The Chaos Toolkit settings file could not be found at '/home/mmc/.chaostoolkit/settings.yaml'.
+[36m[2026-01-29 09:42:02 DEBUG] [__init__:472][39m No controls to apply on 'loader'
+[36m[2026-01-29 09:42:02 DEBUG] [__init__:472][39m No controls to apply on 'loader'
+[36m[2026-01-29 09:42:02 DEBUG] [caching:24][39m Building activity cache...
+[36m[2026-01-29 09:42:02 DEBUG] [caching:35][39m Cached 3 activities
+[32m[2026-01-29 09:42:02 INFO] [experiment:59][39m Validating the experiment's syntax
+[36m[2026-01-29 09:42:02 DEBUG] [configuration:64][39m Loading configuration...
+[36m[2026-01-29 09:42:02 DEBUG] [secret:79][39m Loading secrets...
+[36m[2026-01-29 09:42:02 DEBUG] [secret:79][39m Loading secrets...
+[36m[2026-01-29 09:42:02 DEBUG] [caching:42][39m Clearing activities cache
+[31m[2026-01-29 09:42:02 ERROR] [run:188][39m Secrets make reference to an environment key that does not exist: AWS_ACCESS_KEY_ID
+[36m[2026-01-29 09:42:02 DEBUG] [run:189][39m Secrets make reference to an environment key that does not exist: AWS_ACCESS_KEY_ID
+[36m[2026-01-29 09:42:24 DEBUG] [__init__:101][39m ###############################################################################
+[36m[2026-01-29 09:42:24 DEBUG] [__init__:102][39m Running command 'run'
+[36m[2026-01-29 09:42:24 DEBUG] [__init__:106][39m Using settings file '/home/mmc/.chaostoolkit/settings.yaml'
+[36m[2026-01-29 09:42:24 DEBUG] [settings:31][39m The Chaos Toolkit settings file could not be found at '/home/mmc/.chaostoolkit/settings.yaml'.
+[36m[2026-01-29 09:42:24 DEBUG] [__init__:472][39m No controls to apply on 'loader'
+[36m[2026-01-29 09:42:24 DEBUG] [__init__:472][39m No controls to apply on 'loader'
+[36m[2026-01-29 09:42:24 DEBUG] [caching:24][39m Building activity cache...
+[36m[2026-01-29 09:42:24 DEBUG] [caching:35][39m Cached 3 activities
+[32m[2026-01-29 09:42:24 INFO] [experiment:59][39m Validating the experiment's syntax
+[36m[2026-01-29 09:42:24 DEBUG] [configuration:64][39m Loading configuration...
+[36m[2026-01-29 09:42:24 DEBUG] [secret:79][39m Loading secrets...
+[36m[2026-01-29 09:42:24 DEBUG] [secret:104][39m Done loading secrets
+[32m[2026-01-29 09:42:24 INFO] [experiment:112][39m Experiment looks valid
+[36m[2026-01-29 09:42:24 DEBUG] [caching:42][39m Clearing activities cache
+[36m[2026-01-29 09:42:24 DEBUG] [run:224][39m Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-01-29 09:42:24 DEBUG] [caching:24][39m Building activity cache...
+[36m[2026-01-29 09:42:24 DEBUG] [caching:35][39m Cached 3 activities
+[36m[2026-01-29 09:42:24 DEBUG] [configuration:64][39m Loading configuration...
+[36m[2026-01-29 09:42:24 DEBUG] [secret:79][39m Loading secrets...
+[36m[2026-01-29 09:42:24 DEBUG] [secret:104][39m Done loading secrets
+[36m[2026-01-29 09:42:24 DEBUG] [configuration:161][39m Loading dynamic configuration...
+[32m[2026-01-29 09:42:24 INFO] [run:440][39m Running experiment: SCE 1.5 Preventive Probe - AMI Restriction Validation
+[36m[2026-01-29 09:42:24 DEBUG] [__init__:67][39m Initializing controls
+[32m[2026-01-29 09:42:24 INFO] [run:471][39m Steady-state strategy: after-method-only
+[32m[2026-01-29 09:42:24 INFO] [run:477][39m Rollbacks strategy: default
+[36m[2026-01-29 09:42:24 DEBUG] [__init__:472][39m No controls to apply on 'experiment'
+[32m[2026-01-29 09:42:24 INFO] [run:778][39m Playing your experiment's method now...
+[36m[2026-01-29 09:42:24 DEBUG] [__init__:472][39m No controls to apply on 'method'
+[36m[2026-01-29 09:42:24 DEBUG] [__init__:472][39m No controls to apply on 'activity'
+[32m[2026-01-29 09:42:24 INFO] [activity:232][39m Action: deploy-experiment-infrastructure
+[36m[2026-01-29 09:42:24 DEBUG] [python:33][39m Activity 'deploy-experiment-infrastructure' loaded from '/home/mmc/devsecops-adversary-llm/automate/chaostk/lib/python3.13/site-packages/chaosaws/ec2/1_5_preventive.py'
+[36m[2026-01-29 09:43:23 DEBUG] [activity:260][39m   => succeeded with 'True'
+[32m[2026-01-29 09:43:23 INFO] [activity:280][39m Pausing after activity for 5s...
+[36m[2026-01-29 09:43:28 DEBUG] [__init__:472][39m No controls to apply on 'activity'
+[36m[2026-01-29 09:43:28 DEBUG] [__init__:472][39m No controls to apply on 'activity'
+[32m[2026-01-29 09:43:28 INFO] [activity:232][39m Action: execute-ec2-runinstances-with-non-approved-ami
+[36m[2026-01-29 09:43:28 DEBUG] [python:33][39m Activity 'execute-ec2-runinstances-with-non-approved-ami' loaded from '/home/mmc/devsecops-adversary-llm/automate/chaostk/lib/python3.13/site-packages/chaosaws/ec2/1_5_preventive.py'
+[36m[2026-01-29 09:43:29 DEBUG] [activity:317][39m Activity failed
+    Traceback (most recent call last):
+      File "/home/mmc/devsecops-adversary-llm/automate/chaostk/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/mmc/devsecops-adversary-llm/automate/chaostk/lib/python3.13/site-packages/chaosaws/ec2/1_5_preventive.py", line 422, in attack
+        sts_response = clients['sts'].assume_role(
+            RoleArn=_experiment_state['test_role_arn'],
+            RoleSessionName=f"sce-attack-session-{TIMESTAMP}",
+            DurationSeconds=900
+        )
+      File "/home/mmc/devsecops-adversary-llm/automate/chaostk/lib/python3.13/site-packages/botocore/client.py", line 569, in _api_call
+        return self._make_api_call(operation_name, kwargs)
+               ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+      File "/home/mmc/devsecops-adversary-llm/automate/chaostk/lib/python3.13/site-packages/botocore/client.py", line 1023, in _make_api_call
+        raise error_class(parsed_response, operation_name)
+    botocore.exceptions.ClientError: An error occurred (AccessDenied) when calling the AssumeRole operation: Roles may not be assumed by root accounts.
+    
+    During handling of the above exception, another exception occurred:
+    
+    Traceback (most recent call last):
+      File "/home/mmc/devsecops-adversary-llm/automate/chaostk/lib/python3.13/site-packages/chaoslib/activity.py", line 310, in run_activity
+        result = run_python_activity(activity, configuration, secrets)
+      File "/home/mmc/devsecops-adversary-llm/automate/chaostk/lib/python3.13/site-packages/chaoslib/provider/python.py", line 58, in run_python_activity
+        raise ActivityFailed(
+            traceback.format_exception_only(type(x), x)[0].strip()
+        ).with_traceback(sys.exc_info()[2])
+      File "/home/mmc/devsecops-adversary-llm/automate/chaostk/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/mmc/devsecops-adversary-llm/automate/chaostk/lib/python3.13/site-packages/chaosaws/ec2/1_5_preventive.py", line 422, in attack
+        sts_response = clients['sts'].assume_role(
+            RoleArn=_experiment_state['test_role_arn'],
+            RoleSessionName=f"sce-attack-session-{TIMESTAMP}",
+            DurationSeconds=900
+        )
+      File "/home/mmc/devsecops-adversary-llm/automate/chaostk/lib/python3.13/site-packages/botocore/client.py", line 569, in _api_call
+        return self._make_api_call(operation_name, kwargs)
+               ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+      File "/home/mmc/devsecops-adversary-llm/automate/chaostk/lib/python3.13/site-packages/botocore/client.py", line 1023, in _make_api_call
+        raise error_class(parsed_response, operation_name)
+    chaoslib.exceptions.ActivityFailed: botocore.exceptions.ClientError: An error occurred (AccessDenied) when calling the AssumeRole operation: Roles may not be assumed by root accounts.
+[31m[2026-01-29 09:43:29 ERROR] [activity:268][39m   => failed: botocore.exceptions.ClientError: An error occurred (AccessDenied) when calling the AssumeRole operation: Roles may not be assumed by root accounts.
+[36m[2026-01-29 09:43:29 DEBUG] [__init__:472][39m No controls to apply on 'activity'
+[36m[2026-01-29 09:43:29 DEBUG] [__init__:472][39m No controls to apply on 'method'
+[36m[2026-01-29 09:43:29 DEBUG] [run:696][39m Running steady-state hypothesis after the method
+[32m[2026-01-29 09:43:29 INFO] [hypothesis:205][39m Steady state hypothesis: Preventive control blocks EC2 instance creation with non-approved AMI
+[36m[2026-01-29 09:43:29 DEBUG] [__init__:472][39m No controls to apply on 'hypothesis'
+[36m[2026-01-29 09:43:29 DEBUG] [__init__:472][39m No controls to apply on 'activity'
+[32m[2026-01-29 09:43:29 INFO] [activity:232][39m Probe: verify-ami-restriction-policy-blocks-attack
+[36m[2026-01-29 09:43:29 DEBUG] [python:33][39m Activity 'verify-ami-restriction-policy-blocks-attack' loaded from '/home/mmc/devsecops-adversary-llm/automate/chaostk/lib/python3.13/site-packages/chaosaws/ec2/1_5_preventive.py'
+[36m[2026-01-29 09:43:29 DEBUG] [activity:260][39m   => succeeded with 'False'
+[36m[2026-01-29 09:43:29 DEBUG] [__init__:472][39m No controls to apply on 'activity'
+[36m[2026-01-29 09:43:29 DEBUG] [hypothesis:247][39m allowed tolerance is True
+[36m[2026-01-29 09:43:29 DEBUG] [__init__:472][39m No controls to apply on 'hypothesis'
+[31m[2026-01-29 09:43:29 CRITICAL] [run:716][39m Steady state probe 'verify-ami-restriction-policy-blocks-attack' is not in the given tolerance so failing this experiment
+[32m[2026-01-29 09:43:29 INFO] [run:1072][39m Let's rollback...
+[36m[2026-01-29 09:43:29 DEBUG] [__init__:472][39m No controls to apply on 'rollback'
+[32m[2026-01-29 09:43:29 INFO] [rollback:36][39m Rollback: cleanup-experiment-cloudformation-stack
+[36m[2026-01-29 09:43:29 DEBUG] [__init__:472][39m No controls to apply on 'activity'
+[32m[2026-01-29 09:43:29 INFO] [activity:232][39m Action: cleanup-experiment-cloudformation-stack
+[36m[2026-01-29 09:43:29 DEBUG] [python:33][39m Activity 'cleanup-experiment-cloudformation-stack' loaded from '/home/mmc/devsecops-adversary-llm/automate/chaostk/lib/python3.13/site-packages/chaosaws/ec2/1_5_preventive.py'
+[36m[2026-01-29 09:43:54 DEBUG] [activity:260][39m   => succeeded with 'True'
+[36m[2026-01-29 09:43:54 DEBUG] [__init__:472][39m No controls to apply on 'activity'
+[36m[2026-01-29 09:43:54 DEBUG] [__init__:472][39m No controls to apply on 'rollback'
+[32m[2026-01-29 09:43:54 INFO] [run:598][39m Experiment ended with status: deviated
+[32m[2026-01-29 09:43:54 INFO] [run:600][39m The steady-state has deviated, a weakness may have been discovered
+[36m[2026-01-29 09:43:54 DEBUG] [__init__:472][39m No controls to apply on 'experiment'
+[36m[2026-01-29 09:43:54 DEBUG] [__init__:106][39m Cleaning up controls
+[36m[2026-01-29 09:43:54 DEBUG] [caching:42][39m Clearing activities cache
+[36m[2026-01-29 09:53:37 DEBUG] [__init__:101][39m ###############################################################################
+[36m[2026-01-29 09:53:37 DEBUG] [__init__:102][39m Running command 'run'
+[36m[2026-01-29 09:53:37 DEBUG] [__init__:106][39m Using settings file '/home/mmc/.chaostoolkit/settings.yaml'
+[36m[2026-01-29 09:53:37 DEBUG] [settings:31][39m The Chaos Toolkit settings file could not be found at '/home/mmc/.chaostoolkit/settings.yaml'.
+[36m[2026-01-29 09:53:37 DEBUG] [__init__:472][39m No controls to apply on 'loader'
+[36m[2026-01-29 09:53:37 DEBUG] [__init__:472][39m No controls to apply on 'loader'
+[36m[2026-01-29 09:53:37 DEBUG] [caching:24][39m Building activity cache...
+[36m[2026-01-29 09:53:37 DEBUG] [caching:35][39m Cached 3 activities
+[32m[2026-01-29 09:53:37 INFO] [experiment:59][39m Validating the experiment's syntax
+[36m[2026-01-29 09:53:37 DEBUG] [configuration:64][39m Loading configuration...
+[36m[2026-01-29 09:53:37 DEBUG] [secret:79][39m Loading secrets...
+[36m[2026-01-29 09:53:37 DEBUG] [secret:104][39m Done loading secrets
+[32m[2026-01-29 09:53:37 INFO] [experiment:112][39m Experiment looks valid
+[36m[2026-01-29 09:53:37 DEBUG] [caching:42][39m Clearing activities cache
+[36m[2026-01-29 09:53:37 DEBUG] [run:224][39m Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-01-29 09:53:37 DEBUG] [caching:24][39m Building activity cache...
+[36m[2026-01-29 09:53:37 DEBUG] [caching:35][39m Cached 3 activities
+[36m[2026-01-29 09:53:37 DEBUG] [configuration:64][39m Loading configuration...
+[36m[2026-01-29 09:53:37 DEBUG] [secret:79][39m Loading secrets...
+[36m[2026-01-29 09:53:37 DEBUG] [secret:104][39m Done loading secrets
+[36m[2026-01-29 09:53:37 DEBUG] [configuration:161][39m Loading dynamic configuration...
+[32m[2026-01-29 09:53:37 INFO] [run:440][39m Running experiment: SCE 2.4 Detective Probe - ECS Container Instance Registration Detection
+[36m[2026-01-29 09:53:37 DEBUG] [__init__:67][39m Initializing controls
+[32m[2026-01-29 09:53:37 INFO] [run:471][39m Steady-state strategy: after-method-only
+[32m[2026-01-29 09:53:37 INFO] [run:477][39m Rollbacks strategy: default
+[36m[2026-01-29 09:53:37 DEBUG] [__init__:472][39m No controls to apply on 'experiment'
+[32m[2026-01-29 09:53:37 INFO] [run:778][39m Playing your experiment's method now...
+[36m[2026-01-29 09:53:37 DEBUG] [__init__:472][39m No controls to apply on 'method'
+[36m[2026-01-29 09:53:37 DEBUG] [__init__:472][39m No controls to apply on 'activity'
+[32m[2026-01-29 09:53:37 INFO] [activity:232][39m Action: deploy-ecs-cluster-and-detection-infrastructure
+[36m[2026-01-29 09:53:37 DEBUG] [python:33][39m Activity 'deploy-ecs-cluster-and-detection-infrastructure' loaded from '/home/mmc/devsecops-adversary-llm/automate/chaostk/lib/python3.13/site-packages/chaosaws/ec2/2_4_detective.py'
+[36m[2026-01-29 09:56:57 DEBUG] [activity:260][39m   => succeeded with 'True'
+[32m[2026-01-29 09:56:57 INFO] [activity:280][39m Pausing after activity for 10s...
+[36m[2026-01-29 09:57:07 DEBUG] [__init__:472][39m No controls to apply on 'activity'
+[36m[2026-01-29 09:57:07 DEBUG] [__init__:472][39m No controls to apply on 'activity'
+[32m[2026-01-29 09:57:07 INFO] [activity:232][39m Action: execute-rogue-ec2-instance-with-ecs-registration
+[36m[2026-01-29 09:57:07 DEBUG] [python:33][39m Activity 'execute-rogue-ec2-instance-with-ecs-registration' loaded from '/home/mmc/devsecops-adversary-llm/automate/chaostk/lib/python3.13/site-packages/chaosaws/ec2/2_4_detective.py'
+[36m[2026-01-29 10:03:08 DEBUG] [activity:260][39m   => succeeded with 'True'
+[32m[2026-01-29 10:03:08 INFO] [activity:280][39m Pausing after activity for 30s...
+[36m[2026-01-29 10:03:38 DEBUG] [__init__:472][39m No controls to apply on 'activity'
+[36m[2026-01-29 10:03:38 DEBUG] [__init__:472][39m No controls to apply on 'method'
+[36m[2026-01-29 10:03:38 DEBUG] [run:696][39m Running steady-state hypothesis after the method
+[32m[2026-01-29 10:03:38 INFO] [hypothesis:205][39m Steady state hypothesis: Detective control detects ECS container instance registration from rogue EC2 instance within 3 minutes
+[36m[2026-01-29 10:03:38 DEBUG] [__init__:472][39m No controls to apply on 'hypothesis'
+[36m[2026-01-29 10:03:38 DEBUG] [__init__:472][39m No controls to apply on 'activity'
+[32m[2026-01-29 10:03:38 INFO] [activity:232][39m Probe: verify-ecs-registration-detection-alert
+[36m[2026-01-29 10:03:38 DEBUG] [python:33][39m Activity 'verify-ecs-registration-detection-alert' loaded from '/home/mmc/devsecops-adversary-llm/automate/chaostk/lib/python3.13/site-packages/chaosaws/ec2/2_4_detective.py'
+[36m[2026-01-29 10:06:42 DEBUG] [activity:260][39m   => succeeded with 'False'
+[36m[2026-01-29 10:06:42 DEBUG] [__init__:472][39m No controls to apply on 'activity'
+[36m[2026-01-29 10:06:42 DEBUG] [hypothesis:247][39m allowed tolerance is True
+[36m[2026-01-29 10:06:42 DEBUG] [__init__:472][39m No controls to apply on 'hypothesis'
+[31m[2026-01-29 10:06:42 CRITICAL] [run:716][39m Steady state probe 'verify-ecs-registration-detection-alert' is not in the given tolerance so failing this experiment
+[32m[2026-01-29 10:06:42 INFO] [run:1072][39m Let's rollback...
+[36m[2026-01-29 10:06:42 DEBUG] [__init__:472][39m No controls to apply on 'rollback'
+[32m[2026-01-29 10:06:42 INFO] [rollback:36][39m Rollback: cleanup-ecs-cluster-and-experiment-resources
+[36m[2026-01-29 10:06:42 DEBUG] [__init__:472][39m No controls to apply on 'activity'
+[32m[2026-01-29 10:06:42 INFO] [activity:232][39m Action: cleanup-ecs-cluster-and-experiment-resources
+[36m[2026-01-29 10:06:42 DEBUG] [python:33][39m Activity 'cleanup-ecs-cluster-and-experiment-resources' loaded from '/home/mmc/devsecops-adversary-llm/automate/chaostk/lib/python3.13/site-packages/chaosaws/ec2/2_4_detective.py'
+[36m[2026-01-29 10:08:45 DEBUG] [activity:260][39m   => succeeded with 'True'
+[36m[2026-01-29 10:08:45 DEBUG] [__init__:472][39m No controls to apply on 'activity'
+[36m[2026-01-29 10:08:45 DEBUG] [__init__:472][39m No controls to apply on 'rollback'
+[32m[2026-01-29 10:08:45 INFO] [run:598][39m Experiment ended with status: deviated
+[32m[2026-01-29 10:08:45 INFO] [run:600][39m The steady-state has deviated, a weakness may have been discovered
+[36m[2026-01-29 10:08:45 DEBUG] [__init__:472][39m No controls to apply on 'experiment'
+[36m[2026-01-29 10:08:45 DEBUG] [__init__:106][39m Cleaning up controls
+[36m[2026-01-29 10:08:45 DEBUG] [caching:42][39m Clearing activities cache
+[36m[2026-01-29 10:17:27 DEBUG] [__init__:101][39m ###############################################################################
+[36m[2026-01-29 10:17:27 DEBUG] [__init__:102][39m Running command 'run'
+[36m[2026-01-29 10:17:27 DEBUG] [__init__:106][39m Using settings file '/home/mmc/.chaostoolkit/settings.yaml'
+[36m[2026-01-29 10:17:27 DEBUG] [settings:31][39m The Chaos Toolkit settings file could not be found at '/home/mmc/.chaostoolkit/settings.yaml'.
+[36m[2026-01-29 10:17:27 DEBUG] [__init__:472][39m No controls to apply on 'loader'
+[36m[2026-01-29 10:17:27 DEBUG] [__init__:472][39m No controls to apply on 'loader'
+[36m[2026-01-29 10:17:27 DEBUG] [caching:24][39m Building activity cache...
+[36m[2026-01-29 10:17:27 DEBUG] [caching:35][39m Cached 3 activities
+[32m[2026-01-29 10:17:27 INFO] [experiment:59][39m Validating the experiment's syntax
+[36m[2026-01-29 10:17:27 DEBUG] [configuration:64][39m Loading configuration...
+[36m[2026-01-29 10:17:27 DEBUG] [secret:79][39m Loading secrets...
+[36m[2026-01-29 10:17:27 DEBUG] [secret:104][39m Done loading secrets
+[32m[2026-01-29 10:17:28 INFO] [experiment:112][39m Experiment looks valid
+[36m[2026-01-29 10:17:28 DEBUG] [caching:42][39m Clearing activities cache
+[36m[2026-01-29 10:17:28 DEBUG] [run:224][39m Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-01-29 10:17:28 DEBUG] [caching:24][39m Building activity cache...
+[36m[2026-01-29 10:17:28 DEBUG] [caching:35][39m Cached 3 activities
+[36m[2026-01-29 10:17:28 DEBUG] [configuration:64][39m Loading configuration...
+[36m[2026-01-29 10:17:28 DEBUG] [secret:79][39m Loading secrets...
+[36m[2026-01-29 10:17:28 DEBUG] [secret:104][39m Done loading secrets
+[36m[2026-01-29 10:17:28 DEBUG] [configuration:161][39m Loading dynamic configuration...
+[32m[2026-01-29 10:17:28 INFO] [run:440][39m Running experiment: SCE 3.5 Reactive Probe - Credential Revocation on GuardDuty Detection
+[36m[2026-01-29 10:17:28 DEBUG] [__init__:67][39m Initializing controls
+[32m[2026-01-29 10:17:28 INFO] [run:471][39m Steady-state strategy: after-method-only
+[32m[2026-01-29 10:17:28 INFO] [run:477][39m Rollbacks strategy: default
+[36m[2026-01-29 10:17:28 DEBUG] [__init__:472][39m No controls to apply on 'experiment'
+[32m[2026-01-29 10:17:28 INFO] [run:778][39m Playing your experiment's method now...
+[36m[2026-01-29 10:17:28 DEBUG] [__init__:472][39m No controls to apply on 'method'
+[36m[2026-01-29 10:17:28 DEBUG] [__init__:472][39m No controls to apply on 'activity'
+[32m[2026-01-29 10:17:28 INFO] [activity:232][39m Action: deploy-ecs-cluster-guardduty-and-revocation-infrastructure
+[36m[2026-01-29 10:17:28 DEBUG] [python:33][39m Activity 'deploy-ecs-cluster-guardduty-and-revocation-infrastructure' loaded from '/home/mmc/devsecops-adversary-llm/automate/chaostk/lib/python3.13/site-packages/chaosaws/ec2/3_5_reactive.py'
+[36m[2026-01-29 10:20:42 DEBUG] [activity:260][39m   => succeeded with 'True'
+[32m[2026-01-29 10:20:42 INFO] [activity:280][39m Pausing after activity for 15s...
+[36m[2026-01-29 10:20:57 DEBUG] [__init__:472][39m No controls to apply on 'activity'
+[36m[2026-01-29 10:20:57 DEBUG] [__init__:472][39m No controls to apply on 'activity'
+[32m[2026-01-29 10:20:57 INFO] [activity:232][39m Action: execute-credential-theft-and-simulate-external-use
+[36m[2026-01-29 10:20:57 DEBUG] [python:33][39m Activity 'execute-credential-theft-and-simulate-external-use' loaded from '/home/mmc/devsecops-adversary-llm/automate/chaostk/lib/python3.13/site-packages/chaosaws/ec2/3_5_reactive.py'
+[36m[2026-01-29 10:27:33 DEBUG] [activity:260][39m   => succeeded with 'True'
+[32m[2026-01-29 10:27:33 INFO] [activity:280][39m Pausing after activity for 10s...
+[36m[2026-01-29 10:27:43 DEBUG] [__init__:472][39m No controls to apply on 'activity'
+[36m[2026-01-29 10:27:43 DEBUG] [__init__:472][39m No controls to apply on 'method'
+[36m[2026-01-29 10:27:43 DEBUG] [run:696][39m Running steady-state hypothesis after the method
+[32m[2026-01-29 10:27:43 INFO] [hypothesis:205][39m Steady state hypothesis: Reactive control revokes stolen ECS task role credentials within 10 minutes of GuardDuty detection
+[36m[2026-01-29 10:27:43 DEBUG] [__init__:472][39m No controls to apply on 'hypothesis'
+[36m[2026-01-29 10:27:43 DEBUG] [__init__:472][39m No controls to apply on 'activity'
+[32m[2026-01-29 10:27:43 INFO] [activity:232][39m Probe: verify-credential-revocation-on-guardduty-finding
+[36m[2026-01-29 10:27:43 DEBUG] [python:33][39m Activity 'verify-credential-revocation-on-guardduty-finding' loaded from '/home/mmc/devsecops-adversary-llm/automate/chaostk/lib/python3.13/site-packages/chaosaws/ec2/3_5_reactive.py'
+[36m[2026-01-29 10:27:45 DEBUG] [activity:260][39m   => succeeded with 'True'
+[36m[2026-01-29 10:27:45 DEBUG] [__init__:472][39m No controls to apply on 'activity'
+[36m[2026-01-29 10:27:45 DEBUG] [hypothesis:247][39m allowed tolerance is True
+[32m[2026-01-29 10:27:45 INFO] [hypothesis:260][39m Steady state hypothesis is met!
+[36m[2026-01-29 10:27:45 DEBUG] [__init__:472][39m No controls to apply on 'hypothesis'
+[32m[2026-01-29 10:27:45 INFO] [run:1072][39m Let's rollback...
+[36m[2026-01-29 10:27:45 DEBUG] [__init__:472][39m No controls to apply on 'rollback'
+[32m[2026-01-29 10:27:45 INFO] [rollback:36][39m Rollback: cleanup-ecs-guardduty-and-experiment-resources
+[36m[2026-01-29 10:27:45 DEBUG] [__init__:472][39m No controls to apply on 'activity'
+[32m[2026-01-29 10:27:45 INFO] [activity:232][39m Action: cleanup-ecs-guardduty-and-experiment-resources
+[36m[2026-01-29 10:27:45 DEBUG] [python:33][39m Activity 'cleanup-ecs-guardduty-and-experiment-resources' loaded from '/home/mmc/devsecops-adversary-llm/automate/chaostk/lib/python3.13/site-packages/chaosaws/ec2/3_5_reactive.py'
+[36m[2026-01-29 10:30:19 DEBUG] [__init__:472][39m No controls to apply on 'activity'
+[36m[2026-01-29 10:30:19 DEBUG] [__init__:472][39m No controls to apply on 'rollback'
+[33m[2026-01-29 10:30:19 WARNING] [run:864][39m Received an exit signal.Terminating now without running the remaining rollbacks.
+[32m[2026-01-29 10:30:19 INFO] [run:598][39m Experiment ended with status: interrupted
+[36m[2026-01-29 10:30:19 DEBUG] [__init__:472][39m No controls to apply on 'experiment'
+[36m[2026-01-29 10:30:19 DEBUG] [__init__:106][39m Cleaning up controls
+[36m[2026-01-29 10:30:19 DEBUG] [caching:42][39m Clearing activities cache

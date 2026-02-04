@@ -1,0 +1,28 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-02-03 11:04:58 INFO] Validating the experiment's syntax
+[32m[2026-02-03 11:04:58 INFO] Experiment looks valid
+[32m[2026-02-03 11:04:58 INFO] Running experiment: SCE Experiment 1.5: Rogue Instance Creation - Preventive Probe
+[32m[2026-02-03 11:04:58 INFO] Steady-state strategy: default
+[32m[2026-02-03 11:04:58 INFO] Rollbacks strategy: default
+[32m[2026-02-03 11:04:58 INFO] Steady state hypothesis: Preventive controls block unauthorized EC2 instance creation with ECS configuration
+[32m[2026-02-03 11:04:58 INFO] Probe: Verify preventive control blocked rogue instance creation
+2026-02-03 11:04:58,945 - INFO - Verifying hypothesis: Preventive control blocked rogue instance creation
+2026-02-03 11:04:58,945 - ERROR - HYPOTHESIS FAILED: Attack was NOT blocked by preventive controls
+2026-02-03 11:04:58,945 - ERROR - Block reason: Unknown
+[31m[2026-02-03 11:04:58 CRITICAL] Steady state probe 'Verify preventive control blocked rogue instance creation' is not in the given tolerance so failing this experiment
+[32m[2026-02-03 11:04:58 INFO] Let's rollback...
+[32m[2026-02-03 11:04:58 INFO] Rollback: Delete CloudFormation stack and cleanup all experiment resources
+[32m[2026-02-03 11:04:58 INFO] Action: Delete CloudFormation stack and cleanup all experiment resources
+2026-02-03 11:04:58,945 - INFO - Starting rollback for stack: sce-experiment-1770134698
+2026-02-03 11:04:58,958 - INFO - Found credentials in shared credentials file: ~/.aws/credentials
+2026-02-03 11:04:59,981 - WARNING - Error terminating instances: An error occurred (UnauthorizedOperation) when calling the DescribeInstances operation: You are not authorized to perform this operation. User: arn:aws:iam::941377112071:user/sce-attacker is not authorized to perform: ec2:DescribeInstances because no identity-based policy allows the ec2:DescribeInstances action
+2026-02-03 11:04:59,981 - INFO - Deleting CloudFormation stack: sce-experiment-1770134698
+2026-02-03 11:05:00,496 - ERROR - Error deleting stack: An error occurred (AccessDenied) when calling the DeleteStack operation: User: arn:aws:iam::941377112071:user/sce-attacker is not authorized to perform: cloudformation:DeleteStack on resource: arn:aws:cloudformation:us-east-1:941377112071:stack/sce-experiment-1770134698/* because no identity-based policy allows the cloudformation:DeleteStack action
+2026-02-03 11:05:00,496 - INFO - Rollback complete
+[32m[2026-02-03 11:05:00 INFO] Experiment ended with status: completed
+
+
+RETURN CODE: 0

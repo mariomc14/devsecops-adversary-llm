@@ -1,0 +1,60 @@
+{
+    "title": "SCE Experiment 1.5: Rogue Instance Creation - Preventive Probe",
+    "description": "This Security Chaos Engineering experiment validates that preventive controls (IAM policies with explicit Deny statements) successfully block unauthorized EC2 instance creation attempts. The experiment simulates an attacker attempting to create a rogue EC2 instance with ECS configuration to join a target cluster. The preventive controls should deny the iam:PassRole action to ECS instance profiles and restrict RunInstances to approved AMIs only.",
+    "tags": [
+        "sce",
+        "preventive",
+        "ec2",
+        "ecs",
+        "privilege-escalation",
+        "iam",
+        "military-supply-chain",
+        "T1578.002"
+    ],
+    "steady-state-hypothesis": {
+        "title": "Preventive controls block unauthorized EC2 instance creation with ECS configuration",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "Verify preventive control blocked rogue instance creation",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.1_5_sce_experiment__rogue_instance_creation_preventive",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "Deploy experiment infrastructure with preventive controls",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_5_sce_experiment__rogue_instance_creation_preventive",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "Execute rogue EC2 instance creation attack",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_5_sce_experiment__rogue_instance_creation_preventive",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "Delete CloudFormation stack and cleanup all experiment resources",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_5_sce_experiment__rogue_instance_creation_preventive",
+                "func": "rollback"
+            }
+        }
+    ]
+}

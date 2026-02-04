@@ -1,34 +1,30 @@
 {
   "chaoslib-version": "1.44.0",
-  "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.41",
-  "node": "PC-INF-MAMA",
+  "platform": "Linux-5.15.0-139-generic-x86_64-with-glibc2.29",
+  "node": "sce-user",
   "experiment": {
-    "title": "SCE 3.5 Reactive Probe - Credential Revocation on GuardDuty Detection",
-    "description": "Security Chaos Engineering experiment validating that IAM credentials are automatically revoked when GuardDuty detects credential exfiltration. This simulates Attack Steps 1.4 (Create EC2 Instance with ECS Configuration), 2.3 (Configure User Data for ECS Cluster Registration), and 3.4 (Access Containers & Steal Task Role Credentials). The reactive control should detect credential use from external IP via GuardDuty and revoke the credentials within 10 minutes by attaching a deny-all inline policy to the compromised role.",
+    "title": "SCE Experiment 1.5: Rogue Instance Creation - Preventive Probe",
+    "description": "This Security Chaos Engineering experiment validates that preventive controls (IAM policies with explicit Deny statements) successfully block unauthorized EC2 instance creation attempts. The experiment simulates an attacker attempting to create a rogue EC2 instance with ECS configuration to join a target cluster. The preventive controls should deny the iam:PassRole action to ECS instance profiles and restrict RunInstances to approved AMIs only.",
     "tags": [
       "sce",
-      "reactive",
-      "ecs",
+      "preventive",
       "ec2",
-      "guardduty",
+      "ecs",
+      "privilege-escalation",
       "iam",
-      "credential-revocation",
-      "attack-1.4",
-      "attack-2.3",
-      "attack-3.4",
       "military-supply-chain",
-      "ecs-privilege-escalation"
+      "T1578.002"
     ],
     "steady-state-hypothesis": {
-      "title": "Reactive control revokes stolen ECS task role credentials within 10 minutes of GuardDuty detection",
+      "title": "Preventive controls block unauthorized EC2 instance creation with ECS configuration",
       "probes": [
         {
           "type": "probe",
-          "name": "verify-credential-revocation-on-guardduty-finding",
+          "name": "Verify preventive control blocked rogue instance creation",
           "tolerance": true,
           "provider": {
             "type": "python",
-            "module": "chaosaws.ec2.3_5_reactive",
+            "module": "chaosaws.ec2.1_5_sce_experiment__rogue_instance_creation_preventive",
             "func": "hypothesis_verification"
           }
         }
@@ -37,129 +33,85 @@
     "method": [
       {
         "type": "action",
-        "name": "deploy-ecs-cluster-guardduty-and-revocation-infrastructure",
+        "name": "Deploy experiment infrastructure with preventive controls",
         "provider": {
           "type": "python",
-          "module": "chaosaws.ec2.3_5_reactive",
+          "module": "chaosaws.ec2.1_5_sce_experiment__rogue_instance_creation_preventive",
           "func": "steady_state"
-        },
-        "pauses": {
-          "after": 15
         }
       },
       {
         "type": "action",
-        "name": "execute-credential-theft-and-simulate-external-use",
+        "name": "Execute rogue EC2 instance creation attack",
         "provider": {
           "type": "python",
-          "module": "chaosaws.ec2.3_5_reactive",
+          "module": "chaosaws.ec2.1_5_sce_experiment__rogue_instance_creation_preventive",
           "func": "attack"
-        },
-        "pauses": {
-          "after": 10
         }
       }
     ],
     "rollbacks": [
       {
         "type": "action",
-        "name": "cleanup-ecs-guardduty-and-experiment-resources",
+        "name": "Delete CloudFormation stack and cleanup all experiment resources",
         "provider": {
           "type": "python",
-          "module": "chaosaws.ec2.3_5_reactive",
+          "module": "chaosaws.ec2.1_5_sce_experiment__rogue_instance_creation_preventive",
           "func": "rollback"
         }
       }
     ],
     "dry": null
   },
-  "start": "2026-01-29T09:17:28.088564+00:00",
-  "status": "interrupted",
+  "start": "2026-02-03T16:04:58.943522+00:00",
+  "status": "completed",
   "deviated": false,
   "steady_states": {
-    "before": null,
-    "after": {
-      "steady_state_met": true,
+    "before": {
+      "steady_state_met": false,
       "probes": [
         {
           "activity": {
             "type": "probe",
-            "name": "verify-credential-revocation-on-guardduty-finding",
+            "name": "Verify preventive control blocked rogue instance creation",
             "tolerance": true,
             "provider": {
               "type": "python",
-              "module": "chaosaws.ec2.3_5_reactive",
+              "module": "chaosaws.ec2.1_5_sce_experiment__rogue_instance_creation_preventive",
               "func": "hypothesis_verification"
             }
           },
-          "output": true,
-          "start": "2026-01-29T09:27:43.609781+00:00",
+          "output": false,
+          "start": "2026-02-03T16:04:58.944852+00:00",
           "status": "succeeded",
-          "end": "2026-01-29T09:27:45.263834+00:00",
-          "duration": 1.654053,
-          "tolerance_met": true
+          "end": "2026-02-03T16:04:58.945299+00:00",
+          "duration": 0.000447,
+          "tolerance_met": false
         }
       ]
     },
+    "after": null,
     "during": []
   },
-  "run": [
-    {
-      "activity": {
-        "type": "action",
-        "name": "deploy-ecs-cluster-guardduty-and-revocation-infrastructure",
-        "provider": {
-          "type": "python",
-          "module": "chaosaws.ec2.3_5_reactive",
-          "func": "steady_state"
-        },
-        "pauses": {
-          "after": 15
-        }
-      },
-      "output": true,
-      "start": "2026-01-29T09:17:28.089650+00:00",
-      "status": "succeeded",
-      "end": "2026-01-29T09:20:42.940413+00:00",
-      "duration": 194.850763
-    },
-    {
-      "activity": {
-        "type": "action",
-        "name": "execute-credential-theft-and-simulate-external-use",
-        "provider": {
-          "type": "python",
-          "module": "chaosaws.ec2.3_5_reactive",
-          "func": "attack"
-        },
-        "pauses": {
-          "after": 10
-        }
-      },
-      "output": true,
-      "start": "2026-01-29T09:20:57.941100+00:00",
-      "status": "succeeded",
-      "end": "2026-01-29T09:27:33.599781+00:00",
-      "duration": 395.658681
-    }
-  ],
+  "run": [],
   "rollbacks": [
     {
       "activity": {
         "type": "action",
-        "name": "cleanup-ecs-guardduty-and-experiment-resources",
+        "name": "Delete CloudFormation stack and cleanup all experiment resources",
         "provider": {
           "type": "python",
-          "module": "chaosaws.ec2.3_5_reactive",
+          "module": "chaosaws.ec2.1_5_sce_experiment__rogue_instance_creation_preventive",
           "func": "rollback"
         }
       },
-      "output": null,
-      "start": "2026-01-29T09:27:45.264496+00:00",
-      "end": "2026-01-29T09:30:19.268075+00:00",
-      "duration": 154.003579
+      "output": true,
+      "start": "2026-02-03T16:04:58.945783+00:00",
+      "status": "succeeded",
+      "end": "2026-02-03T16:05:00.500289+00:00",
+      "duration": 1.554506
     }
   ],
-  "end": "2026-01-29T09:30:19.282623+00:00",
-  "duration": 771.1980268955231
+  "end": "2026-02-03T16:05:00.500419+00:00",
+  "duration": 1.5665082931518555
 }

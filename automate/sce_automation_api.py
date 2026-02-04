@@ -188,14 +188,60 @@ class SCEAutomationAPI:
     {structure_dot}
     """
 
-    def _build_sce_experiment_prompt(self, sce_node : str, probe_type : str, attack_nodes : str, template_json: str) -> str:
+    def _build_sce_experiment_prompt(self, sce_node : str, probe_type : str, attack_nodes : str, template_json: str, previous_log: Optional[str] = None, previous_metrics_report: Optional[str] = None, previous_post_metrics_report: Optional[str] = None) -> str:
         """Build SCE experiment generation prompt"""
+        
+        # Build additional context from previous log if available
+        log_context = ""
+        if previous_log:
+            log_context = f"""
+PREVIOUS EXECUTION LOG:
+The following log contains information from a previous execution of this experiment. Use this information to:
+- Fix any errors or issues that occurred
+- Improve the implementation based on lessons learned
+- Adjust timeouts, retries, or resource configurations
+- Enhance error handling and edge cases
+
+{previous_log}
+
+"""
+        
+        # Build additional context from previous metrics report if available
+        metrics_context = ""
+        if previous_metrics_report:
+            metrics_context = f"""
+PREVIOUS PRE-EXECUTION METRICS REPORT:
+The following report contains a quality evaluation from a previous iteration of this experiment. Use this information to:
+- Address any quality issues identified (low f1, f2, or f3 scores)
+- Improve correspondence between ADT specification and implementation
+- Enhance code quality, documentation, and error handling
+- Ensure the implementation fully matches the defensive intent
+
+{previous_metrics_report}
+
+"""
+        
+        # Build additional context from previous post-execution metrics report if available
+        post_metrics_context = ""
+        if previous_post_metrics_report:
+            post_metrics_context = f"""
+PREVIOUS POST-EXECUTION METRICS REPORT:
+The following report contains a post-execution quality evaluation from a previous run of this experiment. Use this information to:
+- Improve ACTION effectiveness and observability (if f1 score was low)
+- Enhance PROBE verification and evidence collection (if f2 score was low)
+- Ensure both ACTION and PROBE produce verifiable results
+- Add better logging, metrics, and observability to the experiment
+
+{previous_post_metrics_report}
+
+"""
+        
         return f"""Input:
 
 - SCE Experiment node: {sce_node}
 - Type of probe: {probe_type}
 - Attack Node/s: {attack_nodes}
-
+{log_context}{metrics_context}{post_metrics_context}
 Goal: Generate an end-to-end Security Chaos Engineering unit test that validates exactly this one probe, by.
 - Translating each associated attack step into safe, scoped AWS actions against only the resources created by the experiment
 - Implementing the probe's security intent (Preventive / Detective / Reactive as an AWS-native control in the experiment)
@@ -240,6 +286,355 @@ The script is self-contained: no CLI arguments, no external config files, no pre
 @template.json (update the placeholders):
 {template_json}
 """
+    
+    def _build_metrics_prompt(self, dot_content: str, json_content: str, py_content: str, sce_node: str, probe_type: str, attack_nodes: str, threshold: int = 80) -> str:
+        """Build pre-execution quality evaluation prompt"""
+        return f"""# PRE-EXECUTION QUALITY EVALUATION
+
+You are tasked with evaluating the quality of a Security Chaos Engineering (SCE) experiment BEFORE execution.
+
+## EXPERIMENT CONTEXT
+- **SCE Node**: {sce_node}
+- **Probe Type**: {probe_type}
+- **Attack Nodes**: {attack_nodes}
+
+## INPUT ARTIFACTS
+
+### 1. ATTACK-DEFENSE TREE (ADT) - DOT FILE:
+```dot
+{dot_content}
+```
+
+### 2. EXPERIMENT MANIFEST - JSON FILE:
+```json
+{json_content}
+```
+
+### 3. EXPERIMENT IMPLEMENTATION - PYTHON FILE:
+```python
+{py_content}
+```
+
+## EVALUATION TASK
+
+Evaluate the correspondence between the ADT specification and the SCE experiment implementation using three quality factors:
+
+### **Factor 1 (f1): ACTION ↔ Attack Correspondence**
+Evaluate the degree of correspondence between the attack node defined in the ADT and the implementation of the ACTION in the SCE experiment.
+
+**Scoring Criteria:**
+- **0 points**: No correspondence between ADT attack node and implemented ACTION
+- **50 points**: Partial alignment - same tactic but different technique
+- **100 points**: Full correspondence with:
+  - Same tactic AND technique as ADT
+  - High implementation quality: well-defined methods, arguments, inputs/outputs
+  - Proper documentation
+  - Error handling implemented
+
+**Your analysis for f1:**
+1. Identify the attack node(s) in the ADT
+2. Identify the ACTION implementation in the Python code (typically in the `attack()` function)
+3. Compare tactic and technique alignment
+4. Assess implementation quality (documentation, error handling, code structure)
+5. Assign score: 0, 50, or 100
+
+### **Factor 2 (f2): Defense ↔ Defense Correspondence**
+Evaluate the correspondence between the defense node defined in the ADT and its implementation in the SCE experiment.
+
+**Scoring Criteria:**
+- **0 points**: No correspondence between ADT defense node and implemented defense
+- **50 points**: Corresponds to the defense node in ADT
+- **100 points**: Full correspondence plus high-quality code:
+  - Matches ADT defense specification
+  - Well-documented (method purpose, arguments, I/O clearly explained)
+  - Validated error handling
+  - Robust implementation
+
+**Your analysis for f2:**
+1. Identify the defense/safeguard node(s) in the ADT
+2. Identify the defense implementation in the Python code (typically in CloudFormation template or steady_state())
+3. Verify correspondence with ADT specification
+4. Assess code quality (documentation, error handling)
+5. Assign score: 0, 50, or 100
+
+### **Factor 3 (f3): PROBE ↔ Defensive Intent Correspondence**
+Measure whether the purpose of the defense node in the ADT is correctly reflected in the implementation of the PROBE in the SCE experiment.
+
+**Scoring Criteria:**
+- **0 points**: PROBE does not correspond to defensive intent from ADT
+- **100 points**: PROBE fully corresponds to defensive intent - what the PROBE observes matches exactly what the defense should achieve
+
+**Your analysis for f3:**
+1. Identify the defensive intent/purpose in the ADT (what the defense is supposed to do)
+2. Identify the PROBE implementation (typically in `hypothesis_verification()` function)
+3. Verify that the PROBE correctly validates the defensive intent
+4. Assign score: 0 or 100
+
+## COMPUTATION
+
+Calculate the pre-execution quality score:
+
+**Q_pre = 0.40 × f1 + 0.30 × f2 + 0.30 × f3**
+
+Where:
+- f1, f2 ∈ {{0, 50, 100}}
+- f3 ∈ {{0, 100}}
+- 0 ≤ Q_pre ≤ 100
+
+**Execution Threshold**: τ = {threshold}
+
+**Decision Rule**:
+- If Q_pre < {threshold} → **STOP** - Experiment quality insufficient for execution
+- If Q_pre ≥ {threshold} → **AUTHORIZE** - Experiment approved for execution
+
+## OUTPUT FORMAT
+
+Produce a detailed evaluation report in the following structure:
+
+```markdown
+# PRE-EXECUTION QUALITY EVALUATION REPORT
+
+## Experiment Information
+- **SCE Node**: {sce_node}
+- **Probe Type**: {probe_type}
+- **Attack Nodes**: {attack_nodes}
+- **Evaluation Date**: [Current timestamp]
+
+## Factor 1: ACTION ↔ Attack Correspondence
+**Score**: [0 | 50 | 100]
+
+**Analysis**:
+- Attack node in ADT: [description]
+- ACTION implementation: [description]
+- Tactic alignment: [Yes/No/Partial]
+- Technique alignment: [Yes/No]
+- Implementation quality: [assessment]
+
+**Justification**: [Detailed explanation of why this score was assigned]
+
+---
+
+## Factor 2: Defense ↔ Defense Correspondence
+**Score**: [0 | 50 | 100]
+
+**Analysis**:
+- Defense node in ADT: [description]
+- Defense implementation: [description]
+- Correspondence: [Yes/No/Partial]
+- Code quality: [assessment]
+- Documentation: [assessment]
+- Error handling: [assessment]
+
+**Justification**: [Detailed explanation of why this score was assigned]
+
+---
+
+## Factor 3: PROBE ↔ Defensive Intent Correspondence
+**Score**: [0 | 100]
+
+**Analysis**:
+- Defensive intent in ADT: [description]
+- PROBE implementation: [description]
+- Intent correspondence: [Yes/No]
+
+**Justification**: [Detailed explanation of why this score was assigned]
+
+---
+
+## FINAL SCORE CALCULATION
+
+**Q_pre = 0.40 × f1 + 0.30 × f2 + 0.30 × f3**
+**Q_pre = 0.40 × [f1] + 0.30 × [f2] + 0.30 × [f3]**
+**Q_pre = [calculated value]**
+
+**Threshold**: {threshold}
+**Result**: Q_pre [>=|<] {threshold}
+
+## DECISION
+
+**[AUTHORIZE EXECUTION | STOP - QUALITY INSUFFICIENT]**
+
+[If STOP, provide specific recommendations for improvement]
+
+---
+
+## Detailed Observations
+
+[Any additional observations, warnings, or recommendations]
+
+## Recommendations
+
+[Specific suggestions to improve scores if Q_pre < 80]
+```
+
+**IMPORTANT**: Be thorough and precise in your analysis. Examine the actual code, the ADT structure, and the JSON manifest carefully. Provide specific examples and quotes from the artifacts to justify your scores."""
+
+    def _build_metrics_post_prompt(self, output_log: str, sce_node: str, probe_type: str, attack_nodes: str, threshold_post: int = 100) -> str:
+        """Build post-execution quality evaluation prompt"""
+        return f"""# POST-EXECUTION QUALITY EVALUATION
+
+You are an **expert in experimental cybersecurity**, specialized in **attack-defense trees** and in the evaluation of **Security Chaos Engineering (SCE)** experiments.
+
+Your task is to rigorously evaluate the **post-execution quality** of an SCE experiment after the execution of the **ACTION** and the **PROBE**, taking into account the execution output log.
+
+## EXPERIMENT CONTEXT
+- **SCE Node**: {sce_node}
+- **Probe Type**: {probe_type}
+- **Attack Nodes**: {attack_nodes}
+
+## EXECUTION OUTPUT LOG
+
+```
+{output_log}
+```
+
+## EVALUATION TASK
+
+The post-execution metrics focus on verifying the **correctness, observability, and reliability** of the results produced during the experiment. These metrics evaluate both the capability of the ACTION to execute the attack and the capability of the PROBE to verify and report the consequences of that attack.
+
+Evaluate the following factors **after the execution of the experiment**:
+
+---
+
+### **Factor 1 (f1): Effectiveness of the ACTION in Executing the Attack**
+
+Evaluate whether the **ACTION** produced a result that clearly indicates that the attack was executed and whether such evidence is **verifiable** within the context of the SCE experiment.
+
+**Scoring Criteria:**
+- **0 points**: The ACTION did not return a result indicating that the attack was executed
+- **100 points**: The ACTION returned a verifiable result with evidence of attack execution (success or failure)
+
+**Your analysis for f1:**
+1. Review the execution output log
+2. Identify evidence that the ACTION was executed (e.g., AWS API calls, resource modifications, command outputs)
+3. Determine if the attack execution can be verified from the log
+4. Look for clear indicators of success or failure
+5. Assign score: 0 or 100
+
+**Justification**: Provide specific log excerpts that demonstrate attack execution
+
+---
+
+### **Factor 2 (f2): PROBE Capability to Verify and Report the Attack Outcome**
+
+Evaluate the capacity of the **PROBE** to verify and report the outcome of the attack. This includes determining whether the PROBE produced **reliable and verifiable evidence** that reflects the system's defensive behavior.
+
+Examples of evidence include (but are not limited to):
+- Logs
+- Alerts
+- Metrics
+- Other measurable indicators
+
+**Scoring Criteria:**
+- **0 points**: The PROBE did not return a verifiable result
+- **100 points**: The PROBE returned a verifiable result with evidence of defense behavior
+
+**Your analysis for f2:**
+1. Review the execution output log
+2. Identify PROBE verification results (hypothesis validation, defensive mechanism checks)
+3. Look for evidence of defense behavior (blocked attack, detected attack, alert triggered, etc.)
+4. Determine if the PROBE produced reliable and verifiable evidence
+5. Assign score: 0 or 100
+
+**Justification**: Provide specific log excerpts showing PROBE verification and defense evidence
+
+---
+
+## POST-EXECUTION QUALITY METRIC CALCULATION
+
+Calculate the post-execution quality score:
+
+**Q_post = 0.50 × f1 + 0.50 × f2**
+
+Where:
+- f1, f2 ∈ {{0, 100}}
+- 0 ≤ Q_post ≤ 100
+
+**Execution Validation Threshold**: τ_post = {threshold_post}
+
+**Decision Rule**:
+- If Q_post < {threshold_post} → **INVALID** - Experiment results not reliable
+- If Q_post ≥ {threshold_post} → **VALID** - Experiment results are reliable
+
+---
+
+## OUTPUT FORMAT
+
+Produce a detailed evaluation report in the following structure:
+
+```markdown
+# POST-EXECUTION QUALITY EVALUATION REPORT
+
+## Experiment Information
+- **SCE Node**: {sce_node}
+- **Probe Type**: {probe_type}
+- **Attack Nodes**: {attack_nodes}
+- **Evaluation Date**: [Current timestamp]
+
+## Factor 1: Effectiveness of the ACTION in Executing the Attack
+**Score**: [0 | 100]
+
+**Analysis**:
+- Evidence of ACTION execution: [description]
+- Attack indicators found: [list specific log entries]
+- Verification status: [Verifiable | Not Verifiable]
+
+**Log Excerpts**:
+```
+[Relevant excerpts from output log showing ACTION execution]
+```
+
+**Justification**: [Detailed explanation of why this score was assigned]
+
+---
+
+## Factor 2: PROBE Capability to Verify and Report the Attack Outcome
+**Score**: [0 | 100]
+
+**Analysis**:
+- PROBE verification results: [description]
+- Defense behavior evidence: [description]
+- Observable indicators: [logs, alerts, metrics found]
+- Reliability assessment: [assessment]
+
+**Log Excerpts**:
+```
+[Relevant excerpts from output log showing PROBE verification]
+```
+
+**Justification**: [Detailed explanation of why this score was assigned]
+
+---
+
+## FINAL SCORE CALCULATION
+
+**Q_post = 0.50 × f1 + 0.50 × f2**
+**Q_post = 0.50 × [f1] + 0.50 × [f2]**
+**Q_post = [calculated value]**
+
+**Threshold**: {threshold_post}
+**Result**: Q_post [>=|<] {threshold_post}
+
+## DECISION
+
+**[VALID EXECUTION | INVALID EXECUTION]**
+
+[If INVALID, explain what evidence was missing or insufficient]
+
+---
+
+## Detailed Observations
+
+[Any additional observations about the experiment execution]
+
+## Recommendations
+
+[Suggestions for improving experiment execution or observability if Q_post < threshold]
+```
+
+**IMPORTANT**: Be thorough and precise. Examine the actual log output carefully. Quote specific lines from the log to support your scores. If evidence is ambiguous or missing, explain what would be needed for a higher score.
+"""
+
     def _save_sce_experiment_output(self, response_text: str, sce_node : str, probe_type : str) -> bool:
         """Extract and save Python script and JSON manifest from response"""
         try:
@@ -253,10 +648,28 @@ The script is self-contained: no CLI arguments, no external config files, no pre
                 python_end = response_text.find("```", python_start)
                 if python_end != -1:
                     python_content = response_text[python_start:python_end].strip()
-                    python_filepath = os.path.join(self.workspace_path, f"{safe_sce_node}_{safe_probe_type}.py")
+                    python_filename = f"{safe_sce_node}_{safe_probe_type}.py"
+                    python_filepath = os.path.join(self.workspace_path, python_filename)
+                    
+                    # Save to workspace
                     with open(python_filepath, 'w', encoding='utf-8') as f:
                         f.write(python_content)
                     print(f"✅ Python script saved to: {python_filepath}")
+                    
+                    # Copy to chaosaws.ec2 directory
+                    try:
+                        import chaosaws.ec2
+                        chaosaws_path = chaosaws.ec2.__path__[0]
+                        chaosaws_filepath = os.path.join(chaosaws_path, python_filename)
+                        
+                        with open(chaosaws_filepath, 'w', encoding='utf-8') as f:
+                            f.write(python_content)
+                        print(f"✅ Python script copied to chaosaws: {chaosaws_filepath}")
+                        
+                    except ImportError:
+                        print(f"⚠️ chaosaws.ec2 not found, skipping copy to chaosaws directory")
+                    except Exception as e:
+                        print(f"⚠️ Could not copy to chaosaws directory: {e}")
             
             # Extract JSON manifest
             json_start = response_text.find("```json")
@@ -275,6 +688,163 @@ The script is self-contained: no CLI arguments, no external config files, no pre
         except Exception as e:
             print(f"❌ Error saving SCE experiment files: {e}")
             return False   
+
+    def _save_metrics_report(self, response_text: str, sce_node: str, probe_type: str) -> bool:
+        """Extract and save metrics evaluation report from response"""
+        try:
+            safe_sce_node = self._sanitize_name(sce_node)
+            safe_probe_type = self._sanitize_name(probe_type)
+            
+            # Try to find markdown code block first
+            report_start = response_text.find("```markdown")
+            if report_start != -1:
+                report_start += 11  # Skip ```markdown
+                report_end = response_text.find("```", report_start)
+                if report_end != -1:
+                    report_content = response_text[report_start:report_end].strip()
+                else:
+                    # If no closing ```, take everything after ```markdown
+                    report_content = response_text[report_start:].strip()
+            else:
+                # If no markdown block, look for the report starting with "# PRE-EXECUTION"
+                report_start = response_text.find("# PRE-EXECUTION QUALITY EVALUATION REPORT")
+                if report_start != -1:
+                    report_content = response_text[report_start:].strip()
+                else:
+                    # Use the entire response as the report
+                    report_content = response_text.strip()
+            
+            # Save the report with new naming convention
+            report_filename = f"pre_execution_report_{safe_sce_node}_{safe_probe_type}.md"
+            report_filepath = os.path.join(self.workspace_path, report_filename)
+            
+            with open(report_filepath, 'w', encoding='utf-8') as f:
+                f.write(report_content)
+            
+            print(f"✅ Pre-execution report saved to: {report_filepath}")
+            
+            # Try to extract Q_pre score and decision
+            # Look for the final calculated value, not the formula coefficients
+            # Pattern matches lines like: "**Q_pre = 85.00**" or "Q_pre = 85.00" or just the final calculated value
+            q_pre_patterns = [
+                r'Q_pre\s*=\s*0\.40\s*×\s*\d+\s*\+\s*0\.30\s*×\s*\d+\s*\+\s*0\.30\s*×\s*\d+\s*=\s*([0-9.]+)',  # Full calculation
+                r'\*\*Q_pre\s*=\s*([0-9.]+)\*\*',  # Bold final value
+                r'Q_pre\s*=\s*\*\*([0-9.]+)\*\*',  # Value in bold
+                r'calculated value\]:\s*\*\*([0-9.]+)\*\*',  # [calculated value]: **XX**
+                r'Q_pre.*?=.*?([0-9]{2,3}\.[0-9]{2})\s*(?:\n|$|<|>|\*)',  # General pattern looking for 2-3 digit decimal
+            ]
+            
+            q_pre_score = None
+            for pattern in q_pre_patterns:
+                q_pre_match = re.search(pattern, report_content, re.MULTILINE | re.DOTALL)
+                if q_pre_match:
+                    try:
+                        extracted_value = float(q_pre_match.group(1))
+                        # Validate it's a reasonable score (0-100)
+                        if 0 <= extracted_value <= 100 and extracted_value != 0.40 and extracted_value != 0.30:
+                            q_pre_score = extracted_value
+                            break
+                    except (ValueError, IndexError):
+                        continue
+            
+            if q_pre_score is not None:
+                print(f"📊 Quality Score (Q_pre): {q_pre_score:.2f}/100")
+            else:
+                print("⚠️ Could not extract Q_pre score from report")
+            
+            # Extract decision
+            decision_match = re.search(r'\*\*\[(AUTHORIZE EXECUTION|STOP[^\]]*)\]\*\*', report_content)
+            
+            if decision_match:
+                decision = decision_match.group(1)
+                if "AUTHORIZE" in decision:
+                    print(f"✅ Decision: {decision}")
+                else:
+                    print(f"⚠️ Decision: {decision}")
+                    print("   Experiment quality below threshold. Review report for recommendations.")
+            
+            return True, q_pre_score  # Return both success status and score
+            
+        except Exception as e:
+            print(f"❌ Error saving metrics report: {e}")
+            return False, None
+
+    def _save_metrics_post_report(self, response_text: str, sce_node: str, probe_type: str) -> tuple:
+        """Extract and save post-execution metrics evaluation report from response"""
+        try:
+            safe_sce_node = self._sanitize_name(sce_node)
+            safe_probe_type = self._sanitize_name(probe_type)
+            
+            # Try to find markdown code block first
+            report_start = response_text.find("```markdown")
+            if report_start != -1:
+                report_start += 11  # Skip ```markdown
+                report_end = response_text.find("```", report_start)
+                if report_end != -1:
+                    report_content = response_text[report_start:report_end].strip()
+                else:
+                    report_content = response_text[report_start:].strip()
+            else:
+                # Look for the report starting with "# POST-EXECUTION"
+                report_start = response_text.find("# POST-EXECUTION QUALITY EVALUATION REPORT")
+                if report_start != -1:
+                    report_content = response_text[report_start:].strip()
+                else:
+                    report_content = response_text.strip()
+            
+            # Save the report
+            report_filename = f"post_execution_report_{safe_sce_node}_{safe_probe_type}.md"
+            report_filepath = os.path.join(self.workspace_path, report_filename)
+            
+            with open(report_filepath, 'w', encoding='utf-8') as f:
+                f.write(report_content)
+            
+            print(f"✅ Post-execution report saved to: {report_filepath}")
+            
+            # Try to extract Q_post score and decision
+            # Look for patterns specific to Q_post
+            q_post_patterns = [
+                r'Q_post\s*=\s*0\.50\s*×\s*\d+\s*\+\s*0\.50\s*×\s*\d+\s*=\s*([0-9.]+)',  # Full calculation
+                r'\*\*Q_post\s*=\s*([0-9.]+)\*\*',  # Bold final value
+                r'Q_post\s*=\s*\*\*([0-9.]+)\*\*',  # Value in bold
+                r'calculated value\]:\s*\*\*([0-9.]+)\*\*',  # [calculated value]: **XX**
+                r'Q_post.*?=.*?([0-9]{1,3}\.?[0-9]{0,2})\s*(?:\n|$|<|>|\*)',  # General pattern
+            ]
+            
+            q_post_score = None
+            for pattern in q_post_patterns:
+                q_post_match = re.search(pattern, report_content, re.MULTILINE | re.DOTALL)
+                if q_post_match:
+                    try:
+                        extracted_value = float(q_post_match.group(1))
+                        # Validate it's a reasonable score (0-100)
+                        if 0 <= extracted_value <= 100 and extracted_value != 0.50:
+                            q_post_score = extracted_value
+                            break
+                    except (ValueError, IndexError):
+                        continue
+            
+            if q_post_score is not None:
+                print(f"📊 Post-Execution Quality Score (Q_post): {q_post_score:.2f}/100")
+            else:
+                print("⚠️ Could not extract Q_post score from report")
+            
+            # Extract decision
+            decision_match = re.search(r'\*\*\[(VALID EXECUTION|INVALID EXECUTION)\]\*\*', report_content)
+            
+            if decision_match:
+                decision = decision_match.group(1)
+                if "VALID" in decision and "INVALID" not in decision:
+                    print(f"✅ Decision: {decision}")
+                else:
+                    print(f"⚠️ Decision: {decision}")
+                    print("   Experiment execution results not reliable. Review report for details.")
+            
+            return True, q_post_score
+            
+        except Exception as e:
+            print(f"❌ Error saving post-execution metrics report: {e}")
+            return False, None
 
     def _save_dot_output(self, response_text: str) -> bool:
         """Extract and save DOT content from response"""
@@ -451,6 +1021,33 @@ The script is self-contained: no CLI arguments, no external config files, no pre
 
         # Stage 4: Generate SCE experiments (loop)
         print("\n🧪 Stage 4: Generating SCE experiments...")
+        
+        # Ask for quality thresholds once at the beginning
+        print("\n📊 Enter quality threshold for pre-execution metrics (0-100, default=80):")
+        threshold_input = input("> ").strip()
+        try:
+            quality_threshold = int(threshold_input) if threshold_input else 80
+            if quality_threshold < 0 or quality_threshold > 100:
+                print("⚠️ Invalid threshold. Using default: 80")
+                quality_threshold = 80
+            else:
+                print(f"✅ Pre-execution quality threshold set to: {quality_threshold}")
+        except ValueError:
+            print("⚠️ Invalid input. Using default threshold: 80")
+            quality_threshold = 80
+        
+        print("\n📊 Enter quality threshold for post-execution metrics (0-100, default=100):")
+        threshold_post_input = input("> ").strip()
+        try:
+            quality_threshold_post = int(threshold_post_input) if threshold_post_input else 100
+            if quality_threshold_post < 0 or quality_threshold_post > 100:
+                print("⚠️ Invalid threshold. Using default: 100")
+                quality_threshold_post = 100
+            else:
+                print(f"✅ Post-execution quality threshold set to: {quality_threshold_post}")
+        except ValueError:
+            print("⚠️ Invalid input. Using default threshold: 100")
+            quality_threshold_post = 100
                 
         while True:
             print("\n🧪 Enter SCE Node name:")
@@ -470,7 +1067,66 @@ The script is self-contained: no CLI arguments, no external config files, no pre
                 print("❌ Failed to load template.json")
                 continue
             
-            sce_prompt = self._build_sce_experiment_prompt(sce_node, probe_type, attack_nodes,template_json_content)
+            # Check for existing log file
+            safe_sce_node = self._sanitize_name(sce_node)
+            safe_probe_type = self._sanitize_name(probe_type)
+            log_filename = f"last_report_{safe_sce_node}_{safe_probe_type}.log"
+            log_path = os.path.join(self.workspace_path, log_filename)
+            
+            previous_log = None
+            if os.path.exists(log_path):
+                print(f"\n📝 Found existing execution log: {log_filename}")
+                print("   This log will be used to improve the experiment generation.")
+                try:
+                    with open(log_path, 'r', encoding='utf-8') as f:
+                        previous_log = f.read()
+                    print(f"✅ Loaded previous execution log ({len(previous_log)} characters)")
+                except Exception as e:
+                    print(f"⚠️ Could not read log file: {e}")
+                    previous_log = None
+            else:
+                print(f"\n💡 No previous execution log found ({log_filename})")
+            
+            # Check for existing pre-execution metrics report
+            metrics_report_filename = f"pre_execution_report_{safe_sce_node}_{safe_probe_type}.md"
+            metrics_report_path = os.path.join(self.workspace_path, metrics_report_filename)
+            
+            previous_metrics_report = None
+            if os.path.exists(metrics_report_path):
+                print(f"\n📊 Found existing pre-metrics report: {metrics_report_filename}")
+                print("   This report will be used to improve quality scores.")
+                try:
+                    with open(metrics_report_path, 'r', encoding='utf-8') as f:
+                        previous_metrics_report = f.read()
+                    print(f"✅ Loaded previous metrics report ({len(previous_metrics_report)} characters)")
+                except Exception as e:
+                    print(f"⚠️ Could not read metrics report: {e}")
+                    previous_metrics_report = None
+            else:
+                print(f"💡 No previous pre-metrics report found ({metrics_report_filename})")
+            
+            # Check for existing post-execution metrics report
+            post_metrics_report_filename = f"post_execution_report_{safe_sce_node}_{safe_probe_type}.md"
+            post_metrics_report_path = os.path.join(self.workspace_path, post_metrics_report_filename)
+            
+            previous_post_metrics_report = None
+            if os.path.exists(post_metrics_report_path):
+                print(f"\n📊 Found existing post-metrics report: {post_metrics_report_filename}")
+                print("   This report will be used to improve experiment observability.")
+                try:
+                    with open(post_metrics_report_path, 'r', encoding='utf-8') as f:
+                        previous_post_metrics_report = f.read()
+                    print(f"✅ Loaded previous post-metrics report ({len(previous_post_metrics_report)} characters)")
+                except Exception as e:
+                    print(f"⚠️ Could not read post-metrics report: {e}")
+                    previous_post_metrics_report = None
+            else:
+                print(f"💡 No previous post-metrics report found ({post_metrics_report_filename})")
+            
+            if not previous_log and not previous_metrics_report and not previous_post_metrics_report:
+                print("   Generating experiment from scratch.")
+            
+            sce_prompt = self._build_sce_experiment_prompt(sce_node, probe_type, attack_nodes, template_json_content, previous_log, previous_metrics_report, previous_post_metrics_report)
             
             sce_response = self._call_amazon_q(sce_prompt, use_context=True)
             
@@ -484,9 +1140,167 @@ The script is self-contained: no CLI arguments, no external config files, no pre
                 
             print("✅ SCE experiment generated and saved")
             
+            # Stage 4b: Pre-execution quality evaluation
+            print("\n📊 Evaluating pre-execution quality metrics...")
+            
+            # Load the generated files for evaluation
+            safe_sce_node = self._sanitize_name(sce_node)
+            safe_probe_type = self._sanitize_name(probe_type)
+            
+            # Load DOT file (attack_defense_tree.dot)
+            dot_filepath = os.path.join(self.workspace_path, "attack_defense_tree.dot")
+            dot_content = self._load_file(dot_filepath)
+            if not dot_content:
+                print("⚠️ Could not load DOT file for metrics evaluation")
+                dot_content = "# DOT file not available"
+            
+            # Load JSON file (experiment manifest)
+            json_filepath = os.path.join(self.workspace_path, f"{safe_sce_node}_{safe_probe_type}.json")
+            json_content = self._load_file(json_filepath)
+            if not json_content:
+                print("⚠️ Could not load JSON file for metrics evaluation")
+                json_content = "{}"
+            
+            # Load Python file (experiment implementation)
+            py_filepath = os.path.join(self.workspace_path, f"{safe_sce_node}_{safe_probe_type}.py")
+            py_content = self._load_file(py_filepath)
+            if not py_content:
+                print("⚠️ Could not load Python file for metrics evaluation")
+                py_content = "# Python file not available"
+            
+            # Build metrics evaluation prompt with dynamic threshold
+            metrics_prompt = self._build_metrics_prompt(dot_content, json_content, py_content, sce_node, probe_type, attack_nodes, quality_threshold)
+            
+            # Call LLM for metrics evaluation
+            metrics_response = self._call_amazon_q(metrics_prompt, use_context=False)
+            
+            q_pre_score = None
+            if metrics_response:
+                save_success, q_pre_score = self._save_metrics_report(metrics_response, sce_node, probe_type)
+                if save_success:
+                    print("✅ Pre-execution quality evaluation completed")
+                else:
+                    print("⚠️ Metrics evaluation completed but report save failed")
+            else:
+                print("⚠️ Failed to generate metrics evaluation")
+            
+            # Always ask if user wants to generate another experiment (independent of threshold)
             print("\n🔄 Generate another SCE experiment? (y/n):")
-            if input("> ").lower() != 'y':
+            continue_response = input("> ").strip().lower()
+            
+            if continue_response != 'y':
+                # User doesn't want to generate another experiment
+                # Check if quality threshold was met and ask about execution
+                if q_pre_score is not None and q_pre_score >= quality_threshold:
+                    print(f"\n✅ Quality threshold met (Q_pre={q_pre_score:.2f} >= {quality_threshold})")
+                    print(f"🚀 Execute this experiment now? (y/n):")
+                    execute_response = input("> ").strip().lower()
+                    
+                    if execute_response == 'y':
+                        json_filename = f"{safe_sce_node}_{safe_probe_type}.json"
+                        json_filepath = os.path.join(self.workspace_path, json_filename)
+                        log_filename = f"output_{safe_sce_node}_{safe_probe_type}.log"
+                        log_filepath = os.path.join(self.workspace_path, log_filename)
+                        
+                        print(f"\n▶️ Executing: chaos run {json_filename}")
+                        print(f"📝 Output will be saved to: {log_filename}")
+                        print("=" * 60)
+                        
+                        execution_successful = False
+                        try:
+                            import subprocess
+                            result = subprocess.run(
+                                ['chaos', 'run', json_filepath],
+                                cwd=self.workspace_path,
+                                capture_output=True,
+                                text=True
+                            )
+                            
+                            # Save output to log file
+                            combined_output = f"STDOUT:\n{result.stdout}\n\nSTDERR:\n{result.stderr}\n\nRETURN CODE: {result.returncode}"
+                            with open(log_filepath, 'w', encoding='utf-8') as f:
+                                f.write(combined_output)
+                            
+                            print(result.stdout)
+                            if result.stderr:
+                                print("Errors/Warnings:")
+                                print(result.stderr)
+                            
+                            if result.returncode == 0:
+                                print("=" * 60)
+                                print("✅ Experiment execution completed successfully")
+                                print(f"✅ Execution log saved to: {log_filepath}")
+                                execution_successful = True
+                            else:
+                                print("=" * 60)
+                                print(f"⚠️ Experiment execution finished with return code: {result.returncode}")
+                                print(f"✅ Execution log saved to: {log_filepath}")
+                                execution_successful = True  # Still evaluate even if return code != 0
+                                
+                        except FileNotFoundError:
+                            print("❌ 'chaos' command not found. Please install chaostoolkit:")
+                            print("   pip install chaostoolkit chaostoolkit-aws")
+                        except Exception as e:
+                            print(f"❌ Error executing experiment: {e}")
+                        
+                        # Post-execution quality evaluation
+                        if execution_successful and os.path.exists(log_filepath):
+                            print("\n📊 Evaluating post-execution quality metrics...")
+                            
+                            # Load the execution log
+                            output_log = self._load_file(log_filepath)
+                            if output_log:
+                                # Build post-execution metrics prompt
+                                metrics_post_prompt = self._build_metrics_post_prompt(
+                                    output_log, sce_node, probe_type, attack_nodes, quality_threshold_post
+                                )
+                                
+                                # Call LLM for post-execution evaluation
+                                metrics_post_response = self._call_amazon_q(metrics_post_prompt, use_context=False)
+                                
+                                if metrics_post_response:
+                                    save_success, q_post_score = self._save_metrics_post_report(
+                                        metrics_post_response, sce_node, probe_type
+                                    )
+                                    if save_success:
+                                        print("✅ Post-execution quality evaluation completed")
+                                    else:
+                                        print("⚠️ Post-execution evaluation completed but report save failed")
+                                else:
+                                    print("⚠️ Failed to generate post-execution metrics evaluation")
+                            else:
+                                print("⚠️ Could not load execution log for post-evaluation")
+                    else:
+                        print("💡 Experiment not executed. You can run it manually with:")
+                        print(f"   chaos run {safe_sce_node}_{safe_probe_type}.json > output_{safe_sce_node}_{safe_probe_type}.log 2>&1")
+                
+                elif q_pre_score is not None and q_pre_score < quality_threshold:
+                    print(f"\n⚠️ Quality threshold not met (Q_pre={q_pre_score:.2f} < {quality_threshold})")
+                    print("   Review the pre-execution report for recommendations before executing.")
+                else:
+                    print("\n💡 No quality score available for execution decision.")
+                
                 break
+            
+            # If continuing, ask if they want to include the current reports
+            print("\n📊 Include the pre-execution report from this experiment in the next generation? (y/n):")
+            include_pre_report = input("> ").strip().lower()
+            
+            if include_pre_report == 'y':
+                print("✅ The pre-execution report will be available for the next experiment generation.")
+            else:
+                print("💡 The next experiment will be generated without the pre-execution report.")
+            
+            # Also ask about post-execution report if it exists
+            post_report_exists = os.path.exists(os.path.join(self.workspace_path, f"post_execution_report_{safe_sce_node}_{safe_probe_type}.md"))
+            if post_report_exists:
+                print("\n📊 Include the post-execution report from this experiment in the next generation? (y/n):")
+                include_post_report = input("> ").strip().lower()
+                
+                if include_post_report == 'y':
+                    print("✅ The post-execution report will be available for the next experiment generation.")
+                else:
+                    print("💡 The next experiment will be generated without the post-execution report.")
 
         print("🎉 All SCE experiments completed!")
 

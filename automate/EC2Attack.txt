@@ -1,0 +1,9 @@
+ec2:ModifyInstanceMetadataOptions
+An attacker with the ec2:ModifyInstanceMetadataOptions permission can weaken Instance Metadata Service (IMDS) protections — for example by forcing IMDSv1 (making HttpTokens not required) or increasing HttpPutResponseHopLimit — thereby easing exfiltration of temporary credentials. The most relevant risk vector is raising HttpPutResponseHopLimit: by increasing that hop limit (TTL), the 169.254.169.254 endpoint stops being strictly limited to the VM’s network namespace and can become reachable by other processes/containers, enabling credential theft.
+
+
+aws ec2 modify-instance-metadata-options \
+  --instance-id <INSTANCE_ID> \
+  --http-tokens optional \
+  --http-endpoint enabled \
+  --http-put-response-hop-limit 2

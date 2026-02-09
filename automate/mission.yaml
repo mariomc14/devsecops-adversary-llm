@@ -1,30 +1,45 @@
 mission_overview:
   description:
-    - Provide secure, real-time tracking and management of essential warfighter supplies across global military bases
-    - Maintain highest levels of security for classified operational data
-    - Leverage EC2 instances within DevSecOps environment for CI/CD pipelines, security testing, and application deployment
-    - Ensure ammunition, medical supplies, and rations are properly tracked, distributed, and maintained
+    - Provide a secure, cloud-native banking platform that processes sensitive transaction data, authentication credentials, and payment logic.
+    - Operate a DevSecOps CI/CD pipeline that integrates security controls across the software development lifecycle (SDLC).
+    - Use AWS managed services (EC2 for hosting containerized tiers and AWS CodeBuild for CI and secure build execution) to support continuous delivery with strong security posture.
+    - Anticipate and model adversarial tactics targeting financial systems, including organized cybercriminal groups and nation-state actors.
+    - Maintain regulatory and compliance alignment for financial workloads (e.g., PCI-DSS) through automated validation and monitoring.
 
 primary_threat_categories:
-  - name: "Nation-State Cyber Attacks"
-    description: "Sophisticated threats targeting defense supply chains to steal military technology and classified data."
-  - name: "Supply Chain Vulnerabilities"
-    description: "Multi-tiered supply chain complexity creates numerous attack vectors for tampering and fraud."
-  - name: "Advanced Persistent Threats (APTs)"
-    description: "Supply chain poisoning and data breaches in IoT-enabled systems."
-  - name: "Insider Threats"
-    description: "Risk from rogue employees or compromised personnel within trusted supplier relationships."
-  - name: "Counterfeit Components"
-    description: "Circulation of fake components, particularly for aging systems requiring discontinued parts."
+  - name: "Supply Chain Attacks (Dependencies & Builds)"
+    description: "Malicious dependencies, compromised artifacts, or build pipeline tampering that injects backdoors or manipulates release outputs."
+
+  - name: "Credential Theft & IAM Abuse"
+    description: "Compromise of developer/CI credentials or misuse of IAM roles leading to unauthorized access to cloud resources and sensitive banking data."
+
+  - name: "EC2 Privilege Escalation & Host Compromise"
+    description: "Exploitation of local privilege escalation or misconfigurations on EC2 hosts to gain elevated permissions and pivot to other components."
+
+  - name: "Container Image Poisoning"
+    description: "Insertion of malware or vulnerable components into container images, potentially bypassing scanning gates or exploiting registry trust."
+
+  - name: "Infrastructure Misconfiguration Exposure"
+    description: "Misconfigured security groups, network paths, or instance settings that expose services, metadata, or admin interfaces to attackers."
+
+  - name: "Web/API Exploitation (Runtime Attacks)"
+    description: "Attacks against API gateways and microservices (e.g., injection, auth bypass, business logic abuse) that can lead to fraud or data exfiltration."
 
 core_technologies:
-  - name: "EC2 Instances"
-    purpose: "Host CI/CD pipelines, execute security tests, deploy applications, and microservices."
+
+  - name: "Amazon EC2 Instances"
+    purpose: "Host containerized application tiers (API gateways, transaction microservices, database connectors) deployed via IaC across multiple availability zones."
+
+  - name: "AWS CodeBuild"
+    purpose: "Execute isolated CI jobs for compilation, SAST, dependency scanning/SCA, container build and vulnerability scanning, and release pipeline enforcement."
 
 safeguard_logic:
+
   - name: "Preventive Safeguards"
-    description: "Implement measures to stop the attack path before exploitation occurs."
+    description: "Stop attacks before execution via least-privilege IAM, network segmentation for build environments, signed artifacts/images, enforced policy-as-code, and hardened AMIs."
+
   - name: "Detective Safeguards"
-    description: "Automatically detect suspicious or unauthorized behaviors using AWS-native capabilities."
+    description: "Detect suspicious activity using CI/CD integrity checks, continuous vulnerability scanning, runtime monitoring, centralized logging, and anomaly detection across builds and hosts."
+
   - name: "Reactive Safeguards"
-    description: "Execute automated, verifiable responses upon detection or alert of malicious activity."
+    description: "Automate incident response actions such as revoking credentials, quarantining instances, blocking deployments, rolling back releases, and triggering forensic capture and alert workflows."

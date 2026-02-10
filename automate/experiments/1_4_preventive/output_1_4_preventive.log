@@ -1,0 +1,82 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-02-10 15:51:37 INFO] Validating the experiment's syntax
+[32m[2026-02-10 15:51:37 INFO] Experiment looks valid
+[32m[2026-02-10 15:51:37 INFO] Running experiment: SCE Experiment 1.4 - Preventive Probe: EC2 Instance Enumeration Prevention
+[32m[2026-02-10 15:51:37 INFO] Steady-state strategy: after-method-only
+[32m[2026-02-10 15:51:37 INFO] Rollbacks strategy: default
+[32m[2026-02-10 15:51:37 INFO] Playing your experiment's method now...
+[32m[2026-02-10 15:51:37 INFO] Action: deploy-test-infrastructure
+2026-02-10 15:51:37,607 - INFO - ============================================================
+2026-02-10 15:51:37,607 - INFO - SCE Experiment 1.4 - Preventive Probe - Steady State Setup
+2026-02-10 15:51:37,607 - INFO - ============================================================
+2026-02-10 15:51:37,612 - INFO - Experiment timestamp: 1770735097
+2026-02-10 15:51:37,612 - INFO - Stack name: sce-experiment-1-4-1770735097
+2026-02-10 15:51:37,612 - INFO - Region: us-east-1
+2026-02-10 15:51:37,628 - INFO - Found credentials in shared credentials file: ~/.aws/credentials
+2026-02-10 15:51:38,186 - INFO - Creating CloudFormation stack...
+2026-02-10 15:51:38,510 - INFO - Waiting for stack creation to complete...
+2026-02-10 15:51:38,655 - INFO - Stack status: CREATE_IN_PROGRESS
+2026-02-10 15:52:31,230 - INFO - Stack status: CREATE_COMPLETE
+2026-02-10 15:52:31,429 - INFO - Restricted Role ARN: arn:aws:iam::396608802942:role/sce-restricted-role-1770735097
+2026-02-10 15:52:31,429 - INFO - Test Instance ID: i-0445077064f168156
+2026-02-10 15:52:31,429 - INFO - Waiting for IAM role propagation...
+2026-02-10 15:52:31,959 - INFO - IAM role is now assumable
+2026-02-10 15:52:31,959 - INFO - Steady state established successfully
+2026-02-10 15:52:31,959 - INFO - ============================================================
+[32m[2026-02-10 15:52:31 INFO] Action: execute-ec2-enumeration-attack
+2026-02-10 15:52:31,963 - INFO - ============================================================
+2026-02-10 15:52:31,963 - INFO - SCE Experiment 1.4 - Executing Attack Step 1.3
+2026-02-10 15:52:31,963 - INFO - Attack: EC2 Instance Enumeration (T1580 - Cloud Infrastructure Discovery)
+2026-02-10 15:52:31,963 - INFO - ============================================================
+2026-02-10 15:52:32,437 - INFO - Successfully assumed restricted role
+2026-02-10 15:52:32,478 - INFO - Attempting ec2:DescribeInstances with restricted role...
+2026-02-10 15:52:32,478 - INFO - Command: aws ec2 describe-instances --query 'Reservations[*].Instances[*].[InstanceId,MetadataOptions]'
+2026-02-10 15:52:33,014 - INFO - ATTACK BLOCKED - Received UnauthorizedOperation
+2026-02-10 15:52:33,014 - INFO - Error message: You are not authorized to perform this operation. User: arn:aws:sts::396608802942:assumed-role/sce-restricted-role-1770735097/sce-attack-simulation is not authorized to perform: ec2:DescribeInstances with an explicit deny in an identity-based policy: arn:aws:iam::396608802942:policy/sce-restricted-policy-1770735097 (sce-restricted-policy-1770735097)
+2026-02-10 15:52:33,014 - INFO - Preventive control SUCCEEDED in blocking enumeration
+2026-02-10 15:52:33,015 - INFO - ============================================================
+2026-02-10 15:52:33,015 - INFO - Attack Result: BLOCKED
+2026-02-10 15:52:33,015 - INFO - ============================================================
+[32m[2026-02-10 15:52:33 INFO] Steady state hypothesis: IAM Least Privilege Policy Blocks EC2 Enumeration
+[32m[2026-02-10 15:52:33 INFO] Probe: verify-ec2-enumeration-blocked
+2026-02-10 15:52:33,016 - INFO - ============================================================
+2026-02-10 15:52:33,017 - INFO - SCE Experiment 1.4 - Hypothesis Verification
+2026-02-10 15:52:33,018 - INFO - ============================================================
+2026-02-10 15:52:33,018 - INFO - Verification Criteria:
+2026-02-10 15:52:33,019 - INFO - 1. Attack was blocked by IAM policy
+2026-02-10 15:52:33,019 - INFO - 2. Error type is AccessDenied or UnauthorizedOperation
+2026-02-10 15:52:33,019 - INFO - 3. No instances were enumerated
+2026-02-10 15:52:33,020 - INFO - 
+2026-02-10 15:52:33,020 - INFO - Attack blocked: True
+2026-02-10 15:52:33,021 - INFO - Error type: UnauthorizedOperation
+2026-02-10 15:52:33,022 - INFO - Instances enumerated: 0
+2026-02-10 15:52:33,022 - INFO - 
+2026-02-10 15:52:33,023 - INFO - ✓ HYPOTHESIS VERIFIED
+2026-02-10 15:52:33,023 - INFO - The preventive control (IAM least privilege policy) successfully
+2026-02-10 15:52:33,024 - INFO - blocked the EC2 enumeration attack with AccessDenied response.
+2026-02-10 15:52:33,024 - INFO - 
+2026-02-10 15:52:33,024 - INFO - ============================================================
+2026-02-10 15:52:33,026 - INFO - Verification Result: PASSED
+2026-02-10 15:52:33,027 - INFO - ============================================================
+[32m[2026-02-10 15:52:33 INFO] Steady state hypothesis is met!
+[32m[2026-02-10 15:52:33 INFO] Let's rollback...
+[32m[2026-02-10 15:52:33 INFO] Rollback: cleanup-test-infrastructure
+[32m[2026-02-10 15:52:33 INFO] Action: cleanup-test-infrastructure
+2026-02-10 15:52:33,027 - INFO - ============================================================
+2026-02-10 15:52:33,027 - INFO - SCE Experiment 1.4 - Rollback
+2026-02-10 15:52:33,027 - INFO - ============================================================
+2026-02-10 15:52:33,029 - INFO - Deleting CloudFormation stack: sce-experiment-1-4-1770735097
+2026-02-10 15:52:33,788 - INFO - Stack deletion initiated
+2026-02-10 15:52:33,788 - INFO - Waiting for stack deletion to complete...
+2026-02-10 15:52:33,926 - INFO - Stack status: DELETE_IN_PROGRESS
+2026-02-10 15:53:58,023 - INFO - Stack deleted successfully
+2026-02-10 15:53:58,024 - INFO - ============================================================
+2026-02-10 15:53:58,024 - INFO - Rollback completed
+2026-02-10 15:53:58,024 - INFO - ============================================================
+[32m[2026-02-10 15:53:58 INFO] Experiment ended with status: completed
+
+
+RETURN CODE: 0

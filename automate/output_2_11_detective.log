@@ -1,9 +1,0 @@
-STDOUT:
-
-
-STDERR:
-[32m[2026-02-09 17:37:10 INFO] Validating the experiment's syntax
-[31m[2026-02-09 17:37:10 ERROR] Secrets make reference to an environment key that does not exist: AWS_ACCESS_KEY_ID
-
-
-RETURN CODE: 1

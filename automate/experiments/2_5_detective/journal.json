@@ -1,0 +1,160 @@
+{
+  "chaoslib-version": "1.44.0",
+  "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.41",
+  "node": "PC-INF-MAMA",
+  "experiment": {
+    "title": "SCE Experiment 2.5 - Detective Probe: IMDS Modification Detection via CloudTrail",
+    "description": "This Security Chaos Engineering experiment validates that CloudTrail successfully logs EC2 Instance Metadata Service (IMDS) configuration modifications. The experiment executes two attack steps: (1) EC2 instance enumeration (T1580 - Cloud Infrastructure Discovery) and (2) IMDS protection weakening (T1562.001 - Impair Defenses). It then verifies that CloudTrail logs the ModifyInstanceMetadataOptions API call. This simplified v3 version uses minimal infrastructure (EC2 instance only) and relies on existing CloudTrail for detection.",
+    "tags": [
+      "sce",
+      "detective",
+      "cloudtrail",
+      "imds",
+      "ec2",
+      "t1580",
+      "t1562",
+      "defense-impairment",
+      "api-logging",
+      "v3"
+    ],
+    "steady-state-hypothesis": {
+      "title": "CloudTrail Detects IMDS Configuration Modifications",
+      "probes": [
+        {
+          "type": "probe",
+          "name": "verify-cloudtrail-imds-detection",
+          "tolerance": true,
+          "provider": {
+            "type": "python",
+            "module": "chaosaws.ec2.2_5_detective",
+            "func": "hypothesis_verification"
+          }
+        }
+      ]
+    },
+    "method": [
+      {
+        "type": "action",
+        "name": "deploy-minimal-test-infrastructure",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.2_5_detective",
+          "func": "steady_state"
+        }
+      },
+      {
+        "type": "action",
+        "name": "execute-imds-weakening-attack",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.2_5_detective",
+          "func": "attack"
+        }
+      }
+    ],
+    "rollbacks": [
+      {
+        "type": "action",
+        "name": "cleanup-test-infrastructure",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.2_5_detective",
+          "func": "rollback"
+        }
+      }
+    ],
+    "dry": null
+  },
+  "start": "2026-02-10T16:07:22.212707+00:00",
+  "status": "completed",
+  "deviated": true,
+  "steady_states": {
+    "before": null,
+    "after": {
+      "steady_state_met": false,
+      "probes": [
+        {
+          "activity": {
+            "type": "probe",
+            "name": "verify-cloudtrail-imds-detection",
+            "tolerance": true,
+            "provider": {
+              "type": "python",
+              "module": "chaosaws.ec2.2_5_detective",
+              "func": "hypothesis_verification"
+            }
+          },
+          "output": false,
+          "start": "2026-02-10T16:09:51.636071+00:00",
+          "status": "succeeded",
+          "end": "2026-02-10T16:09:51.640598+00:00",
+          "duration": 0.004527,
+          "tolerance_met": false
+        }
+      ]
+    },
+    "during": []
+  },
+  "run": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "deploy-minimal-test-infrastructure",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.2_5_detective",
+          "func": "steady_state"
+        }
+      },
+      "output": null,
+      "start": "2026-02-10T16:07:22.212988+00:00",
+      "status": "failed",
+      "exception": [
+        "Traceback (most recent call last):\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py\", line 56, in run_python_activity\n    return func(**arguments)\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_5_detective.py\", line 313, in steady_state\n    raise RuntimeError(f\"Stack {stack_name} failed to create\")\n",
+        "RuntimeError: Stack sce-2-5-1770739642 failed to create\n",
+        "\nDuring handling of the above exception, another exception occurred:\n\n",
+        "chaoslib.exceptions.ActivityFailed: RuntimeError: Stack sce-2-5-1770739642 failed to create\n"
+      ],
+      "end": "2026-02-10T16:09:51.635236+00:00",
+      "duration": 149.422248
+    },
+    {
+      "activity": {
+        "type": "action",
+        "name": "execute-imds-weakening-attack",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.2_5_detective",
+          "func": "attack"
+        }
+      },
+      "output": false,
+      "start": "2026-02-10T16:09:51.635762+00:00",
+      "status": "succeeded",
+      "end": "2026-02-10T16:09:51.635938+00:00",
+      "duration": 0.000176
+    }
+  ],
+  "rollbacks": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "cleanup-test-infrastructure",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.2_5_detective",
+          "func": "rollback"
+        }
+      },
+      "output": true,
+      "start": "2026-02-10T16:09:51.647511+00:00",
+      "status": "succeeded",
+      "end": "2026-02-10T16:10:03.109779+00:00",
+      "duration": 11.462268
+    }
+  ],
+  "end": "2026-02-10T16:10:03.109863+00:00",
+  "duration": 160.89896726608276
+}

@@ -2,17 +2,17 @@ attack:
   id: 'aws-ec2-modify-imds-options-001'
   name: 'EC2 Instance Metadata Service (IMDS) Protection Weakening'
   overview: |
-    This attack exploits the ec2:ModifyInstanceMetadataOptions permission to weaken Instance Metadata Service (IMDS) security controls on EC2 instances. An attacker can modify IMDS settings to either force IMDSv1 (by setting HttpTokens to optional) or increase the HttpPutResponseHopLimit value. The most critical risk is increasing the hop limit, which extends the reachability of the metadata endpoint (169.254.169.254) beyond the VM's network namespace, allowing other processes, containers, or adjacent workloads to access and exfiltrate temporary IAM credentials attached to the instance role.
+    This attack exploits the ec2:ModifyInstanceMetadataOptions permission to weaken Instance Metadata Service (IMDS) security controls on EC2 instances. An attacker can modify IMDS settings to either force IMDSv1 (by setting HttpTokens to optional) or increase the HttpPutResponseHopLimit value. The most critical risk is increasing the hop limit, which allows the metadata endpoint (169.254.169.254) to become reachable beyond the VM's immediate network namespace. This enables credential theft from containers, sidecar processes, or other workloads that would normally be blocked from accessing instance metadata. Once IMDS protections are weakened, attackers can exfiltrate temporary IAM credentials assigned to the instance role.
   steps:
     - title: 'Identify Target EC2 Instance'
       command: |
         aws ec2 describe-instances --query 'Reservations[*].Instances[*].[InstanceId,MetadataOptions]' --output table
       dependencies:
         - 'ec2:DescribeInstances permission'
-        - 'Valid AWS credentials with appropriate access'
-        - 'Network access to AWS API endpoints'
+        - 'Valid AWS credentials'
+        - 'Network access to AWS API'
       result: |
-        Returns a list of EC2 instances with their current metadata configuration, allowing the attacker to identify targets with IMDSv2 enforced or low hop limits that can be weakened.
+        Returns a list of EC2 instances with their current metadata options configuration, allowing the attacker to identify targets with IMDSv2 enforced or low hop limits.
       ttp: 'T1580 - Cloud Infrastructure Discovery'
     - title: 'Weaken IMDS Protections'
       command: |
@@ -23,20 +23,20 @@ attack:
           --http-put-response-hop-limit 2
       dependencies:
         - 'ec2:ModifyInstanceMetadataOptions permission'
-        - 'Target instance ID obtained from reconnaissance'
+        - 'Target instance ID'
         - 'Instance must be in running or stopped state'
       result: |
-        IMDS protections are weakened: IMDSv1 is re-enabled (http-tokens set to optional), and the hop limit is increased to 2, allowing metadata requests from containers or adjacent network namespaces to reach the metadata endpoint.
+        IMDS configuration is modified to allow IMDSv1 (no session tokens required) and increases hop limit to 2, enabling metadata access from containers or processes that were previously blocked.
       ttp: 'T1562.001 - Impair Defenses: Disable or Modify Tools'
     - title: 'Exfiltrate Instance Role Credentials'
       command: |
         curl http://169.254.169.254/latest/meta-data/iam/security-credentials/<ROLE_NAME>
       dependencies:
-        - 'Network access to metadata endpoint from compromised container or adjacent process'
-        - 'EC2 instance must have an IAM role attached'
+        - 'Network access to metadata endpoint from compromised container/process'
+        - 'Instance must have an IAM role attached'
         - 'IMDS protections successfully weakened in previous step'
       result: |
-        Temporary IAM credentials (AccessKeyId, SecretAccessKey, and SessionToken) are retrieved from the instance metadata service, enabling the attacker to assume the instance's IAM role and perform actions with those privileges outside the instance.
+        Temporary AWS credentials (AccessKeyId, SecretAccessKey, and SessionToken) for the instance's IAM role are retrieved, allowing the attacker to assume the instance's permissions for lateral movement or data exfiltration.
       ttp: 'T1552.005 - Unsecured Credentials: Cloud Instance Metadata API'
   stride_goal:
     - 'Tampering'

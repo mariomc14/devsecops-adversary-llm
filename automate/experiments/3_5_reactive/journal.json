@@ -1,0 +1,162 @@
+{
+  "chaoslib-version": "1.44.0",
+  "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.41",
+  "node": "PC-INF-MAMA",
+  "experiment": {
+    "title": "SCE Experiment 3.5 - Reactive Probe: Credential Exfiltration Response",
+    "description": "This Security Chaos Engineering experiment validates that reactive controls successfully respond to EC2 instance role credential exfiltration. The experiment executes a three-step attack chain: (1) EC2 instance enumeration (T1580), (2) IMDS protection weakening (T1562.001), and (3) credential exfiltration simulation (T1552.005). It then verifies that the reactive control correctly revokes compromised credentials by applying a deny-all IAM policy. This validates the incident response mechanism for the credential theft scenario in the banking platform.",
+    "tags": [
+      "sce",
+      "reactive",
+      "credential-exfiltration",
+      "imds",
+      "ec2",
+      "iam",
+      "t1580",
+      "t1562",
+      "t1552",
+      "incident-response",
+      "credential-revocation",
+      "banking-platform"
+    ],
+    "steady-state-hypothesis": {
+      "title": "Reactive Controls Revoke Exfiltrated Credentials",
+      "probes": [
+        {
+          "type": "probe",
+          "name": "verify-credential-revocation-response",
+          "tolerance": true,
+          "provider": {
+            "type": "python",
+            "module": "chaosaws.ec2.3_5_reactive",
+            "func": "hypothesis_verification"
+          }
+        }
+      ]
+    },
+    "method": [
+      {
+        "type": "action",
+        "name": "deploy-ec2-instance-with-iam-role",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.3_5_reactive",
+          "func": "steady_state"
+        }
+      },
+      {
+        "type": "action",
+        "name": "execute-credential-exfiltration-attack-chain",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.3_5_reactive",
+          "func": "attack"
+        }
+      }
+    ],
+    "rollbacks": [
+      {
+        "type": "action",
+        "name": "cleanup-test-infrastructure-and-policies",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.3_5_reactive",
+          "func": "rollback"
+        }
+      }
+    ],
+    "dry": null
+  },
+  "start": "2026-02-10T16:16:52.828451+00:00",
+  "status": "completed",
+  "deviated": true,
+  "steady_states": {
+    "before": null,
+    "after": {
+      "steady_state_met": false,
+      "probes": [
+        {
+          "activity": {
+            "type": "probe",
+            "name": "verify-credential-revocation-response",
+            "tolerance": true,
+            "provider": {
+              "type": "python",
+              "module": "chaosaws.ec2.3_5_reactive",
+              "func": "hypothesis_verification"
+            }
+          },
+          "output": false,
+          "start": "2026-02-10T16:22:21.388186+00:00",
+          "status": "succeeded",
+          "end": "2026-02-10T16:22:21.389965+00:00",
+          "duration": 0.001779,
+          "tolerance_met": false
+        }
+      ]
+    },
+    "during": []
+  },
+  "run": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "deploy-ec2-instance-with-iam-role",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.3_5_reactive",
+          "func": "steady_state"
+        }
+      },
+      "output": null,
+      "start": "2026-02-10T16:16:52.828683+00:00",
+      "status": "failed",
+      "exception": [
+        "Traceback (most recent call last):\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py\", line 56, in run_python_activity\n    return func(**arguments)\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/3_5_reactive.py\", line 391, in steady_state\n    raise RuntimeError(f\"Stack {stack_name} failed to create\")\n",
+        "RuntimeError: Stack sce-3-5-1770740212 failed to create\n",
+        "\nDuring handling of the above exception, another exception occurred:\n\n",
+        "chaoslib.exceptions.ActivityFailed: RuntimeError: Stack sce-3-5-1770740212 failed to create\n"
+      ],
+      "end": "2026-02-10T16:22:21.378463+00:00",
+      "duration": 328.54978
+    },
+    {
+      "activity": {
+        "type": "action",
+        "name": "execute-credential-exfiltration-attack-chain",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.3_5_reactive",
+          "func": "attack"
+        }
+      },
+      "output": false,
+      "start": "2026-02-10T16:22:21.378973+00:00",
+      "status": "succeeded",
+      "end": "2026-02-10T16:22:21.382686+00:00",
+      "duration": 0.003713
+    }
+  ],
+  "rollbacks": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "cleanup-test-infrastructure-and-policies",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.3_5_reactive",
+          "func": "rollback"
+        }
+      },
+      "output": true,
+      "start": "2026-02-10T16:22:21.390173+00:00",
+      "status": "succeeded",
+      "end": "2026-02-10T16:22:32.892719+00:00",
+      "duration": 11.502546
+    }
+  ],
+  "end": "2026-02-10T16:22:32.892814+00:00",
+  "duration": 340.06595492362976
+}

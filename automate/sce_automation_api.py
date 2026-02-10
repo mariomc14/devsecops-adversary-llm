@@ -179,7 +179,7 @@ class SCEAutomationAPI:
     4. Produce the final DOT representation
     - Label each node has a unique identifier using hierarchical numbering.
     - Output the final result in DOT format, ready for rendering, using the hierarchy, connectors, and color conventions defined in @structure.dot.
-    - Generate a Graphviz DOT graph using HTML-like labels label=<...> (do not add an extra > at the end), always escape & < > \" as &amp; &lt; &gt; &quot; when they appear as literal text, and validate the </> balance in each label before returning the code.
+    - Generate a Graphviz DOT graph using HTML-like labels (label=<...>). For any character that should appear as literal text inside the label, always escape &, <, >, and " as &amp;, &lt;, &gt;, and &quot;. Ensure each HTML-like label is a single, well‑formed block with balanced HTML tags and no extra > characters outside the opening label=< and the closing > of the label. Validate the opening and closing tags inside each label before returning the code.
 
     @attacks.yaml:
     {attacks_yaml}
@@ -248,8 +248,7 @@ Goal: Generate an end-to-end Security Chaos Engineering unit test that validates
 - Verifying, programatically, that this control behaves as described in the probe's label and classification.
 
 Environment:
-- The script runs in a real but completely clean AWS account (no existing IAM roles, policies, buckets, parameters, alarms, etc)-
-- Standard AWS credentials are already available via environment variables (AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, etc.). Use AWS_REGION if present; otherwise default to us-east-1.
+- The script runs in a real but completely clean AWS account (no existing IAM roles, policies, buckets, parameters, alarms, etc)
 
 Deliverables (return two artifacts):
 Produce exactly two files, in this order:
@@ -258,6 +257,7 @@ Produce exactly two files, in this order:
     - [SCE_NODE] with: {self._sanitize_name(sce_node)}
     - [PROBE_TYPE] with: {self._sanitize_name(probe_type)}
     - Keep "chaosaws.ec2" prefix fixed in all module paths
+    - DO NOT include a "secrets" section - AWS credentials will be automatically discovered from the standard credential chain (~/.aws/credentials)
 
 Script structure (must follow this flow):
 The script is self-contained: no CLI arguments, no external config files, no pre-existing AWS resources. Use only the standard library unless unavoidable; if needed, install boto3 at runtime programmatically and keep the footprint minimal. Implement basic retries/backoff for eventual consistency using time.monotonic(). All functions take no parameters. Finally, log every error encountered.
@@ -641,6 +641,11 @@ Produce a detailed evaluation report in the following structure:
             safe_sce_node = self._sanitize_name(sce_node)
             safe_probe_type = self._sanitize_name(probe_type)
 
+            # Create experiments directory structure
+            experiments_dir = os.path.join(self.workspace_path, "experiments")
+            experiment_subdir = os.path.join(experiments_dir, f"{safe_sce_node}_{safe_probe_type}")
+            os.makedirs(experiment_subdir, exist_ok=True)
+
             # Extract Python script
             python_start = response_text.find("```python")
             if python_start != -1:
@@ -649,7 +654,7 @@ Produce a detailed evaluation report in the following structure:
                 if python_end != -1:
                     python_content = response_text[python_start:python_end].strip()
                     python_filename = f"{safe_sce_node}_{safe_probe_type}.py"
-                    python_filepath = os.path.join(self.workspace_path, python_filename)
+                    python_filepath = os.path.join(experiment_subdir, python_filename)
                     
                     # Save to workspace
                     with open(python_filepath, 'w', encoding='utf-8') as f:
@@ -678,7 +683,7 @@ Produce a detailed evaluation report in the following structure:
                 json_end = response_text.find("```", json_start)
                 if json_end != -1:
                     json_content = response_text[json_start:json_end].strip()
-                    json_filepath = os.path.join(self.workspace_path, f"{safe_sce_node}_{safe_probe_type}.json")
+                    json_filepath = os.path.join(experiment_subdir, f"{safe_sce_node}_{safe_probe_type}.json")
                     with open(json_filepath, 'w', encoding='utf-8') as f:
                         f.write(json_content)
                     print(f"✅ JSON manifest saved to: {json_filepath}")
@@ -695,6 +700,11 @@ Produce a detailed evaluation report in the following structure:
             safe_sce_node = self._sanitize_name(sce_node)
             safe_probe_type = self._sanitize_name(probe_type)
             
+            # Create reports directory structure
+            reports_dir = os.path.join(self.workspace_path, "reports")
+            report_subdir = os.path.join(reports_dir, f"{safe_sce_node}_{safe_probe_type}")
+            os.makedirs(report_subdir, exist_ok=True)
+
             # Try to find markdown code block first
             report_start = response_text.find("```markdown")
             if report_start != -1:
@@ -716,7 +726,7 @@ Produce a detailed evaluation report in the following structure:
             
             # Save the report with new naming convention
             report_filename = f"pre_execution_report_{safe_sce_node}_{safe_probe_type}.md"
-            report_filepath = os.path.join(self.workspace_path, report_filename)
+            report_filepath = os.path.join(report_subdir, report_filename)
             
             with open(report_filepath, 'w', encoding='utf-8') as f:
                 f.write(report_content)
@@ -763,11 +773,11 @@ Produce a detailed evaluation report in the following structure:
                     print(f"⚠️ Decision: {decision}")
                     print("   Experiment quality below threshold. Review report for recommendations.")
             
-            return True, q_pre_score  # Return both success status and score
+            return True, q_pre_score  # type: ignore # Return both success status and score
             
         except Exception as e:
             print(f"❌ Error saving metrics report: {e}")
-            return False, None
+            return False, None # type: ignore
 
     def _save_metrics_post_report(self, response_text: str, sce_node: str, probe_type: str) -> tuple:
         """Extract and save post-execution metrics evaluation report from response"""
@@ -775,6 +785,11 @@ Produce a detailed evaluation report in the following structure:
             safe_sce_node = self._sanitize_name(sce_node)
             safe_probe_type = self._sanitize_name(probe_type)
             
+            # Create reports directory structure
+            reports_dir = os.path.join(self.workspace_path, "reports")
+            report_subdir = os.path.join(reports_dir, f"{safe_sce_node}_{safe_probe_type}")
+            os.makedirs(report_subdir, exist_ok=True)
+
             # Try to find markdown code block first
             report_start = response_text.find("```markdown")
             if report_start != -1:
@@ -794,7 +809,7 @@ Produce a detailed evaluation report in the following structure:
             
             # Save the report
             report_filename = f"post_execution_report_{safe_sce_node}_{safe_probe_type}.md"
-            report_filepath = os.path.join(self.workspace_path, report_filename)
+            report_filepath = os.path.join(report_subdir, report_filename)
             
             with open(report_filepath, 'w', encoding='utf-8') as f:
                 f.write(report_content)
@@ -1070,8 +1085,10 @@ Produce a detailed evaluation report in the following structure:
             # Check for existing log file
             safe_sce_node = self._sanitize_name(sce_node)
             safe_probe_type = self._sanitize_name(probe_type)
-            log_filename = f"last_report_{safe_sce_node}_{safe_probe_type}.log"
-            log_path = os.path.join(self.workspace_path, log_filename)
+            log_filename = f"output_{safe_sce_node}_{safe_probe_type}.log"
+            experiments_dir = os.path.join(self.workspace_path, "experiments")
+            experiment_subdir = os.path.join(experiments_dir, f"{safe_sce_node}_{safe_probe_type}")
+            log_path = os.path.join(experiment_subdir, log_filename)
             
             previous_log = None
             if os.path.exists(log_path):
@@ -1089,7 +1106,9 @@ Produce a detailed evaluation report in the following structure:
             
             # Check for existing pre-execution metrics report
             metrics_report_filename = f"pre_execution_report_{safe_sce_node}_{safe_probe_type}.md"
-            metrics_report_path = os.path.join(self.workspace_path, metrics_report_filename)
+            reports_dir = os.path.join(self.workspace_path, "reports")
+            report_subdir = os.path.join(reports_dir, f"{safe_sce_node}_{safe_probe_type}")
+            metrics_report_path = os.path.join(report_subdir, metrics_report_filename)
             
             previous_metrics_report = None
             if os.path.exists(metrics_report_path):
@@ -1107,7 +1126,7 @@ Produce a detailed evaluation report in the following structure:
             
             # Check for existing post-execution metrics report
             post_metrics_report_filename = f"post_execution_report_{safe_sce_node}_{safe_probe_type}.md"
-            post_metrics_report_path = os.path.join(self.workspace_path, post_metrics_report_filename)
+            post_metrics_report_path = os.path.join(report_subdir, post_metrics_report_filename)
             
             previous_post_metrics_report = None
             if os.path.exists(post_metrics_report_path):
@@ -1155,14 +1174,16 @@ Produce a detailed evaluation report in the following structure:
                 dot_content = "# DOT file not available"
             
             # Load JSON file (experiment manifest)
-            json_filepath = os.path.join(self.workspace_path, f"{safe_sce_node}_{safe_probe_type}.json")
+            experiments_dir = os.path.join(self.workspace_path, "experiments")
+            experiment_subdir = os.path.join(experiments_dir, f"{safe_sce_node}_{safe_probe_type}")
+            json_filepath = os.path.join(experiment_subdir, f"{safe_sce_node}_{safe_probe_type}.json")
             json_content = self._load_file(json_filepath)
             if not json_content:
                 print("⚠️ Could not load JSON file for metrics evaluation")
                 json_content = "{}"
             
-            # Load Python file (experiment implementation)
-            py_filepath = os.path.join(self.workspace_path, f"{safe_sce_node}_{safe_probe_type}.py")
+            # Load Python file (experiment implementation) - ACTUALIZAR
+            py_filepath = os.path.join(experiment_subdir, f"{safe_sce_node}_{safe_probe_type}.py")
             py_content = self._load_file(py_filepath)
             if not py_content:
                 print("⚠️ Could not load Python file for metrics evaluation")
@@ -1176,7 +1197,7 @@ Produce a detailed evaluation report in the following structure:
             
             q_pre_score = None
             if metrics_response:
-                save_success, q_pre_score = self._save_metrics_report(metrics_response, sce_node, probe_type)
+                save_success, q_pre_score = self._save_metrics_report(metrics_response, sce_node, probe_type) # type: ignore
                 if save_success:
                     print("✅ Pre-execution quality evaluation completed")
                 else:
@@ -1184,23 +1205,18 @@ Produce a detailed evaluation report in the following structure:
             else:
                 print("⚠️ Failed to generate metrics evaluation")
             
-            # Always ask if user wants to generate another experiment (independent of threshold)
-            print("\n🔄 Generate another SCE experiment? (y/n):")
-            continue_response = input("> ").strip().lower()
-            
-            if continue_response != 'y':
-                # User doesn't want to generate another experiment
-                # Check if quality threshold was met and ask about execution
-                if q_pre_score is not None and q_pre_score >= quality_threshold:
+            if q_pre_score is not None and q_pre_score >= quality_threshold:
                     print(f"\n✅ Quality threshold met (Q_pre={q_pre_score:.2f} >= {quality_threshold})")
                     print(f"🚀 Execute this experiment now? (y/n):")
                     execute_response = input("> ").strip().lower()
                     
                     if execute_response == 'y':
                         json_filename = f"{safe_sce_node}_{safe_probe_type}.json"
-                        json_filepath = os.path.join(self.workspace_path, json_filename)
+                        experiments_dir = os.path.join(self.workspace_path, "experiments")
+                        experiment_subdir = os.path.join(experiments_dir, f"{safe_sce_node}_{safe_probe_type}")
+                        json_filepath = os.path.join(experiment_subdir, json_filename)
                         log_filename = f"output_{safe_sce_node}_{safe_probe_type}.log"
-                        log_filepath = os.path.join(self.workspace_path, log_filename)
+                        log_filepath = os.path.join(experiment_subdir, log_filename)
                         
                         print(f"\n▶️ Executing: chaos run {json_filename}")
                         print(f"📝 Output will be saved to: {log_filename}")
@@ -1210,8 +1226,8 @@ Produce a detailed evaluation report in the following structure:
                         try:
                             import subprocess
                             result = subprocess.run(
-                                ['chaos', 'run', json_filepath],
-                                cwd=self.workspace_path,
+                                ['chaos', 'run', json_filepath, '--hypothesis-strategy=after-method-only'],
+                                cwd=experiment_subdir,
                                 capture_output=True,
                                 text=True
                             )
@@ -1274,25 +1290,26 @@ Produce a detailed evaluation report in the following structure:
                         print("💡 Experiment not executed. You can run it manually with:")
                         print(f"   chaos run {safe_sce_node}_{safe_probe_type}.json > output_{safe_sce_node}_{safe_probe_type}.log 2>&1")
                 
-                elif q_pre_score is not None and q_pre_score < quality_threshold:
-                    print(f"\n⚠️ Quality threshold not met (Q_pre={q_pre_score:.2f} < {quality_threshold})")
-                    print("   Review the pre-execution report for recommendations before executing.")
-                else:
-                    print("\n💡 No quality score available for execution decision.")
-                
+            elif q_pre_score is not None and q_pre_score < quality_threshold:
+                print(f"\n⚠️ Quality threshold not met (Q_pre={q_pre_score:.2f} < {quality_threshold})")
+                print("   Review the pre-execution report for recommendations before executing.")
+            else:
+                print("\n💡 No quality score available for execution decision.")
+
+            # Always ask if user wants to generate another experiment (independent of threshold)
+            print("\n🔄 Generate another SCE experiment? (y/n):")
+            continue_response = input("> ").strip().lower()
+            
+            if continue_response != 'y':
+                # User doesn't want to generate another experiment
+                # Check if quality threshold was met and ask about execution
                 break
             
-            # If continuing, ask if they want to include the current reports
-            print("\n📊 Include the pre-execution report from this experiment in the next generation? (y/n):")
-            include_pre_report = input("> ").strip().lower()
-            
-            if include_pre_report == 'y':
-                print("✅ The pre-execution report will be available for the next experiment generation.")
-            else:
-                print("💡 The next experiment will be generated without the pre-execution report.")
-            
             # Also ask about post-execution report if it exists
-            post_report_exists = os.path.exists(os.path.join(self.workspace_path, f"post_execution_report_{safe_sce_node}_{safe_probe_type}.md"))
+            reports_dir = os.path.join(self.workspace_path, "reports")
+            report_subdir = os.path.join(reports_dir, f"{safe_sce_node}_{safe_probe_type}")
+            post_report_exists = os.path.exists(os.path.join(report_subdir, f"post_execution_report_{safe_sce_node}_{safe_probe_type}.md"))
+
             if post_report_exists:
                 print("\n📊 Include the post-execution report from this experiment in the next generation? (y/n):")
                 include_post_report = input("> ").strip().lower()

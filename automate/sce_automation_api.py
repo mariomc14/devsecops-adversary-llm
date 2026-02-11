@@ -21,6 +21,8 @@ except ImportError:
 
 from botocore.config import Config
 
+import tiktoken
+
 class SCEAutomationAPI:
     def __init__(self):
         self.workspace_path = os.path.join(os.getcwd())
@@ -35,6 +37,11 @@ class SCEAutomationAPI:
     def _sanitize_name(self, name: str) -> str:
         """Sanitize name for safe filename usage"""
         return re.sub(r'[^\w\-_]', '_', name.lower()).strip('_')
+
+    def _count_tokens(self, text: str) -> int:
+        """Count tokens using tiktoken"""
+        encoding = tiktoken.get_encoding("cl100k_base")
+        return len(encoding.encode(text))
 
 
     def _load_yaml(self, yaml_path: str) -> Dict:
@@ -899,8 +906,11 @@ Produce a detailed evaluation report in the following structure:
             else:
                 full_prompt = prompt
             
+            total_tokens = self._count_tokens(full_prompt)
+            print(f"📊 Token usage - Total: {total_tokens}")
+
             response = self.bedrock.converse(
-                modelId="global.anthropic.claude-opus-4-5-20251101-v1:0",
+                modelId="global.anthropic.claude-haiku-4-5-20251001-v1:0",
                 messages=[
                     {
                         "role" : "user",
@@ -913,7 +923,7 @@ Produce a detailed evaluation report in the following structure:
                 ],
                 inferenceConfig={
                     "maxTokens" : 64000,
-                    "temperature" : 0.1,
+                    "temperature" : 1,
                 },
             )
 
@@ -1204,7 +1214,7 @@ Produce a detailed evaluation report in the following structure:
                     print("⚠️ Metrics evaluation completed but report save failed")
             else:
                 print("⚠️ Failed to generate metrics evaluation")
-            
+
             if q_pre_score is not None and q_pre_score >= quality_threshold:
                     print(f"\n✅ Quality threshold met (Q_pre={q_pre_score:.2f} >= {quality_threshold})")
                     print(f"🚀 Execute this experiment now? (y/n):")
@@ -1290,10 +1300,23 @@ Produce a detailed evaluation report in the following structure:
                         print("💡 Experiment not executed. You can run it manually with:")
                         print(f"   chaos run {safe_sce_node}_{safe_probe_type}.json > output_{safe_sce_node}_{safe_probe_type}.log 2>&1")
                 
-            elif q_pre_score is not None and q_pre_score < quality_threshold:
+            if q_pre_score is not None and q_pre_score < quality_threshold:
                 print(f"\n⚠️ Quality threshold not met (Q_pre={q_pre_score:.2f} < {quality_threshold})")
-                print("   Review the pre-execution report for recommendations before executing.")
-            else:
+                print("🔄 Regenerating attack-defense tree to improve quality...")
+                
+                attacks_yaml_path = os.path.join(self.workspace_path, "attacks.yaml")
+                attacks_yaml_content = self._load_file(attacks_yaml_path)
+                
+                if attacks_yaml_content and structure_dot_content:
+                    tree_prompt = self._build_attack_defense_tree_prompt(attacks_yaml_content, structure_dot_content)
+                    stage3_response = self._call_amazon_q(tree_prompt, use_context=True)
+                    
+                    if stage3_response and self._save_dot_output(stage3_response):
+                        print("✅ Attack-defense tree regenerated")
+                else:
+                    print("❌ Failed to regenerate attack-defense tree")
+
+            if q_pre_score is None:
                 print("\n💡 No quality score available for execution decision.")
 
             # Always ask if user wants to generate another experiment (independent of threshold)

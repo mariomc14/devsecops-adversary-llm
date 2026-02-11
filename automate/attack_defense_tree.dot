@@ -2,569 +2,423 @@ digraph AttackDefenseTree {
     graph [
         fontname="Arial",
         splines=ortho,
-        nodesep=0.6,
-        ranksep=0.85,
+        nodesep=0.5,
+        ranksep=0.75,
         rankdir=TB,
         ordering="out",
-        compound=true,
-        label=<<b>Attack-Defense Tree: EC2 IMDS Protection Weakening</b><br/><i>Banking Platform Scenario - aws-ec2-modify-imds-options-001</i>>,
-        labelloc="t",
-        fontsize=16
+        compound=true
     ];
     node [fontname="Arial"];
 
-    // ==================== ROOT NODE ====================
+    // ============================================================================
+    // ROOT NODE
+    // ============================================================================
     "Root_Node" [
-        label=<<b>1.0 Attack Entry Point</b><br/><i>EC2 IMDS Protection Weakening Campaign</i><br/>Attacker Goal: Exfiltrate IAM credentials from banking EC2 instances<br/>Target: API Gateway, Transaction Microservices, Database Connectors>,
-        shape=rectangle, style="filled,bold", fillcolor="#C6E8D1", fontcolor="black", margin=0.3
+        label="Root: EC2 IMDS Credential Exfiltration Attack",
+        shape=rectangle, style=filled, fillcolor="#C6E8D1", fontcolor="black"
     ];
 
-    // ==================== STEP 1: IDENTIFY TARGET EC2 INSTANCE ====================
-    
-    "1-Preventive-A" [
-        shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="black",
-        label=<
-            <b>1.1 IAM Least Privilege Policy</b><br/>
-            <b>Classification: Preventive</b><br/>
-            <b>Description:</b> Restrict ec2:DescribeInstances permission<br/>
-            to specific resource ARNs and conditions. Implement<br/>
-            permission boundaries preventing broad EC2 enumeration.<br/>
-            <b>Implementation:</b> IAM policy with resource-level restrictions<br/>
-            and aws:RequestedRegion conditions for banking workloads.
-        >, margin=0.2
-    ];
+    // ============================================================================
+    // ATTACK STEP 1: Identify Target EC2 Instance (T1526 - Gather victim host info)
+    // ============================================================================
 
-    "1-Preventive-B" [
-        shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="black",
+    "1-Preventive" [
+        shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="white",
         label=<
-            <b>1.2 VPC Endpoint Policy Restriction</b><br/>
+            <b>1.1 Preventive: IAM Deny ec2:DescribeInstances</b><br/>
             <b>Classification: Preventive</b><br/>
-            <b>Description:</b> Configure VPC endpoint policies for EC2 API<br/>
-            to restrict DescribeInstances calls to authorized principals<br/>
-            and specific instance tags (e.g., Environment=production).<br/>
-            <b>Implementation:</b> VPC endpoint policy with Condition keys.
+            <b>Description:</b> Enforce least-privilege IAM policy<br/>
+            denying ec2:DescribeInstances to non-authorized<br/>
+            roles. Restrict to only roles requiring instance<br/>
+            enumeration (e.g., approved automation).<br/>
+            <b>Implementation:</b> Explicit deny policy on<br/>
+            development/build roles.<br/>
         >, margin=0.2
     ];
 
     "1-Attack" [
-        shape=rectangle, style=filled, fillcolor="#F40B0B", fontcolor="black",
+        shape=rectangle, style=filled, fillcolor="#F40B0B", fontcolor="white",
         label=<
-            <b>1.3 Identify Target EC2 Instance</b><br/>
-            <b>Command:</b> aws ec2 describe-instances --query<br/>
-            &apos;Reservations[*].Instances[*].[InstanceId,MetadataOptions]&apos;<br/>
-            --output table<br/>
-            <b>Dependencies:</b><br/>
-            • ec2:DescribeInstances permission<br/>
-            • Valid AWS credentials (stolen/compromised)<br/>
-            • Network access to AWS API<br/>
-            <b>Result:</b> List of banking EC2 instances with IMDS config<br/>
-            (API gateways, transaction services, DB connectors)<br/>
-            <b>TTP:</b> T1580 - Cloud Infrastructure Discovery
+            <b>1.2 Attack: Identify Target EC2 Instance</b><br/>
+            <b>TTP: T1526 – Gather Victim Host Information</b><br/>
+            <b>Command:</b><br/>
+            aws ec2 describe-instances \<br/>
+            &#x2500;&#x2500;filters &quot;Name=instance-state-name,Values=running&quot; \<br/>
+            &#x2500;&#x2500;query &#x27;Reservations[*].Instances[*].[InstanceId, \<br/>
+            PrivateIpAddress,Tags[?Key==`Name`].Value|[0]]&#x27; \<br/>
+            &#x2500;&#x2500;output table<br/>
+            <b>Dependencies:</b> ec2:DescribeInstances permission;<br/>
+            attacker has valid AWS credentials (compromised or<br/>
+            legitimate but overprivileged).<br/>
+            <b>Result:</b> Attacker enumerates running EC2 instances,<br/>
+            identifying target by ID, IP, and Name tag.<br/>
         >, margin=0.2
     ];
 
     "1-Chaos" [
-        shape=rectangle, style="filled,rounded,bold", fillcolor="#FC8600", color="#FFA500", fontcolor="#000000",
+        shape=rectangle, style="filled,rounded,bold", fillcolor="#FC8600", color="#FFA500", fontcolor="black",
         label=<
-            <b>1.4 SCE Experiment: Infrastructure Discovery</b><br/>
-            <b>Preventive Probe:</b> Attempt ec2:DescribeInstances with<br/>
-            test credentials lacking proper permissions. Verify<br/>
-            AccessDenied response and policy enforcement.<br/>
-            <b>Detective Probe:</b> Execute authorized DescribeInstances<br/>
-            from unusual IP/region. Verify CloudTrail alert triggers<br/>
-            within 5 minutes and GuardDuty anomaly detection.<br/>
-            <b>Reactive Probe:</b> Simulate repeated enumeration attempts.<br/>
-            Verify automated credential suspension activates.
+            <b>1.3 SCE Experiment: Preventive Probe</b><br/>
+            <b>Test:</b> Attempt describe-instances with dev role;<br/>
+            expect access denied error.<br/>
+            <b>Expected Result:</b> Command fails with<br/>
+            &quot;User: arn:aws:iam::ACCOUNT:role/dev is not<br/>
+            authorized to perform: ec2:DescribeInstances&quot;.<br/>
+            <b>Failure Indicator:</b> Command succeeds; attacker<br/>
+            gains enumeration capability.<br/>
         >, margin=0.2
     ];
 
-    "1-Detective-A" [
-        shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="black",
+    "1-Detective" [
+        shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="white",
         label=<
-            <b>1.5 CloudTrail API Monitoring</b><br/>
+            <b>1.4 Detective: CloudTrail ec2:DescribeInstances Logging</b><br/>
             <b>Classification: Detective</b><br/>
-            <b>Description:</b> Monitor CloudTrail for ec2:DescribeInstances<br/>
-            calls with MetadataOptions in query parameters. Alert on<br/>
-            enumeration patterns from non-CI/CD principals.<br/>
-            <b>Implementation:</b> CloudWatch Logs Insights query with<br/>
-            EventBridge rule triggering SNS notification.
+            <b>Description:</b> CloudTrail logs all API calls,<br/>
+            including ec2:DescribeInstances. Monitor for<br/>
+            enumeration patterns (multiple calls from single<br/>
+            principal in short time window).<br/>
+            <b>Implementation:</b> CloudWatch Logs Insights query<br/>
+            detects &gt;10 DescribeInstances calls per 5-minute window.<br/>
         >, margin=0.2
     ];
 
-    "1-Detective-B" [
-        shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="black",
+    "1-Chaos-Detective" [
+        shape=rectangle, style="filled,rounded,bold", fillcolor="#FC8600", color="#FFA500", fontcolor="black",
         label=<
-            <b>1.6 GuardDuty Reconnaissance Detection</b><br/>
-            <b>Classification: Detective</b><br/>
-            <b>Description:</b> Enable GuardDuty finding type<br/>
-            Recon:IAMUser/ResourcePermissions to detect unusual<br/>
-            EC2 enumeration activity from compromised credentials.<br/>
-            <b>Implementation:</b> GuardDuty with S3 malware protection<br/>
-            and EKS audit log monitoring enabled.
+            <b>1.5 SCE Experiment: Detective Probe</b><br/>
+            <b>Test:</b> Execute 15 describe-instances calls in<br/>
+            rapid succession; verify CloudWatch alert triggers<br/>
+            within 2 minutes.<br/>
+            <b>Expected Result:</b> Alert generated with source<br/>
+            principal, timestamp, and call count.<br/>
+            <b>Failure Indicator:</b> No alert; detective control<br/>
+            bypassed or threshold too high.<br/>
         >, margin=0.2
     ];
 
-    "1-Reactive-A" [
-        shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="black",
+    "1-Reactive" [
+        shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="white",
         label=<
-            <b>1.7 Automated Credential Revocation</b><br/>
+            <b>1.6 Reactive: Disable IAM Credentials &amp; Notify</b><br/>
             <b>Classification: Reactive</b><br/>
-            <b>Description:</b> Lambda function triggered by GuardDuty<br/>
-            finding to immediately revoke session tokens and<br/>
-            disable access keys for suspicious principal.<br/>
-            <b>Implementation:</b> EventBridge rule → Lambda →<br/>
-            iam:PutUserPolicy (Deny all) + iam:UpdateAccessKey.
+            <b>Description:</b> EventBridge rule triggers Lambda<br/>
+            upon detective alert. Lambda disables all access<br/>
+            keys for source principal and publishes SNS alert<br/>
+            to security team with forensic context.<br/>
+            <b>Implementation:</b> Automated incident response via<br/>
+            EventBridge → Lambda → IAM + SNS.<br/>
         >, margin=0.2
     ];
 
-    "1-Reactive-B" [
-        shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="black",
+    "1-Chaos-Reactive" [
+        shape=rectangle, style="filled,rounded,bold", fillcolor="#FC8600", color="#FFA500", fontcolor="black",
         label=<
-            <b>1.8 Security Team Alert Workflow</b><br/>
-            <b>Classification: Reactive</b><br/>
-            <b>Description:</b> Trigger PagerDuty/Slack alert to SOC<br/>
-            with full context: principal ARN, source IP, API calls,<br/>
-            and affected banking tier instances.<br/>
-            <b>Implementation:</b> SNS → Lambda → PagerDuty API<br/>
-            with runbook link for credential compromise.
+            <b>1.7 SCE Experiment: Reactive Probe</b><br/>
+            <b>Test:</b> Trigger detective alert; verify Lambda<br/>
+            disables access keys within 30 seconds; confirm<br/>
+            subsequent API calls fail with AccessDenied.<br/>
+            <b>Expected Result:</b> Credentials revoked; attacker<br/>
+            loses access.<br/>
+            <b>Failure Indicator:</b> Credentials remain active;<br/>
+            attacker continues enumeration.<br/>
         >, margin=0.2
     ];
 
-    // ==================== STEP 2: WEAKEN IMDS PROTECTIONS ====================
+    // ============================================================================
+    // ATTACK STEP 2: Weaken IMDS Security Configuration (T1578.005)
+    // ============================================================================
 
-    "2-Preventive-A" [
-        shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="black",
+    "2-Preventive" [
+        shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="white",
         label=<
-            <b>2.1 SCP Deny ModifyInstanceMetadataOptions</b><br/>
+            <b>1.8 Preventive: IAM Deny ec2:ModifyInstanceMetadataOptions</b><br/>
             <b>Classification: Preventive</b><br/>
-            <b>Description:</b> Service Control Policy at AWS Organization<br/>
-            level explicitly denying ec2:ModifyInstanceMetadataOptions<br/>
-            for all accounts except break-glass admin role.<br/>
-            <b>Implementation:</b> SCP with Deny effect and<br/>
-            Condition: ArnNotLike for emergency role.
-        >, margin=0.2
-    ];
-
-    "2-Preventive-B" [
-        shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="black",
-        label=<
-            <b>2.2 IAM Permission Boundary</b><br/>
-            <b>Classification: Preventive</b><br/>
-            <b>Description:</b> Permission boundary attached to all<br/>
-            IAM roles/users preventing ModifyInstanceMetadataOptions.<br/>
-            Applies to CodeBuild service roles and EC2 instance roles.<br/>
-            <b>Implementation:</b> Managed policy as permission boundary<br/>
-            with explicit Deny for IMDS modification actions.
-        >, margin=0.2
-    ];
-
-    "2-Preventive-C" [
-        shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="black",
-        label=<
-            <b>2.3 AWS Config Conformance Pack</b><br/>
-            <b>Classification: Preventive</b><br/>
-            <b>Description:</b> Enforce ec2-imdsv2-check rule requiring<br/>
-            HttpTokens=required on all EC2 instances. Auto-remediation<br/>
-            SSM document reverts unauthorized IMDS changes.<br/>
-            <b>Implementation:</b> Config rule + SSM Automation<br/>
-            document for immediate remediation.
+            <b>Description:</b> Enforce strict least-privilege<br/>
+            denying ec2:ModifyInstanceMetadataOptions to all<br/>
+            non-infrastructure roles. Restrict to only dedicated<br/>
+            provisioning/hardening roles with MFA requirement.<br/>
+            <b>Implementation:</b> Explicit deny on dev/build roles;<br/>
+            allow only infra-automation role with session<br/>
+            duration &lt;1 hour.<br/>
         >, margin=0.2
     ];
 
     "2-Attack" [
-        shape=rectangle, style=filled, fillcolor="#F40B0B", fontcolor="black",
+        shape=rectangle, style=filled, fillcolor="#F40B0B", fontcolor="white",
         label=<
-            <b>2.4 Weaken IMDS Protections</b><br/>
-            <b>Command:</b> aws ec2 modify-instance-metadata-options \<br/>
-            --instance-id &lt;INSTANCE_ID&gt; \<br/>
-            --http-tokens optional \<br/>
-            --http-endpoint enabled \<br/>
-            --http-put-response-hop-limit 2<br/>
-            <b>Dependencies:</b><br/>
-            • ec2:ModifyInstanceMetadataOptions permission<br/>
-            • Target instance ID (from Step 1)<br/>
-            • Instance in running or stopped state<br/>
-            <b>Result:</b> IMDSv1 enabled, hop limit increased to 2,<br/>
-            allowing container/sidecar IMDS access on banking hosts<br/>
-            <b>TTP:</b> T1562.001 - Impair Defenses: Disable or Modify Tools
+            <b>1.9 Attack: Weaken IMDS Security Configuration</b><br/>
+            <b>TTP: T1578.005 – Modify Cloud Compute Infrastructure</b><br/>
+            <b>Command:</b><br/>
+            aws ec2 modify-instance-metadata-options \<br/>
+            &#x2500;&#x2500;instance-id &lt;INSTANCE_ID&gt; \<br/>
+            &#x2500;&#x2500;http-tokens optional \<br/>
+            &#x2500;&#x2500;http-endpoint enabled \<br/>
+            &#x2500;&#x2500;http-put-response-hop-limit 2<br/>
+            <b>Dependencies:</b> ec2:ModifyInstanceMetadataOptions<br/>
+            permission; target instance exists and is accessible;<br/>
+            attacker has valid AWS credentials.<br/>
+            <b>Result:</b> IMDS downgraded to IMDSv1 (HttpTokens<br/>
+            optional); no token authentication required.<br/>
+            HttpPutResponseHopLimit increased to 2, allowing<br/>
+            credentials accessible from adjacent containers/processes.<br/>
         >, margin=0.2
     ];
 
     "2-Chaos" [
-        shape=rectangle, style="filled,rounded,bold", fillcolor="#FC8600", color="#FFA500", fontcolor="#000000",
+        shape=rectangle, style="filled,rounded,bold", fillcolor="#FC8600", color="#FFA500", fontcolor="black",
         label=<
-            <b>2.5 SCE Experiment: Defense Impairment</b><br/>
-            <b>Preventive Probe:</b> Attempt ModifyInstanceMetadataOptions<br/>
-            with standard developer role. Verify SCP blocks with<br/>
-            explicit AccessDenied and policy evaluation logs.<br/>
-            <b>Detective Probe:</b> Use break-glass role to modify IMDS.<br/>
-            Verify Config rule detects non-compliance within 1 minute<br/>
-            and CloudTrail event triggers immediate alert.<br/>
-            <b>Reactive Probe:</b> Confirm SSM auto-remediation restores<br/>
-            HttpTokens=required within 5 minutes of detection.
+            <b>1.10 SCE Experiment: Preventive Probe</b><br/>
+            <b>Test:</b> Attempt modify-instance-metadata-options<br/>
+            with build role; expect access denied.<br/>
+            <b>Expected Result:</b> Command fails with<br/>
+            &quot;User is not authorized to perform<br/>
+            ec2:ModifyInstanceMetadataOptions&quot;.<br/>
+            <b>Failure Indicator:</b> Command succeeds; IMDS<br/>
+            configuration weakened on target instance.<br/>
         >, margin=0.2
     ];
 
-    "2-Detective-A" [
-        shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="black",
+    "2-Detective" [
+        shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="white",
         label=<
-            <b>2.6 CloudTrail Real-time Alert</b><br/>
+            <b>1.11 Detective: CloudTrail ec2:ModifyInstanceMetadataOptions Logging</b><br/>
             <b>Classification: Detective</b><br/>
-            <b>Description:</b> EventBridge rule matching<br/>
-            ec2:ModifyInstanceMetadataOptions API calls.<br/>
-            Immediate alert regardless of success/failure.<br/>
-            <b>Implementation:</b> EventBridge pattern matching<br/>
-            eventSource: ec2.amazonaws.com and eventName:<br/>
-            ModifyInstanceMetadataOptions → SNS → Lambda.
+            <b>Description:</b> CloudTrail logs all metadata option<br/>
+            modifications. Alert on any unauthorized modification,<br/>
+            especially downgrade to IMDSv1 or hop-limit increase.<br/>
+            <b>Implementation:</b> CloudWatch Logs Insights rule:<br/>
+            detect &quot;HttpTokens&quot;: &quot;optional&quot; OR<br/>
+            &quot;HttpPutResponseHopLimit&quot; &gt; 1 in ModifyInstanceMetadataOptions events.<br/>
         >, margin=0.2
     ];
 
-    "2-Detective-B" [
-        shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="black",
+    "2-Chaos-Detective" [
+        shape=rectangle, style="filled,rounded,bold", fillcolor="#FC8600", color="#FFA500", fontcolor="black",
         label=<
-            <b>2.7 AWS Config Compliance Monitoring</b><br/>
-            <b>Classification: Detective</b><br/>
-            <b>Description:</b> Continuous evaluation of ec2-imdsv2-check<br/>
-            rule. Non-compliant resources trigger Config notification<br/>
-            to SNS topic monitored by security team.<br/>
-            <b>Implementation:</b> Config rule with 1-hour evaluation<br/>
-            frequency and SNS notification on compliance change.
+            <b>1.12 SCE Experiment: Detective Probe</b><br/>
+            <b>Test:</b> Execute modify-instance-metadata-options<br/>
+            with allowed role (for testing); verify CloudWatch<br/>
+            alert generated within 1 minute with full details.<br/>
+            <b>Expected Result:</b> Alert includes instance ID,<br/>
+            old/new HttpTokens value, caller identity.<br/>
+            <b>Failure Indicator:</b> No alert; detective control<br/>
+            bypassed.<br/>
         >, margin=0.2
     ];
 
-    "2-Detective-C" [
-        shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="black",
+    "2-Reactive" [
+        shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="white",
         label=<
-            <b>2.8 GuardDuty Defense Evasion Detection</b><br/>
-            <b>Classification: Detective</b><br/>
-            <b>Description:</b> Custom GuardDuty threat intelligence<br/>
-            list correlating IMDS modification with known attack<br/>
-            patterns. Triggers high-severity finding.<br/>
-            <b>Implementation:</b> GuardDuty with custom threat list<br/>
-            and CloudWatch Events integration.
-        >, margin=0.2
-    ];
-
-    "2-Reactive-A" [
-        shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="black",
-        label=<
-            <b>2.9 SSM Auto-Remediation</b><br/>
+            <b>1.13 Reactive: Revert IMDS Config &amp; Isolate Instance</b><br/>
             <b>Classification: Reactive</b><br/>
-            <b>Description:</b> SSM Automation document triggered by<br/>
-            Config rule to immediately restore IMDSv2 enforcement:<br/>
-            HttpTokens=required, HttpPutResponseHopLimit=1.<br/>
-            <b>Implementation:</b> AWS-RunDocument with<br/>
-            modify-instance-metadata-options command.
+            <b>Description:</b> EventBridge rule triggers Lambda<br/>
+            upon detection. Lambda reverts HttpTokens to<br/>
+            &quot;required&quot;, sets HttpPutResponseHopLimit to 1,<br/>
+            and isolates instance network (security group to<br/>
+            deny-all except logging/monitoring). Triggers forensic<br/>
+            capture (EBS snapshot, memory dump if available).<br/>
+            <b>Implementation:</b> Automated rollback via Lambda +<br/>
+            EC2 API; instance moved to quarantine security group.<br/>
         >, margin=0.2
     ];
 
-    "2-Reactive-B" [
-        shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="black",
+    "2-Chaos-Reactive" [
+        shape=rectangle, style="filled,rounded,bold", fillcolor="#FC8600", color="#FFA500", fontcolor="black",
         label=<
-            <b>2.10 Instance Quarantine</b><br/>
-            <b>Classification: Reactive</b><br/>
-            <b>Description:</b> Lambda function modifies instance<br/>
-            security group to quarantine-sg (no ingress/egress)<br/>
-            pending investigation. Preserves forensic state.<br/>
-            <b>Implementation:</b> Lambda → ec2:ModifyInstanceAttribute<br/>
-            with pre-created quarantine security group.
+            <b>1.14 SCE Experiment: Reactive Probe</b><br/>
+            <b>Test:</b> Trigger IMDS modification; verify Lambda<br/>
+            reverts config within 2 minutes; confirm new<br/>
+            configuration enforces IMDSv2 (token required);<br/>
+            verify instance is moved to quarantine SG.<br/>
+            <b>Expected Result:</b> IMDS reverted to secure state;<br/>
+            instance isolated from network.<br/>
+            <b>Failure Indicator:</b> Config remains weakened;<br/>
+            instance accessible; attacker proceeds to credential theft.<br/>
         >, margin=0.2
     ];
 
-    "2-Reactive-C" [
-        shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="black",
-        label=<
-            <b>2.11 Forensic Snapshot Capture</b><br/>
-            <b>Classification: Reactive</b><br/>
-            <b>Description:</b> Automated EBS snapshot creation for<br/>
-            affected instance volumes. Tagged with incident metadata<br/>
-            for chain of custody and PCI-DSS compliance.<br/>
-            <b>Implementation:</b> Lambda → ec2:CreateSnapshot with<br/>
-            forensic tags and S3 evidence bucket notification.
-        >, margin=0.2
-    ];
+    // ============================================================================
+    // ATTACK STEP 3: Exfiltrate Temporary Security Credentials (T1187, T1552.001)
+    // ============================================================================
 
-    // ==================== STEP 3: EXFILTRATE INSTANCE ROLE CREDENTIALS ====================
-
-    "3-Preventive-A" [
-        shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="black",
+    "3-Preventive" [
+        shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="white",
         label=<
-            <b>3.1 IMDSv2 Enforcement (Baseline)</b><br/>
+            <b>1.15 Preventive: Enforce IMDSv2 at Launch Template Level</b><br/>
             <b>Classification: Preventive</b><br/>
-            <b>Description:</b> All banking EC2 instances launched with<br/>
-            HttpTokens=required and HttpPutResponseHopLimit=1 via<br/>
-            hardened AMI and launch template configuration.<br/>
-            <b>Implementation:</b> Terraform aws_instance resource<br/>
-            with metadata_options block enforcing IMDSv2.
-        >, margin=0.2
-    ];
-
-    "3-Preventive-B" [
-        shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="black",
-        label=<
-            <b>3.2 Container Network Policy</b><br/>
-            <b>Classification: Preventive</b><br/>
-            <b>Description:</b> iptables rules on EC2 hosts blocking<br/>
-            container network namespaces from reaching 169.254.169.254.<br/>
-            Defense-in-depth if IMDS protections are bypassed.<br/>
-            <b>Implementation:</b> User data script with iptables<br/>
-            -A OUTPUT -d 169.254.169.254 -j DROP for containers.
-        >, margin=0.2
-    ];
-
-    "3-Preventive-C" [
-        shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="black",
-        label=<
-            <b>3.3 IAM Role Session Duration Limit</b><br/>
-            <b>Classification: Preventive</b><br/>
-            <b>Description:</b> EC2 instance role configured with<br/>
-            MaxSessionDuration of 1 hour. Limits credential validity<br/>
-            window if exfiltration occurs.<br/>
-            <b>Implementation:</b> IAM role with max_session_duration<br/>
-            = 3600 seconds for all banking workload roles.
+            <b>Description:</b> Configure all EC2 launch templates<br/>
+            with IMDSv2 enforced (HttpTokens=required) as<br/>
+            default, preventing downgrade via CloudFormation Guard.<br/>
+            <b>Implementation:</b> IaC policy validates all launch<br/>
+            templates; IMDSv1 disabled at infrastructure layer.<br/>
         >, margin=0.2
     ];
 
     "3-Attack" [
-        shape=rectangle, style=filled, fillcolor="#F40B0B", fontcolor="black",
+        shape=rectangle, style=filled, fillcolor="#F40B0B", fontcolor="white",
         label=<
-            <b>3.4 Exfiltrate Instance Role Credentials</b><br/>
-            <b>Command:</b> curl http://169.254.169.254/latest/<br/>
-            meta-data/iam/security-credentials/&lt;ROLE_NAME&gt;<br/>
-            <b>Dependencies:</b><br/>
-            • Network access to IMDS from container/process<br/>
-            • Instance has IAM role attached (banking workload)<br/>
-            • IMDS protections weakened (Step 2 successful)<br/>
-            <b>Result:</b> Temporary AWS credentials (AccessKeyId,<br/>
-            SecretAccessKey, SessionToken) for banking IAM role<br/>
-            enabling lateral movement to transaction systems<br/>
-            <b>TTP:</b> T1552.005 - Unsecured Credentials: Cloud Instance<br/>
-            Metadata API
+            <b>1.16 Attack: Exfiltrate Temporary Security Credentials</b><br/>
+            <b>TTP: T1187 – Forced Authentication;<br/>
+            T1552.001 – Credentials in Cloud Instance Metadata</b><br/>
+            <b>Command:</b><br/>
+            curl http://169.254.169.254/latest/meta-data/iam/security-credentials/<br/>
+            curl http://169.254.169.254/latest/meta-data/iam/security-credentials/&lt;ROLE_NAME&gt;<br/>
+            <b>Dependencies:</b> IMDS weakened to IMDSv1 from Step 2;<br/>
+            network access to 169.254.169.254:80 from EC2 or<br/>
+            adjacent container; process execution context on target.<br/>
+            <b>Result:</b> Attacker retrieves temporary AWS credentials<br/>
+            (AccessKeyId, SecretAccessKey, SessionToken, Expiration)<br/>
+            associated with EC2 IAM role. Credentials valid for up<br/>
+            to 1 hour; enable full API access with role permissions.<br/>
         >, margin=0.2
     ];
 
     "3-Chaos" [
-        shape=rectangle, style="filled,rounded,bold", fillcolor="#FC8600", color="#FFA500", fontcolor="#000000",
+        shape=rectangle, style="filled,rounded,bold", fillcolor="#FC8600", color="#FFA500", fontcolor="black",
         label=<
-            <b>3.5 SCE Experiment: Credential Exfiltration</b><br/>
-            <b>Preventive Probe:</b> From test container, attempt curl<br/>
-            to 169.254.169.254. Verify connection refused/timeout<br/>
-            due to hop limit=1 and iptables rules.<br/>
-            <b>Detective Probe:</b> Simulate successful IMDS query from<br/>
-            authorized process. Verify VPC Flow Logs capture traffic<br/>
-            to 169.254.169.254 and alert triggers.<br/>
-            <b>Reactive Probe:</b> Use exfiltrated test credentials from<br/>
-            external IP. Verify GuardDuty InstanceCredentialExfiltration<br/>
-            finding and automated credential revocation.
+            <b>1.17 SCE Experiment: Preventive Probe</b><br/>
+            <b>Test:</b> Attempt to modify launch template to<br/>
+            disable IMDSv2; verify CloudFormation Guard rejects<br/>
+            with policy violation.<br/>
+            <b>Expected Result:</b> Deployment fails; error states<br/>
+            &quot;IMDSv2 required; HttpTokens must be &#x27;required&#x27;&quot;.<br/>
+            <b>Failure Indicator:</b> Template accepts IMDSv1;<br/>
+            instances launch in vulnerable state.<br/>
         >, margin=0.2
     ];
 
-    "3-Detective-A" [
-        shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="black",
+    "3-Detective" [
+        shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="white",
         label=<
-            <b>3.6 VPC Flow Logs IMDS Traffic Analysis</b><br/>
+            <b>1.18 Detective: Network Monitoring &amp; Anomaly Detection</b><br/>
             <b>Classification: Detective</b><br/>
-            <b>Description:</b> CloudWatch Logs Insights query analyzing<br/>
-            VPC Flow Logs for traffic to 169.254.169.254 from<br/>
-            unexpected source ENIs (container network interfaces).<br/>
-            <b>Implementation:</b> Scheduled Lambda query with<br/>
-            dstAddr=169.254.169.254 filter and anomaly threshold.
+            <b>Description:</b> Monitor for unusual IMDS requests<br/>
+            (169.254.169.254) from EC2 instances. Baseline: expected<br/>
+            requests only during container startup. Alert on repeated<br/>
+            or bulk metadata requests from application processes or<br/>
+            containers not expected to access IMDS.<br/>
+            <b>Implementation:</b> VPC Flow Logs + Falco kernel<br/>
+            monitoring; detect curl/wget to IMDS endpoint from<br/>
+            non-init processes.<br/>
         >, margin=0.2
     ];
 
-    "3-Detective-B" [
-        shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="black",
+    "3-Chaos-Detective" [
+        shape=rectangle, style="filled,rounded,bold", fillcolor="#FC8600", color="#FFA500", fontcolor="black",
         label=<
-            <b>3.7 GuardDuty Credential Exfiltration Detection</b><br/>
-            <b>Classification: Detective</b><br/>
-            <b>Description:</b> GuardDuty finding type<br/>
-            UnauthorizedAccess:IAMUser/InstanceCredentialExfiltration<br/>
-            detects instance credentials used from external IP.<br/>
-            <b>Implementation:</b> GuardDuty enabled with CloudWatch<br/>
-            Events rule for high-severity findings.
+            <b>1.19 SCE Experiment: Detective Probe</b><br/>
+            <b>Test:</b> From running container, execute curl to<br/>
+            IMDS; verify Falco rule triggers within 5 seconds with<br/>
+            alert showing process name, PID, container ID.<br/>
+            <b>Expected Result:</b> Alert: &quot;Suspicious IMDS access<br/>
+            from curl process in container &lt;container_id&gt;&quot;.<br/>
+            <b>Failure Indicator:</b> No alert; attacker undetected<br/>
+            retrieving credentials.<br/>
         >, margin=0.2
     ];
 
-    "3-Detective-C" [
-        shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="black",
+    "3-Reactive" [
+        shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="white",
         label=<
-            <b>3.8 CloudTrail Credential Usage Anomaly</b><br/>
-            <b>Classification: Detective</b><br/>
-            <b>Description:</b> CloudTrail Insights detecting unusual<br/>
-            API call patterns from instance role credentials:<br/>
-            new regions, services, or high-volume operations.<br/>
-            <b>Implementation:</b> CloudTrail Insights enabled with<br/>
-            EventBridge rule for InsightType: ApiCallRateInsight.
-        >, margin=0.2
-    ];
-
-    "3-Reactive-A" [
-        shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="black",
-        label=<
-            <b>3.9 Immediate Session Revocation</b><br/>
+            <b>1.20 Reactive: Revoke Credentials &amp; Terminate Session</b><br/>
             <b>Classification: Reactive</b><br/>
-            <b>Description:</b> Lambda function attaches inline policy<br/>
-            to compromised role with Deny all and condition<br/>
-            aws:TokenIssueTime before current timestamp.<br/>
-            <b>Implementation:</b> Lambda → iam:PutRolePolicy with<br/>
-            DateLessThan condition revoking all active sessions.
+            <b>Description:</b> Upon IMDS credential theft detection,<br/>
+            EventBridge triggers Lambda to immediately revoke the<br/>
+            EC2 instance's IAM role session. Lambda updates the role's<br/>
+            trust policy to deny new AssumeRole calls and tags all<br/>
+            API calls made with exfiltrated credentials as &quot;suspicious&quot;.<br/>
+            Instance terminated; forensic capture executed.<br/>
+            <b>Implementation:</b> Lambda updates IAM role + terminates<br/>
+            instance; captures EBS snapshot for analysis.<br/>
         >, margin=0.2
     ];
 
-    "3-Reactive-B" [
-        shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="black",
+    "3-Chaos-Reactive" [
+        shape=rectangle, style="filled,rounded,bold", fillcolor="#FC8600", color="#FFA500", fontcolor="black",
         label=<
-            <b>3.10 Lateral Movement Blocking</b><br/>
-            <b>Classification: Reactive</b><br/>
-            <b>Description:</b> Security group rules updated to block<br/>
-            all traffic from compromised instance to other banking<br/>
-            tiers (transaction services, database connectors).<br/>
-            <b>Implementation:</b> Lambda → ec2:AuthorizeSecurityGroupIngress<br/>
-            adding Deny rules for compromised instance IP.
+            <b>1.21 SCE Experiment: Reactive Probe</b><br/>
+            <b>Test:</b> Exfiltrate credentials; attempt to use them<br/>
+            for AWS API call; verify call rejected with &quot;User is<br/>
+            not authorized&quot; within 1 minute.<br/>
+            <b>Expected Result:</b> Credentials invalidated; attacker<br/>
+            cannot perform further API calls.<br/>
+            <b>Failure Indicator:</b> Credentials remain valid; attacker<br/>
+            gains persistent access with role permissions.<br/>
         >, margin=0.2
     ];
 
-    "3-Reactive-C" [
-        shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="black",
-        label=<
-            <b>3.11 Incident Response Workflow Trigger</b><br/>
-            <b>Classification: Reactive</b><br/>
-            <b>Description:</b> Full incident response workflow activated:<br/>
-            PagerDuty escalation, Slack war room creation, JIRA ticket,<br/>
-            and automated evidence collection to S3.<br/>
-            <b>Implementation:</b> Step Functions workflow orchestrating<br/>
-            multi-channel notification and forensic capture.
-        >, margin=0.2
-    ];
-
-    // ==================== FINAL NODE ====================
+    // ============================================================================
+    // FINAL NODE (STRIDE Classification)
+    // ============================================================================
     "Final_Node" [
-        label=<<b>4.0 Attack Goal Achieved</b><br/><i>STRIDE Classification</i><br/>• <b>Tampering:</b> IMDS configuration modified<br/>• <b>Information Disclosure:</b> IAM credentials exfiltrated<br/>• <b>Elevation of Privilege:</b> Attacker assumes instance role<br/><i>Impact:</i> Unauthorized access to banking transaction systems,<br/>potential fraudulent transfers, PCI-DSS compliance violation>,
-        shape=rectangle, style="filled,bold", fillcolor="#C6E8D1", fontcolor="black", margin=0.3
+        label=<
+            <b>Attack Goal Blocked/Mitigated</b><br/>
+            <b>STRIDE Classifications:</b><br/>
+            <b>• Information Disclosure:</b> Credentials exfiltrated<br/>
+            (mitigated via reactive credential revocation)<br/>
+            <b>• Elevation of Privilege:</b> Attacker assumes EC2 role<br/>
+            permissions (mitigated via session termination)<br/>
+            <b>• Tampering:</b> IMDS weakened to IMDSv1 (mitigated<br/>
+            via preventive IaC policy + reactive rollback)<br/>
+        >,
+        shape=rectangle, style=filled, fillcolor="#C6E8D1", fontcolor="black"
     ];
 
-    // ==================== RANK ALIGNMENTS ====================
-    {rank=same; "1-Preventive-A"; "1-Preventive-B"}
+    // ============================================================================
+    // GRAPH STRUCTURE &amp; CONNECTIONS
+    // ============================================================================
+
+    // Step 1 connections
     {rank=same; "1-Chaos"; "1-Attack"}
-    {rank=same; "1-Detective-A"; "1-Detective-B"}
-    {rank=same; "1-Reactive-A"; "1-Reactive-B"}
-    
-    {rank=same; "2-Preventive-A"; "2-Preventive-B"; "2-Preventive-C"}
+    {rank=same; "1-Detective"; "1-Chaos-Detective"}
+    {rank=same; "1-Reactive"; "1-Chaos-Reactive"}
+
+    // Step 2 connections
     {rank=same; "2-Chaos"; "2-Attack"}
-    {rank=same; "2-Detective-A"; "2-Detective-B"; "2-Detective-C"}
-    {rank=same; "2-Reactive-A"; "2-Reactive-B"; "2-Reactive-C"}
-    
-    {rank=same; "3-Preventive-A"; "3-Preventive-B"; "3-Preventive-C"}
+    {rank=same; "2-Detective"; "2-Chaos-Detective"}
+    {rank=same; "2-Reactive"; "2-Chaos-Reactive"}
+
+    // Step 3 connections
     {rank=same; "3-Chaos"; "3-Attack"}
-    {rank=same; "3-Detective-A"; "3-Detective-B"; "3-Detective-C"}
-    {rank=same; "3-Reactive-A"; "3-Reactive-B"; "3-Reactive-C"}
+    {rank=same; "3-Detective"; "3-Chaos-Detective"}
+    {rank=same; "3-Reactive"; "3-Chaos-Reactive"}
 
-    // ==================== MAIN FLOW CONNECTIONS ====================
-    
-    // Root to Step 1
-    "Root_Node" -> "1-Preventive-A" [color="#0683FF", penwidth=2];
-    "Root_Node" -> "1-Preventive-B" [color="#0683FF", penwidth=2];
-    
-    // Step 1 Preventive to Attack
-    "1-Preventive-A" -> "1-Attack" [color="#333333", penwidth=1.5];
-    "1-Preventive-B" -> "1-Attack" [color="#333333", penwidth=1.5];
-    
-    // Step 1 Attack to Detective/Reactive
-    "1-Attack" -> "1-Detective-A" [color="#0683FF", penwidth=1.5];
-    "1-Attack" -> "1-Detective-B" [color="#0683FF", penwidth=1.5];
-    "1-Attack" -> "1-Reactive-A" [color="#0683FF", penwidth=1.5];
-    "1-Attack" -> "1-Reactive-B" [color="#0683FF", penwidth=1.5];
-    
-    // Step 1 to Step 2 Transition
-    "1-Detective-A" -> "2-Preventive-A" [color="#333333", penwidth=1.5];
-    "1-Detective-B" -> "2-Preventive-B" [color="#333333", penwidth=1.5];
-    "1-Reactive-A" -> "2-Preventive-A" [color="#333333", penwidth=1.5, style=dashed];
-    "1-Reactive-B" -> "2-Preventive-C" [color="#333333", penwidth=1.5, style=dashed];
-    
-    // Step 2 Preventive to Attack
-    "2-Preventive-A" -> "2-Attack" [color="#333333", penwidth=1.5];
-    "2-Preventive-B" -> "2-Attack" [color="#333333", penwidth=1.5];
-    "2-Preventive-C" -> "2-Attack" [color="#333333", penwidth=1.5];
-    
-    // Step 2 Attack to Detective/Reactive
-    "2-Attack" -> "2-Detective-A" [color="#0683FF", penwidth=1.5];
-    "2-Attack" -> "2-Detective-B" [color="#0683FF", penwidth=1.5];
-    "2-Attack" -> "2-Detective-C" [color="#0683FF", penwidth=1.5];
-    "2-Attack" -> "2-Reactive-A" [color="#0683FF", penwidth=1.5];
-    "2-Attack" -> "2-Reactive-B" [color="#0683FF", penwidth=1.5];
-    "2-Attack" -> "2-Reactive-C" [color="#0683FF", penwidth=1.5];
-    
-    // Step 2 to Step 3 Transition
-    "2-Detective-A" -> "3-Preventive-A" [color="#333333", penwidth=1.5];
-    "2-Detective-B" -> "3-Preventive-B" [color="#333333", penwidth=1.5];
-    "2-Detective-C" -> "3-Preventive-C" [color="#333333", penwidth=1.5];
-    "2-Reactive-A" -> "3-Preventive-A" [color="#333333", penwidth=1.5, style=dashed];
-    "2-Reactive-B" -> "3-Preventive-B" [color="#333333", penwidth=1.5, style=dashed];
-    "2-Reactive-C" -> "3-Preventive-C" [color="#333333", penwidth=1.5, style=dashed];
-    
-    // Step 3 Preventive to Attack
-    "3-Preventive-A" -> "3-Attack" [color="#333333", penwidth=1.5];
-    "3-Preventive-B" -> "3-Attack" [color="#333333", penwidth=1.5];
-    "3-Preventive-C" -> "3-Attack" [color="#333333", penwidth=1.5];
-    
-    // Step 3 Attack to Detective/Reactive
-    "3-Attack" -> "3-Detective-A" [color="#0683FF", penwidth=1.5];
-    "3-Attack" -> "3-Detective-B" [color="#0683FF", penwidth=1.5];
-    "3-Attack" -> "3-Detective-C" [color="#0683FF", penwidth=1.5];
-    "3-Attack" -> "3-Reactive-A" [color="#0683FF", penwidth=1.5];
-    "3-Attack" -> "3-Reactive-B" [color="#0683FF", penwidth=1.5];
-    "3-Attack" -> "3-Reactive-C" [color="#0683FF", penwidth=1.5];
-    
-    // Step 3 to Final Node
-    "3-Detective-A" -> "Final_Node" [color="#333333", penwidth=2];
-    "3-Detective-B" -> "Final_Node" [color="#333333", penwidth=2];
-    "3-Detective-C" -> "Final_Node" [color="#333333", penwidth=2];
-    "3-Reactive-A" -> "Final_Node" [color="#333333", penwidth=2, style=dashed];
-    "3-Reactive-B" -> "Final_Node" [color="#333333", penwidth=2, style=dashed];
-    "3-Reactive-C" -> "Final_Node" [color="#333333", penwidth=2, style=dashed];
+    // Main flow: Step 1
+    "Root_Node" -> "1-Preventive" [color="black", penwidth=2];
+    "1-Preventive" -> "1-Attack" [color="black", penwidth=2];
+    "1-Attack" -> "1-Chaos" [style=dashed, color="#FC8600", penwidth=1.5];
+    "1-Attack" -> "1-Detective" [color="black", penwidth=1.5];
+    "1-Detective" -> "1-Chaos-Detective" [style=dashed, color="#FC8600", penwidth=1.5];
+    "1-Attack" -> "1-Reactive" [color="black", penwidth=1.5];
+    "1-Reactive" -> "1-Chaos-Reactive" [style=dashed, color="#FC8600", penwidth=1.5];
 
-    // ==================== CHAOS NODE CONNECTIONS ====================
-    "1-Attack" -> "1-Chaos" [style=dashed, color="#FC8600", penwidth=2];
-    "2-Attack" -> "2-Chaos" [style=dashed, color="#FC8600", penwidth=2];
-    "3-Attack" -> "3-Chaos" [style=dashed, color="#FC8600", penwidth=2];
+    // Main flow: Step 1 to Step 2
+    "1-Detective" -> "2-Preventive" [color="black", penwidth=2];
+    "1-Reactive" -> "2-Preventive" [color="black", penwidth=2];
 
-    // ==================== LEGEND ====================
-    subgraph cluster_legend {
-        label=<<b>Legend</b>>;
-        labelloc="t";
-        style="rounded,filled";
-        fillcolor="#F5F5F5";
-        fontsize=12;
-        
-        "legend_attack" [
-            shape=rectangle, style=filled, fillcolor="#F40B0B", fontcolor="black",
-            label=<<b>Attack Step</b>>, width=1.5, height=0.4
-        ];
-        "legend_preventive" [
-            shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="black",
-            label=<<b>Preventive Safeguard</b>>, width=1.5, height=0.4
-        ];
-        "legend_detective" [
-            shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="black",
-            label=<<b>Detective Safeguard</b>>, width=1.5, height=0.4
-        ];
-        "legend_reactive" [
-            shape=rectangle, style=filled, fillcolor="#0683FF", fontcolor="black",
-            label=<<b>Reactive Safeguard</b>>, width=1.5, height=0.4
-        ];
-        "legend_chaos" [
-            shape=rectangle, style="filled,rounded,bold", fillcolor="#FC8600", fontcolor="black",
-            label=<<b>SCE Experiment</b>>, width=1.5, height=0.4
-        ];
-        "legend_root" [
-            shape=rectangle, style=filled, fillcolor="#C6E8D1", fontcolor="black",
-            label=<<b>Entry/Exit Point</b>>, width=1.5, height=0.4
-        ];
-        
-        "legend_attack" -> "legend_preventive" [style=invis];
-        "legend_preventive" -> "legend_detective" [style=invis];
-        "legend_detective" -> "legend_reactive" [style=invis];
-        "legend_reactive" -> "legend_chaos" [style=invis];
-        "legend_chaos" -> "legend_root" [style=invis];
-    }
+    // Main flow: Step 2
+    "2-Preventive" -> "2-Attack" [color="black", penwidth=2];
+    "2-Attack" -> "2-Chaos" [style=dashed, color="#FC8600", penwidth=1.5];
+    "2-Attack" -> "2-Detective" [color="black", penwidth=1.5];
+    "2-Detective" -> "2-Chaos-Detective" [style=dashed, color="#FC8600", penwidth=1.5];
+    "2-Attack" -> "2-Reactive" [color="black", penwidth=1.5];
+    "2-Reactive" -> "2-Chaos-Reactive" [style=dashed, color="#FC8600", penwidth=1.5];
+
+    // Main flow: Step 2 to Step 3
+    "2-Detective" -> "3-Preventive" [color="black", penwidth=2];
+    "2-Reactive" -> "3-Preventive" [color="black", penwidth=2];
+
+    // Main flow: Step 3
+    "3-Preventive" -> "3-Attack" [color="black", penwidth=2];
+    "3-Attack" -> "3-Chaos" [style=dashed, color="#FC8600", penwidth=1.5];
+    "3-Attack" -> "3-Detective" [color="black", penwidth=1.5];
+    "3-Detective" -> "3-Chaos-Detective" [style=dashed, color="#FC8600", penwidth=1.5];
+    "3-Attack" -> "3-Reactive" [color="black", penwidth=1.5];
+    "3-Reactive" -> "3-Chaos-Reactive" [style=dashed, color="#FC8600", penwidth=1.5];
+
+    // Main flow: Step 3 to Final
+    "3-Detective" -> "Final_Node" [color="black", penwidth=2];
+    "3-Reactive" -> "Final_Node" [color="black", penwidth=2];
+
 }

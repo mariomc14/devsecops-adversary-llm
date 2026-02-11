@@ -1,0 +1,98 @@
+{
+  "chaoslib-version": "1.44.0",
+  "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.41",
+  "node": "PC-INF-MAMA",
+  "experiment": {
+    "title": "SCE 1.3: Preventive Probe - IAM Deny ec2:DescribeInstances",
+    "description": "Validates that explicit IAM deny policy on ec2:DescribeInstances prevents EC2 instance enumeration. Attack Step 1.2 (T1526) is simulated; preventive control blocks attacker access at authorization layer.",
+    "tags": [
+      "aws",
+      "ec2",
+      "iam",
+      "preventive",
+      "credential-theft",
+      "attack-defense-tree",
+      "banking-platform",
+      "sce-1-3"
+    ],
+    "steady-state-hypothesis": {
+      "title": "Preventive Control: IAM Deny on ec2:DescribeInstances",
+      "probes": [
+        {
+          "type": "probe",
+          "name": "Verify IAM Deny Policy Enforcement",
+          "tolerance": true,
+          "provider": {
+            "type": "python",
+            "module": "chaosaws.ec2.1_3_preventive",
+            "func": "hypothesis_verification"
+          }
+        }
+      ]
+    },
+    "method": [
+      {
+        "type": "action",
+        "name": "Establish Steady State",
+        "description": "Deploy CloudFormation stack with dev/build role, explicit deny policy, and test EC2 instance",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_preventive",
+          "func": "steady_state"
+        }
+      },
+      {
+        "type": "action",
+        "name": "Execute Attack Step 1.2: Enumerate EC2 Instances",
+        "description": "Simulate attacker with dev/build role attempting ec2:DescribeInstances API call. Expected result: access denied due to explicit deny policy.",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_preventive",
+          "func": "attack"
+        }
+      }
+    ],
+    "rollbacks": [
+      {
+        "type": "action",
+        "name": "Teardown Experiment Resources",
+        "description": "Delete CloudFormation stack and all provisioned resources",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_preventive",
+          "func": "rollback"
+        }
+      }
+    ],
+    "dry": null
+  },
+  "start": "2026-02-11T16:31:04.479504+00:00",
+  "status": "interrupted",
+  "deviated": false,
+  "steady_states": {
+    "before": null,
+    "after": null,
+    "during": []
+  },
+  "run": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "Establish Steady State",
+        "description": "Deploy CloudFormation stack with dev/build role, explicit deny policy, and test EC2 instance",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_preventive",
+          "func": "steady_state"
+        }
+      },
+      "output": null,
+      "start": "2026-02-11T16:31:04.479775+00:00",
+      "end": "2026-02-11T16:39:14.527013+00:00",
+      "duration": 490.047238
+    }
+  ],
+  "rollbacks": [],
+  "end": "2026-02-11T16:39:14.529187+00:00",
+  "duration": 490.05120730400085
+}

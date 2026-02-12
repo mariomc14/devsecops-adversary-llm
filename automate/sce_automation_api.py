@@ -906,9 +906,6 @@ Produce a detailed evaluation report in the following structure:
             else:
                 full_prompt = prompt
             
-            total_tokens = self._count_tokens(full_prompt)
-            print(f"📊 Token usage - Total: {total_tokens}")
-
             response = self.bedrock.converse(
                 modelId="global.anthropic.claude-haiku-4-5-20251001-v1:0",
                 messages=[
@@ -926,6 +923,8 @@ Produce a detailed evaluation report in the following structure:
                     "temperature" : 1,
                 },
             )
+
+            print(f"Input tokens: {response['usage']['inputTokens']}")
 
             response_text = response["output"]["message"]["content"][0]["text"] 
 
@@ -1290,12 +1289,28 @@ Produce a detailed evaluation report in the following structure:
                                     )
                                     if save_success:
                                         print("✅ Post-execution quality evaluation completed")
+                                        
+                                        # Check if post-execution metrics failed
+                                        if q_post_score is not None and q_post_score < quality_threshold_post:
+                                            print(f"\n⚠️ Post-execution quality threshold not met (Q_post={q_post_score:.2f} < {quality_threshold_post})")
+                                            print("🔄 Regenerating attack-defense tree to improve quality...")
+                                            
+                                            attacks_yaml_path = os.path.join(self.workspace_path, "attacks.yaml")
+                                            attacks_yaml_content = self._load_file(attacks_yaml_path)
+                                            
+                                            if attacks_yaml_content and structure_dot_content:
+                                                tree_prompt = self._build_attack_defense_tree_prompt(attacks_yaml_content, structure_dot_content)
+                                                stage3_response = self._call_amazon_q(tree_prompt, use_context=True)
+                                                
+                                                if stage3_response and self._save_dot_output(stage3_response):
+                                                    print("✅ Attack-defense tree regenerated")
+                                                else:
+                                                    print("❌ Failed to regenerate attack-defense tree")
+                                            else:
+                                                print("❌ Failed to load required files for tree regeneration")
                                     else:
                                         print("⚠️ Post-execution evaluation completed but report save failed")
-                                else:
-                                    print("⚠️ Failed to generate post-execution metrics evaluation")
-                            else:
-                                print("⚠️ Could not load execution log for post-evaluation")
+
                     else:
                         print("💡 Experiment not executed. You can run it manually with:")
                         print(f"   chaos run {safe_sce_node}_{safe_probe_type}.json > output_{safe_sce_node}_{safe_probe_type}.log 2>&1")
@@ -1420,7 +1435,7 @@ def test_bedrock_connection() -> bool:
 
 def interactive_input():
     """Get inputs interactively from user"""
-    print("🤖 SCE API Automation with Amazon Q")
+    print("🤖 ADTs and Experiments Automation")
     print("====================================")
     print("")
     

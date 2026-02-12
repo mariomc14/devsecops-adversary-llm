@@ -1,46 +1,59 @@
 attack:
-  id: AWS-EC2-IMDS-WEAKENING-001
+  id: AWS-EC2-MODIFY-IMDS-OPTIONS
   name: EC2 Instance Metadata Service Weakening via ModifyInstanceMetadataOptions
   overview: |
-    An attacker with ec2:ModifyInstanceMetadataOptions permission can degrade Instance Metadata Service (IMDS) security controls to facilitate credential exfiltration. By modifying metadata options, the attacker can force downgrade to IMDSv1 (removing token requirement) or increase HttpPutResponseHopLimit, which expands the network scope of the 169.254.169.254 endpoint beyond the VM's network namespace. This enables credential theft from temporary security credentials accessible via IMDS, allowing lateral movement, privilege escalation, or unauthorized resource access.
+    An attacker with ec2:ModifyInstanceMetadataOptions permission can weaken Instance Metadata Service (IMDS) protections to facilitate credential exfiltration. The primary attack vector involves modifying IMDS configuration parameters: downgrading from IMDSv2 to IMDSv1 (by setting HttpTokens to optional), or increasing HttpPutResponseHopLimit to extend the metadata endpoint's network reachability beyond the instance's local network namespace. By raising the hop limit (TTL), the 169.254.169.254 endpoint becomes accessible to other processes, containers, or compromised applications running on the instance, enabling unauthorized retrieval of temporary AWS credentials and session tokens.
   steps:
-    - title: Identify Target EC2 Instance
+    - title: Verify EC2 Instance and Current IMDS Configuration
       command: |
         aws ec2 describe-instances \
-          --filters "Name=instance-state-name,Values=running" \
-          --query 'Reservations[*].Instances[*].[InstanceId,PrivateIpAddress,Tags[?Key==`Name`].Value|[0]]' \
-          --output table
+          --instance-ids <INSTANCE_ID> \
+          --query 'Reservations[0].Instances[0].MetadataOptions'
       dependencies:
         - ec2:DescribeInstances
-        - Target EC2 instance must be in running state
-      result: Attacker identifies target EC2 instance ID and confirms it is accessible and running.
-      ttp: T1526 - Gather victim host information
+        - Target EC2 instance must exist and be accessible
+      result: |
+        Confirms the current IMDS configuration state, including HttpTokens setting (required/optional), HttpEndpoint status (enabled/disabled), and current HttpPutResponseHopLimit value. Establishes baseline for comparison after modification.
+      ttp: T1526 - Gather System Network Configuration Discovery
 
-    - title: Weaken IMDS Security Configuration
+    - title: Weaken IMDS Protection by Disabling Token Requirement
       command: |
         aws ec2 modify-instance-metadata-options \
           --instance-id <INSTANCE_ID> \
           --http-tokens optional \
-          --http-endpoint enabled \
+          --http-endpoint enabled
+      dependencies:
+        - ec2:ModifyInstanceMetadataOptions
+        - Target EC2 instance must exist
+        - Instance must be in running or stopped state
+      result: |
+        IMDS downgraded from IMDSv2 (token-based) to IMDSv1 (unauthenticated). Metadata endpoint now accessible via simple HTTP requests without session tokens, significantly lowering the barrier to credential theft from any process on the instance.
+      ttp: T1199 - Trusted Relationship
+
+    - title: Increase IMDS Hop Limit to Enable Cross-Namespace Access
+      command: |
+        aws ec2 modify-instance-metadata-options \
+          --instance-id <INSTANCE_ID> \
           --http-put-response-hop-limit 2
       dependencies:
-        - ec2:ModifyInstanceMetadataOptions permission
-        - Target instance must exist and be accessible
-      result: IMDS is downgraded to IMDSv1 (HttpTokens optional), enabling unauthenticated metadata access. HttpPutResponseHopLimit increased to 2, allowing metadata service reachability from adjacent processes and containers on the host.
-      ttp: T1578.005 - Modify cloud compute infrastructure (EC2 instance metadata)
+        - ec2:ModifyInstanceMetadataOptions
+        - Target EC2 instance must exist
+        - Instance must be in running or stopped state
+      result: |
+        HttpPutResponseHopLimit increased from default (1) to 2, allowing the 169.254.169.254 metadata endpoint to be reached beyond the instance's local network namespace. Compromised containers, sidecars, or secondary processes can now query the metadata endpoint directly, enabling credential exfiltration without requiring host-level access.
+      ttp: T1552.001 - Unsecured Credentials - Credentials In Files
 
-    - title: Exfiltrate Temporary Security Credentials
+    - title: Retrieve Temporary Credentials from Modified IMDS
       command: |
-        curl http://169.254.169.254/latest/meta-data/iam/security-credentials/
         curl http://169.254.169.254/latest/meta-data/iam/security-credentials/<ROLE_NAME>
       dependencies:
-        - Network access to IMDS endpoint (169.254.169.254:80)
-        - Successfully weakened IMDS configuration from Step 2
-        - Process or container execution context on the EC2 instance or within hop limit range
-      result: Attacker retrieves temporary AWS credentials (AccessKeyId, SecretAccessKey, Token) associated with the EC2 instance IAM role, enabling authenticated API calls to AWS services with the instance's permissions.
-      ttp: T1187 - Forced authentication, T1552.001 - Credentials in cloud instance metadata
+        - Previous steps completed successfully
+        - Target instance must have an IAM instance profile attached
+        - Network access to 169.254.169.254 from attacker's execution context (container, process, or secondary instance)
+      result: |
+        Attacker successfully retrieves temporary AWS credentials (AccessKeyId, SecretAccessKey, SessionToken) from the IMDS endpoint. These credentials can be used to assume the permissions of the instance's IAM role, leading to lateral movement, data access, or further privilege escalation within the AWS environment.
+      ttp: T1552.005 - Unsecured Credentials - Cloud Instance Metadata API
 
   stride_goal:
     - Information Disclosure
     - Elevation of Privilege
-    - Tampering

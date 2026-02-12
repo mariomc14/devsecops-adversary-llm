@@ -3,24 +3,26 @@
   "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.41",
   "node": "PC-INF-MAMA",
   "experiment": {
-    "title": "SCE 1.3: Preventive Probe - IAM Deny ec2:DescribeInstances",
-    "description": "Validates that explicit IAM deny policy on ec2:DescribeInstances prevents EC2 instance enumeration. Attack Step 1.2 (T1526) is simulated; preventive control blocks attacker access at authorization layer.",
+    "title": "SCE 1.3 Preventive Probe: EC2 IMDS Modification Denial (Fixed)",
+    "description": "Validates that an IAM explicit deny policy successfully prevents ec2:ModifyInstanceMetadataOptions API calls, blocking the IMDS downgrade attack (AWS-EC2-MODIFY-IMDS-OPTIONS / T1552.005). This experiment simulates an attacker attempting to weaken Instance Metadata Service (IMDS) protection by disabling IMDSv2 token requirement and increasing hop limit to enable credential theft from containers. The preventive control (explicit IAM deny) should block all modification attempts. FIXES: Simplified CloudFormation template (removed EC2 instance creation issues), enhanced diagnostics (detailed stack events), prerequisite validation, and resilient error handling.",
     "tags": [
-      "aws",
+      "security",
+      "chaos-engineering",
+      "preventive-control",
       "ec2",
+      "imds",
       "iam",
-      "preventive",
       "credential-theft",
-      "attack-defense-tree",
-      "banking-platform",
-      "sce-1-3"
+      "aws",
+      "fixed"
     ],
     "steady-state-hypothesis": {
-      "title": "Preventive Control: IAM Deny on ec2:DescribeInstances",
+      "title": "Preventive Control: IAM Explicit Deny on EC2 IMDS Modification",
+      "description": "EC2 instance metadata service modifications (ec2:ModifyInstanceMetadataOptions) should be denied for all principals without explicit allow. IMDSv2 token requirement and hop limit=1 should remain enforced, preventing credential exfiltration via IMDS downgrade attack.",
       "probes": [
         {
           "type": "probe",
-          "name": "Verify IAM Deny Policy Enforcement",
+          "name": "Verify IAM Deny Policy Blocks EC2 IMDS Modifications",
           "tolerance": true,
           "provider": {
             "type": "python",
@@ -33,8 +35,8 @@
     "method": [
       {
         "type": "action",
-        "name": "Establish Steady State",
-        "description": "Deploy CloudFormation stack with dev/build role, explicit deny policy, and test EC2 instance",
+        "name": "Prepare Test Infrastructure (CloudFormation Stack)",
+        "description": "Deploy CloudFormation stack with IAM role (explicit deny on ModifyInstanceMetadataOptions) and instance profile. Validate prerequisites, extract outputs for attack phase, and wait for IAM policy propagation.",
         "provider": {
           "type": "python",
           "module": "chaosaws.ec2.1_3_preventive",
@@ -43,8 +45,8 @@
       },
       {
         "type": "action",
-        "name": "Execute Attack Step 1.2: Enumerate EC2 Instances",
-        "description": "Simulate attacker with dev/build role attempting ec2:DescribeInstances API call. Expected result: access denied due to explicit deny policy.",
+        "name": "Execute Attack: IMDS Weakening (T1552.005)",
+        "description": "Assume the restricted IAM role and attempt to: (1) Disable token requirement (HttpTokens=optional), (2) Increase hop limit (HttpPutResponseHopLimit=2). Both steps should be blocked by the preventive control with AccessDenied error.",
         "provider": {
           "type": "python",
           "module": "chaosaws.ec2.1_3_preventive",
@@ -55,8 +57,8 @@
     "rollbacks": [
       {
         "type": "action",
-        "name": "Teardown Experiment Resources",
-        "description": "Delete CloudFormation stack and all provisioned resources",
+        "name": "Delete CloudFormation Stack and Resources",
+        "description": "Delete the CloudFormation stack and all provisioned resources (IAM role, instance profile). Wait for deletion to complete and handle stack-not-found gracefully.",
         "provider": {
           "type": "python",
           "module": "chaosaws.ec2.1_3_preventive",
@@ -66,33 +68,94 @@
     ],
     "dry": null
   },
-  "start": "2026-02-11T16:31:04.479504+00:00",
-  "status": "interrupted",
-  "deviated": false,
+  "start": "2026-02-12T16:30:41.831731+00:00",
+  "status": "failed",
+  "deviated": true,
   "steady_states": {
     "before": null,
-    "after": null,
+    "after": {
+      "steady_state_met": false,
+      "probes": [
+        {
+          "activity": {
+            "type": "probe",
+            "name": "Verify IAM Deny Policy Blocks EC2 IMDS Modifications",
+            "tolerance": true,
+            "provider": {
+              "type": "python",
+              "module": "chaosaws.ec2.1_3_preventive",
+              "func": "hypothesis_verification"
+            }
+          },
+          "output": null,
+          "start": "2026-02-12T16:33:27.215802+00:00",
+          "status": "failed",
+          "exception": [
+            "Traceback (most recent call last):\n",
+            "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py\", line 56, in run_python_activity\n    return func(**arguments)\n",
+            "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py\", line 852, in hypothesis_verification\n    raise AssertionError(\"Hypothesis verification failed\")\n",
+            "AssertionError: Hypothesis verification failed\n",
+            "\nDuring handling of the above exception, another exception occurred:\n\n",
+            "chaoslib.exceptions.ActivityFailed: AssertionError: Hypothesis verification failed\n"
+          ],
+          "end": "2026-02-12T16:33:28.143873+00:00",
+          "duration": 0.928071,
+          "tolerance_met": false
+        }
+      ]
+    },
     "during": []
   },
   "run": [
     {
       "activity": {
         "type": "action",
-        "name": "Establish Steady State",
-        "description": "Deploy CloudFormation stack with dev/build role, explicit deny policy, and test EC2 instance",
+        "name": "Prepare Test Infrastructure (CloudFormation Stack)",
+        "description": "Deploy CloudFormation stack with IAM role (explicit deny on ModifyInstanceMetadataOptions) and instance profile. Validate prerequisites, extract outputs for attack phase, and wait for IAM policy propagation.",
         "provider": {
           "type": "python",
           "module": "chaosaws.ec2.1_3_preventive",
           "func": "steady_state"
         }
       },
+      "output": true,
+      "start": "2026-02-12T16:30:41.831989+00:00",
+      "status": "succeeded",
+      "end": "2026-02-12T16:33:24.917405+00:00",
+      "duration": 163.085416
+    },
+    {
+      "activity": {
+        "type": "action",
+        "name": "Execute Attack: IMDS Weakening (T1552.005)",
+        "description": "Assume the restricted IAM role and attempt to: (1) Disable token requirement (HttpTokens=optional), (2) Increase hop limit (HttpPutResponseHopLimit=2). Both steps should be blocked by the preventive control with AccessDenied error.",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_preventive",
+          "func": "attack"
+        }
+      },
       "output": null,
-      "start": "2026-02-11T16:31:04.479775+00:00",
-      "end": "2026-02-11T16:39:14.527013+00:00",
-      "duration": 490.047238
+      "start": "2026-02-12T16:33:24.917540+00:00",
+      "status": "failed",
+      "exception": [
+        "Traceback (most recent call last):\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py\", line 56, in run_python_activity\n    return func(**arguments)\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py\", line 557, in attack\n    credentials = exponential_backoff_retry(assume_role, max_retries=3)\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py\", line 212, in exponential_backoff_retry\n    raise last_error\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py\", line 194, in exponential_backoff_retry\n    return func()\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py\", line 550, in assume_role\n    response = sts_client.assume_role(\n        RoleArn=role_arn,\n        RoleSessionName='sce-attack-session'\n    )\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/client.py\", line 569, in _api_call\n    return self._make_api_call(operation_name, kwargs)\n           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/client.py\", line 1023, in _make_api_call\n    raise error_class(parsed_response, operation_name)\n",
+        "botocore.exceptions.ClientError: An error occurred (AccessDenied) when calling the AssumeRole operation: User: arn:aws:iam::396608802942:user/ChaosXploit-Labs is not authorized to perform: sts:AssumeRole on resource: arn:aws:iam::396608802942:role/sce-1-3-dev-build-role\n",
+        "\nDuring handling of the above exception, another exception occurred:\n\n",
+        "chaoslib.exceptions.ActivityFailed: botocore.exceptions.ClientError: An error occurred (AccessDenied) when calling the AssumeRole operation: User: arn:aws:iam::396608802942:user/ChaosXploit-Labs is not authorized to perform: sts:AssumeRole on resource: arn:aws:iam::396608802942:role/sce-1-3-dev-build-role\n"
+      ],
+      "end": "2026-02-12T16:33:27.215621+00:00",
+      "duration": 2.298081
     }
   ],
   "rollbacks": [],
-  "end": "2026-02-11T16:39:14.529187+00:00",
-  "duration": 490.05120730400085
+  "end": "2026-02-12T16:33:28.147817+00:00",
+  "duration": 166.31769156455994
 }

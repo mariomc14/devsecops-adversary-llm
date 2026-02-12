@@ -1,22 +1,24 @@
 {
-    "title": "SCE 1.3: Preventive Probe - IAM Deny ec2:DescribeInstances",
-    "description": "Validates that explicit IAM deny policy on ec2:DescribeInstances prevents EC2 instance enumeration. Attack Step 1.2 (T1526) is simulated; preventive control blocks attacker access at authorization layer.",
+    "title": "SCE 1.3 Preventive Probe: EC2 IMDS Modification Denial (Fixed)",
+    "description": "Validates that an IAM explicit deny policy successfully prevents ec2:ModifyInstanceMetadataOptions API calls, blocking the IMDS downgrade attack (AWS-EC2-MODIFY-IMDS-OPTIONS / T1552.005). This experiment simulates an attacker attempting to weaken Instance Metadata Service (IMDS) protection by disabling IMDSv2 token requirement and increasing hop limit to enable credential theft from containers. The preventive control (explicit IAM deny) should block all modification attempts. FIXES: Simplified CloudFormation template (removed EC2 instance creation issues), enhanced diagnostics (detailed stack events), prerequisite validation, and resilient error handling.",
     "tags": [
-        "aws",
+        "security",
+        "chaos-engineering",
+        "preventive-control",
         "ec2",
+        "imds",
         "iam",
-        "preventive",
         "credential-theft",
-        "attack-defense-tree",
-        "banking-platform",
-        "sce-1-3"
+        "aws",
+        "fixed"
     ],
     "steady-state-hypothesis": {
-        "title": "Preventive Control: IAM Deny on ec2:DescribeInstances",
+        "title": "Preventive Control: IAM Explicit Deny on EC2 IMDS Modification",
+        "description": "EC2 instance metadata service modifications (ec2:ModifyInstanceMetadataOptions) should be denied for all principals without explicit allow. IMDSv2 token requirement and hop limit=1 should remain enforced, preventing credential exfiltration via IMDS downgrade attack.",
         "probes": [
             {
                 "type": "probe",
-                "name": "Verify IAM Deny Policy Enforcement",
+                "name": "Verify IAM Deny Policy Blocks EC2 IMDS Modifications",
                 "tolerance": true,
                 "provider": {
                     "type": "python",
@@ -29,8 +31,8 @@
     "method": [
         {
             "type": "action",
-            "name": "Establish Steady State",
-            "description": "Deploy CloudFormation stack with dev/build role, explicit deny policy, and test EC2 instance",
+            "name": "Prepare Test Infrastructure (CloudFormation Stack)",
+            "description": "Deploy CloudFormation stack with IAM role (explicit deny on ModifyInstanceMetadataOptions) and instance profile. Validate prerequisites, extract outputs for attack phase, and wait for IAM policy propagation.",
             "provider": {
                 "type": "python",
                 "module": "chaosaws.ec2.1_3_preventive",
@@ -39,8 +41,8 @@
         },
         {
             "type": "action",
-            "name": "Execute Attack Step 1.2: Enumerate EC2 Instances",
-            "description": "Simulate attacker with dev/build role attempting ec2:DescribeInstances API call. Expected result: access denied due to explicit deny policy.",
+            "name": "Execute Attack: IMDS Weakening (T1552.005)",
+            "description": "Assume the restricted IAM role and attempt to: (1) Disable token requirement (HttpTokens=optional), (2) Increase hop limit (HttpPutResponseHopLimit=2). Both steps should be blocked by the preventive control with AccessDenied error.",
             "provider": {
                 "type": "python",
                 "module": "chaosaws.ec2.1_3_preventive",
@@ -51,8 +53,8 @@
     "rollbacks": [
         {
             "type": "action",
-            "name": "Teardown Experiment Resources",
-            "description": "Delete CloudFormation stack and all provisioned resources",
+            "name": "Delete CloudFormation Stack and Resources",
+            "description": "Delete the CloudFormation stack and all provisioned resources (IAM role, instance profile). Wait for deletion to complete and handle stack-not-found gracefully.",
             "provider": {
                 "type": "python",
                 "module": "chaosaws.ec2.1_3_preventive",

@@ -1,0 +1,62 @@
+{
+    "title": "SCE Experiment 1.3: EC2 Instance Enumeration Detection (Detective Probe) - FIXED",
+    "description": "This experiment validates the Detective safeguard that detects EC2 instance enumeration attempts via CloudTrail logging and CloudWatch alarming. The experiment creates a controlled environment with target EC2 instances, simulates multiple DescribeInstances API calls from a single principal, and verifies that CloudTrail captures the enumeration pattern and CloudWatch metrics trigger appropriately. This detective control is critical for identifying reconnaissance activity targeting sensitive banking infrastructure. FIXED VERSION: Handles IAM permissions automatically and provides better error diagnostics.",
+    "tags": [
+        "aws-ec2",
+        "iam-abuse",
+        "credential-theft",
+        "api-monitoring",
+        "detective",
+        "cloudtrail",
+        "enumeration",
+        "banking-platform",
+        "sce-1.3",
+        "fixed"
+    ],
+    "steady-state-hypothesis": {
+        "title": "EC2 Enumeration Detection via CloudTrail and CloudWatch Metrics",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "CloudTrail captures DescribeInstances API calls and metrics trigger",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.1_3_sce_experiment__enumerate_detection_detective",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "Preparation: Create experiment environment (VPC, EC2 instances, CloudTrail, CloudWatch)",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_3_sce_experiment__enumerate_detection_detective",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "Attack: Execute 15 DescribeInstances API calls to simulate enumeration",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_3_sce_experiment__enumerate_detection_detective",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "Cleanup: Delete CloudFormation stack and all resources",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_3_sce_experiment__enumerate_detection_detective",
+                "func": "rollback"
+            }
+        }
+    ]
+}

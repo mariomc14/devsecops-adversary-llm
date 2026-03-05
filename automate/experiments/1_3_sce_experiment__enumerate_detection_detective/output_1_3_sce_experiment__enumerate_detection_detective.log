@@ -1,0 +1,64 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-03-05 00:11:06 INFO] Validating the experiment's syntax
+[32m[2026-03-05 00:11:06 INFO] Experiment looks valid
+[32m[2026-03-05 00:11:06 INFO] Running experiment: SCE Experiment 1.3: EC2 Instance Enumeration Detection (Detective Probe) - FIXED
+[32m[2026-03-05 00:11:06 INFO] Steady-state strategy: after-method-only
+[32m[2026-03-05 00:11:06 INFO] Rollbacks strategy: default
+[32m[2026-03-05 00:11:06 INFO] Playing your experiment's method now...
+[32m[2026-03-05 00:11:06 INFO] Action: Preparation: Create experiment environment (VPC, EC2 instances, CloudTrail, CloudWatch)
+2026-03-05 00:11:06,234 - INFO - [steady_state] - ====================================================================================================
+2026-03-05 00:11:06,234 - INFO - [steady_state] - STEADY STATE: Preparing experiment environment
+2026-03-05 00:11:06,234 - INFO - [steady_state] - ====================================================================================================
+2026-03-05 00:11:06,234 - INFO - [get_current_region] - Using AWS region: us-east-1
+2026-03-05 00:11:06,241 - INFO - [load] - Found credentials in shared credentials file: ~/.aws/credentials
+2026-03-05 00:11:06,392 - INFO - [steady_state] - Experiment timestamp: 1772687466
+2026-03-05 00:11:06,393 - INFO - [steady_state] - CloudFormation stack name: sce-experiment-1-3-1772687466
+2026-03-05 00:11:06,818 - INFO - [steady_state] - AWS Account ID: 941377112071
+2026-03-05 00:11:06,911 - INFO - [steady_state] - Executor identity (ARN): arn:aws:iam::941377112071:user/sce_user
+2026-03-05 00:11:06,911 - INFO - [steady_state] - Attempting to ensure executor has required permissions...
+2026-03-05 00:11:06,911 - INFO - [check_and_create_permissions] - Checking permissions for executor: arn:aws:iam::941377112071:user/sce_user
+2026-03-05 00:11:06,911 - WARNING - [check_and_create_permissions] - Executor is not an IAM user (possibly an assumed role): arn:aws:iam::941377112071:user/sce_user
+2026-03-05 00:11:06,911 - INFO - [check_and_create_permissions] - Skipping permission creation (permissions may be inherited)
+2026-03-05 00:11:07,317 - ERROR - [steady_state] - Error checking stack: An error occurred (AccessDenied) when calling the DescribeStacks operation: User: arn:aws:iam::941377112071:user/sce_user is not authorized to perform: cloudformation:DescribeStacks on resource: arn:aws:cloudformation:us-east-1:941377112071:stack/sce-experiment-1-3-1772687466/* because no identity-based policy allows the cloudformation:DescribeStacks action
+2026-03-05 00:11:07,317 - WARNING - [steady_state] - Proceeding despite AccessDenied (may be caused by SCP)
+2026-03-05 00:11:07,318 - INFO - [steady_state] - Creating CloudFormation stack...
+2026-03-05 00:11:07,415 - ERROR - [steady_state] - STEADY STATE: Preparation failed: An error occurred (AccessDenied) when calling the CreateStack operation: User: arn:aws:iam::941377112071:user/sce_user is not authorized to perform: cloudformation:CreateStack on resource: arn:aws:cloudformation:us-east-1:941377112071:stack/sce-experiment-1-3-1772687466/* because no identity-based policy allows the cloudformation:CreateStack action
+Traceback (most recent call last):
+  File "/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaosaws/ec2/1_3_sce_experiment__enumerate_detection_detective.py", line 855, in steady_state
+    response = EXPERIMENT_STATE['cloudformation_client'].create_stack(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/client.py", line 569, in _api_call
+    return self._make_api_call(operation_name, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/client.py", line 1023, in _make_api_call
+    raise error_class(parsed_response, operation_name)
+botocore.exceptions.ClientError: An error occurred (AccessDenied) when calling the CreateStack operation: User: arn:aws:iam::941377112071:user/sce_user is not authorized to perform: cloudformation:CreateStack on resource: arn:aws:cloudformation:us-east-1:941377112071:stack/sce-experiment-1-3-1772687466/* because no identity-based policy allows the cloudformation:CreateStack action
+[31m[2026-03-05 00:11:07 ERROR]   => failed: botocore.exceptions.ClientError: An error occurred (AccessDenied) when calling the CreateStack operation: User: arn:aws:iam::941377112071:user/sce_user is not authorized to perform: cloudformation:CreateStack on resource: arn:aws:cloudformation:us-east-1:941377112071:stack/sce-experiment-1-3-1772687466/* because no identity-based policy allows the cloudformation:CreateStack action
+[32m[2026-03-05 00:11:07 INFO] Action: Attack: Execute 15 DescribeInstances API calls to simulate enumeration
+2026-03-05 00:11:07,426 - INFO - [attack] - ====================================================================================================
+2026-03-05 00:11:07,426 - INFO - [attack] - ATTACK: Executing EC2 instance enumeration
+2026-03-05 00:11:07,426 - INFO - [attack] - ====================================================================================================
+2026-03-05 00:11:07,426 - ERROR - [attack] - Target instances not available
+[32m[2026-03-05 00:11:07 INFO] Steady state hypothesis: EC2 Enumeration Detection via CloudTrail and CloudWatch Metrics
+[32m[2026-03-05 00:11:07 INFO] Probe: CloudTrail captures DescribeInstances API calls and metrics trigger
+2026-03-05 00:11:07,427 - INFO - [hypothesis_verification] - ====================================================================================================
+2026-03-05 00:11:07,427 - INFO - [hypothesis_verification] - HYPOTHESIS VERIFICATION: Verifying detective controls
+2026-03-05 00:11:07,427 - INFO - [hypothesis_verification] - ====================================================================================================
+2026-03-05 00:11:07,427 - ERROR - [hypothesis_verification] - CloudWatch Logs group name not available
+[31m[2026-03-05 00:11:07 CRITICAL] Steady state probe 'CloudTrail captures DescribeInstances API calls and metrics trigger' is not in the given tolerance so failing this experiment
+[32m[2026-03-05 00:11:07 INFO] Let's rollback...
+[32m[2026-03-05 00:11:07 INFO] Rollback: Cleanup: Delete CloudFormation stack and all resources
+[32m[2026-03-05 00:11:07 INFO] Action: Cleanup: Delete CloudFormation stack and all resources
+2026-03-05 00:11:07,427 - INFO - [rollback] - ====================================================================================================
+2026-03-05 00:11:07,427 - INFO - [rollback] - ROLLBACK: Cleaning up experiment resources
+2026-03-05 00:11:07,428 - INFO - [rollback] - ====================================================================================================
+2026-03-05 00:11:07,428 - INFO - [rollback] - Deleting CloudFormation stack: sce-experiment-1-3-1772687466
+2026-03-05 00:11:07,530 - WARNING - [rollback] - AccessDenied during stack deletion (may be SCP): An error occurred (AccessDenied) when calling the DeleteStack operation: User: arn:aws:iam::941377112071:user/sce_user is not authorized to perform: cloudformation:DeleteStack on resource: arn:aws:cloudformation:us-east-1:941377112071:stack/sce-experiment-1-3-1772687466/* because no identity-based policy allows the cloudformation:DeleteStack action
+[32m[2026-03-05 00:11:07 INFO] Experiment ended with status: deviated
+[32m[2026-03-05 00:11:07 INFO] The steady-state has deviated, a weakness may have been discovered
+
+
+RETURN CODE: 1

@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 """
-SCE Automation with Amazon Q API Integration
+SCE Automation with Amazon Bedrock API Integration
 """
 
 import json
 import os
-from pickle import FALSE
 import sys
 import time
 import subprocess
@@ -21,7 +20,6 @@ except ImportError:
 
 from botocore.config import Config
 
-import tiktoken
 
 class SCEAutomationAPI:
     def __init__(self):
@@ -33,9 +31,6 @@ class SCEAutomationAPI:
         )
         self.bedrock = boto3.client('bedrock-runtime', config=bedrock_config)
         self.conversation_history = []
-
-        # ── CHANGE 1: tracking table ──────────────────────────────────────────
-        # Each entry: {experiment, loop, q_pre, q_post}
         self.tracking_table: List[Dict] = []
 
     # ─────────────────────────────────────────────────────────────────────────
@@ -87,54 +82,130 @@ class SCEAutomationAPI:
         print(sep)
         print()
 
+    def _tracking_save_md(self) -> None:
+        """Save the tracking table as a Markdown file in workspace_path."""
+        if not self.tracking_table:
+            return
+
+        lines = []
+        lines.append("# SCE Experiment Tracking Summary\n")
+        lines.append(f"**Session date**: {time.strftime('%Y-%m-%d %H:%M:%S')}\n")
+        lines.append("")
+        lines.append("| Experimento | # Loop | Q_pre | Q_post |")
+        lines.append("|---|---|---|---|")
+        for r in self.tracking_table:
+            q_pre_s  = f"{r['q_pre']:.2f}"  if r["q_pre"]  is not None else "N/A"
+            q_post_s = f"{r['q_post']:.2f}" if r["q_post"] is not None else "N/A"
+            lines.append(f"| {r['experiment']} | {r['loop']} | {q_pre_s} | {q_post_s} |")
+
+        lines.append("")
+        lines.append("## Legend")
+        lines.append("- **Q_pre**: Pre-execution quality score (0–100)")
+        lines.append("- **Q_post**: Post-execution quality score (0–100)")
+        lines.append("- **N/A**: Score not available (experiment not executed or evaluation failed)")
+
+        md_content = "\n".join(lines)
+        filepath = os.path.join(self.workspace_path, "tracking_summary.md")
+        try:
+            with open(filepath, 'w', encoding='utf-8') as f:
+                f.write(md_content)
+            print(f"✅ Tracking summary saved to: {filepath}")
+        except Exception as e:
+            print(f"⚠️ Could not save tracking summary: {e}")
+
+    # ─────────────────────────────────────────────────────────────────────────
+    # Score extraction  (FIX: robust multi-pattern approach)
+    # ─────────────────────────────────────────────────────────────────────────
+
+    def _extract_score(self, text: str, metric: str) -> Optional[float]:
+        """
+        Extract a numeric score (0-100) for `metric` (e.g. 'Q_pre' or 'Q_post')
+        from a free-form LLM report.
+
+        Strategy (tried in order):
+        1. Full inline calculation:  Q_pre = 0.40 × 100 + 0.30 × 50 + 0.30 × 100 = 85.00
+        2. Bold final value:         **Q_pre = 85.00**  or  **Q_pre = 85**
+        3. Value after equals sign on its own line
+        4. Any standalone number on a line that follows a line containing the metric name
+        """
+        # -- 1. Full calculation line: metric = ... = NUMBER
+        pattern_full = (
+            rf'{re.escape(metric)}\s*='           # Q_pre =
+            r'(?:[^=\n]+=\s*)'                     # ... =
+            r'(\d{1,3}(?:\.\d+)?)'                 # final number
+        )
+        m = re.search(pattern_full, text, re.IGNORECASE)
+        if m:
+            v = float(m.group(1))
+            if 0 <= v <= 100:
+                return v
+
+        # -- 2. Bold: **Q_pre = 85.00** or **Q_pre = 85**
+        pattern_bold = rf'\*\*\s*{re.escape(metric)}\s*=\s*(\d{{1,3}}(?:\.\d+)?)\s*\*\*'
+        m = re.search(pattern_bold, text, re.IGNORECASE)
+        if m:
+            v = float(m.group(1))
+            if 0 <= v <= 100:
+                return v
+
+        # -- 3. Simple assignment anywhere: Q_pre = 85  or  Q_pre = 85.00
+        pattern_simple = rf'{re.escape(metric)}\s*=\s*(\d{{1,3}}(?:\.\d+)?)'
+        for m in re.finditer(pattern_simple, text, re.IGNORECASE):
+            v = float(m.group(1))
+            # Reject coefficient-like values (0.40, 0.30, 0.50)
+            if 1 <= v <= 100:
+                return v
+
+        # -- 4. Line-after-metric heuristic
+        lines = text.splitlines()
+        for i, line in enumerate(lines):
+            if re.search(rf'\b{re.escape(metric)}\b', line, re.IGNORECASE):
+                # Look at this line and the next two for a standalone number
+                for candidate in lines[i:i+3]:
+                    nums = re.findall(r'\b(\d{1,3}(?:\.\d+)?)\b', candidate)
+                    for n in nums:
+                        v = float(n)
+                        if 1 <= v <= 100:
+                            return v
+
+        return None
+
     # ─────────────────────────────────────────────────────────────────────────
 
     def _sanitize_name(self, name: str) -> str:
-        """Sanitize name for safe filename usage"""
         return re.sub(r'[^\w\-_]', '_', name.lower()).strip('_')
 
-    def _count_tokens(self, text: str) -> int:
-        """Count tokens using tiktoken"""
-        encoding = tiktoken.get_encoding("cl100k_base")
-        return len(encoding.encode(text))
-
     def _load_yaml(self, yaml_path: str) -> Dict:
-        """Load mission configuration from YAML file"""
         try:
             with open(yaml_path, 'r', encoding='utf-8') as f:
                 self.yaml = yaml.safe_load(f)
                 return self.yaml
         except Exception as e:
             print(f"❌ Error loading yaml file: {e}")
-            return None # type: ignore
-        
+            return None  # type: ignore
+
     def _load_file(self, template_path: str) -> str:
-        """Load files as raw text"""
         try:
             with open(template_path, 'r', encoding='utf-8') as f:
                 return f.read()
         except Exception as e:
-            print(f"❌ Error loading attack template: {e}")
-            return None # type: ignore
-        
+            print(f"❌ Error loading file {template_path}: {e}")
+            return None  # type: ignore
+
     def _extract_yaml_from_response(self, response_text: str) -> bool:
         try:
-            """Extract clean YAML content from LLM response"""
             yaml_start = response_text.find("attack:")
             if yaml_start == -1:
                 return False
-
             yaml_content = response_text[yaml_start:]
             lines = yaml_content.split('\n')
             yaml_lines = []
-
             for line in lines:
                 stripped = line.strip()
                 if (stripped and not line.startswith((' ', '\t')) and ':' not in line and
-                    not stripped.startswith(('-', 'attack', 'steps', 'stride_goal'))):
+                        not stripped.startswith(('-', 'attack', 'steps', 'stride_goal'))):
                     break
                 yaml_lines.append(line)
-
             clean_yaml = '\n'.join(yaml_lines).strip()
             filepath = os.path.join(self.workspace_path, "attacks.yaml")
             with open(filepath, 'w', encoding='utf-8') as f:
@@ -142,28 +213,25 @@ class SCEAutomationAPI:
             return True
         except Exception as e:
             print(f"❌ Save error: {e}")
-            return False # type: ignore
+            return False  # type: ignore
 
     def _build_mission_prompt(self) -> str:
-        """Build mission analysis prompt from YAML configuration"""
         if not self.yaml:
-            return None # type:ignore
-            
+            return None  # type: ignore
         config = self.yaml
         overview = "\n".join([f"- {desc}" for desc in config['mission_overview']['description']])
         threats = "\n".join([
-            f"- {threat['name']}: {threat['description']}" 
+            f"- {threat['name']}: {threat['description']}"
             for threat in config['primary_threat_categories']
         ])
         technologies = "\n".join([
-            f"- {tech['name']}: {tech['purpose']}" 
+            f"- {tech['name']}: {tech['purpose']}"
             for tech in config['core_technologies']
         ])
         safeguards = "\n".join([
             f"{i+1}. **{safeguard['name']}**: {safeguard['description']}"
             for i, safeguard in enumerate(config['safeguard_logic'])
         ])
-        
         return f"""Analyze the following scenario from mission configuration:
 
 **Mission Overview**
@@ -182,8 +250,7 @@ class SCEAutomationAPI:
 
     def _build_attack_prompt(self, threat_intelligence: str) -> str:
         if not hasattr(self, 'attack_template'):
-            return None # type: ignore
-            
+            return None  # type: ignore
         return f"""Please populate the template using it strictly as a schema, not as content. Complete every applicable field in the template with information specific to the following attack:
             THREAT INTELLIGENCE:
             {threat_intelligence}
@@ -195,12 +262,11 @@ class SCEAutomationAPI:
             - Preserve the structure, section order, and field names exactly as they appear in the template.
             - Replace all placeholder or example text with concrete details for this attack only
             - If a field is not applicable or the information is unavailable, leave the field present and explicitly mark it as N/A rather than deleting it.
-            - Use clear, concise, technically accurate language suitable for threat modeling and repeteable testing.
-            
+            - Use clear, concise, technically accurate language suitable for threat modeling and repeatable testing.
+
             Return the completed content in yaml format, ready to be stored as an attack record."""
 
     def _build_attack_defense_tree_prompt(self, attacks_yaml: str, structure_dot: str) -> str:
-        """Build the attack-defense tree generation prompt"""
         return f"""Imagine you are a lead cyber-defense analyst tasked with turning raw intelligence into actionable insight for senior leadership and incident-response teams. Under this premise:
 
     - Start from the detailed scenario and safeguard logic classes (Preventive, Detective, Reactive) you have already defined and stored.
@@ -241,7 +307,6 @@ class SCEAutomationAPI:
                                      previous_log: Optional[str] = None,
                                      previous_metrics_report: Optional[str] = None,
                                      previous_post_metrics_report: Optional[str] = None) -> str:
-        """Build SCE experiment generation prompt"""
         log_context = ""
         if previous_log:
             log_context = f"""
@@ -335,7 +400,6 @@ The script is self-contained: no CLI arguments, no external config files, no pre
     def _build_metrics_prompt(self, dot_content: str, json_content: str, py_content: str,
                                sce_node: str, probe_type: str, attack_nodes: str,
                                threshold: int = 80) -> str:
-        """Build pre-execution quality evaluation prompt"""
         return f"""# PRE-EXECUTION QUALITY EVALUATION
 
 You are tasked with evaluating the quality of a Security Chaos Engineering (SCE) experiment BEFORE execution.
@@ -390,6 +454,10 @@ Evaluate the correspondence between the ADT specification and the SCE experiment
 
 ## OUTPUT FORMAT
 
+IMPORTANT: In the FINAL SCORE CALCULATION section you MUST write the result on its own line
+in exactly this format (replace XX.XX with the actual number):
+Q_pre = XX.XX
+
 ```markdown
 # PRE-EXECUTION QUALITY EVALUATION REPORT
 
@@ -419,9 +487,8 @@ Evaluate the correspondence between the ADT specification and the SCE experiment
 
 ## FINAL SCORE CALCULATION
 
-**Q_pre = 0.40 × f1 + 0.30 × f2 + 0.30 × f3**
 **Q_pre = 0.40 × [f1] + 0.30 × [f2] + 0.30 × [f3]**
-**Q_pre = [calculated value]**
+Q_pre = XX.XX
 
 **Threshold**: {threshold}
 **Result**: Q_pre [>=|<] {threshold}
@@ -442,7 +509,6 @@ Evaluate the correspondence between the ADT specification and the SCE experiment
 
     def _build_metrics_post_prompt(self, output_log: str, sce_node: str, probe_type: str,
                                    attack_nodes: str, threshold_post: int = 100) -> str:
-        """Build post-execution quality evaluation prompt"""
         return f"""# POST-EXECUTION QUALITY EVALUATION
 
 You are an **expert in experimental cybersecurity**, specialized in **attack-defense trees** and in the evaluation of **Security Chaos Engineering (SCE)** experiments.
@@ -478,6 +544,10 @@ You are an **expert in experimental cybersecurity**, specialized in **attack-def
 
 ## OUTPUT FORMAT
 
+IMPORTANT: In the FINAL SCORE CALCULATION section you MUST write the result on its own line
+in exactly this format (replace XX.XX with the actual number):
+Q_post = XX.XX
+
 ```markdown
 # POST-EXECUTION QUALITY EVALUATION REPORT
 
@@ -503,9 +573,8 @@ You are an **expert in experimental cybersecurity**, specialized in **attack-def
 
 ## FINAL SCORE CALCULATION
 
-**Q_post = 0.50 × f1 + 0.50 × f2**
 **Q_post = 0.50 × [f1] + 0.50 × [f2]**
-**Q_post = [calculated value]**
+Q_post = XX.XX
 
 **Threshold**: {threshold_post}
 **Result**: Q_post [>=|<] {threshold_post}
@@ -523,13 +592,11 @@ You are an **expert in experimental cybersecurity**, specialized in **attack-def
 """
 
     def _save_sce_experiment_output(self, response_text: str, sce_node: str, probe_type: str) -> bool:
-        """Extract and save Python script and JSON manifest from response"""
         try:
-            safe_sce_node = self._sanitize_name(sce_node)
+            safe_sce_node   = self._sanitize_name(sce_node)
             safe_probe_type = self._sanitize_name(probe_type)
 
-            # Create experiments directory structure
-            experiments_dir = os.path.join(self.workspace_path, "experiments")
+            experiments_dir   = os.path.join(self.workspace_path, "experiments")
             experiment_subdir = os.path.join(experiments_dir, f"{safe_sce_node}_{safe_probe_type}")
             os.makedirs(experiment_subdir, exist_ok=True)
 
@@ -539,7 +606,7 @@ You are an **expert in experimental cybersecurity**, specialized in **attack-def
                 python_start += 9
                 python_end = response_text.find("```", python_start)
                 if python_end != -1:
-                    python_content = response_text[python_start:python_end].strip()
+                    python_content  = response_text[python_start:python_end].strip()
                     python_filename = f"{safe_sce_node}_{safe_probe_type}.py"
                     python_filepath = os.path.join(experiment_subdir, python_filename)
                     with open(python_filepath, 'w', encoding='utf-8') as f:
@@ -548,13 +615,13 @@ You are an **expert in experimental cybersecurity**, specialized in **attack-def
 
                     try:
                         import chaosaws.ec2
-                        chaosaws_path = chaosaws.ec2.__path__[0]
+                        chaosaws_path    = chaosaws.ec2.__path__[0]
                         chaosaws_filepath = os.path.join(chaosaws_path, python_filename)
                         with open(chaosaws_filepath, 'w', encoding='utf-8') as f:
                             f.write(python_content)
                         print(f"✅ Python script copied to chaosaws: {chaosaws_filepath}")
                     except ImportError:
-                        print(f"⚠️ chaosaws.ec2 not found, skipping copy to chaosaws directory")
+                        print("⚠️ chaosaws.ec2 not found, skipping copy to chaosaws directory")
                     except Exception as e:
                         print(f"⚠️ Could not copy to chaosaws directory: {e}")
 
@@ -564,7 +631,7 @@ You are an **expert in experimental cybersecurity**, specialized in **attack-def
                 json_start += 7
                 json_end = response_text.find("```", json_start)
                 if json_end != -1:
-                    json_content = response_text[json_start:json_end].strip()
+                    json_content  = response_text[json_start:json_end].strip()
                     json_filepath = os.path.join(experiment_subdir,
                                                  f"{safe_sce_node}_{safe_probe_type}.json")
                     with open(json_filepath, 'w', encoding='utf-8') as f:
@@ -578,25 +645,26 @@ You are an **expert in experimental cybersecurity**, specialized in **attack-def
             return False
 
     def _save_metrics_report(self, response_text: str, sce_node: str, probe_type: str):
-        """Extract and save pre-execution metrics report. Returns (success, q_pre_score)."""
+        """Save pre-execution report and extract Q_pre. Returns (success, q_pre_score)."""
         try:
-            safe_sce_node = self._sanitize_name(sce_node)
+            safe_sce_node   = self._sanitize_name(sce_node)
             safe_probe_type = self._sanitize_name(probe_type)
 
-            reports_dir = os.path.join(self.workspace_path, "reports")
+            reports_dir  = os.path.join(self.workspace_path, "reports")
             report_subdir = os.path.join(reports_dir, f"{safe_sce_node}_{safe_probe_type}")
             os.makedirs(report_subdir, exist_ok=True)
 
+            # Extract markdown block
             report_start = response_text.find("```markdown")
             if report_start != -1:
                 report_start += 11
-                report_end = response_text.find("```", report_start)
+                report_end   = response_text.find("```", report_start)
                 report_content = (response_text[report_start:report_end].strip()
                                   if report_end != -1 else response_text[report_start:].strip())
             else:
-                report_start = response_text.find("# PRE-EXECUTION QUALITY EVALUATION REPORT")
-                report_content = (response_text[report_start:].strip()
-                                  if report_start != -1 else response_text.strip())
+                idx = response_text.find("# PRE-EXECUTION QUALITY EVALUATION REPORT")
+                report_content = (response_text[idx:].strip()
+                                  if idx != -1 else response_text.strip())
 
             report_filename = f"pre_execution_report_{safe_sce_node}_{safe_probe_type}.md"
             report_filepath = os.path.join(report_subdir, report_filename)
@@ -604,31 +672,18 @@ You are an **expert in experimental cybersecurity**, specialized in **attack-def
                 f.write(report_content)
             print(f"✅ Pre-execution report saved to: {report_filepath}")
 
-            q_pre_patterns = [
-                r'Q_pre\s*=\s*0\.40\s*×\s*\d+\s*\+\s*0\.30\s*×\s*\d+\s*\+\s*0\.30\s*×\s*\d+\s*=\s*([0-9.]+)',
-                r'\*\*Q_pre\s*=\s*([0-9.]+)\*\*',
-                r'Q_pre\s*=\s*\*\*([0-9.]+)\*\*',
-                r'calculated value\]:\s*\*\*([0-9.]+)\*\*',
-                r'Q_pre.*?=.*?([0-9]{2,3}\.[0-9]{2})\s*(?:\n|$|<|>|\*)',
-            ]
-            q_pre_score = None
-            for pattern in q_pre_patterns:
-                m = re.search(pattern, report_content, re.MULTILINE | re.DOTALL)
-                if m:
-                    try:
-                        v = float(m.group(1))
-                        if 0 <= v <= 100 and v not in (0.40, 0.30):
-                            q_pre_score = v
-                            break
-                    except (ValueError, IndexError):
-                        continue
+            # FIX: use robust extractor on the FULL response (not just markdown block)
+            q_pre_score = self._extract_score(response_text, "Q_pre")
+            if q_pre_score is None:
+                q_pre_score = self._extract_score(report_content, "Q_pre")
 
             if q_pre_score is not None:
                 print(f"📊 Quality Score (Q_pre): {q_pre_score:.2f}/100")
             else:
                 print("⚠️ Could not extract Q_pre score from report")
 
-            decision_match = re.search(r'\*\*\[(AUTHORIZE EXECUTION|STOP[^\]]*)\]\*\*', report_content)
+            decision_match = re.search(
+                r'\*\*\[(AUTHORIZE EXECUTION|STOP[^\]]*)\]\*\*', report_content)
             if decision_match:
                 decision = decision_match.group(1)
                 if "AUTHORIZE" in decision:
@@ -643,25 +698,25 @@ You are an **expert in experimental cybersecurity**, specialized in **attack-def
             return False, None
 
     def _save_metrics_post_report(self, response_text: str, sce_node: str, probe_type: str):
-        """Extract and save post-execution metrics report. Returns (success, q_post_score)."""
+        """Save post-execution report and extract Q_post. Returns (success, q_post_score)."""
         try:
-            safe_sce_node = self._sanitize_name(sce_node)
+            safe_sce_node   = self._sanitize_name(sce_node)
             safe_probe_type = self._sanitize_name(probe_type)
 
-            reports_dir = os.path.join(self.workspace_path, "reports")
+            reports_dir   = os.path.join(self.workspace_path, "reports")
             report_subdir = os.path.join(reports_dir, f"{safe_sce_node}_{safe_probe_type}")
             os.makedirs(report_subdir, exist_ok=True)
 
             report_start = response_text.find("```markdown")
             if report_start != -1:
                 report_start += 11
-                report_end = response_text.find("```", report_start)
+                report_end   = response_text.find("```", report_start)
                 report_content = (response_text[report_start:report_end].strip()
                                   if report_end != -1 else response_text[report_start:].strip())
             else:
-                report_start = response_text.find("# POST-EXECUTION QUALITY EVALUATION REPORT")
-                report_content = (response_text[report_start:].strip()
-                                  if report_start != -1 else response_text.strip())
+                idx = response_text.find("# POST-EXECUTION QUALITY EVALUATION REPORT")
+                report_content = (response_text[idx:].strip()
+                                  if idx != -1 else response_text.strip())
 
             report_filename = f"post_execution_report_{safe_sce_node}_{safe_probe_type}.md"
             report_filepath = os.path.join(report_subdir, report_filename)
@@ -669,32 +724,18 @@ You are an **expert in experimental cybersecurity**, specialized in **attack-def
                 f.write(report_content)
             print(f"✅ Post-execution report saved to: {report_filepath}")
 
-            q_post_patterns = [
-                r'Q_post\s*=\s*0\.50\s*×\s*\d+\s*\+\s*0\.50\s*×\s*\d+\s*=\s*([0-9.]+)',
-                r'\*\*Q_post\s*=\s*([0-9.]+)\*\*',
-                r'Q_post\s*=\s*\*\*([0-9.]+)\*\*',
-                r'calculated value\]:\s*\*\*([0-9.]+)\*\*',
-                r'Q_post.*?=.*?([0-9]{1,3}\.?[0-9]{0,2})\s*(?:\n|$|<|>|\*)',
-            ]
-            q_post_score = None
-            for pattern in q_post_patterns:
-                m = re.search(pattern, report_content, re.MULTILINE | re.DOTALL)
-                if m:
-                    try:
-                        v = float(m.group(1))
-                        if 0 <= v <= 100 and v != 0.50:
-                            q_post_score = v
-                            break
-                    except (ValueError, IndexError):
-                        continue
+            # FIX: use robust extractor
+            q_post_score = self._extract_score(response_text, "Q_post")
+            if q_post_score is None:
+                q_post_score = self._extract_score(report_content, "Q_post")
 
             if q_post_score is not None:
                 print(f"📊 Post-Execution Quality Score (Q_post): {q_post_score:.2f}/100")
             else:
                 print("⚠️ Could not extract Q_post score from report")
 
-            decision_match = re.search(r'\*\*\[(VALID EXECUTION|INVALID EXECUTION)\]\*\*',
-                                       report_content)
+            decision_match = re.search(
+                r'\*\*\[(VALID EXECUTION|INVALID EXECUTION)\]\*\*', report_content)
             if decision_match:
                 decision = decision_match.group(1)
                 if "VALID" in decision and "INVALID" not in decision:
@@ -709,7 +750,6 @@ You are an **expert in experimental cybersecurity**, specialized in **attack-def
             return False, None
 
     def _save_dot_output(self, response_text: str) -> bool:
-        """Extract and save DOT content from response"""
         try:
             dot_start = response_text.find("```dot")
             if dot_start == -1:
@@ -736,7 +776,6 @@ You are an **expert in experimental cybersecurity**, specialized in **attack-def
             return False
 
     def _call_amazon_q(self, prompt: str, use_context: bool = True) -> str:
-        """Call Amazon Bedrock API with prompt and conversation context"""
         try:
             if use_context and self.conversation_history:
                 context = "\n\n".join([
@@ -772,7 +811,7 @@ You are an **expert in experimental cybersecurity**, specialized in **attack-def
 
         except Exception as e:
             print(f"❌ API Error: {e}")
-            return None # type: ignore
+            return None  # type: ignore
 
     # ─────────────────────────────────────────────────────────────────────────
     # Main orchestrator
@@ -780,11 +819,10 @@ You are an **expert in experimental cybersecurity**, specialized in **attack-def
 
     def run_automated_conversation(self, mission_yaml: str, threat_intelligence: str,
                                    attack_yaml: str, structure_dot: str):
-        """Run automated conversation with Amazon Q"""
 
         print("🚀 Starting Automated SCE Conversation with Amazon Q")
 
-        # ── Stage 1: Mission analysis ─────────────────────────────────────────
+        # Stage 1
         print(f"\n📁 Loading mission configuration from {mission_yaml}...")
         if not self._load_yaml(mission_yaml):
             print("❌ Failed to load mission configuration")
@@ -802,7 +840,7 @@ You are an **expert in experimental cybersecurity**, specialized in **attack-def
             return
         print("✅ Mission analysis completed")
 
-        # ── Stage 2: Attack YAML ──────────────────────────────────────────────
+        # Stage 2
         print(f"\n📁 Loading attack template from {attack_yaml}...")
         self.attack_template = self._load_yaml(attack_yaml)
         if not self.attack_template:
@@ -825,10 +863,10 @@ You are an **expert in experimental cybersecurity**, specialized in **attack-def
             return
         print("✅ Attack YAML generated and saved")
 
-        # ── Stage 3: Attack-Defense Tree (runs ONCE, outside the loop) ────────
-        print(f"\n🌳 Stage 3: Building attack-defense tree with safeguard logic...")
+        # Stage 3 — runs ONCE outside the loop
+        print(f"\n🌳 Stage 3: Building attack-defense tree...")
 
-        attacks_yaml_path = os.path.join(self.workspace_path, "attacks.yaml")
+        attacks_yaml_path    = os.path.join(self.workspace_path, "attacks.yaml")
         attacks_yaml_content = self._load_file(attacks_yaml_path)
         if not attacks_yaml_content:
             print("❌ Failed to load attacks.yaml file")
@@ -839,8 +877,8 @@ You are an **expert in experimental cybersecurity**, specialized in **attack-def
             print("❌ Failed to load structure.dot file")
             return
 
-        tree_prompt = self._build_attack_defense_tree_prompt(attacks_yaml_content,
-                                                             structure_dot_content)
+        tree_prompt    = self._build_attack_defense_tree_prompt(attacks_yaml_content,
+                                                                structure_dot_content)
         stage3_response = self._call_amazon_q(tree_prompt, use_context=True)
         if not stage3_response:
             print("❌ Failed to generate attack-defense tree")
@@ -851,7 +889,7 @@ You are an **expert in experimental cybersecurity**, specialized in **attack-def
             return
         print("✅ Attack-defense tree generated and saved as DOT file")
 
-        # ── Quality thresholds (asked once before the loop) ───────────────────
+        # Quality thresholds
         print("\n📊 Enter quality threshold for pre-execution metrics (0-100, default=80):")
         threshold_input = input("> ").strip()
         try:
@@ -859,7 +897,7 @@ You are an **expert in experimental cybersecurity**, specialized in **attack-def
             quality_threshold = quality_threshold if 0 <= quality_threshold <= 100 else 80
         except ValueError:
             quality_threshold = 80
-        print(f"✅ Pre-execution quality threshold set to: {quality_threshold}")
+        print(f"✅ Pre-execution quality threshold: {quality_threshold}")
 
         print("\n📊 Enter quality threshold for post-execution metrics (0-100, default=100):")
         threshold_post_input = input("> ").strip()
@@ -869,57 +907,75 @@ You are an **expert in experimental cybersecurity**, specialized in **attack-def
                                       if 0 <= quality_threshold_post <= 100 else 100)
         except ValueError:
             quality_threshold_post = 100
-        print(f"✅ Post-execution quality threshold set to: {quality_threshold_post}")
+        print(f"✅ Post-execution quality threshold: {quality_threshold_post}")
 
-        # ── Stage 4: Experiment loop ──────────────────────────────────────────
-        # CHANGE 2: loop starts from experiment generation, NOT from ADT generation
+        # Stage 4 — experiment loop
         print("\n🧪 Stage 4: Generating SCE experiments...")
 
+        # These hold the current experiment inputs across iterations
+        current_sce_node      : Optional[str] = None
+        current_probe_type    : Optional[str] = None
+        current_attack_nodes  : Optional[str] = None
+        current_template_json : Optional[str] = None
+        same_experiment       : bool           = False
+
         while True:
-            # ── CHANGE 1: increment loop counter per experiment ───────────────
             loop_number = len(self.tracking_table) + 1
             print(f"\n{'─'*60}")
             print(f"🔁 Loop #{loop_number}")
             print(f"{'─'*60}")
 
-            # Collect inputs
-            print("\n🧪 Enter SCE Node name:")
-            sce_node = input("> ")
+            # ── If NOT regenerating the same experiment, ask for new inputs ──
+            if not same_experiment:
+                print("\n🧪 Enter SCE Node name:")
+                current_sce_node = input("> ")
 
-            print("\n🔍 Enter Probe Type (Preventive/Detective/Reactive):")
-            probe_type = input("> ")
+                print("\n🔍 Enter Probe Type (Preventive/Detective/Reactive):")
+                current_probe_type = input("> ")
 
-            print("\n🎯 Enter Attack Nodes:")
-            attack_nodes = input("> ")
+                print("\n🎯 Enter Attack Nodes:")
+                current_attack_nodes = input("> ")
 
-            print("\n📋 Enter Template JSON filename:")
-            template_json = input("> ")
+                print("\n📋 Enter Template JSON filename:")
+                current_template_json = input("> ")
+            else:
+                print(f"\n🔁 Regenerating same experiment:")
+                print(f"   SCE Node    : {current_sce_node}")
+                print(f"   Probe Type  : {current_probe_type}")
+                print(f"   Attack Nodes: {current_attack_nodes}")
+                print(f"   Template    : {current_template_json}")
+
+            # Reset flag for next iteration
+            same_experiment = False
+
+            sce_node      = current_sce_node
+            probe_type    = current_probe_type
+            attack_nodes  = current_attack_nodes
+            template_json = current_template_json
 
             template_json_content = self._load_file(template_json)
             if not template_json_content:
                 print("❌ Failed to load template.json")
-                # Register failed loop with no scores
-                experiment_name = f"{self._sanitize_name(sce_node)}_{self._sanitize_name(probe_type)}"
+                experiment_name = (f"{self._sanitize_name(sce_node)}_"
+                                   f"{self._sanitize_name(probe_type)}")
                 self._tracking_add(experiment_name, loop_number, None, None)
                 continue
 
-            safe_sce_node  = self._sanitize_name(sce_node)
+            safe_sce_node   = self._sanitize_name(sce_node)
             safe_probe_type = self._sanitize_name(probe_type)
             experiment_name = f"{safe_sce_node}_{safe_probe_type}"
 
-            # ── Load previous artifacts if they exist ─────────────────────────
-            experiments_dir  = os.path.join(self.workspace_path, "experiments")
+            # Paths
+            experiments_dir   = os.path.join(self.workspace_path, "experiments")
             experiment_subdir = os.path.join(experiments_dir, experiment_name)
-            reports_dir      = os.path.join(self.workspace_path, "reports")
-            report_subdir    = os.path.join(reports_dir, experiment_name)
+            reports_dir       = os.path.join(self.workspace_path, "reports")
+            report_subdir     = os.path.join(reports_dir, experiment_name)
 
-            log_path = os.path.join(experiment_subdir,
-                                    f"output_{experiment_name}.log")
-            metrics_report_path = os.path.join(report_subdir,
-                                               f"pre_execution_report_{experiment_name}.md")
-            post_metrics_report_path = os.path.join(report_subdir,
-                                                    f"post_execution_report_{experiment_name}.md")
+            log_path                 = os.path.join(experiment_subdir, f"output_{experiment_name}.log")
+            metrics_report_path      = os.path.join(report_subdir, f"pre_execution_report_{experiment_name}.md")
+            post_metrics_report_path = os.path.join(report_subdir, f"post_execution_report_{experiment_name}.md")
 
+            # Load previous artifacts silently if they exist
             previous_log = None
             if os.path.exists(log_path):
                 print(f"\n📝 Found existing execution log: output_{experiment_name}.log")
@@ -930,11 +986,11 @@ You are an **expert in experimental cybersecurity**, specialized in **attack-def
                 except Exception as e:
                     print(f"⚠️ Could not read log file: {e}")
             else:
-                print(f"\n💡 No previous execution log found")
+                print("\n💡 No previous execution log found")
 
             previous_metrics_report = None
             if os.path.exists(metrics_report_path):
-                print(f"📊 Found existing pre-metrics report")
+                print("📊 Found existing pre-metrics report")
                 try:
                     with open(metrics_report_path, 'r', encoding='utf-8') as f:
                         previous_metrics_report = f.read()
@@ -942,11 +998,11 @@ You are an **expert in experimental cybersecurity**, specialized in **attack-def
                 except Exception as e:
                     print(f"⚠️ Could not read metrics report: {e}")
             else:
-                print(f"💡 No previous pre-metrics report found")
+                print("💡 No previous pre-metrics report found")
 
             previous_post_metrics_report = None
             if os.path.exists(post_metrics_report_path):
-                print(f"📊 Found existing post-metrics report")
+                print("📊 Found existing post-metrics report")
                 try:
                     with open(post_metrics_report_path, 'r', encoding='utf-8') as f:
                         previous_post_metrics_report = f.read()
@@ -954,12 +1010,12 @@ You are an **expert in experimental cybersecurity**, specialized in **attack-def
                 except Exception as e:
                     print(f"⚠️ Could not read post-metrics report: {e}")
             else:
-                print(f"💡 No previous post-metrics report found")
+                print("💡 No previous post-metrics report found")
 
             if not any([previous_log, previous_metrics_report, previous_post_metrics_report]):
                 print("   Generating experiment from scratch.")
 
-            # ── Generate experiment ───────────────────────────────────────────
+            # Generate experiment
             sce_prompt = self._build_sce_experiment_prompt(
                 sce_node, probe_type, attack_nodes, template_json_content,
                 previous_log, previous_metrics_report, previous_post_metrics_report
@@ -976,17 +1032,15 @@ You are an **expert in experimental cybersecurity**, specialized in **attack-def
                 continue
             print("✅ SCE experiment generated and saved")
 
-            # ── Pre-execution quality evaluation ─────────────────────────────
+            # Pre-execution quality evaluation
             print("\n📊 Evaluating pre-execution quality metrics...")
 
             dot_filepath = os.path.join(self.workspace_path, "attack_defense_tree.dot")
             dot_content  = self._load_file(dot_filepath) or "# DOT file not available"
-
             json_filepath = os.path.join(experiment_subdir, f"{experiment_name}.json")
             json_content  = self._load_file(json_filepath) or "{}"
-
-            py_filepath = os.path.join(experiment_subdir, f"{experiment_name}.py")
-            py_content  = self._load_file(py_filepath) or "# Python file not available"
+            py_filepath  = os.path.join(experiment_subdir, f"{experiment_name}.py")
+            py_content   = self._load_file(py_filepath) or "# Python file not available"
 
             metrics_prompt   = self._build_metrics_prompt(
                 dot_content, json_content, py_content,
@@ -1005,8 +1059,7 @@ You are an **expert in experimental cybersecurity**, specialized in **attack-def
             else:
                 print("⚠️ Failed to generate metrics evaluation")
 
-            # ── CHANGE 1: register row (q_post filled later if executed) ─────
-            # We add a mutable dict so we can update q_post in place
+            # Register row — q_post updated in place later
             tracking_row: Dict = {
                 "experiment": experiment_name,
                 "loop":       loop_number,
@@ -1015,7 +1068,7 @@ You are an **expert in experimental cybersecurity**, specialized in **attack-def
             }
             self.tracking_table.append(tracking_row)
 
-            # ── Execution decision ────────────────────────────────────────────
+            # Execution decision
             q_post_score = None
 
             if q_pre_score is not None and q_pre_score >= quality_threshold:
@@ -1026,8 +1079,7 @@ You are an **expert in experimental cybersecurity**, specialized in **attack-def
                 if execute_response == 'y':
                     json_filename = f"{experiment_name}.json"
                     json_filepath = os.path.join(experiment_subdir, json_filename)
-                    log_filepath  = os.path.join(experiment_subdir,
-                                                 f"output_{experiment_name}.log")
+                    log_filepath  = os.path.join(experiment_subdir, f"output_{experiment_name}.log")
 
                     print(f"\n▶️ Executing: chaos run {json_filename}")
                     print(f"📝 Output will be saved to: output_{experiment_name}.log")
@@ -1067,7 +1119,7 @@ You are an **expert in experimental cybersecurity**, specialized in **attack-def
                     except Exception as e:
                         print(f"❌ Error executing experiment: {e}")
 
-                    # ── Post-execution quality evaluation ─────────────────────
+                    # Post-execution quality evaluation
                     if execution_successful and os.path.exists(log_filepath):
                         print("\n📊 Evaluating post-execution quality metrics...")
                         output_log = self._load_file(log_filepath)
@@ -1084,12 +1136,10 @@ You are an **expert in experimental cybersecurity**, specialized in **attack-def
                                     metrics_post_response, sce_node, probe_type)
                                 if save_ok:
                                     print("✅ Post-execution quality evaluation completed")
-                                    # ── CHANGE 1: update q_post in tracking row ──
                                     tracking_row["q_post"] = q_post_score
                                 else:
                                     print("⚠️ Post-execution evaluation completed but report save failed")
 
-                                # ── CHANGE 1: register in tracking regardless of threshold ──
                                 if q_post_score is not None and q_post_score < quality_threshold_post:
                                     print(f"\n⚠️ Post-execution threshold not met "
                                           f"(Q_post={q_post_score:.2f} < {quality_threshold_post})")
@@ -1108,16 +1158,27 @@ You are an **expert in experimental cybersecurity**, specialized in **attack-def
             else:
                 print("\n💡 No quality score available for execution decision.")
 
-            # ── Continue? ─────────────────────────────────────────────────────
-            print("\n🔄 Generate another SCE experiment? (y/n):")
+            # ── Continue? — two-step question ────────────────────────────────
+            print(f"\n🔁 Regenerate the same experiment ({experiment_name}) "
+                  f"with updated logs/reports? (y/n):")
+            regen_response = input("> ").strip().lower()
+
+            if regen_response == 'y':
+                # Keep current_sce_node / probe_type / attack_nodes / template_json
+                # and reload artifacts from disk on next iteration
+                same_experiment = True
+                continue
+
+            # Not regenerating the same — ask if they want a different one
+            print("\n🔄 Generate a different SCE experiment? (y/n):")
             continue_response = input("> ").strip().lower()
             if continue_response != 'y':
                 break
-            # CHANGE 2: if continuing, the loop goes back to experiment generation,
-            # NOT to ADT generation — the while True already achieves this.
+            # same_experiment is already False, so next iteration will ask for new inputs
 
-        # ── CHANGE 3: present tracking table at the end ───────────────────────
+        # FIX: print AND save tracking table as .md
         self._tracking_print()
+        self._tracking_save_md()
         print("🎉 All SCE experiments completed!")
 
 
@@ -1131,7 +1192,7 @@ def test_bedrock_connection() -> bool:
 
     print("\n1️⃣ Checking AWS credentials...")
     try:
-        session = boto3.Session()
+        session     = boto3.Session()
         credentials = session.get_credentials()
         if credentials is None:
             print("❌ No AWS credentials found")
@@ -1151,8 +1212,8 @@ def test_bedrock_connection() -> bool:
 
     print("\n3️⃣ Testing model access...")
     try:
-        bedrock_models = boto3.client('bedrock')
-        models = bedrock_models.list_foundation_models()
+        bedrock_models  = boto3.client('bedrock')
+        models          = bedrock_models.list_foundation_models()
         available_models = [m['modelId'] for m in models['modelSummaries']]
         print(f"✅ Found {len(available_models)} available models")
     except Exception as e:
@@ -1167,7 +1228,7 @@ def test_bedrock_connection() -> bool:
                 'textGenerationConfig': {'maxTokenCount': 50, 'temperature': 0.1}
             })
         )
-        result = json.loads(response['body'].read())
+        result      = json.loads(response['body'].read())
         output_text = result['results'][0]['outputText']
         print("✅ Model invocation successful")
         print(f"📝 Response: {output_text.strip()[:100]}...")

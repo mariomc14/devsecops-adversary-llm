@@ -863,9 +863,15 @@ Q_post = XX.XX
             return
         print("✅ Attack YAML generated and saved")
 
-        # Stage 3 — runs ONCE outside the loop
-        print(f"\n🌳 Stage 3: Building attack-defense tree...")
+        # These hold the current experiment inputs across iterations
+        current_sce_node      : Optional[str] = None
+        current_probe_type    : Optional[str] = None
+        current_attack_nodes  : Optional[str] = None
+        current_template_json : Optional[str] = None
+        same_experiment       : bool           = False
 
+        print(f"\n🌳 Stage 3: Building attack-defense tree...")
+        
         attacks_yaml_path    = os.path.join(self.workspace_path, "attacks.yaml")
         attacks_yaml_content = self._load_file(attacks_yaml_path)
         if not attacks_yaml_content:
@@ -904,26 +910,66 @@ Q_post = XX.XX
         try:
             quality_threshold_post = int(threshold_post_input) if threshold_post_input else 100
             quality_threshold_post = (quality_threshold_post
-                                      if 0 <= quality_threshold_post <= 100 else 100)
+                                    if 0 <= quality_threshold_post <= 100 else 100)
         except ValueError:
             quality_threshold_post = 100
         print(f"✅ Post-execution quality threshold: {quality_threshold_post}")
-
-        # Stage 4 — experiment loop
-        print("\n🧪 Stage 4: Generating SCE experiments...")
-
-        # These hold the current experiment inputs across iterations
-        current_sce_node      : Optional[str] = None
-        current_probe_type    : Optional[str] = None
-        current_attack_nodes  : Optional[str] = None
-        current_template_json : Optional[str] = None
-        same_experiment       : bool           = False
 
         while True:
             loop_number = len(self.tracking_table) + 1
             print(f"\n{'─'*60}")
             print(f"🔁 Loop #{loop_number}")
             print(f"{'─'*60}")
+
+            if same_experiment:
+                # Stage 3
+                print(f"\n🌳 Stage 3: Building attack-defense tree...")
+
+                attacks_yaml_path    = os.path.join(self.workspace_path, "attacks.yaml")
+                attacks_yaml_content = self._load_file(attacks_yaml_path)
+                if not attacks_yaml_content:
+                    print("❌ Failed to load attacks.yaml file")
+                    return
+
+                structure_dot_content = self._load_file(structure_dot)
+                if not structure_dot_content:
+                    print("❌ Failed to load structure.dot file")
+                    return
+
+                tree_prompt    = self._build_attack_defense_tree_prompt(attacks_yaml_content,
+                                                                        structure_dot_content)
+                stage3_response = self._call_amazon_q(tree_prompt, use_context=True)
+                if not stage3_response:
+                    print("❌ Failed to generate attack-defense tree")
+                    return
+
+                if not self._save_dot_output(stage3_response):
+                    print("❌ Failed to save DOT output")
+                    return
+                print("✅ Attack-defense tree generated and saved as DOT file")
+
+                # Quality thresholds
+                print("\n📊 Enter quality threshold for pre-execution metrics (0-100, default=80):")
+                threshold_input = input("> ").strip()
+                try:
+                    quality_threshold = int(threshold_input) if threshold_input else 80
+                    quality_threshold = quality_threshold if 0 <= quality_threshold <= 100 else 80
+                except ValueError:
+                    quality_threshold = 80
+                print(f"✅ Pre-execution quality threshold: {quality_threshold}")
+
+                print("\n📊 Enter quality threshold for post-execution metrics (0-100, default=100):")
+                threshold_post_input = input("> ").strip()
+                try:
+                    quality_threshold_post = int(threshold_post_input) if threshold_post_input else 100
+                    quality_threshold_post = (quality_threshold_post
+                                            if 0 <= quality_threshold_post <= 100 else 100)
+                except ValueError:
+                    quality_threshold_post = 100
+                print(f"✅ Post-execution quality threshold: {quality_threshold_post}")
+
+            # Stage 4 — experiment loop
+            print("\n🧪 Stage 4: Generating SCE experiments...")
 
             # ── If NOT regenerating the same experiment, ask for new inputs ──
             if not same_experiment:
@@ -1143,7 +1189,16 @@ Q_post = XX.XX
                                 if q_post_score is not None and q_post_score < quality_threshold_post:
                                     print(f"\n⚠️ Post-execution threshold not met "
                                           f"(Q_post={q_post_score:.2f} < {quality_threshold_post})")
-                                    print("   Review the post-execution report before re-running.")
+                                    # ── Continue? — two-step question ────────────────────────────────
+                                    print(f"\n🔁 Regenerate the same experiment ({experiment_name}) "
+                                        f"with updated logs/reports? (y/n): (The ADT will also be regenerated)")
+                                    regen_response = input("> ").strip().lower()
+
+                                    if regen_response == 'y':
+                                        # Keep current_sce_node / probe_type / attack_nodes / template_json
+                                        # and reload artifacts from disk on next iteration
+                                        same_experiment = True
+                                        continue
                             else:
                                 print("⚠️ Failed to generate post-execution metrics evaluation")
                 else:
@@ -1157,17 +1212,6 @@ Q_post = XX.XX
                 print("   Review the pre-execution report for recommendations.")
             else:
                 print("\n💡 No quality score available for execution decision.")
-
-            # ── Continue? — two-step question ────────────────────────────────
-            print(f"\n🔁 Regenerate the same experiment ({experiment_name}) "
-                  f"with updated logs/reports? (y/n):")
-            regen_response = input("> ").strip().lower()
-
-            if regen_response == 'y':
-                # Keep current_sce_node / probe_type / attack_nodes / template_json
-                # and reload artifacts from disk on next iteration
-                same_experiment = True
-                continue
 
             # Not regenerating the same — ask if they want a different one
             print("\n🔄 Generate a different SCE experiment? (y/n):")

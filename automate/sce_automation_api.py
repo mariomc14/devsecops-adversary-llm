@@ -907,6 +907,7 @@ Produce a detailed evaluation report in the following structure:
                 full_prompt = prompt
             
             response = self.bedrock.converse(
+<<<<<<< Updated upstream
                 modelId="global.anthropic.claude-haiku-4-5-20251001-v1:0",
                 messages=[
                     {
@@ -918,6 +919,13 @@ Produce a detailed evaluation report in the following structure:
                         ]
                     }
                 ],
+=======
+                modelId="global.anthropic.claude-sonnet-4-6",
+                messages=[{
+                    "role": "user",
+                    "content": [{"text": full_prompt}]
+                }],
+>>>>>>> Stashed changes
                 inferenceConfig={
                     "maxTokens" : 64000,
                     "temperature" : 1,

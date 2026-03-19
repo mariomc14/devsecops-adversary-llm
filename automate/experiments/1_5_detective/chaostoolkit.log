@@ -1,0 +1,63 @@
+[36m[2026-03-17 12:14:33 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-03-17 12:14:33 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-03-17 12:14:33 DEBUG] [__init__:106] Using settings file '/home/mmc/.chaostoolkit/settings.yaml'
+[36m[2026-03-17 12:14:53 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/mmc/.chaostoolkit/settings.yaml'.
+[36m[2026-03-17 12:14:53 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-03-17 12:14:53 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-03-17 12:14:53 DEBUG] [caching:24] Building activity cache...
+[36m[2026-03-17 12:14:53 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-03-17 12:14:53 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-03-17 12:14:53 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-03-17 12:14:53 DEBUG] [secret:79] Loading secrets...
+[36m[2026-03-17 12:14:53 DEBUG] [secret:104] Done loading secrets
+[32m[2026-03-17 12:14:53 INFO] [experiment:112] Experiment looks valid
+[36m[2026-03-17 12:14:53 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-03-17 12:14:53 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-03-17 12:14:53 DEBUG] [caching:24] Building activity cache...
+[36m[2026-03-17 12:14:53 DEBUG] [caching:35] Cached 3 activities
+[36m[2026-03-17 12:14:53 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-03-17 12:14:53 DEBUG] [secret:79] Loading secrets...
+[36m[2026-03-17 12:14:53 DEBUG] [secret:104] Done loading secrets
+[36m[2026-03-17 12:14:53 DEBUG] [configuration:161] Loading dynamic configuration...
+[32m[2026-03-17 12:14:53 INFO] [run:440] Running experiment: SCE 1.5 Detective Probe - IMDS Protection Weakening via ec2:ModifyInstanceMetadataOptions
+[36m[2026-03-17 12:14:53 DEBUG] [__init__:67] Initializing controls
+[32m[2026-03-17 12:14:53 INFO] [run:471] Steady-state strategy: after-method-only
+[32m[2026-03-17 12:14:53 INFO] [run:477] Rollbacks strategy: default
+[36m[2026-03-17 12:14:53 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[32m[2026-03-17 12:14:53 INFO] [run:778] Playing your experiment's method now...
+[36m[2026-03-17 12:14:53 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-03-17 12:14:53 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-17 12:14:53 INFO] [activity:232] Action: Provision CloudFormation stack with production-tagged EC2 instance, permissive attacker IAM role, CloudTrail trail, EventBridge detection rule, SNS topic, and SQS queue
+[36m[2026-03-17 12:14:53 DEBUG] [python:33] Activity 'Provision CloudFormation stack with production-tagged EC2 instance, permissive attacker IAM role, CloudTrail trail, EventBridge detection rule, SNS topic, and SQS queue' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_5_detective.py'
+[36m[2026-03-17 12:18:09 DEBUG] [activity:262]   => succeeded without any result value
+[36m[2026-03-17 12:18:09 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-17 12:18:09 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-17 12:18:09 INFO] [activity:232] Action: Assume attacker role and call ec2:ModifyInstanceMetadataOptions to downgrade IMDS to IMDSv1 generating a real CloudTrail event, then immediately re-harden the instance
+[36m[2026-03-17 12:18:09 DEBUG] [python:33] Activity 'Assume attacker role and call ec2:ModifyInstanceMetadataOptions to downgrade IMDS to IMDSv1 generating a real CloudTrail event, then immediately re-harden the instance' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_5_detective.py'
+[36m[2026-03-17 12:18:11 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-03-17 12:18:11 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-17 12:18:11 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-03-17 12:18:11 DEBUG] [run:696] Running steady-state hypothesis after the method
+[32m[2026-03-17 12:18:11 INFO] [hypothesis:205] Steady state hypothesis: EventBridge detection rule is enabled, SQS queue is empty, CloudTrail trail is logging, and EC2 instance has IMDSv2 enforced before attack
+[36m[2026-03-17 12:18:11 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[36m[2026-03-17 12:18:11 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-17 12:18:11 INFO] [activity:232] Probe: Verify EventBridge -> SNS -> SQS delivered ModifyInstanceMetadataOptions notification within 60-second SLA (H1) and CloudTrail recorded the audit event (H2)
+[36m[2026-03-17 12:18:11 DEBUG] [python:33] Activity 'Verify EventBridge -> SNS -> SQS delivered ModifyInstanceMetadataOptions notification within 60-second SLA (H1) and CloudTrail recorded the audit event (H2)' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_5_detective.py'
+[36m[2026-03-17 12:20:32 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-03-17 12:20:32 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-17 12:20:32 DEBUG] [hypothesis:247] allowed tolerance is True
+[32m[2026-03-17 12:20:32 INFO] [hypothesis:260] Steady state hypothesis is met!
+[36m[2026-03-17 12:20:32 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[32m[2026-03-17 12:20:32 INFO] [run:1072] Let's rollback...
+[36m[2026-03-17 12:20:32 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-03-17 12:20:32 INFO] [rollback:36] Rollback: Empty CloudTrail S3 bucket and delete CloudFormation stack with all provisioned experiment resources
+[36m[2026-03-17 12:20:32 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-17 12:20:32 INFO] [activity:232] Action: Empty CloudTrail S3 bucket and delete CloudFormation stack with all provisioned experiment resources
+[36m[2026-03-17 12:20:32 DEBUG] [python:33] Activity 'Empty CloudTrail S3 bucket and delete CloudFormation stack with all provisioned experiment resources' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_5_detective.py'
+[36m[2026-03-17 12:23:01 DEBUG] [activity:262]   => succeeded without any result value
+[36m[2026-03-17 12:23:01 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-17 12:23:01 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-03-17 12:23:01 INFO] [run:598] Experiment ended with status: completed
+[36m[2026-03-17 12:23:01 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[36m[2026-03-17 12:23:01 DEBUG] [__init__:106] Cleaning up controls
+[36m[2026-03-17 12:23:01 DEBUG] [caching:42] Clearing activities cache

@@ -1,0 +1,64 @@
+[36m[2026-03-17 13:22:56 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-03-17 13:22:56 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-03-17 13:22:56 DEBUG] [__init__:106] Using settings file '/home/mmc/.chaostoolkit/settings.yaml'
+[36m[2026-03-17 13:23:16 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/mmc/.chaostoolkit/settings.yaml'.
+[36m[2026-03-17 13:23:16 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-03-17 13:23:16 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-03-17 13:23:16 DEBUG] [caching:24] Building activity cache...
+[36m[2026-03-17 13:23:16 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-03-17 13:23:16 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-03-17 13:23:16 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-03-17 13:23:16 DEBUG] [secret:79] Loading secrets...
+[36m[2026-03-17 13:23:16 DEBUG] [secret:104] Done loading secrets
+[32m[2026-03-17 13:23:16 INFO] [experiment:112] Experiment looks valid
+[36m[2026-03-17 13:23:16 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-03-17 13:23:16 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-03-17 13:23:16 DEBUG] [caching:24] Building activity cache...
+[36m[2026-03-17 13:23:16 DEBUG] [caching:35] Cached 3 activities
+[36m[2026-03-17 13:23:16 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-03-17 13:23:16 DEBUG] [secret:79] Loading secrets...
+[36m[2026-03-17 13:23:16 DEBUG] [secret:104] Done loading secrets
+[36m[2026-03-17 13:23:16 DEBUG] [configuration:161] Loading dynamic configuration...
+[32m[2026-03-17 13:23:16 INFO] [run:440] Running experiment: SCE 1.5 Reactive Probe - IMDS Protection Weakening Auto-Remediation via EventBridge + Lambda
+[36m[2026-03-17 13:23:16 DEBUG] [__init__:67] Initializing controls
+[32m[2026-03-17 13:23:16 INFO] [run:471] Steady-state strategy: after-method-only
+[32m[2026-03-17 13:23:16 INFO] [run:477] Rollbacks strategy: default
+[36m[2026-03-17 13:23:16 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[32m[2026-03-17 13:23:16 INFO] [run:778] Playing your experiment's method now...
+[36m[2026-03-17 13:23:16 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-03-17 13:23:16 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-17 13:23:16 INFO] [activity:232] Action: Create S3 bucket outside CFN with UUID suffix, upload Lambda ZIP, provision CloudFormation stack with EC2 instance, attacker IAM role, Lambda reactive function, EventBridge rule, CloudTrail trail, SNS topic, and SQS queue
+[36m[2026-03-17 13:23:16 DEBUG] [python:33] Activity 'Create S3 bucket outside CFN with UUID suffix, upload Lambda ZIP, provision CloudFormation stack with EC2 instance, attacker IAM role, Lambda reactive function, EventBridge rule, CloudTrail trail, SNS topic, and SQS queue' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_5_reactive.py'
+[36m[2026-03-17 13:26:30 DEBUG] [activity:262]   => succeeded without any result value
+[36m[2026-03-17 13:26:30 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-17 13:26:30 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-17 13:26:30 INFO] [activity:232] Action: Assume attacker role and call ec2:ModifyInstanceMetadataOptions to downgrade IMDS to IMDSv1 generating a CloudTrail event that triggers the EventBridge Lambda reactive pipeline
+[36m[2026-03-17 13:26:30 DEBUG] [python:33] Activity 'Assume attacker role and call ec2:ModifyInstanceMetadataOptions to downgrade IMDS to IMDSv1 generating a CloudTrail event that triggers the EventBridge Lambda reactive pipeline' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_5_reactive.py'
+[36m[2026-03-17 13:26:47 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-03-17 13:26:47 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-17 13:26:47 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-03-17 13:26:47 DEBUG] [run:696] Running steady-state hypothesis after the method
+[32m[2026-03-17 13:26:47 INFO] [hypothesis:205] Steady state hypothesis: EC2 instance has IMDSv2 enforced, EventBridge rule ENABLED, SQS queue empty, CloudTrail logging, and attacker role has no deny-all policy before attack
+[36m[2026-03-17 13:26:47 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[36m[2026-03-17 13:26:47 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-17 13:26:47 INFO] [activity:232] Probe: Verify Lambda re-hardened IMDS (H1), applied deny-all to attacker role (H2), and published SNS notification (H3) within 90-second reactive SLA
+[36m[2026-03-17 13:26:47 DEBUG] [python:33] Activity 'Verify Lambda re-hardened IMDS (H1), applied deny-all to attacker role (H2), and published SNS notification (H3) within 90-second reactive SLA' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_5_reactive.py'
+[36m[2026-03-17 13:28:17 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-03-17 13:28:17 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-17 13:28:17 DEBUG] [hypothesis:247] allowed tolerance is True
+[36m[2026-03-17 13:28:17 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[31m[2026-03-17 13:28:17 CRITICAL] [run:716] Steady state probe 'Verify Lambda re-hardened IMDS (H1), applied deny-all to attacker role (H2), and published SNS notification (H3) within 90-second reactive SLA' is not in the given tolerance so failing this experiment
+[32m[2026-03-17 13:28:17 INFO] [run:1072] Let's rollback...
+[36m[2026-03-17 13:28:17 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-03-17 13:28:17 INFO] [rollback:36] Rollback: Remove deny-all inline policy from attacker role, delete CloudFormation stack, then empty and delete the S3 bucket
+[36m[2026-03-17 13:28:17 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-17 13:28:17 INFO] [activity:232] Action: Remove deny-all inline policy from attacker role, delete CloudFormation stack, then empty and delete the S3 bucket
+[36m[2026-03-17 13:28:17 DEBUG] [python:33] Activity 'Remove deny-all inline policy from attacker role, delete CloudFormation stack, then empty and delete the S3 bucket' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_5_reactive.py'
+[36m[2026-03-17 13:30:47 DEBUG] [activity:262]   => succeeded without any result value
+[36m[2026-03-17 13:30:47 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-17 13:30:47 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-03-17 13:30:47 INFO] [run:598] Experiment ended with status: deviated
+[32m[2026-03-17 13:30:47 INFO] [run:600] The steady-state has deviated, a weakness may have been discovered
+[36m[2026-03-17 13:30:47 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[36m[2026-03-17 13:30:47 DEBUG] [__init__:106] Cleaning up controls
+[36m[2026-03-17 13:30:47 DEBUG] [caching:42] Clearing activities cache

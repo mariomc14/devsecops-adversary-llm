@@ -1,0 +1,71 @@
+{
+    "title": "SCE 3.3 Detective Probe — CloudTrail, VPC Flow Logs, and CloudWatch Alarms Detect Full IMDS Attack Chain (T1578 + T1552.005 + T1078.004) [Two-Stack Architecture]",
+    "description": "Validates that all three detective controls detect their respective attack steps within defined windows. The experiment uses a two-stack CloudFormation architecture to avoid the 1200-second provisioning timeout that caused the previous execution to fail: Stack A provisions the base infrastructure (VPC, NAT GW, EC2, IAM, Lambdas, S3, ECR, SSM) and Stack B provisions the observability layer (CloudTrail, VPC Flow Logs, CloudWatch metric filters and alarms). AWS Config recorder has been replaced with a direct ec2:DescribeInstances state check to eliminate the primary timeout root cause. Step 1.2 (T1578): ec2:ModifyInstanceMetadataOptions weakens the test EC2 instance; detection verified by (a1) a CloudTrail management event in the trail CloudWatch Logs group and (a2) ec2:DescribeInstances confirming HttpTokens=optional and HopLimit=2. Step 2.2 (T1552.005): IMDSProbeFunction VPC Lambda issues an unauthenticated IMDSv1 curl to the instance; detection verified by (b1) VPC Flow Logs CloudWatch Alarm transitioning to ALARM on port-80 ACCEPT traffic and (b2) HarvestSignalParam SSM containing harvested:: prefix. Step 3.2 (T1078.004): SimulatedAttackerFunction assumes ExfiltrationSimRole and makes lateral-movement API calls; detection verified by (c1) CloudTrail log events from the ExfiltrationSimRole principal and (c2) TrailAlarm transitioning to ALARM. Pre-flight checks validate all stack outputs before proceeding; PreConditionError is raised on missing state rather than propagating KeyError.",
+    "tags": [
+        "sce-node:3.3",
+        "probe-type:detective",
+        "attack-nodes:1.2,2.2,3.2",
+        "ttp:T1578",
+        "ttp:T1552.005",
+        "ttp:T1078.004",
+        "threat-category:credential-theft-iam-abuse",
+        "threat-category:ec2-privilege-escalation",
+        "compliance:pci-dss",
+        "stride:tampering",
+        "stride:information-disclosure",
+        "stride:elevation-of-privilege",
+        "control:cloudtrail",
+        "control:vpc-flow-logs",
+        "control:cloudwatch-alarms",
+        "architecture:two-stack",
+        "fix:timeout-root-cause",
+        "fix:precondition-error-handling",
+        "fidelity:high"
+    ],
+    "steady-state-hypothesis": {
+        "title": "CloudTrail events, VPC Flow Logs CloudWatch Alarm, EC2 IMDS state change, and CloudWatch Trail Alarm all detect the three-step IMDS attack chain within defined detection windows",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "verify-cloudtrail-ec2-state-flowlogs-alarm-and-trail-alarm-detect-imds-weakening-harvest-and-lateral-movement",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.3_3_detective",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "provision-two-stack-base-and-observability-infrastructure-via-cloudformation",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.3_3_detective",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "execute-attack-1.2-modify-imds-2.2-harvest-credentials-3.2-lateral-movement-via-exfil-role",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.3_3_detective",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "reharden-imds-empty-s3-delete-ecr-remove-ssm-params-delete-stack-b-then-stack-a",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.3_3_detective",
+                "func": "rollback"
+            }
+        }
+    ]
+}

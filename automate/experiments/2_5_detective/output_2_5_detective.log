@@ -1,0 +1,86 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-03-17 14:07:40 INFO] Validating the experiment's syntax
+[32m[2026-03-17 14:07:40 INFO] Experiment looks valid
+[32m[2026-03-17 14:07:40 INFO] Running experiment: SCE 2.5 Detective Probe - IMDS Attack Chain Detection via CloudTrail, VPC Flow Logs, and EventBridge (Attack Nodes 1.2 + 2.2)
+[32m[2026-03-17 14:07:40 INFO] Steady-state strategy: after-method-only
+[32m[2026-03-17 14:07:40 INFO] Rollbacks strategy: default
+[32m[2026-03-17 14:07:40 INFO] Playing your experiment's method now...
+[32m[2026-03-17 14:07:40 INFO] Action: Create S3 bucket outside CFN, provision CloudFormation stack with production-tagged target EC2, probe EC2, permissive attacker IAM role, VPC Flow Logs to CloudWatch, CloudTrail trail, EventBridge detection rule, SNS topic, and SQS queue
+2026-03-17T14:07:40Z [INFO] sce.2_5.detective - === steady_state() -- stack: sce-experiment-1773752860-03b79511 ===
+2026-03-17T14:07:40Z [INFO] sce.2_5.detective - Unique suffix: 1773752860-03b79511
+2026-03-17T14:07:41Z [INFO] sce.2_5.detective - AWS region: us-east-1
+2026-03-17T14:07:41Z [INFO] sce.2_5.detective - Running pre-flight permission checks ...
+2026-03-17T14:07:41Z [INFO] botocore.credentials - Found credentials in shared credentials file: ~/.aws/credentials
+2026-03-17T14:07:42Z [INFO] sce.2_5.detective - Deploying principal: arn:aws:iam::396608802942:user/ChaosXploit-Labs
+2026-03-17T14:07:42Z [INFO] sce.2_5.detective - Pre-flight: all permissions appear allowed.
+2026-03-17T14:07:42Z [INFO] sce.2_5.detective - Resolving latest AL2023 AMI via SSM '/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-default-x86_64' ...
+2026-03-17T14:07:43Z [INFO] sce.2_5.detective - Resolved AMI ID: ami-02dfbd4ff395f2a1b
+2026-03-17T14:07:44Z [INFO] sce.2_5.detective - Account: 396608802942
+2026-03-17T14:07:44Z [INFO] sce.2_5.detective - Creating S3 bucket 'sce-ct-1773752860-03b79511' in region 'us-east-1' ...
+2026-03-17T14:07:45Z [INFO] sce.2_5.detective - S3 bucket 'sce-ct-1773752860-03b79511' created.
+2026-03-17T14:07:45Z [INFO] sce.2_5.detective - Versioning enabled on bucket 'sce-ct-1773752860-03b79511'.
+2026-03-17T14:07:45Z [INFO] sce.2_5.detective - Validating CFN template string encoding ...
+2026-03-17T14:07:45Z [INFO] sce.2_5.detective - Template validation passed.
+2026-03-17T14:07:47Z [INFO] sce.2_5.detective - Creating CloudFormation stack 'sce-experiment-1773752860-03b79511' ...
+2026-03-17T14:07:47Z [INFO] sce.2_5.detective - Waiting for CFN waiter 'stack_create_complete' on stack 'sce-experiment-1773752860-03b79511' ...
+2026-03-17T14:10:55Z [INFO] sce.2_5.detective - CFN waiter 'stack_create_complete' completed for 'sce-experiment-1773752860-03b79511'.
+2026-03-17T14:10:55Z [INFO] sce.2_5.detective - Stack outputs: {'SqsQueueUrl': 'https://sqs.us-east-1.amazonaws.com/396608802942/sce-queue-1773752860-03b79511', 'AttackerRoleArn': 'arn:aws:iam::396608802942:role/sce-attacker-role-1773752860-03b79511', 'VpcId': 'vpc-0344ee90f1cc3a734', 'ProbeInstanceId': 'i-067fd2c6a03fb2b35', 'TargetInstanceId': 'i-09ecebc70662005f0', 'TrailName': 'sce-trail-1773752860-03b79511', 'FlowLogGroup': '/sce/flowlogs/1773752860-03b79511'}
+2026-03-17T14:10:55Z [INFO] sce.2_5.detective - Outputs -- Target=i-09ecebc70662005f0 Probe=i-067fd2c6a03fb2b35 Trail=sce-trail-1773752860-03b79511 FlowLogGroup=/sce/flowlogs/1773752860-03b79511
+2026-03-17T14:10:56Z [INFO] sce.2_5.detective - Target instance private IP: 10.99.1.27
+2026-03-17T14:10:57Z [INFO] sce.2_5.detective - Baseline: IMDSv2 enforced on target i-09ecebc70662005f0.
+2026-03-17T14:10:57Z [INFO] sce.2_5.detective - Baseline: CloudTrail trail 'sce-trail-1773752860-03b79511' is logging.
+2026-03-17T14:10:58Z [INFO] sce.2_5.detective - Baseline: SQS queue is empty.
+2026-03-17T14:10:58Z [INFO] sce.2_5.detective - Waiting for target instance i-09ecebc70662005f0 to register with SSM ...
+2026-03-17T14:10:59Z [INFO] sce.2_5.detective - Baseline: target instance i-09ecebc70662005f0 is SSM-reachable.
+2026-03-17T14:10:59Z [INFO] sce.2_5.detective - Waiting for probe instance i-067fd2c6a03fb2b35 to register with SSM ...
+2026-03-17T14:11:00Z [INFO] sce.2_5.detective - Baseline: probe instance i-067fd2c6a03fb2b35 is SSM-reachable.
+2026-03-17T14:11:01Z [INFO] sce.2_5.detective - steady_state() complete.
+[32m[2026-03-17 14:11:01 INFO] Action: Step 1 (Attack 1.2 T1578): assume attacker role and call ec2:ModifyInstanceMetadataOptions to downgrade IMDS to IMDSv1 generating CloudTrail and EventBridge events; Step 2 (Attack 2.2 T1552.005): from probe instance via SSM execute curl to 169.254.169.254 generating VPC Flow Log traffic
+2026-03-17T14:11:01Z [INFO] sce.2_5.detective - === attack() ===
+2026-03-17T14:11:01Z [INFO] sce.2_5.detective - Target: i-09ecebc70662005f0 | Probe: i-067fd2c6a03fb2b35 | AttackerRole: arn:aws:iam::396608802942:role/sce-attacker-role-1773752860-03b79511
+2026-03-17T14:11:01Z [INFO] sce.2_5.detective - --- Step 1: IMDS weakening on target instance i-09ecebc70662005f0 ---
+2026-03-17T14:11:02Z [INFO] sce.2_5.detective - Step 1: Assumed AttackerRole session: AROAVYV52CB7AFPYQWFL2:sce-attack-1-1773752860-03b79511
+2026-03-17T14:11:02Z [INFO] sce.2_5.detective - Step 1: Calling ec2:ModifyInstanceMetadataOptions on i-09ecebc70662005f0 (http_tokens=optional, hop_limit=2) ...
+2026-03-17T14:11:03Z [INFO] sce.2_5.detective - Step 1: ModifyInstanceMetadataOptions succeeded (HTTP 200). CloudTrail event generated.
+2026-03-17T14:11:04Z [INFO] sce.2_5.detective - Step 1: Instance i-09ecebc70662005f0 re-hardened to IMDSv2 (http_tokens=required, hop_limit=1).
+2026-03-17T14:11:04Z [INFO] sce.2_5.detective - --- Step 2: IMDS access from probe instance i-067fd2c6a03fb2b35 ---
+2026-03-17T14:11:05Z [INFO] sce.2_5.detective - Running SSM command on i-067fd2c6a03fb2b35: ['curl -s --max-time 5 -o /tmp/imds_result.txt http://169.254.169.254/latest/meta-data/iam/security-credentials/ ; echo "HTTP_CODE:$(curl -s -o /dev/null -w \'%{http_code}\' --max-time 5 http://169.254.169.254/latest/meta-data/iam/security-credentials/)" ; curl -s --max-time 3 -o /dev/null http://169.254.169.254/latest/meta-data/']
+2026-03-17T14:11:06Z [INFO] sce.2_5.detective - SSM command 41779ce8-f220-418f-a144-5a015debf5a2 submitted to i-067fd2c6a03fb2b35.
+2026-03-17T14:11:12Z [INFO] sce.2_5.detective - SSM command 41779ce8-f220-418f-a144-5a015debf5a2: status=Success rc=0 stdout='HTTP_CODE:401'
+2026-03-17T14:11:12Z [INFO] sce.2_5.detective - Step 2: IMDS curl completed. SSM status=Success HTTP code='401'
+2026-03-17T14:11:12Z [INFO] sce.2_5.detective - Step 2: IMDS curl stdout (first 300 chars): 'HTTP_CODE:401'
+2026-03-17T14:11:12Z [INFO] sce.2_5.detective - attack() complete. Waiting 15s for CT delivery + Flow Log delivery before polling ...
+2026-03-17T14:11:27Z [INFO] sce.2_5.detective - attack() result: {'step1_executed': True, 'step1_succeeded': True, 'step1_error_code': '', 'step2_executed': True, 'step2_ssm_status': 'Success', 'step2_http_code': '401', 'attack_epoch': 1773753062.2866058, 'step1_http_status': 200, 'step1_rehardened': True, 'step2_stdout': 'HTTP_CODE:401'}
+[32m[2026-03-17 14:11:27 INFO] Steady state hypothesis: Target EC2 instance has IMDSv2 enforced, CloudTrail trail is logging, VPC Flow Logs are active, SQS queue is empty, both instances are SSM-reachable, and attacker role is assumable before attack
+[32m[2026-03-17 14:11:27 INFO] Probe: Verify CloudTrail recorded IMDS weakening event (H1), VPC Flow Logs captured IMDS access traffic (H2), and EventBridge notification delivered within 60s SLA (H3)
+2026-03-17T14:11:27Z [INFO] sce.2_5.detective - === hypothesis_verification() ===
+2026-03-17T14:11:27Z [INFO] sce.2_5.detective - [H1] Querying CloudTrail LookupEvents for ModifyInstanceMetadataOptions (polling up to 5 min) ...
+2026-03-17T14:11:28Z [INFO] sce.2_5.detective - [H1] CloudTrail event found. EventTime=2026-03-17 14:11:04+01:00 Actor=arn:aws:iam::396608802942:user/ChaosXploit-Labs InstanceId=
+2026-03-17T14:11:28Z [INFO] sce.2_5.detective - [H1] PASS -- CloudTrail recorded ModifyInstanceMetadataOptions for instance i-09ecebc70662005f0.
+2026-03-17T14:11:28Z [INFO] sce.2_5.detective - [H2] Querying CloudWatch Logs Insights on Flow Log group '/sce/flowlogs/1773752860-03b79511' for IMDS traffic to 169.254.169.254 ...
+2026-03-17T14:16:43Z [ERROR] sce.2_5.detective - [H2] FAIL -- VPC Flow Logs did NOT capture traffic to 169.254.169.254 within 300-second polling window. Elapsed: 340.8s. Flow Logs may have a delivery delay > 300s, or the curl command did not generate the expected traffic. Flow Log group: '/sce/flowlogs/1773752860-03b79511'.
+2026-03-17T14:16:43Z [INFO] sce.2_5.detective - [H3] Polling SQS queue for ModifyInstanceMetadataOptions EventBridge notification (SLA: 60s) ...
+2026-03-17T14:16:43Z [INFO] sce.2_5.detective - [H3] Remaining SLA for EventBridge notification: 10s.
+2026-03-17T14:16:43Z [INFO] sce.2_5.detective - [H3] PASS -- EventBridge notification received 341.7s after attack. Event: ModifyInstanceMetadataOptions Instance: i-09ecebc70662005f0
+2026-03-17T14:16:43Z [ERROR] sce.2_5.detective - hypothesis_verification() -> FAIL. One or more detective hypotheses were not satisfied. Review [H1], [H2], [H3] log entries above.
+[31m[2026-03-17 14:16:43 CRITICAL] Steady state probe 'Verify CloudTrail recorded IMDS weakening event (H1), VPC Flow Logs captured IMDS access traffic (H2), and EventBridge notification delivered within 60s SLA (H3)' is not in the given tolerance so failing this experiment
+[32m[2026-03-17 14:16:43 INFO] Let's rollback...
+[32m[2026-03-17 14:16:43 INFO] Rollback: Delete CloudFormation stack then empty and delete the S3 bucket
+[32m[2026-03-17 14:16:43 INFO] Action: Delete CloudFormation stack then empty and delete the S3 bucket
+2026-03-17T14:16:43Z [INFO] sce.2_5.detective - === rollback() -- stack: 'sce-experiment-1773752860-03b79511' ===
+2026-03-17T14:16:44Z [INFO] sce.2_5.detective - Stack 'sce-experiment-1773752860-03b79511' status: CREATE_COMPLETE
+2026-03-17T14:16:45Z [INFO] sce.2_5.detective - Stack deletion initiated for 'sce-experiment-1773752860-03b79511'.
+2026-03-17T14:16:45Z [INFO] sce.2_5.detective - Waiting for CFN waiter 'stack_delete_complete' on stack 'sce-experiment-1773752860-03b79511' ...
+2026-03-17T14:18:29Z [INFO] sce.2_5.detective - CFN waiter 'stack_delete_complete' completed for 'sce-experiment-1773752860-03b79511'.
+2026-03-17T14:18:29Z [INFO] sce.2_5.detective - Stack 'sce-experiment-1773752860-03b79511' deleted.
+2026-03-17T14:18:29Z [INFO] sce.2_5.detective - Emptying and deleting S3 bucket 'sce-ct-1773752860-03b79511' ...
+2026-03-17T14:18:31Z [INFO] sce.2_5.detective - S3 bucket 'sce-ct-1773752860-03b79511' deleted.
+2026-03-17T14:18:31Z [INFO] sce.2_5.detective - rollback() complete.
+[32m[2026-03-17 14:18:31 INFO] Experiment ended with status: deviated
+[32m[2026-03-17 14:18:31 INFO] The steady-state has deviated, a weakness may have been discovered
+
+
+RETURN CODE: 1

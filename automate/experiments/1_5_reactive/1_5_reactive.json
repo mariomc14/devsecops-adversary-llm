@@ -1,0 +1,66 @@
+{
+    "title": "SCE 1.5 Reactive Probe - IMDS Protection Weakening Auto-Remediation via EventBridge + Lambda",
+    "description": "Validates that the reactive control for Attack Node 1.2 (TTP T1578) fires automatically within a 90-second SLA after ec2:ModifyInstanceMetadataOptions downgrades IMDS to IMDSv1 on a production-tagged EC2 instance. The attack succeeds intentionally (permissive attacker role, no Deny) generating a real CloudTrail management event. EventBridge detects the event and triggers a Lambda that: (H1) re-hardens the instance IMDS to http_tokens=required hop_limit=1, (H2) applies a deny-all inline policy to the offending IAM role, and (H3) publishes a reactive SNS notification delivered to a polled SQS queue. All three hypotheses are verified in a unified round-robin polling loop within the SLA window. Root cause of previous AlreadyExists ROLLBACK is fixed: the S3 bucket is created and managed entirely outside CloudFormation (no AWS::S3::Bucket resource in the template) using a UUID-suffixed name to guarantee uniqueness across runs. Maps to ADT Node 1.4 and Attack Node 1.2, TTP T1578 - Modify Cloud Compute Infrastructure.",
+    "tags": [
+        "sce",
+        "reactive",
+        "imds",
+        "ec2",
+        "lambda",
+        "eventbridge",
+        "cloudtrail",
+        "sns",
+        "sqs",
+        "iam",
+        "t1578",
+        "banking-platform",
+        "pci-dss",
+        "node-1.5"
+    ],
+    "steady-state-hypothesis": {
+        "title": "EC2 instance has IMDSv2 enforced, EventBridge rule ENABLED, SQS queue empty, CloudTrail logging, and attacker role has no deny-all policy before attack",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "Verify Lambda re-hardened IMDS (H1), applied deny-all to attacker role (H2), and published SNS notification (H3) within 90-second reactive SLA",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.1_5_reactive",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "Create S3 bucket outside CFN with UUID suffix, upload Lambda ZIP, provision CloudFormation stack with EC2 instance, attacker IAM role, Lambda reactive function, EventBridge rule, CloudTrail trail, SNS topic, and SQS queue",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_5_reactive",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "Assume attacker role and call ec2:ModifyInstanceMetadataOptions to downgrade IMDS to IMDSv1 generating a CloudTrail event that triggers the EventBridge Lambda reactive pipeline",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_5_reactive",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "Remove deny-all inline policy from attacker role, delete CloudFormation stack, then empty and delete the S3 bucket",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_5_reactive",
+                "func": "rollback"
+            }
+        }
+    ]
+}

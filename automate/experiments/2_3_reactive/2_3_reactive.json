@@ -1,0 +1,64 @@
+{
+    "title": "SCE 2.3 Reactive Probe — IMDS Weakening and Credential Harvest Remediation Chain (High-Fidelity)",
+    "description": "Validates the end-to-end reactive control chain for attack nodes 1.2 (T1578: ec2:ModifyInstanceMetadataOptions sets HttpTokens=optional and HopLimit=2 on a real EC2 instance) and 2.2 (T1552.005: IMDSProbe Lambda curls the instance IMDS endpoint without a session token from within the same VPC subnet, harvesting the IAM role credentials). The harvest signal written to SSM fires an EventBridge rule which triggers the RemediationLambda. Hypothesis verification confirms four reactive sub-checks: (a) Lambda fired within 120-second SLA, (b) deny-all inline policy attached to the compromised InstanceRole with valid Deny-star-star statement, (c) IAM SimulatePrincipalPolicy confirms effective DENY on sts:GetCallerIdentity, s3:GetObject, and secretsmanager:GetSecretValue, (d) SNS pager-notification message received in SQS alert queue. All resources are provisioned and destroyed within a single timestamped CloudFormation stack in a clean AWS account.",
+    "tags": [
+        "sce-node:2.3",
+        "probe-type:reactive",
+        "attack-nodes:1.2,2.2",
+        "ttp:T1578",
+        "ttp:T1552.005",
+        "threat-category:credential-theft-iam-abuse",
+        "threat-category:ec2-privilege-escalation",
+        "compliance:pci-dss",
+        "stride:tampering",
+        "stride:information-disclosure",
+        "stride:elevation-of-privilege",
+        "fidelity:high"
+    ],
+    "steady-state-hypothesis": {
+        "title": "Reactive remediation chain invalidates stolen EC2 instance-role credentials within SLA after real IMDS weakening and credential harvest",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "verify-all-four-reactive-sub-checks-pass-lambda-policy-simulation-and-sqs-notification",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.2_3_reactive",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "provision-vpc-ec2-lambda-eventbridge-sns-sqs-iam-ssm-via-cloudformation",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.2_3_reactive",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "execute-attack-1.2-modify-imds-options-and-2.2-harvest-credentials-via-imds-probe-lambda",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.2_3_reactive",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "remove-inline-deny-policy-delete-ssm-params-and-destroy-cloudformation-stack",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.2_3_reactive",
+                "func": "rollback"
+            }
+        }
+    ]
+}

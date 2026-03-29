@@ -2,101 +2,90 @@ STDOUT:
 
 
 STDERR:
-[32m[2026-02-12 17:30:41 INFO] Validating the experiment's syntax
-[32m[2026-02-12 17:30:41 INFO] Experiment looks valid
-[32m[2026-02-12 17:30:41 INFO] Running experiment: SCE 1.3 Preventive Probe: EC2 IMDS Modification Denial (Fixed)
-[32m[2026-02-12 17:30:41 INFO] Steady-state strategy: after-method-only
-[32m[2026-02-12 17:30:41 INFO] Rollbacks strategy: default
-[32m[2026-02-12 17:30:41 INFO] Playing your experiment's method now...
-[32m[2026-02-12 17:30:41 INFO] Action: Prepare Test Infrastructure (CloudFormation Stack)
-2026-02-12 17:30:41,832 - chaosaws.ec2.1_3_preventive - INFO - ================================================================================
-2026-02-12 17:30:41,833 - chaosaws.ec2.1_3_preventive - INFO - PHASE 1: Prepare Test Infrastructure (Steady-State)
-2026-02-12 17:30:41,834 - chaosaws.ec2.1_3_preventive - INFO - ================================================================================
-2026-02-12 17:30:41,834 - chaosaws.ec2.1_3_preventive - INFO - Validating AWS account prerequisites...
-2026-02-12 17:30:41,847 - botocore.credentials - INFO - Found credentials in shared credentials file: ~/.aws/credentials
-2026-02-12 17:30:42,535 - chaosaws.ec2.1_3_preventive - INFO - ✓ AWS Account: 396608802942
-2026-02-12 17:30:42,535 - chaosaws.ec2.1_3_preventive - INFO - ✓ Principal: arn:aws:iam::396608802942:user/ChaosXploit-Labs
-2026-02-12 17:30:43,062 - chaosaws.ec2.1_3_preventive - INFO - ✓ IAM access verified
-2026-02-12 17:30:43,072 - chaosaws.ec2.1_3_preventive - INFO - Stack name: sce-experiment-1-3-preventive-1770913843
-2026-02-12 17:30:43,072 - chaosaws.ec2.1_3_preventive - INFO - Creating CloudFormation stack...
-2026-02-12 17:30:43,816 - chaosaws.ec2.1_3_preventive - INFO - Stack creation initiated: arn:aws:cloudformation:us-east-1:396608802942:stack/sce-experiment-1-3-preventive-1770913843/2d41b790-0830-11f1-8165-0e4db1a15765
-2026-02-12 17:30:43,816 - chaosaws.ec2.1_3_preventive - INFO - Waiting for stack creation (timeout: 300s)...
-2026-02-12 17:30:43,965 - chaosaws.ec2.1_3_preventive - INFO - Stack status (poll 1): CREATE_IN_PROGRESS
-2026-02-12 17:33:20,172 - chaosaws.ec2.1_3_preventive - INFO - Stack status (poll 74): CREATE_COMPLETE
-2026-02-12 17:33:20,173 - chaosaws.ec2.1_3_preventive - INFO - ✓ Stack reached CREATE_COMPLETE status
-2026-02-12 17:33:20,173 - chaosaws.ec2.1_3_preventive - INFO - Extracting stack outputs...
-2026-02-12 17:33:20,311 - chaosaws.ec2.1_3_preventive - INFO - Extracted outputs: ['DevBuildRoleName', 'DevBuildRoleArn', 'InstanceProfileArn']
-2026-02-12 17:33:20,311 - chaosaws.ec2.1_3_preventive - INFO - ✓ Infrastructure provisioned
-2026-02-12 17:33:20,311 - chaosaws.ec2.1_3_preventive - INFO -   Role Name: sce-1-3-dev-build-role
-2026-02-12 17:33:20,311 - chaosaws.ec2.1_3_preventive - INFO -   Role ARN: arn:aws:iam::396608802942:role/sce-1-3-dev-build-role
-2026-02-12 17:33:20,311 - chaosaws.ec2.1_3_preventive - INFO - Waiting 3s for IAM policy propagation...
-2026-02-12 17:33:23,311 - chaosaws.ec2.1_3_preventive - INFO - Verifying IAM role and policy...
-2026-02-12 17:33:24,915 - chaosaws.ec2.1_3_preventive - INFO - ✓ IAM role verified: sce-1-3-dev-build-role
-2026-02-12 17:33:24,916 - chaosaws.ec2.1_3_preventive - INFO - ✓ Steady-state infrastructure ready
-[32m[2026-02-12 17:33:24 INFO] Action: Execute Attack: IMDS Weakening (T1552.005)
-2026-02-12 17:33:24,917 - chaosaws.ec2.1_3_preventive - INFO - ================================================================================
-2026-02-12 17:33:24,917 - chaosaws.ec2.1_3_preventive - INFO - PHASE 2: Execute Attack (T1552.005 - IMDS Weakening Attempt)
-2026-02-12 17:33:24,917 - chaosaws.ec2.1_3_preventive - INFO - ================================================================================
-2026-02-12 17:33:24,920 - chaosaws.ec2.1_3_preventive - INFO - Attack Target Role: sce-1-3-dev-build-role
-2026-02-12 17:33:24,920 - chaosaws.ec2.1_3_preventive - INFO - Role ARN: arn:aws:iam::396608802942:role/sce-1-3-dev-build-role
-2026-02-12 17:33:24,920 - chaosaws.ec2.1_3_preventive - INFO - 
-[ATTACK SETUP] Assuming restricted role...
-2026-02-12 17:33:27,211 - chaosaws.ec2.1_3_preventive - ERROR - All 3 retries exhausted. Last error: An error occurred (AccessDenied) when calling the AssumeRole operation: User: arn:aws:iam::396608802942:user/ChaosXploit-Labs is not authorized to perform: sts:AssumeRole on resource: arn:aws:iam::396608802942:role/sce-1-3-dev-build-role
-2026-02-12 17:33:27,211 - chaosaws.ec2.1_3_preventive - ERROR - Failed to assume role: An error occurred (AccessDenied) when calling the AssumeRole operation: User: arn:aws:iam::396608802942:user/ChaosXploit-Labs is not authorized to perform: sts:AssumeRole on resource: arn:aws:iam::396608802942:role/sce-1-3-dev-build-role
-2026-02-12 17:33:27,211 - chaosaws.ec2.1_3_preventive - ERROR - Attack phase error: An error occurred (AccessDenied) when calling the AssumeRole operation: User: arn:aws:iam::396608802942:user/ChaosXploit-Labs is not authorized to perform: sts:AssumeRole on resource: arn:aws:iam::396608802942:role/sce-1-3-dev-build-role
-Traceback (most recent call last):
-  File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py", line 557, in attack
-    credentials = exponential_backoff_retry(assume_role, max_retries=3)
-  File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py", line 212, in exponential_backoff_retry
-    raise last_error
-  File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py", line 194, in exponential_backoff_retry
-    return func()
-  File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py", line 550, in assume_role
-    response = sts_client.assume_role(
-        RoleArn=role_arn,
-        RoleSessionName='sce-attack-session'
-    )
-  File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/client.py", line 569, in _api_call
-    return self._make_api_call(operation_name, kwargs)
-           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/client.py", line 1023, in _make_api_call
-    raise error_class(parsed_response, operation_name)
-botocore.exceptions.ClientError: An error occurred (AccessDenied) when calling the AssumeRole operation: User: arn:aws:iam::396608802942:user/ChaosXploit-Labs is not authorized to perform: sts:AssumeRole on resource: arn:aws:iam::396608802942:role/sce-1-3-dev-build-role
-[31m[2026-02-12 17:33:27 ERROR]   => failed: botocore.exceptions.ClientError: An error occurred (AccessDenied) when calling the AssumeRole operation: User: arn:aws:iam::396608802942:user/ChaosXploit-Labs is not authorized to perform: sts:AssumeRole on resource: arn:aws:iam::396608802942:role/sce-1-3-dev-build-role
-[32m[2026-02-12 17:33:27 INFO] Steady state hypothesis: Preventive Control: IAM Explicit Deny on EC2 IMDS Modification
-[32m[2026-02-12 17:33:27 INFO] Probe: Verify IAM Deny Policy Blocks EC2 IMDS Modifications
-2026-02-12 17:33:27,215 - chaosaws.ec2.1_3_preventive - INFO - ================================================================================
-2026-02-12 17:33:27,215 - chaosaws.ec2.1_3_preventive - INFO - PHASE 3: Hypothesis Verification (Preventive Probe)
-2026-02-12 17:33:27,215 - chaosaws.ec2.1_3_preventive - INFO - ================================================================================
-2026-02-12 17:33:27,218 - chaosaws.ec2.1_3_preventive - INFO - 
-[CHECK 1] Verify IAM Role Exists
-2026-02-12 17:33:27,727 - chaosaws.ec2.1_3_preventive - INFO -   ✓ Role exists: arn:aws:iam::396608802942:role/sce-1-3-dev-build-role
-2026-02-12 17:33:27,728 - chaosaws.ec2.1_3_preventive - INFO - 
-[CHECK 2] Verify Explicit Deny Policy is Attached
-2026-02-12 17:33:27,863 - chaosaws.ec2.1_3_preventive - INFO -   Found 2 inline policy(ies)
-2026-02-12 17:33:27,998 - chaosaws.ec2.1_3_preventive - ERROR -   ✗ Failed to verify policies: 'RolePolicyDocument'
-2026-02-12 17:33:27,998 - chaosaws.ec2.1_3_preventive - INFO - 
-[CHECK 4] Verify No Managed Policies Override Deny
-2026-02-12 17:33:28,134 - chaosaws.ec2.1_3_preventive - INFO -   ✓ No managed policies attached (deny cannot be bypassed)
-2026-02-12 17:33:28,134 - chaosaws.ec2.1_3_preventive - INFO - 
-[CHECK 5] Verify Attack Was Blocked
-2026-02-12 17:33:28,134 - chaosaws.ec2.1_3_preventive - ERROR -   ✗ Attack result: SETUP_FAILED
-2026-02-12 17:33:28,135 - chaosaws.ec2.1_3_preventive - INFO - 
-================================================================================
-2026-02-12 17:33:28,135 - chaosaws.ec2.1_3_preventive - INFO - HYPOTHESIS VERIFICATION RESULT
-2026-02-12 17:33:28,135 - chaosaws.ec2.1_3_preventive - INFO - ================================================================================
-2026-02-12 17:33:28,135 - chaosaws.ec2.1_3_preventive - ERROR - ✗ SOME CHECKS FAILED
-2026-02-12 17:33:28,135 - chaosaws.ec2.1_3_preventive - ERROR -   Preventive control may not be properly configured or functioning.
-2026-02-12 17:33:28,135 - chaosaws.ec2.1_3_preventive - ERROR - Hypothesis verification error: Hypothesis verification failed
-Traceback (most recent call last):
-  File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py", line 852, in hypothesis_verification
-    raise AssertionError("Hypothesis verification failed")
-AssertionError: Hypothesis verification failed
-[31m[2026-02-12 17:33:28 ERROR]   => failed: AssertionError: Hypothesis verification failed
-[33m[2026-02-12 17:33:28 WARNING] Probe terminated unexpectedly, so its tolerance could not be validated
-[31m[2026-02-12 17:33:28 CRITICAL] Steady state probe 'Verify IAM Deny Policy Blocks EC2 IMDS Modifications' is not in the given tolerance so failing this experiment
-[32m[2026-02-12 17:33:28 INFO] Experiment ended with status: deviated
-[32m[2026-02-12 17:33:28 INFO] The steady-state has deviated, a weakness may have been discovered
+[32m[2026-03-29 16:16:54 INFO] Validating the experiment's syntax
+[32m[2026-03-29 16:16:54 INFO] Experiment looks valid
+[32m[2026-03-29 16:16:54 INFO] Running experiment: SCE Experiment 1.3: Preventive Probe - IAM Least-Privilege EC2 Enumeration Blocking
+[32m[2026-03-29 16:16:54 INFO] Steady-state strategy: after-method-only
+[32m[2026-03-29 16:16:54 INFO] Rollbacks strategy: default
+[32m[2026-03-29 16:16:54 INFO] Playing your experiment's method now...
+[32m[2026-03-29 16:16:54 INFO] Action: Phase 1: Deploy minimal IAM infrastructure (role, policies, user, credentials)
+2026-03-29 16:16:54,534 - chaosaws.ec2.1_3_preventive - INFO - ================================================================================
+2026-03-29 16:16:54,534 - chaosaws.ec2.1_3_preventive - INFO - PHASE 1: STEADY-STATE - IAM Infrastructure Setup
+2026-03-29 16:16:54,534 - chaosaws.ec2.1_3_preventive - INFO - ================================================================================
+2026-03-29 16:16:54,534 - chaosaws.ec2.1_3_preventive - INFO - 📋 Timestamp: 1774793814
+2026-03-29 16:16:54,534 - chaosaws.ec2.1_3_preventive - INFO - 📋 Role: SCE-1-3-Role-1774793814
+2026-03-29 16:16:54,534 - chaosaws.ec2.1_3_preventive - INFO - 📋 User: SCE-1-3-User-1774793814
+2026-03-29 16:16:54,538 - botocore.credentials - INFO - Found credentials in shared credentials file: ~/.aws/credentials
+2026-03-29 16:16:54,976 - chaosaws.ec2.1_3_preventive - INFO - ✓ AWS clients ready; Account: 396608802942
+2026-03-29 16:16:54,976 - chaosaws.ec2.1_3_preventive - INFO - 
+📌 Creating IAM Role...
+2026-03-29 16:16:55,430 - chaosaws.ec2.1_3_preventive - INFO - ✓ Role created: arn:aws:iam::396608802942:role/SCE-1-3-Role-1774793814
+2026-03-29 16:16:55,571 - chaosaws.ec2.1_3_preventive - INFO - ✓ role 'SCE-1-3-Role-1774793814' propagated (0.1s)
+2026-03-29 16:16:55,571 - chaosaws.ec2.1_3_preventive - INFO - 
+📌 Attaching Allow policy...
+2026-03-29 16:16:55,710 - chaosaws.ec2.1_3_preventive - INFO - ✓ Allow policy attached
+2026-03-29 16:16:55,710 - chaosaws.ec2.1_3_preventive - INFO - 
+📌 Attaching Deny policy (PREVENTIVE SAFEGUARD)...
+2026-03-29 16:16:55,843 - chaosaws.ec2.1_3_preventive - INFO - ✓ Deny policy attached (PREVENTIVE CONTROL ACTIVE)
+2026-03-29 16:16:55,843 - chaosaws.ec2.1_3_preventive - INFO - 
+📌 Creating IAM User...
+2026-03-29 16:16:55,974 - chaosaws.ec2.1_3_preventive - INFO - ✓ User created: arn:aws:iam::396608802942:user/SCE-1-3-User-1774793814
+2026-03-29 16:16:56,108 - chaosaws.ec2.1_3_preventive - INFO - ✓ user 'SCE-1-3-User-1774793814' propagated (0.1s)
+2026-03-29 16:16:56,109 - chaosaws.ec2.1_3_preventive - INFO - 
+📌 Creating Access Key...
+2026-03-29 16:16:56,234 - chaosaws.ec2.1_3_preventive - INFO - ✓ Access Key created: AKIAVYV5...
+2026-03-29 16:16:56,234 - chaosaws.ec2.1_3_preventive - INFO - 
+📌 Attaching AssumeRole policy to user...
+2026-03-29 16:16:56,361 - chaosaws.ec2.1_3_preventive - INFO - ✓ AssumeRole policy attached
+2026-03-29 16:16:58,362 - chaosaws.ec2.1_3_preventive - INFO - 
+✓ Phase 1 complete (3.8s): Infrastructure ready
+[32m[2026-03-29 16:16:58 INFO] Action: Phase 2: Execute attack step 1.2 - Enumerate EC2 instances with attacker credentials
+2026-03-29 16:16:58,362 - chaosaws.ec2.1_3_preventive - INFO - ================================================================================
+2026-03-29 16:16:58,362 - chaosaws.ec2.1_3_preventive - INFO - PHASE 2: ATTACK - EC2 Enumeration (Step 1.2)
+2026-03-29 16:16:58,362 - chaosaws.ec2.1_3_preventive - INFO - ================================================================================
+2026-03-29 16:16:58,400 - chaosaws.ec2.1_3_preventive - INFO - 🔓 Attempting DescribeInstances...
+2026-03-29 16:16:58,808 - chaosaws.ec2.1_3_preventive - ERROR - ✗ Unexpected error: An error occurred (AuthFailure) when calling the DescribeInstances operation: AWS was not able to validate the provided access credentials
+[31m[2026-03-29 16:16:58 ERROR]   => failed: botocore.exceptions.ClientError: An error occurred (AuthFailure) when calling the DescribeInstances operation: AWS was not able to validate the provided access credentials
+[32m[2026-03-29 16:16:58 INFO] Steady state hypothesis: IAM Least-Privilege Access Control blocks EC2 enumeration
+[32m[2026-03-29 16:16:58 INFO] Probe: Verify IAM policy enforces Deny on ec2:DescribeInstances
+2026-03-29 16:16:58,810 - chaosaws.ec2.1_3_preventive - INFO - ================================================================================
+2026-03-29 16:16:58,810 - chaosaws.ec2.1_3_preventive - INFO - PHASE 3: HYPOTHESIS VERIFICATION - Preventive Probe 1.3
+2026-03-29 16:16:58,810 - chaosaws.ec2.1_3_preventive - INFO - ================================================================================
+2026-03-29 16:16:58,810 - chaosaws.ec2.1_3_preventive - INFO - 
+📋 [Verification 1/3] Checking IAM Deny policy...
+2026-03-29 16:16:58,810 - chaosaws.ec2.1_3_preventive - INFO - 🔍 Checking IAM policies on role: SCE-1-3-Role-1774793814
+2026-03-29 16:16:59,184 - chaosaws.ec2.1_3_preventive - INFO - ✓ Found Deny policy: DenyDescribeInstances
+2026-03-29 16:16:59,184 - chaosaws.ec2.1_3_preventive - INFO - ✓ [1/3] PASS: IAM Deny policy confirmed
+2026-03-29 16:16:59,184 - chaosaws.ec2.1_3_preventive - INFO - 
+📋 [Verification 2/3] Executing attack...
+2026-03-29 16:16:59,184 - chaosaws.ec2.1_3_preventive - INFO - ================================================================================
+2026-03-29 16:16:59,184 - chaosaws.ec2.1_3_preventive - INFO - PHASE 2: ATTACK - EC2 Enumeration (Step 1.2)
+2026-03-29 16:16:59,184 - chaosaws.ec2.1_3_preventive - INFO - ================================================================================
+2026-03-29 16:16:59,187 - chaosaws.ec2.1_3_preventive - INFO - 🔓 Attempting DescribeInstances...
+2026-03-29 16:16:59,597 - chaosaws.ec2.1_3_preventive - ERROR - ✗ Unexpected error: An error occurred (AuthFailure) when calling the DescribeInstances operation: AWS was not able to validate the provided access credentials
+2026-03-29 16:16:59,597 - chaosaws.ec2.1_3_preventive - ERROR - ✗ Verification failed: An error occurred (AuthFailure) when calling the DescribeInstances operation: AWS was not able to validate the provided access credentials
+[31m[2026-03-29 16:16:59 CRITICAL] Steady state probe 'Verify IAM policy enforces Deny on ec2:DescribeInstances' is not in the given tolerance so failing this experiment
+[32m[2026-03-29 16:16:59 INFO] Let's rollback...
+[32m[2026-03-29 16:16:59 INFO] Rollback: Phase 4: Cleanup - Delete all IAM resources created in steady-state
+[32m[2026-03-29 16:16:59 INFO] Action: Phase 4: Cleanup - Delete all IAM resources created in steady-state
+2026-03-29 16:16:59,599 - chaosaws.ec2.1_3_preventive - INFO - ================================================================================
+2026-03-29 16:16:59,599 - chaosaws.ec2.1_3_preventive - INFO - PHASE 4: ROLLBACK - Infrastructure Cleanup
+2026-03-29 16:16:59,599 - chaosaws.ec2.1_3_preventive - INFO - ================================================================================
+2026-03-29 16:16:59,599 - chaosaws.ec2.1_3_preventive - INFO - 🗑️  Deleting user policy AssumeRolePolicy...
+2026-03-29 16:16:59,751 - chaosaws.ec2.1_3_preventive - INFO - ✓ Deleted
+2026-03-29 16:16:59,751 - chaosaws.ec2.1_3_preventive - INFO - 🗑️  Deleting access key AKIAVYV5...
+2026-03-29 16:16:59,901 - chaosaws.ec2.1_3_preventive - INFO - ✓ Deleted
+2026-03-29 16:16:59,901 - chaosaws.ec2.1_3_preventive - INFO - 🗑️  Deleting user SCE-1-3-User-1774793814...
+2026-03-29 16:17:00,075 - chaosaws.ec2.1_3_preventive - INFO - ✓ Deleted
+2026-03-29 16:17:00,075 - chaosaws.ec2.1_3_preventive - INFO - 🗑️  Deleting role policy DenyDescribeInstances...
+2026-03-29 16:17:00,229 - chaosaws.ec2.1_3_preventive - INFO - ✓ Deleted
+2026-03-29 16:17:00,229 - chaosaws.ec2.1_3_preventive - INFO - 🗑️  Deleting role policy AllowDescribeInstances...
+2026-03-29 16:17:00,383 - chaosaws.ec2.1_3_preventive - INFO - ✓ Deleted
+2026-03-29 16:17:00,383 - chaosaws.ec2.1_3_preventive - INFO - 🗑️  Deleting role SCE-1-3-Role-1774793814...
+2026-03-29 16:17:00,601 - chaosaws.ec2.1_3_preventive - INFO - ✓ Deleted
+2026-03-29 16:17:00,601 - chaosaws.ec2.1_3_preventive - INFO - ✓ Phase 4 complete: Cleanup finished
+[32m[2026-03-29 16:17:00 INFO] Experiment ended with status: deviated
+[32m[2026-03-29 16:17:00 INFO] The steady-state has deviated, a weakness may have been discovered
 
 
 RETURN CODE: 1

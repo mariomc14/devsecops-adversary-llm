@@ -1,0 +1,27 @@
+STDOUT:
+2026-03-28 19:25:39,021 - INFO - Found credentials in shared credentials file: ~/.aws/credentials
+2026-03-28 19:25:39,532 - ERROR - Error retrieving AMI: An error occurred (InvalidParameterValue) when calling the DescribeImages operation: Invalid value '1' for maxResults. Expecting a value greater than 5.
+2026-03-28 19:25:39,532 - ERROR - Error in steady_state: An error occurred (InvalidParameterValue) when calling the DescribeImages operation: Invalid value '1' for maxResults. Expecting a value greater than 5.
+2026-03-28 19:25:39,966 - ERROR - Attack simulation error: An error occurred (ValidationError) when calling the DescribeStackResources operation: Stack with id sce-experiment-imds-1774722339 does not exist
+2026-03-28 19:55:49,862 - INFO - Stack sce-experiment-imds-1774722339 deleted successfully
+
+
+STDERR:
+[32m[2026-03-28 19:25:38 INFO] Validating the experiment's syntax
+[32m[2026-03-28 19:25:39 INFO] Experiment looks valid
+[32m[2026-03-28 19:25:39 INFO] Running experiment: AWS EC2 IMDS Protection Bypass Preventive Probe
+[32m[2026-03-28 19:25:39 INFO] Steady-state strategy: after-method-only
+[32m[2026-03-28 19:25:39 INFO] Rollbacks strategy: default
+[32m[2026-03-28 19:25:39 INFO] Playing your experiment's method now...
+[32m[2026-03-28 19:25:39 INFO] Action: Prepare IMDS Experiment Resources
+[32m[2026-03-28 19:25:39 INFO] Action: Simulate IMDS Configuration Attack
+[32m[2026-03-28 19:25:39 INFO] Steady state hypothesis: IMDS Configuration Security
+[32m[2026-03-28 19:25:39 INFO] Probe: Verify IMDS Protection Controls
+[32m[2026-03-28 19:55:49 INFO] Steady state hypothesis is met!
+[32m[2026-03-28 19:55:49 INFO] Let's rollback...
+[32m[2026-03-28 19:55:49 INFO] Rollback: Clean Up Experiment Resources
+[32m[2026-03-28 19:55:49 INFO] Action: Clean Up Experiment Resources
+[32m[2026-03-28 19:55:49 INFO] Experiment ended with status: completed
+
+
+RETURN CODE: 0

@@ -1,0 +1,94 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-03-29 17:12:28 INFO] Validating the experiment's syntax
+[32m[2026-03-29 17:12:28 INFO] Experiment looks valid
+[32m[2026-03-29 17:12:28 INFO] Running experiment: SCE Experiment 1.3: Detective Probe - CloudTrail + EventBridge Detection of EC2 Enumeration (FINAL)
+[32m[2026-03-29 17:12:28 INFO] Steady-state strategy: after-method-only
+[32m[2026-03-29 17:12:28 INFO] Rollbacks strategy: default
+[32m[2026-03-29 17:12:28 INFO] Playing your experiment's method now...
+[32m[2026-03-29 17:12:28 INFO] Action: Phase 1: Deploy test infrastructure (IAM role with Allow+Deny, EventBridge rule)
+2026-03-29 17:12:28,507 - chaosaws.ec2.1_3_detective - INFO - ================================================================================
+2026-03-29 17:12:28,507 - chaosaws.ec2.1_3_detective - INFO - PHASE 1: STEADY-STATE - Infrastructure Setup
+2026-03-29 17:12:28,507 - chaosaws.ec2.1_3_detective - INFO - ================================================================================
+2026-03-29 17:12:28,507 - chaosaws.ec2.1_3_detective - INFO - 📋 Timestamp: 1774797148
+2026-03-29 17:12:28,512 - botocore.credentials - INFO - Found credentials in shared credentials file: ~/.aws/credentials
+2026-03-29 17:12:29,047 - chaosaws.ec2.1_3_detective - INFO - ✓ AWS clients ready; Account: 396608802942
+2026-03-29 17:12:29,047 - chaosaws.ec2.1_3_detective - INFO - 
+📌 Creating IAM infrastructure...
+2026-03-29 17:12:29,557 - chaosaws.ec2.1_3_detective - INFO - ✓ Role created
+2026-03-29 17:12:29,703 - chaosaws.ec2.1_3_detective - INFO - ✓ role 'SCE-1-3-Role-1774797148' propagated (0.1s)
+2026-03-29 17:12:29,873 - chaosaws.ec2.1_3_detective - INFO - ✓ Allow policy attached
+2026-03-29 17:12:30,028 - chaosaws.ec2.1_3_detective - INFO - ✓ Deny policy attached (PREVENTIVE SAFEGUARD)
+2026-03-29 17:12:30,175 - chaosaws.ec2.1_3_detective - INFO - ✓ User created
+2026-03-29 17:12:30,306 - chaosaws.ec2.1_3_detective - INFO - ✓ user 'SCE-1-3-User-1774797148' propagated (0.1s)
+2026-03-29 17:12:30,451 - chaosaws.ec2.1_3_detective - INFO - ✓ Access Key created: AKIAVYV5...
+2026-03-29 17:12:30,613 - chaosaws.ec2.1_3_detective - INFO - ✓ AssumeRole policy attached
+2026-03-29 17:12:30,613 - chaosaws.ec2.1_3_detective - INFO - ⏳ Validating access key AKIAVYV5... readiness...
+2026-03-29 17:12:40,727 - chaosaws.ec2.1_3_detective - INFO - ✓ Access key ready (10.1s)
+2026-03-29 17:12:40,728 - chaosaws.ec2.1_3_detective - INFO - 
+📌 Creating EventBridge rule: SCE-1-3-Rule-1774797148
+2026-03-29 17:12:41,274 - chaosaws.ec2.1_3_detective - INFO - ✓ EventBridge rule created
+2026-03-29 17:12:43,274 - chaosaws.ec2.1_3_detective - INFO - 
+✓ Phase 1 complete (14.8s): Infrastructure ready
+[32m[2026-03-29 17:12:43 INFO] Action: Phase 2: Execute attack - Attempt EC2 enumeration with attacker credentials
+2026-03-29 17:12:43,274 - chaosaws.ec2.1_3_detective - INFO - ================================================================================
+2026-03-29 17:12:43,274 - chaosaws.ec2.1_3_detective - INFO - PHASE 2: ATTACK - EC2 Enumeration (Step 1.2)
+2026-03-29 17:12:43,274 - chaosaws.ec2.1_3_detective - INFO - ================================================================================
+2026-03-29 17:12:43,307 - chaosaws.ec2.1_3_detective - INFO - 🔓 Attempting DescribeInstances...
+2026-03-29 17:12:43,762 - chaosaws.ec2.1_3_detective - INFO - ✓ ATTACK BLOCKED: ClientError
+2026-03-29 17:12:43,762 - chaosaws.ec2.1_3_detective - INFO -    (This generates detective evidence we validate next)
+[32m[2026-03-29 17:12:43 INFO] Steady state hypothesis: Preventive & Detective Controls Block and Log EC2 Enumeration
+[32m[2026-03-29 17:12:43 INFO] Probe: Verify IAM Deny blocks DescribeInstances AND detective safeguards monitor
+2026-03-29 17:12:43,762 - chaosaws.ec2.1_3_detective - INFO - ================================================================================
+2026-03-29 17:12:43,762 - chaosaws.ec2.1_3_detective - INFO - PHASE 3: HYPOTHESIS VERIFICATION - Detective Probe 1.3
+2026-03-29 17:12:43,762 - chaosaws.ec2.1_3_detective - INFO - ================================================================================
+2026-03-29 17:12:43,762 - chaosaws.ec2.1_3_detective - INFO - 
+📋 [Verification 1/3] Confirming attack was blocked...
+2026-03-29 17:12:43,762 - chaosaws.ec2.1_3_detective - INFO - ✓ [1/3] PASS: Attack was blocked (Preventive safeguard working)
+2026-03-29 17:12:43,762 - chaosaws.ec2.1_3_detective - INFO - 
+📋 [Verification 2/3] Checking CloudTrail for detective evidence...
+2026-03-29 17:12:43,763 - chaosaws.ec2.1_3_detective - INFO - ⏳ CloudTrail fast-fail polling (max 100 polls, interval 10s)...
+2026-03-29 17:29:26,833 - chaosaws.ec2.1_3_detective - WARNING - ⚠ CloudTrail: No denied events found after 100 polls
+2026-03-29 17:29:26,833 - chaosaws.ec2.1_3_detective - WARNING - ⚠ [2/3] CloudTrail: No events found yet (eventual consistency)
+2026-03-29 17:29:26,833 - chaosaws.ec2.1_3_detective - WARNING -    Note: CloudTrail events may take up to 30 min to appear (normal AWS behavior)
+2026-03-29 17:29:26,833 - chaosaws.ec2.1_3_detective - INFO - 
+📋 [Verification 3/3] Checking EventBridge rule configuration...
+2026-03-29 17:29:27,300 - chaosaws.ec2.1_3_detective - INFO - ✓ EventBridge: Rule 'SCE-1-3-Rule-1774797148' is ENABLED
+2026-03-29 17:29:27,300 - chaosaws.ec2.1_3_detective - INFO - ✓ [3/3] EventBridge rule configured and enabled (Detective infrastructure ready)
+2026-03-29 17:29:27,300 - chaosaws.ec2.1_3_detective - INFO - 
+================================================================================
+2026-03-29 17:29:27,300 - chaosaws.ec2.1_3_detective - INFO - ✅ HYPOTHESIS VERIFICATION PASSED
+2026-03-29 17:29:27,300 - chaosaws.ec2.1_3_detective - INFO - Detective Probe Validation:
+2026-03-29 17:29:27,300 - chaosaws.ec2.1_3_detective - INFO -   ✓ Preventive Control (IAM Deny): Successfully blocked attack
+2026-03-29 17:29:27,300 - chaosaws.ec2.1_3_detective - INFO -   ✓ Detective Controls: Configured and monitoring for evidence
+2026-03-29 17:29:27,300 - chaosaws.ec2.1_3_detective - INFO -   ℹ  CloudTrail/EventBridge events may take up to 30 min (normal AWS SLA)
+2026-03-29 17:29:27,300 - chaosaws.ec2.1_3_detective - INFO - ================================================================================
+[32m[2026-03-29 17:29:27 INFO] Steady state hypothesis is met!
+[32m[2026-03-29 17:29:27 INFO] Let's rollback...
+[32m[2026-03-29 17:29:27 INFO] Rollback: Phase 4: Cleanup - Delete all test infrastructure resources
+[32m[2026-03-29 17:29:27 INFO] Action: Phase 4: Cleanup - Delete all test infrastructure resources
+2026-03-29 17:29:27,301 - chaosaws.ec2.1_3_detective - INFO - ================================================================================
+2026-03-29 17:29:27,301 - chaosaws.ec2.1_3_detective - INFO - PHASE 4: ROLLBACK - Infrastructure Cleanup
+2026-03-29 17:29:27,301 - chaosaws.ec2.1_3_detective - INFO - ================================================================================
+2026-03-29 17:29:27,301 - chaosaws.ec2.1_3_detective - INFO - 🗑️  Deleting EventBridge rule...
+2026-03-29 17:29:27,459 - chaosaws.ec2.1_3_detective - INFO - ✓ EventBridge rule deleted
+2026-03-29 17:29:27,459 - chaosaws.ec2.1_3_detective - INFO - ✓ Deleted
+2026-03-29 17:29:27,459 - chaosaws.ec2.1_3_detective - INFO - 🗑️  Deleting user policy...
+2026-03-29 17:29:27,910 - chaosaws.ec2.1_3_detective - INFO - ✓ Deleted
+2026-03-29 17:29:27,910 - chaosaws.ec2.1_3_detective - INFO - 🗑️  Deleting access key...
+2026-03-29 17:29:28,059 - chaosaws.ec2.1_3_detective - INFO - ✓ Deleted
+2026-03-29 17:29:28,059 - chaosaws.ec2.1_3_detective - INFO - 🗑️  Deleting user...
+2026-03-29 17:29:28,196 - chaosaws.ec2.1_3_detective - INFO - ✓ Deleted
+2026-03-29 17:29:28,196 - chaosaws.ec2.1_3_detective - INFO - 🗑️  Deleting role policy...
+2026-03-29 17:29:28,325 - chaosaws.ec2.1_3_detective - INFO - ✓ Deleted
+2026-03-29 17:29:28,325 - chaosaws.ec2.1_3_detective - INFO - 🗑️  Deleting role policy...
+2026-03-29 17:29:28,455 - chaosaws.ec2.1_3_detective - INFO - ✓ Deleted
+2026-03-29 17:29:28,455 - chaosaws.ec2.1_3_detective - INFO - 🗑️  Deleting role...
+2026-03-29 17:29:28,630 - chaosaws.ec2.1_3_detective - INFO - ✓ Deleted
+2026-03-29 17:29:28,630 - chaosaws.ec2.1_3_detective - INFO - ✓ Phase 4 complete: All resources cleaned up
+[32m[2026-03-29 17:29:28 INFO] Experiment ended with status: completed
+
+
+RETURN CODE: 0

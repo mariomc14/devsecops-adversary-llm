@@ -1,0 +1,67 @@
+{
+    "title": "SCE 2.5 Detective Probe - IMDS Attack Chain Detection via CloudTrail, VPC Flow Logs, and EventBridge (Attack Nodes 1.2 + 2.2)",
+    "description": "Validates three chained detective controls that together detect the full IMDS credential-theft attack chain. Attack Node 1.2 (T1578): a permissive attacker IAM role successfully calls ec2:ModifyInstanceMetadataOptions to downgrade IMDS to IMDSv1 on a production-tagged EC2 instance; the instance is immediately re-hardened by the orchestrator after the event is generated. Attack Node 2.2 (T1552.005): a probe EC2 instance simulating a co-located attacker process executes curl against 169.254.169.254 via SSM RunCommand, generating VPC Flow Log traffic to the link-local IMDS address. Hypothesis H1 asserts CloudTrail recorded ModifyInstanceMetadataOptions for the target instance within 5 minutes (ADT Node 1.3 D1). H2 asserts VPC Flow Logs captured traffic to 169.254.169.254 from within the experiment VPC within 5 minutes (ADT Node 2.3 D2). H3 asserts EventBridge delivered a ModifyInstanceMetadataOptions notification via SNS to SQS within 60 seconds (ADT Node 1.3 D3). Maps to ADT Detective Nodes 1.3 and 2.3, Attack Nodes 1.2 (T1578) and 2.2 (T1552.005).",
+    "tags": [
+        "sce",
+        "detective",
+        "imds",
+        "ec2",
+        "cloudtrail",
+        "vpc-flow-logs",
+        "eventbridge",
+        "sns",
+        "sqs",
+        "cloudwatch-logs-insights",
+        "t1578",
+        "t1552.005",
+        "banking-platform",
+        "pci-dss",
+        "node-2.5"
+    ],
+    "steady-state-hypothesis": {
+        "title": "Target EC2 instance has IMDSv2 enforced, CloudTrail trail is logging, VPC Flow Logs are active, SQS queue is empty, both instances are SSM-reachable, and attacker role is assumable before attack",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "Verify CloudTrail recorded IMDS weakening event (H1), VPC Flow Logs captured IMDS access traffic (H2), and EventBridge notification delivered within 60s SLA (H3)",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.2_5_detective",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "Create S3 bucket outside CFN, provision CloudFormation stack with production-tagged target EC2, probe EC2, permissive attacker IAM role, VPC Flow Logs to CloudWatch, CloudTrail trail, EventBridge detection rule, SNS topic, and SQS queue",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.2_5_detective",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "Step 1 (Attack 1.2 T1578): assume attacker role and call ec2:ModifyInstanceMetadataOptions to downgrade IMDS to IMDSv1 generating CloudTrail and EventBridge events; Step 2 (Attack 2.2 T1552.005): from probe instance via SSM execute curl to 169.254.169.254 generating VPC Flow Log traffic",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.2_5_detective",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "Delete CloudFormation stack then empty and delete the S3 bucket",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.2_5_detective",
+                "func": "rollback"
+            }
+        }
+    ]
+}

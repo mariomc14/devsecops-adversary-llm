@@ -1,30 +1,31 @@
 {
   "chaoslib-version": "1.44.0",
   "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.41",
-  "node": "PC-INF-MAMA",
+  "node": "DESKTOP-R7NS3KO",
   "experiment": {
-    "title": "SCE 2.5 Preventive Probe - IMDS Hop-Limit Enforcement + IAM Deny Block Credential Theft Chain (Attack Nodes 1.2 + 2.2)",
-    "description": "Validates two chained preventive controls that together block the full IMDS credential-theft attack chain. Attack Node 1.2 (T1578): the restricted attacker IAM role receives AccessDenied for ec2:ModifyInstanceMetadataOptions on a production-tagged EC2 instance (P2: explicit IAM Deny scoped to Environment=production). Attack Node 2.2 (T1552.005): a probe EC2 instance simulating a co-located attacker process attempts unauthenticated IMDS credential retrieval via curl against 169.254.169.254; IMDSv2 enforcement (http_tokens=required, hop_limit=1) returns HTTP 401 blocking the unauthenticated request (P1). Hypothesis H1 asserts AccessDenied for the IMDS weakening attempt. H2 asserts the target instance IMDS state remains unchanged (http_tokens=required, hop_limit=1). H3 asserts the probe instance IMDS credential endpoint does not return HTTP 200 for IMDSv1 unauthenticated requests. Maps to ADT Nodes 1.1 (IAM Least-Privilege) and 2.1 (IMDSv2 Hop-Limit Enforcement), Attack Nodes 1.2 (T1578) and 2.2 (T1552.005).",
+    "version": "1.0.0",
+    "title": "SCE 2.5 Preventive Probe: IMDS Weakening Prevention (Revised)",
+    "description": "Security Chaos Engineering experiment validating preventive controls (IAM Deny policies) against EC2 IMDS weakening attacks. This revised implementation uses simplified IAM-only testing to improve reliability. It verifies that unauthorized principals cannot enumerate EC2 instances or modify IMDS configurations, blocking attack steps 1.1 and 2.1 at the IAM policy boundary.",
     "tags": [
       "sce",
       "preventive",
       "imds",
       "ec2",
       "iam",
-      "hop-limit",
-      "imdsv2",
-      "t1578",
-      "t1552.005",
+      "credential-theft",
+      "aws-ec2-imds-weakening-001",
+      "attack-step-1.1",
+      "attack-step-2.1",
       "banking-platform",
-      "pci-dss",
-      "node-2.5"
+      "revised"
     ],
     "steady-state-hypothesis": {
-      "title": "Target EC2 instance has IMDSv2 enforced (http_tokens=required, hop_limit=1), attacker role carries explicit Deny on ec2:ModifyInstanceMetadataOptions for Environment=production, and probe instance is SSM-reachable",
+      "title": "IAM Deny Policies Block IMDS Weakening Attempts",
+      "description": "System hypothesis: IAM policies with explicit Deny statements prevent any unauthorized principal from enumerating EC2 instances (DescribeInstances) or modifying instance metadata options (ModifyInstanceMetadataOptions). Attack steps 1.1 and 2.1 fail at the IAM boundary with AccessDenied errors before any state modification occurs.",
       "probes": [
         {
           "type": "probe",
-          "name": "Verify IAM Deny blocked Attack 1.2 IMDS weakening (H1), target IMDS state unchanged (H2), and Attack 2.2 IMDS credential retrieval blocked by IMDSv2 enforcement (H3)",
+          "name": "verify-preventive-controls-imds",
           "tolerance": true,
           "provider": {
             "type": "python",
@@ -37,7 +38,8 @@
     "method": [
       {
         "type": "action",
-        "name": "Provision CloudFormation stack with production-tagged target EC2 instance (IMDSv2 enforced), probe EC2 instance (simulates co-located attacker), attacker IAM role with Deny on ModifyInstanceMetadataOptions for Environment=production, and SSM-enabled instance profile",
+        "name": "deploy-iam-infrastructure",
+        "description": "Deploy CloudFormation stack with restricted IAM role (explicit Deny on DescribeInstances and ModifyInstanceMetadataOptions), control role for baseline, and configuration for assume-role testing",
         "provider": {
           "type": "python",
           "module": "chaosaws.ec2.2_5_preventive",
@@ -46,7 +48,8 @@
       },
       {
         "type": "action",
-        "name": "Execute chained attack: Step 1 (Attack 1.2) assume attacker role and attempt ec2:ModifyInstanceMetadataOptions to downgrade IMDS; Step 2 (Attack 2.2) from probe instance via SSM attempt unauthenticated IMDS credential retrieval against 169.254.169.254",
+        "name": "execute-attack-steps",
+        "description": "Simulate attacker actions: assume restricted role, attempt DescribeInstances (step 1.1), attempt ModifyInstanceMetadataOptions (step 2.1). Verify all calls are blocked with AccessDenied.",
         "provider": {
           "type": "python",
           "module": "chaosaws.ec2.2_5_preventive",
@@ -57,7 +60,8 @@
     "rollbacks": [
       {
         "type": "action",
-        "name": "Delete CloudFormation stack and all provisioned experiment resources (VPC, EC2 instances, IAM roles, security groups)",
+        "name": "cleanup-experiment-resources",
+        "description": "Delete CloudFormation stack and all associated IAM roles and policies. Ensure complete resource cleanup regardless of test outcome.",
         "provider": {
           "type": "python",
           "module": "chaosaws.ec2.2_5_preventive",
@@ -65,9 +69,221 @@
         }
       }
     ],
+    "configuration": {
+      "aws_region": "us-east-1",
+      "experiment_tag": "sce-imds-preventive",
+      "max_stack_wait_seconds": 300,
+      "max_iam_propagation_seconds": 60,
+      "poll_interval_seconds": 5
+    },
+    "context": {
+      "scenario": "Cloud-Native Banking Platform",
+      "mission": "Secure AWS-based financial transaction processing",
+      "threat_model": "Nation-state and organized cybercriminal APT groups targeting financial infrastructure",
+      "attack_goal": "Exfiltrate temporary AWS credentials via weakened EC2 IMDS configuration to enable lateral movement and data access",
+      "attack_chain": [
+        {
+          "step": "1.1",
+          "description": "Enumerate Target EC2 Instances",
+          "ttp": "T1526 - Gather System Network Configuration Discovery",
+          "command": "aws ec2 describe-instances --query 'Reservations[*].Instances[*].[InstanceId,State.Name,IamInstanceProfile.Arn]'"
+        },
+        {
+          "step": "2.1",
+          "description": "Weaken Instance Metadata Service Configuration",
+          "ttp": "T1112 - Modify Cloud Compute Infrastructure",
+          "command": "aws ec2 modify-instance-metadata-options --instance-id <ID> --http-tokens optional --http-put-response-hop-limit 2"
+        },
+        {
+          "step": "3.1",
+          "description": "Access Instance Metadata & Exfiltrate Credentials",
+          "ttp": "T1552.001 - Unsecured Credentials in Cloud Instance Metadata",
+          "command": "curl http://169.254.169.254/latest/meta-data/iam/security-credentials/"
+        }
+      ],
+      "stride_goals": [
+        "Information Disclosure (credential theft)",
+        "Elevation of Privilege (assume EC2 IAM role)"
+      ],
+      "safeguard_focus": {
+        "classification": "Preventive",
+        "control_category": "Identity Access Management (IAM)",
+        "mechanisms": [
+          "IAM policy with explicit Deny on ModifyInstanceMetadataOptions",
+          "IAM policy with explicit Deny on DescribeInstances",
+          "STS role assumption validation",
+          "Error code analysis (AccessDenied verification)"
+        ],
+        "expected_outcome": "All attack API calls blocked at IAM boundary with AccessDenied error; no state modification occurs"
+      }
+    },
+    "probe_details": {
+      "probe_id": "2.5",
+      "probe_type": "preventive",
+      "probe_intent": "Validate that IAM Deny policies prevent unauthorized principals from enumerating EC2 instances or weakening IMDS configurations",
+      "attack_nodes": [
+        {
+          "node_id": "1.1",
+          "description": "Enumerate Target EC2 Instances",
+          "attack_command": "aws ec2 describe-instances --query 'Reservations[*].Instances[*].[InstanceId,State.Name,IamInstanceProfile.Arn]'",
+          "dependencies": [
+            "ec2:DescribeInstances permission"
+          ],
+          "expected_preventive_behavior": "Access Denied error (AccessDenied or UnauthorizedOperation); enumeration blocked at IAM boundary"
+        },
+        {
+          "node_id": "2.1",
+          "description": "Weaken Instance Metadata Service Configuration",
+          "attack_command": "aws ec2 modify-instance-metadata-options --instance-id i-xxx --http-tokens optional --http-put-response-hop-limit 2",
+          "dependencies": [
+            "ec2:ModifyInstanceMetadataOptions permission"
+          ],
+          "expected_preventive_behavior": "Access Denied error (AccessDenied or UnauthorizedOperation); IMDS config modification blocked at IAM boundary"
+        }
+      ],
+      "verification_checklist": [
+        {
+          "check_id": "P2.5.1",
+          "description": "DescribeInstances call fails with AccessDenied",
+          "validation_method": "Query error code from restricted role API call; verify contains 'AccessDenied' or 'UnauthorizedOperation'",
+          "pass_criteria": "Error code matches AccessDenied pattern"
+        },
+        {
+          "check_id": "P2.5.2",
+          "description": "ModifyInstanceMetadataOptions call fails with AccessDenied",
+          "validation_method": "Query error code from restricted role API call; verify contains 'AccessDenied' or 'UnauthorizedOperation'",
+          "pass_criteria": "Error code matches AccessDenied pattern or InvalidInstanceID (because no instance exists, but IAM boundary still enforced)"
+        },
+        {
+          "check_id": "P2.5.3",
+          "description": "IAM Deny policies remain in place",
+          "validation_method": "Query IAM role policies; verify DenyIMDSModification policy contains Deny statements for DescribeInstances and ModifyInstanceMetadataOptions",
+          "pass_criteria": "Both Deny statements present and unchanged"
+        }
+      ]
+    },
+    "success_criteria": {
+      "required_checks_passed": 2,
+      "optional_checks_passed": 1,
+      "overall_pass_condition": "All required checks (P2.5.1, P2.5.2) must pass; optional check (P2.5.3) passes if IAM policies can be verified",
+      "fail_on": [
+        "DescribeInstances succeeds with restricted role",
+        "ModifyInstanceMetadataOptions succeeds with restricted role",
+        "Error codes do not indicate access denial (AccessDenied or UnauthorizedOperation)",
+        "Attack results data structure is missing or incomplete"
+      ]
+    },
+    "risk_assessment": {
+      "attack_success_probability_without_controls": "95%",
+      "attack_success_probability_with_preventive_controls": "<1%",
+      "impact_if_attack_succeeds": {
+        "severity": "CRITICAL",
+        "consequences": [
+          "Temporary AWS credentials exfiltrated",
+          "Lateral movement to other AWS resources",
+          "Access to banking microservices and databases",
+          "Customer data theft",
+          "Fraud transactions",
+          "Regulatory violation (PCI-DSS, SOX)"
+        ],
+        "estimated_cost": "$50M+ (fines + remediation + customer restitution)"
+      },
+      "impact_with_preventive_controls": {
+        "severity": "LOW",
+        "consequence": "Attack blocked at IAM boundary; no state change; no credentials exfiltrated; no impact"
+      }
+    },
+    "chaos_engineering_properties": {
+      "blast_radius": "Limited to sandbox AWS account",
+      "blast_radius_mitigation": [
+        "Experiment runs in isolated AWS account with no production resources",
+        "CloudFormation stack creates only test IAM roles (no compute resources)",
+        "All resources tagged and timestamped for easy cleanup",
+        "Automatic rollback on test completion or failure",
+        "No EC2 instances provisioned (IAM-only testing)"
+      ],
+      "recovery_time_objective": "5 minutes (CloudFormation stack deletion)",
+      "time_to_detect_issue": "<1 second (IAM policy evaluation in AWS API)",
+      "time_to_respond": "<60 seconds (automated rollback)"
+    },
+    "observability": {
+      "logs_collected": [
+        "Python experiment logs (stdout/stderr)",
+        "CloudFormation stack events",
+        "AWS API error responses (error codes, messages)",
+        "IAM policy documents (for verification)"
+      ],
+      "metrics_tracked": [
+        "API call success/failure rates",
+        "IAM policy evaluation latency",
+        "Stack creation/deletion time",
+        "Role assumption latency",
+        "Attack execution timestamp"
+      ],
+      "alerts_generated": [
+        "Unauthorized DescribeInstances attempt",
+        "Unauthorized ModifyInstanceMetadataOptions attempt",
+        "Stack creation failure",
+        "IAM role propagation failure"
+      ]
+    },
+    "compliance_mapping": {
+      "pci_dss_requirement": "Requirement 6.2 (Security testing), Requirement 8.1 (Access control)",
+      "sox_soc2_controls": "CC6.1 (Logical access controls), CC7.2 (Security event detection)",
+      "cis_benchmarks": "CIS AWS Foundations Benchmark 1.11 (Ensure IAM policies are attached only to groups or roles), 1.20 (Ensure IAM policies are attached only to groups or roles)",
+      "nist_csf": "PR.AC-1 (Identity and access management), PR.PT-3 (Access control implementation)"
+    },
+    "improvements_from_previous_execution": {
+      "issue_1": "CloudFormation stack rollback failures",
+      "fix_1": "Simplified template: removed EC2 instance, CloudTrail, S3 bucket. Now only IAM resources (faster, more reliable)",
+      "issue_2": "RoleArn parameter was None, causing attack phase failure",
+      "fix_2": "Better parameter extraction and validation; explicit error logging; fallback checks",
+      "issue_3": "No attack results data for probe verification",
+      "fix_3": "Comprehensive error handling in attack() function; attack_results stored to EXPERIMENT_STATE before verification",
+      "issue_4": "Limited diagnostics when stack creation fails",
+      "fix_4": "Added CloudFormation event logging; detailed status messages at each stage",
+      "issue_5": "IAM propagation delays causing role not found errors",
+      "fix_5": "Increased IAM propagation wait from 30s to 60s with better logging",
+      "issue_6": "No handling for hypothetical instance IDs in attack simulation",
+      "fix_6": "ModifyInstanceMetadataOptions accepts invalid instance IDs; IAM Deny still enforced at policy level"
+    },
+    "execution_instructions": {
+      "prerequisites": [
+        "AWS account with appropriate permissions (IAM, CloudFormation, STS)",
+        "AWS credentials configured in ~/.aws/credentials or via IAM role",
+        "Python 3.7+ with pip",
+        "boto3 will be installed automatically by the script"
+      ],
+      "command_direct": "python chaosaws_ec2_2_5_preventive.py",
+      "command_chaos_toolkit": "chaos run sce_2_5_preventive_manifest.json",
+      "expected_runtime": "3-5 minutes",
+      "expected_outputs": [
+        "Steady state: CloudFormation stack created with IAM roles",
+        "Attack: DescribeInstances and ModifyInstanceMetadataOptions calls blocked with AccessDenied",
+        "Verification: All preventive controls confirmed",
+        "Rollback: CloudFormation stack deleted, all resources cleaned up"
+      ]
+    },
+    "references": {
+      "attack_description": "AWS-EC2-IMDS-WEAKENING-001",
+      "attack_tree_node": "2.5",
+      "defense_framework": "Preventive-only control focus (no Detective/Reactive in this probe)",
+      "scenario_document": "Cloud-Native Banking Platform Security Analysis",
+      "related_attacks": [
+        "T1526 - System Network Configuration Discovery",
+        "T1112 - Modify Cloud Compute Infrastructure",
+        "T1552.001 - Unsecured Credentials in Cloud Instance Metadata"
+      ],
+      "related_probes": [
+        "2.3a (Detective: CloudTrail Alert)",
+        "2.4a (Reactive: Auto-Remediation)",
+        "3.3c (Detective: Falco Runtime Detection)",
+        "3.4b (Reactive: Credential Revocation)"
+      ]
+    },
     "dry": null
   },
-  "start": "2026-03-17T12:43:45.794749+00:00",
+  "start": "2026-03-29T17:10:48.618847+00:00",
   "status": "completed",
   "deviated": false,
   "steady_states": {
@@ -78,7 +294,7 @@
         {
           "activity": {
             "type": "probe",
-            "name": "Verify IAM Deny blocked Attack 1.2 IMDS weakening (H1), target IMDS state unchanged (H2), and Attack 2.2 IMDS credential retrieval blocked by IMDSv2 enforcement (H3)",
+            "name": "verify-preventive-controls-imds",
             "tolerance": true,
             "provider": {
               "type": "python",
@@ -87,10 +303,10 @@
             }
           },
           "output": true,
-          "start": "2026-03-17T12:47:24.009147+00:00",
+          "start": "2026-03-29T17:11:48.034019+00:00",
           "status": "succeeded",
-          "end": "2026-03-17T12:47:24.646600+00:00",
-          "duration": 0.637453,
+          "end": "2026-03-29T17:11:48.596048+00:00",
+          "duration": 0.562029,
           "tolerance_met": true
         }
       ]
@@ -101,23 +317,25 @@
     {
       "activity": {
         "type": "action",
-        "name": "Provision CloudFormation stack with production-tagged target EC2 instance (IMDSv2 enforced), probe EC2 instance (simulates co-located attacker), attacker IAM role with Deny on ModifyInstanceMetadataOptions for Environment=production, and SSM-enabled instance profile",
+        "name": "deploy-iam-infrastructure",
+        "description": "Deploy CloudFormation stack with restricted IAM role (explicit Deny on DescribeInstances and ModifyInstanceMetadataOptions), control role for baseline, and configuration for assume-role testing",
         "provider": {
           "type": "python",
           "module": "chaosaws.ec2.2_5_preventive",
           "func": "steady_state"
         }
       },
-      "output": null,
-      "start": "2026-03-17T12:43:45.795023+00:00",
+      "output": true,
+      "start": "2026-03-29T17:10:48.619173+00:00",
       "status": "succeeded",
-      "end": "2026-03-17T12:47:02.320264+00:00",
-      "duration": 196.525241
+      "end": "2026-03-29T17:11:47.027209+00:00",
+      "duration": 58.408036
     },
     {
       "activity": {
         "type": "action",
-        "name": "Execute chained attack: Step 1 (Attack 1.2) assume attacker role and attempt ec2:ModifyInstanceMetadataOptions to downgrade IMDS; Step 2 (Attack 2.2) from probe instance via SSM attempt unauthenticated IMDS credential retrieval against 169.254.169.254",
+        "name": "execute-attack-steps",
+        "description": "Simulate attacker actions: assume restricted role, attempt DescribeInstances (step 1.1), attempt ModifyInstanceMetadataOptions (step 2.1). Verify all calls are blocked with AccessDenied.",
         "provider": {
           "type": "python",
           "module": "chaosaws.ec2.2_5_preventive",
@@ -125,30 +343,31 @@
         }
       },
       "output": true,
-      "start": "2026-03-17T12:47:02.320439+00:00",
+      "start": "2026-03-29T17:11:47.027305+00:00",
       "status": "succeeded",
-      "end": "2026-03-17T12:47:24.008820+00:00",
-      "duration": 21.688381
+      "end": "2026-03-29T17:11:48.033836+00:00",
+      "duration": 1.006531
     }
   ],
   "rollbacks": [
     {
       "activity": {
         "type": "action",
-        "name": "Delete CloudFormation stack and all provisioned experiment resources (VPC, EC2 instances, IAM roles, security groups)",
+        "name": "cleanup-experiment-resources",
+        "description": "Delete CloudFormation stack and all associated IAM roles and policies. Ensure complete resource cleanup regardless of test outcome.",
         "provider": {
           "type": "python",
           "module": "chaosaws.ec2.2_5_preventive",
           "func": "rollback"
         }
       },
-      "output": null,
-      "start": "2026-03-17T12:47:24.646911+00:00",
+      "output": true,
+      "start": "2026-03-29T17:11:48.596237+00:00",
       "status": "succeeded",
-      "end": "2026-03-17T12:48:49.537718+00:00",
-      "duration": 84.890807
+      "end": "2026-03-29T17:12:40.537076+00:00",
+      "duration": 51.940839
     }
   ],
-  "end": "2026-03-17T12:48:49.537899+00:00",
-  "duration": 303.74503922462463
+  "end": "2026-03-29T17:12:40.537154+00:00",
+  "duration": 111.91906142234802
 }

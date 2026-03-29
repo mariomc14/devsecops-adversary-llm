@@ -1,0 +1,14 @@
+2026-03-28 20:04:30,293 - INFO - Found credentials in shared credentials file: ~/.aws/credentials
+2026-03-28 20:04:31,222 - ERROR - Error retrieving AMI: An error occurred (InvalidParameterValue) when calling the DescribeImages operation: Invalid value '1' for maxResults. Expecting a value greater than 5.
+2026-03-28 20:04:31,222 - ERROR - Error in steady_state: An error occurred (InvalidParameterValue) when calling the DescribeImages operation: Invalid value '1' for maxResults. Expecting a value greater than 5.
+2026-03-28 20:04:31,683 - ERROR - Attack simulation error: An error occurred (ValidationError) when calling the DescribeStackResources operation: Stack with id sce-experiment-imds-detective-1774724670 does not exist
+2026-03-28 20:34:42,402 - WARNING - Error deleting CloudTrail trail: An error occurred (TrailNotFoundException) when calling the DeleteTrail operation: Unknown trail: arn:aws:cloudtrail:us-east-1:396608802942:trail/sce-imds-detective-trail-1774724670 for the user: 396608802942
+2026-03-28 20:34:43,369 - WARNING - Error deleting S3 bucket: An error occurred (NoSuchBucket) when calling the DeleteBucket operation: The specified bucket does not exist
+2026-03-28 20:34:43,369 - INFO - Stack sce-experiment-imds-detective-1774724670 and associated resources deleted successfully
+2026-03-28 20:54:26,650 - INFO - Found credentials in shared credentials file: ~/.aws/credentials
+2026-03-28 20:54:27,627 - ERROR - Error retrieving AMI: No Amazon Linux 2 AMI found
+2026-03-28 20:54:27,628 - ERROR - Error in steady_state: No Amazon Linux 2 AMI found
+2026-03-28 20:54:28,104 - ERROR - Error retrieving stack resources: An error occurred (ValidationError) when calling the DescribeStackResources operation: Stack with id sce-experiment-imds-detective-1774727666 does not exist
+2026-03-28 21:24:38,009 - WARNING - Error deleting CloudTrail trail: An error occurred (TrailNotFoundException) when calling the DeleteTrail operation: Unknown trail: arn:aws:cloudtrail:us-east-1:396608802942:trail/sce-imds-detective-trail-1774727666 for the user: 396608802942
+2026-03-28 21:24:38,977 - WARNING - Error deleting S3 bucket: An error occurred (NoSuchBucket) when calling the DeleteBucket operation: The specified bucket does not exist
+2026-03-28 21:24:38,977 - INFO - Stack sce-experiment-imds-detective-1774727666 and associated resources deleted successfully

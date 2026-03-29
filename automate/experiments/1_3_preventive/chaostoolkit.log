@@ -1,374 +1,358 @@
-[36m[2026-02-11 17:31:04 DEBUG] [__init__:101] ###############################################################################
-[36m[2026-02-11 17:31:04 DEBUG] [__init__:102] Running command 'run'
-[36m[2026-02-11 17:31:04 DEBUG] [__init__:106] Using settings file '/home/mmc/.chaostoolkit/settings.yaml'
-[36m[2026-02-11 17:31:04 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/mmc/.chaostoolkit/settings.yaml'.
-[36m[2026-02-11 17:31:04 DEBUG] [__init__:472] No controls to apply on 'loader'
-[36m[2026-02-11 17:31:04 DEBUG] [__init__:472] No controls to apply on 'loader'
-[36m[2026-02-11 17:31:04 DEBUG] [caching:24] Building activity cache...
-[36m[2026-02-11 17:31:04 DEBUG] [caching:35] Cached 3 activities
-[32m[2026-02-11 17:31:04 INFO] [experiment:59] Validating the experiment's syntax
-[36m[2026-02-11 17:31:04 DEBUG] [configuration:64] Loading configuration...
-[36m[2026-02-11 17:31:04 DEBUG] [secret:79] Loading secrets...
-[36m[2026-02-11 17:31:04 DEBUG] [secret:104] Done loading secrets
-[32m[2026-02-11 17:31:04 INFO] [experiment:112] Experiment looks valid
-[36m[2026-02-11 17:31:04 DEBUG] [caching:42] Clearing activities cache
-[36m[2026-02-11 17:31:04 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
-[36m[2026-02-11 17:31:04 DEBUG] [caching:24] Building activity cache...
-[36m[2026-02-11 17:31:04 DEBUG] [caching:35] Cached 3 activities
-[36m[2026-02-11 17:31:04 DEBUG] [configuration:64] Loading configuration...
-[36m[2026-02-11 17:31:04 DEBUG] [secret:79] Loading secrets...
-[36m[2026-02-11 17:31:04 DEBUG] [secret:104] Done loading secrets
-[36m[2026-02-11 17:31:04 DEBUG] [configuration:161] Loading dynamic configuration...
-[32m[2026-02-11 17:31:04 INFO] [run:440] Running experiment: SCE 1.3: Preventive Probe - IAM Deny ec2:DescribeInstances
-[36m[2026-02-11 17:31:04 DEBUG] [__init__:67] Initializing controls
-[32m[2026-02-11 17:31:04 INFO] [run:471] Steady-state strategy: after-method-only
-[32m[2026-02-11 17:31:04 INFO] [run:477] Rollbacks strategy: default
-[36m[2026-02-11 17:31:04 DEBUG] [__init__:472] No controls to apply on 'experiment'
-[32m[2026-02-11 17:31:04 INFO] [run:778] Playing your experiment's method now...
-[36m[2026-02-11 17:31:04 DEBUG] [__init__:472] No controls to apply on 'method'
-[36m[2026-02-11 17:31:04 DEBUG] [__init__:472] No controls to apply on 'activity'
-[32m[2026-02-11 17:31:04 INFO] [activity:232] Action: Establish Steady State
-[36m[2026-02-11 17:31:04 DEBUG] [python:33] Activity 'Establish Steady State' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py'
-[36m[2026-02-11 17:39:14 DEBUG] [__init__:472] No controls to apply on 'activity'
-[36m[2026-02-11 17:39:14 DEBUG] [__init__:472] No controls to apply on 'method'
-[33m[2026-02-11 17:39:14 WARNING] [run:556] Received a termination signal (Ctrl-C)...
-[32m[2026-02-11 17:39:14 INFO] [run:598] Experiment ended with status: interrupted
-[36m[2026-02-11 17:39:14 DEBUG] [__init__:472] No controls to apply on 'experiment'
-[36m[2026-02-11 17:39:14 DEBUG] [__init__:106] Cleaning up controls
-[36m[2026-02-11 17:39:14 DEBUG] [caching:42] Clearing activities cache
-[36m[2026-02-12 16:40:28 DEBUG] [__init__:101] ###############################################################################
-[36m[2026-02-12 16:40:28 DEBUG] [__init__:102] Running command 'run'
-[36m[2026-02-12 16:40:28 DEBUG] [__init__:106] Using settings file '/home/mmc/.chaostoolkit/settings.yaml'
-[36m[2026-02-12 16:40:28 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/mmc/.chaostoolkit/settings.yaml'.
-[36m[2026-02-12 16:40:28 DEBUG] [__init__:472] No controls to apply on 'loader'
-[36m[2026-02-12 16:40:28 DEBUG] [__init__:472] No controls to apply on 'loader'
-[36m[2026-02-12 16:40:28 DEBUG] [caching:24] Building activity cache...
-[36m[2026-02-12 16:40:28 DEBUG] [caching:35] Cached 3 activities
-[32m[2026-02-12 16:40:28 INFO] [experiment:59] Validating the experiment's syntax
-[36m[2026-02-12 16:40:28 DEBUG] [configuration:64] Loading configuration...
-[36m[2026-02-12 16:40:28 DEBUG] [secret:79] Loading secrets...
-[36m[2026-02-12 16:40:28 DEBUG] [secret:104] Done loading secrets
-[32m[2026-02-12 16:40:28 INFO] [experiment:112] Experiment looks valid
-[36m[2026-02-12 16:40:28 DEBUG] [caching:42] Clearing activities cache
-[36m[2026-02-12 16:40:28 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
-[36m[2026-02-12 16:40:28 DEBUG] [caching:24] Building activity cache...
-[36m[2026-02-12 16:40:28 DEBUG] [caching:35] Cached 3 activities
-[36m[2026-02-12 16:40:28 DEBUG] [configuration:64] Loading configuration...
-[36m[2026-02-12 16:40:28 DEBUG] [secret:79] Loading secrets...
-[36m[2026-02-12 16:40:28 DEBUG] [secret:104] Done loading secrets
-[36m[2026-02-12 16:40:28 DEBUG] [configuration:161] Loading dynamic configuration...
-[32m[2026-02-12 16:40:28 INFO] [run:440] Running experiment: SCE 1.3 Preventive Probe: EC2 Instance Enumeration IAM Denial
-[36m[2026-02-12 16:40:28 DEBUG] [__init__:67] Initializing controls
-[32m[2026-02-12 16:40:28 INFO] [run:471] Steady-state strategy: after-method-only
-[32m[2026-02-12 16:40:28 INFO] [run:477] Rollbacks strategy: default
-[36m[2026-02-12 16:40:28 DEBUG] [__init__:472] No controls to apply on 'experiment'
-[32m[2026-02-12 16:40:28 INFO] [run:778] Playing your experiment's method now...
-[36m[2026-02-12 16:40:28 DEBUG] [__init__:472] No controls to apply on 'method'
-[36m[2026-02-12 16:40:28 DEBUG] [__init__:472] No controls to apply on 'activity'
-[32m[2026-02-12 16:40:28 INFO] [activity:232] Action: Prepare Test Infrastructure (CloudFormation)
-[36m[2026-02-12 16:40:28 DEBUG] [python:33] Activity 'Prepare Test Infrastructure (CloudFormation)' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py'
-[36m[2026-02-12 16:45:31 DEBUG] [activity:317] Activity failed
+[36m[2026-03-29 15:45:30 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-03-29 15:45:30 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-03-29 15:45:30 DEBUG] [__init__:106] Using settings file '/home/debian/.chaostoolkit/settings.yaml'
+[36m[2026-03-29 15:45:30 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/debian/.chaostoolkit/settings.yaml'.
+[36m[2026-03-29 15:45:30 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-03-29 15:45:30 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-03-29 15:45:30 DEBUG] [caching:24] Building activity cache...
+[36m[2026-03-29 15:45:30 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-03-29 15:45:30 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-03-29 15:45:30 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-03-29 15:45:30 DEBUG] [secret:79] Loading secrets...
+[36m[2026-03-29 15:45:30 DEBUG] [secret:104] Done loading secrets
+[32m[2026-03-29 15:45:30 INFO] [experiment:112] Experiment looks valid
+[36m[2026-03-29 15:45:30 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-03-29 15:45:30 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-03-29 15:45:30 DEBUG] [caching:24] Building activity cache...
+[36m[2026-03-29 15:45:30 DEBUG] [caching:35] Cached 3 activities
+[36m[2026-03-29 15:45:30 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-03-29 15:45:30 DEBUG] [secret:79] Loading secrets...
+[36m[2026-03-29 15:45:30 DEBUG] [secret:104] Done loading secrets
+[36m[2026-03-29 15:45:30 DEBUG] [configuration:161] Loading dynamic configuration...
+[32m[2026-03-29 15:45:30 INFO] [run:440] Running experiment: SCE Experiment 1.3: Preventive Probe - IAM Least-Privilege EC2 Enumeration Blocking
+[36m[2026-03-29 15:45:30 DEBUG] [__init__:67] Initializing controls
+[32m[2026-03-29 15:45:30 INFO] [run:471] Steady-state strategy: after-method-only
+[32m[2026-03-29 15:45:30 INFO] [run:477] Rollbacks strategy: default
+[36m[2026-03-29 15:45:30 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[32m[2026-03-29 15:45:30 INFO] [run:778] Playing your experiment's method now...
+[36m[2026-03-29 15:45:30 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-03-29 15:45:30 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-29 15:45:30 INFO] [activity:232] Action: Phase 1: Deploy test infrastructure (EC2 instance, IAM role, attacker credentials)
+[36m[2026-03-29 15:45:30 DEBUG] [python:33] Activity 'Phase 1: Deploy test infrastructure (EC2 instance, IAM role, attacker credentials)' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py'
+[36m[2026-03-29 15:50:33 DEBUG] [activity:317] Activity failed
     Traceback (most recent call last):
-      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
         return func(**arguments)
-      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py", line 357, in steady_state
-        raise TimeoutError(f"Stack creation did not complete within {STACK_CREATION_TIMEOUT_SECONDS}s")
-    TimeoutError: Stack creation did not complete within 300s
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py", line 451, in steady_state
+        raise Exception("CloudFormation stack failed to complete")
+    Exception: CloudFormation stack failed to complete
     
     During handling of the above exception, another exception occurred:
     
     Traceback (most recent call last):
-      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/activity.py", line 310, in run_activity
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/activity.py", line 310, in run_activity
         result = run_python_activity(activity, configuration, secrets)
-      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 58, in run_python_activity
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 58, in run_python_activity
         raise ActivityFailed(
             traceback.format_exception_only(type(x), x)[0].strip()
         ).with_traceback(sys.exc_info()[2])
-      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
         return func(**arguments)
-      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py", line 357, in steady_state
-        raise TimeoutError(f"Stack creation did not complete within {STACK_CREATION_TIMEOUT_SECONDS}s")
-    chaoslib.exceptions.ActivityFailed: TimeoutError: Stack creation did not complete within 300s
-[31m[2026-02-12 16:45:31 ERROR] [activity:268]   => failed: TimeoutError: Stack creation did not complete within 300s
-[36m[2026-02-12 16:45:31 DEBUG] [__init__:472] No controls to apply on 'activity'
-[36m[2026-02-12 16:45:31 DEBUG] [__init__:472] No controls to apply on 'activity'
-[32m[2026-02-12 16:45:31 INFO] [activity:232] Action: Execute Attack: T1526 EC2 Enumeration
-[36m[2026-02-12 16:45:31 DEBUG] [python:33] Activity 'Execute Attack: T1526 EC2 Enumeration' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py'
-[36m[2026-02-12 16:45:31 DEBUG] [activity:260]   => succeeded with 'False'
-[36m[2026-02-12 16:45:31 DEBUG] [__init__:472] No controls to apply on 'activity'
-[36m[2026-02-12 16:45:31 DEBUG] [__init__:472] No controls to apply on 'method'
-[36m[2026-02-12 16:45:31 DEBUG] [run:696] Running steady-state hypothesis after the method
-[32m[2026-02-12 16:45:31 INFO] [hypothesis:205] Steady state hypothesis: Preventive Control: IAM Explicit Deny on EC2 Enumeration
-[36m[2026-02-12 16:45:31 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
-[36m[2026-02-12 16:45:31 DEBUG] [__init__:472] No controls to apply on 'activity'
-[32m[2026-02-12 16:45:31 INFO] [activity:232] Probe: Verify IAM Deny Policy Blocks EC2 Enumeration
-[36m[2026-02-12 16:45:31 DEBUG] [python:33] Activity 'Verify IAM Deny Policy Blocks EC2 Enumeration' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py'
-[36m[2026-02-12 16:45:31 DEBUG] [activity:260]   => succeeded with 'False'
-[36m[2026-02-12 16:45:31 DEBUG] [__init__:472] No controls to apply on 'activity'
-[36m[2026-02-12 16:45:31 DEBUG] [hypothesis:247] allowed tolerance is True
-[36m[2026-02-12 16:45:31 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
-[31m[2026-02-12 16:45:31 CRITICAL] [run:716] Steady state probe 'Verify IAM Deny Policy Blocks EC2 Enumeration' is not in the given tolerance so failing this experiment
-[32m[2026-02-12 16:45:31 INFO] [run:1072] Let's rollback...
-[36m[2026-02-12 16:45:31 DEBUG] [__init__:472] No controls to apply on 'rollback'
-[32m[2026-02-12 16:45:31 INFO] [rollback:36] Rollback: Delete CloudFormation Stack and Resources
-[36m[2026-02-12 16:45:31 DEBUG] [__init__:472] No controls to apply on 'activity'
-[32m[2026-02-12 16:45:31 INFO] [activity:232] Action: Delete CloudFormation Stack and Resources
-[36m[2026-02-12 16:45:31 DEBUG] [python:33] Activity 'Delete CloudFormation Stack and Resources' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py'
-[36m[2026-02-12 16:46:03 DEBUG] [activity:262]   => succeeded without any result value
-[36m[2026-02-12 16:46:03 DEBUG] [__init__:472] No controls to apply on 'activity'
-[36m[2026-02-12 16:46:03 DEBUG] [__init__:472] No controls to apply on 'rollback'
-[32m[2026-02-12 16:46:03 INFO] [run:598] Experiment ended with status: deviated
-[32m[2026-02-12 16:46:03 INFO] [run:600] The steady-state has deviated, a weakness may have been discovered
-[36m[2026-02-12 16:46:03 DEBUG] [__init__:472] No controls to apply on 'experiment'
-[36m[2026-02-12 16:46:03 DEBUG] [__init__:106] Cleaning up controls
-[36m[2026-02-12 16:46:03 DEBUG] [caching:42] Clearing activities cache
-[36m[2026-02-12 17:22:29 DEBUG] [__init__:101] ###############################################################################
-[36m[2026-02-12 17:22:29 DEBUG] [__init__:102] Running command 'run'
-[36m[2026-02-12 17:22:29 DEBUG] [__init__:106] Using settings file '/home/mmc/.chaostoolkit/settings.yaml'
-[36m[2026-02-12 17:22:29 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/mmc/.chaostoolkit/settings.yaml'.
-[36m[2026-02-12 17:22:29 DEBUG] [__init__:472] No controls to apply on 'loader'
-[36m[2026-02-12 17:22:29 DEBUG] [__init__:472] No controls to apply on 'loader'
-[36m[2026-02-12 17:22:29 DEBUG] [caching:24] Building activity cache...
-[36m[2026-02-12 17:22:29 DEBUG] [caching:35] Cached 3 activities
-[32m[2026-02-12 17:22:29 INFO] [experiment:59] Validating the experiment's syntax
-[36m[2026-02-12 17:22:29 DEBUG] [configuration:64] Loading configuration...
-[36m[2026-02-12 17:22:29 DEBUG] [secret:79] Loading secrets...
-[36m[2026-02-12 17:22:29 DEBUG] [secret:104] Done loading secrets
-[32m[2026-02-12 17:22:30 INFO] [experiment:112] Experiment looks valid
-[36m[2026-02-12 17:22:30 DEBUG] [caching:42] Clearing activities cache
-[36m[2026-02-12 17:22:30 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
-[36m[2026-02-12 17:22:30 DEBUG] [caching:24] Building activity cache...
-[36m[2026-02-12 17:22:30 DEBUG] [caching:35] Cached 3 activities
-[36m[2026-02-12 17:22:30 DEBUG] [configuration:64] Loading configuration...
-[36m[2026-02-12 17:22:30 DEBUG] [secret:79] Loading secrets...
-[36m[2026-02-12 17:22:30 DEBUG] [secret:104] Done loading secrets
-[36m[2026-02-12 17:22:30 DEBUG] [configuration:161] Loading dynamic configuration...
-[32m[2026-02-12 17:22:30 INFO] [run:440] Running experiment: SCE 1.3 Preventive Probe: EC2 IMDS Modification Denial
-[36m[2026-02-12 17:22:30 DEBUG] [__init__:67] Initializing controls
-[32m[2026-02-12 17:22:30 INFO] [run:471] Steady-state strategy: after-method-only
-[32m[2026-02-12 17:22:30 INFO] [run:477] Rollbacks strategy: default
-[36m[2026-02-12 17:22:30 DEBUG] [__init__:472] No controls to apply on 'experiment'
-[32m[2026-02-12 17:22:30 INFO] [run:778] Playing your experiment's method now...
-[36m[2026-02-12 17:22:30 DEBUG] [__init__:472] No controls to apply on 'method'
-[36m[2026-02-12 17:22:30 DEBUG] [__init__:472] No controls to apply on 'activity'
-[32m[2026-02-12 17:22:30 INFO] [activity:232] Action: Prepare Test Infrastructure (CloudFormation Stack)
-[36m[2026-02-12 17:22:30 DEBUG] [python:33] Activity 'Prepare Test Infrastructure (CloudFormation Stack)' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py'
-[36m[2026-02-12 17:22:36 DEBUG] [activity:317] Activity failed
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py", line 451, in steady_state
+        raise Exception("CloudFormation stack failed to complete")
+    chaoslib.exceptions.ActivityFailed: Exception: CloudFormation stack failed to complete
+[31m[2026-03-29 15:50:33 ERROR] [activity:268]   => failed: Exception: CloudFormation stack failed to complete
+[36m[2026-03-29 15:50:33 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-29 15:50:33 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-29 15:50:33 INFO] [activity:232] Action: Phase 2: Execute attack step 1.2 - Enumerate EC2 instances with attacker credentials
+[36m[2026-03-29 15:50:33 DEBUG] [python:33] Activity 'Phase 2: Execute attack step 1.2 - Enumerate EC2 instances with attacker credentials' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py'
+[36m[2026-03-29 15:50:33 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-03-29 15:50:33 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-29 15:50:33 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-03-29 15:50:33 DEBUG] [run:696] Running steady-state hypothesis after the method
+[32m[2026-03-29 15:50:33 INFO] [hypothesis:205] Steady state hypothesis: IAM Least-Privilege Access Control blocks EC2 enumeration
+[36m[2026-03-29 15:50:33 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[36m[2026-03-29 15:50:33 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-29 15:50:33 INFO] [activity:232] Probe: Verify IAM policy enforces Deny on ec2:DescribeInstances
+[36m[2026-03-29 15:50:33 DEBUG] [python:33] Activity 'Verify IAM policy enforces Deny on ec2:DescribeInstances' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py'
+[36m[2026-03-29 15:50:33 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-03-29 15:50:33 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-29 15:50:33 DEBUG] [hypothesis:247] allowed tolerance is True
+[36m[2026-03-29 15:50:33 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[31m[2026-03-29 15:50:33 CRITICAL] [run:716] Steady state probe 'Verify IAM policy enforces Deny on ec2:DescribeInstances' is not in the given tolerance so failing this experiment
+[32m[2026-03-29 15:50:33 INFO] [run:1072] Let's rollback...
+[36m[2026-03-29 15:50:33 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-03-29 15:50:33 INFO] [rollback:36] Rollback: Phase 4: Cleanup - Delete CloudFormation stack and all resources
+[36m[2026-03-29 15:50:33 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-29 15:50:33 INFO] [activity:232] Action: Phase 4: Cleanup - Delete CloudFormation stack and all resources
+[36m[2026-03-29 15:50:33 DEBUG] [python:33] Activity 'Phase 4: Cleanup - Delete CloudFormation stack and all resources' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py'
+[36m[2026-03-29 15:50:44 DEBUG] [activity:262]   => succeeded without any result value
+[36m[2026-03-29 15:50:44 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-29 15:50:44 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-03-29 15:50:44 INFO] [run:598] Experiment ended with status: deviated
+[32m[2026-03-29 15:50:44 INFO] [run:600] The steady-state has deviated, a weakness may have been discovered
+[36m[2026-03-29 15:50:44 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[36m[2026-03-29 15:50:44 DEBUG] [__init__:106] Cleaning up controls
+[36m[2026-03-29 15:50:44 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-03-29 15:56:06 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-03-29 15:56:06 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-03-29 15:56:06 DEBUG] [__init__:106] Using settings file '/home/debian/.chaostoolkit/settings.yaml'
+[36m[2026-03-29 15:56:06 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/debian/.chaostoolkit/settings.yaml'.
+[36m[2026-03-29 15:56:06 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-03-29 15:56:06 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-03-29 15:56:06 DEBUG] [caching:24] Building activity cache...
+[36m[2026-03-29 15:56:06 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-03-29 15:56:06 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-03-29 15:56:06 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-03-29 15:56:06 DEBUG] [secret:79] Loading secrets...
+[36m[2026-03-29 15:56:06 DEBUG] [secret:104] Done loading secrets
+[32m[2026-03-29 15:56:06 INFO] [experiment:112] Experiment looks valid
+[36m[2026-03-29 15:56:06 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-03-29 15:56:06 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-03-29 15:56:06 DEBUG] [caching:24] Building activity cache...
+[36m[2026-03-29 15:56:06 DEBUG] [caching:35] Cached 3 activities
+[36m[2026-03-29 15:56:06 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-03-29 15:56:06 DEBUG] [secret:79] Loading secrets...
+[36m[2026-03-29 15:56:06 DEBUG] [secret:104] Done loading secrets
+[36m[2026-03-29 15:56:06 DEBUG] [configuration:161] Loading dynamic configuration...
+[32m[2026-03-29 15:56:06 INFO] [run:440] Running experiment: SCE Experiment 1.3: Preventive Probe - IAM Least-Privilege EC2 Enumeration Blocking
+[36m[2026-03-29 15:56:06 DEBUG] [__init__:67] Initializing controls
+[32m[2026-03-29 15:56:06 INFO] [run:471] Steady-state strategy: after-method-only
+[32m[2026-03-29 15:56:06 INFO] [run:477] Rollbacks strategy: default
+[36m[2026-03-29 15:56:06 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[32m[2026-03-29 15:56:06 INFO] [run:778] Playing your experiment's method now...
+[36m[2026-03-29 15:56:06 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-03-29 15:56:06 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-29 15:56:06 INFO] [activity:232] Action: Phase 1: Deploy test infrastructure (EC2 instance, IAM role, attacker credentials)
+[36m[2026-03-29 15:56:06 DEBUG] [python:33] Activity 'Phase 1: Deploy test infrastructure (EC2 instance, IAM role, attacker credentials)' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py'
+[36m[2026-03-29 15:56:18 DEBUG] [activity:317] Activity failed
     Traceback (most recent call last):
-      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
         return func(**arguments)
-      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py", line 346, in steady_state
-        raise TimeoutError(f"Stack creation did not complete within {STACK_CREATION_TIMEOUT_SECONDS}s")
-    TimeoutError: Stack creation did not complete within 600s
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py", line 474, in steady_state
+        raise Exception("CloudFormation stack failed to complete")
+    Exception: CloudFormation stack failed to complete
     
     During handling of the above exception, another exception occurred:
     
     Traceback (most recent call last):
-      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/activity.py", line 310, in run_activity
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/activity.py", line 310, in run_activity
         result = run_python_activity(activity, configuration, secrets)
-      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 58, in run_python_activity
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 58, in run_python_activity
         raise ActivityFailed(
             traceback.format_exception_only(type(x), x)[0].strip()
         ).with_traceback(sys.exc_info()[2])
-      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
         return func(**arguments)
-      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py", line 346, in steady_state
-        raise TimeoutError(f"Stack creation did not complete within {STACK_CREATION_TIMEOUT_SECONDS}s")
-    chaoslib.exceptions.ActivityFailed: TimeoutError: Stack creation did not complete within 600s
-[31m[2026-02-12 17:22:36 ERROR] [activity:268]   => failed: TimeoutError: Stack creation did not complete within 600s
-[36m[2026-02-12 17:22:36 DEBUG] [__init__:472] No controls to apply on 'activity'
-[36m[2026-02-12 17:22:36 DEBUG] [__init__:472] No controls to apply on 'activity'
-[32m[2026-02-12 17:22:36 INFO] [activity:232] Action: Execute Attack: IMDS Weakening (T1552.005)
-[36m[2026-02-12 17:22:36 DEBUG] [python:33] Activity 'Execute Attack: IMDS Weakening (T1552.005)' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py'
-[36m[2026-02-12 17:22:36 DEBUG] [activity:317] Activity failed
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py", line 474, in steady_state
+        raise Exception("CloudFormation stack failed to complete")
+    chaoslib.exceptions.ActivityFailed: Exception: CloudFormation stack failed to complete
+[31m[2026-03-29 15:56:18 ERROR] [activity:268]   => failed: Exception: CloudFormation stack failed to complete
+[36m[2026-03-29 15:56:18 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-29 15:56:18 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-29 15:56:18 INFO] [activity:232] Action: Phase 2: Execute attack step 1.2 - Enumerate EC2 instances with attacker credentials
+[36m[2026-03-29 15:56:18 DEBUG] [python:33] Activity 'Phase 2: Execute attack step 1.2 - Enumerate EC2 instances with attacker credentials' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py'
+[36m[2026-03-29 15:56:18 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-03-29 15:56:18 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-29 15:56:18 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-03-29 15:56:18 DEBUG] [run:696] Running steady-state hypothesis after the method
+[32m[2026-03-29 15:56:18 INFO] [hypothesis:205] Steady state hypothesis: IAM Least-Privilege Access Control blocks EC2 enumeration
+[36m[2026-03-29 15:56:18 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[36m[2026-03-29 15:56:18 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-29 15:56:18 INFO] [activity:232] Probe: Verify IAM policy enforces Deny on ec2:DescribeInstances
+[36m[2026-03-29 15:56:18 DEBUG] [python:33] Activity 'Verify IAM policy enforces Deny on ec2:DescribeInstances' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py'
+[36m[2026-03-29 15:56:18 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-03-29 15:56:18 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-29 15:56:18 DEBUG] [hypothesis:247] allowed tolerance is True
+[36m[2026-03-29 15:56:18 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[31m[2026-03-29 15:56:18 CRITICAL] [run:716] Steady state probe 'Verify IAM policy enforces Deny on ec2:DescribeInstances' is not in the given tolerance so failing this experiment
+[32m[2026-03-29 15:56:18 INFO] [run:1072] Let's rollback...
+[36m[2026-03-29 15:56:18 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-03-29 15:56:18 INFO] [rollback:36] Rollback: Phase 4: Cleanup - Delete CloudFormation stack and all resources
+[36m[2026-03-29 15:56:18 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-29 15:56:18 INFO] [activity:232] Action: Phase 4: Cleanup - Delete CloudFormation stack and all resources
+[36m[2026-03-29 15:56:18 DEBUG] [python:33] Activity 'Phase 4: Cleanup - Delete CloudFormation stack and all resources' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py'
+[36m[2026-03-29 15:56:29 DEBUG] [activity:262]   => succeeded without any result value
+[36m[2026-03-29 15:56:29 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-29 15:56:29 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-03-29 15:56:29 INFO] [run:598] Experiment ended with status: deviated
+[32m[2026-03-29 15:56:29 INFO] [run:600] The steady-state has deviated, a weakness may have been discovered
+[36m[2026-03-29 15:56:29 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[36m[2026-03-29 15:56:29 DEBUG] [__init__:106] Cleaning up controls
+[36m[2026-03-29 15:56:29 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-03-29 16:00:33 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-03-29 16:00:33 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-03-29 16:00:33 DEBUG] [__init__:106] Using settings file '/home/debian/.chaostoolkit/settings.yaml'
+[36m[2026-03-29 16:00:33 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/debian/.chaostoolkit/settings.yaml'.
+[36m[2026-03-29 16:00:33 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-03-29 16:00:33 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-03-29 16:00:33 DEBUG] [caching:24] Building activity cache...
+[36m[2026-03-29 16:00:33 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-03-29 16:00:33 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-03-29 16:00:33 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-03-29 16:00:33 DEBUG] [secret:79] Loading secrets...
+[36m[2026-03-29 16:00:33 DEBUG] [secret:104] Done loading secrets
+[32m[2026-03-29 16:00:34 INFO] [experiment:112] Experiment looks valid
+[36m[2026-03-29 16:00:34 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-03-29 16:00:34 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-03-29 16:00:34 DEBUG] [caching:24] Building activity cache...
+[36m[2026-03-29 16:00:34 DEBUG] [caching:35] Cached 3 activities
+[36m[2026-03-29 16:00:34 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-03-29 16:00:34 DEBUG] [secret:79] Loading secrets...
+[36m[2026-03-29 16:00:34 DEBUG] [secret:104] Done loading secrets
+[36m[2026-03-29 16:00:34 DEBUG] [configuration:161] Loading dynamic configuration...
+[32m[2026-03-29 16:00:34 INFO] [run:440] Running experiment: SCE Experiment 1.3: Preventive Probe - IAM Least-Privilege EC2 Enumeration Blocking
+[36m[2026-03-29 16:00:34 DEBUG] [__init__:67] Initializing controls
+[32m[2026-03-29 16:00:34 INFO] [run:471] Steady-state strategy: after-method-only
+[32m[2026-03-29 16:00:34 INFO] [run:477] Rollbacks strategy: default
+[36m[2026-03-29 16:00:34 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[32m[2026-03-29 16:00:34 INFO] [run:778] Playing your experiment's method now...
+[36m[2026-03-29 16:00:34 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-03-29 16:00:34 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-29 16:00:34 INFO] [activity:232] Action: Phase 1: Deploy test infrastructure (EC2 instance, IAM role, attacker credentials)
+[36m[2026-03-29 16:00:34 DEBUG] [python:33] Activity 'Phase 1: Deploy test infrastructure (EC2 instance, IAM role, attacker credentials)' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py'
+[36m[2026-03-29 16:02:03 DEBUG] [activity:317] Activity failed
     Traceback (most recent call last):
-      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
         return func(**arguments)
-      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py", line 430, in attack
-        instance_id = test_artifacts['instance_id']
-                      ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
-    KeyError: 'instance_id'
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py", line 512, in steady_state
+        raise Exception("CloudFormation stack failed to complete")
+    Exception: CloudFormation stack failed to complete
     
     During handling of the above exception, another exception occurred:
     
     Traceback (most recent call last):
-      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/activity.py", line 310, in run_activity
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/activity.py", line 310, in run_activity
         result = run_python_activity(activity, configuration, secrets)
-      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 58, in run_python_activity
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 58, in run_python_activity
         raise ActivityFailed(
             traceback.format_exception_only(type(x), x)[0].strip()
         ).with_traceback(sys.exc_info()[2])
-      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
         return func(**arguments)
-      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py", line 430, in attack
-        instance_id = test_artifacts['instance_id']
-                      ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
-    chaoslib.exceptions.ActivityFailed: KeyError: 'instance_id'
-[31m[2026-02-12 17:22:36 ERROR] [activity:268]   => failed: KeyError: 'instance_id'
-[36m[2026-02-12 17:22:36 DEBUG] [__init__:472] No controls to apply on 'activity'
-[36m[2026-02-12 17:22:36 DEBUG] [__init__:472] No controls to apply on 'method'
-[36m[2026-02-12 17:22:36 DEBUG] [run:696] Running steady-state hypothesis after the method
-[32m[2026-02-12 17:22:36 INFO] [hypothesis:205] Steady state hypothesis: Preventive Control: IAM Explicit Deny on EC2 IMDS Modification
-[36m[2026-02-12 17:22:36 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
-[36m[2026-02-12 17:22:36 DEBUG] [__init__:472] No controls to apply on 'activity'
-[32m[2026-02-12 17:22:36 INFO] [activity:232] Probe: Verify IAM Deny Policy Blocks EC2 IMDS Modifications
-[36m[2026-02-12 17:22:36 DEBUG] [python:33] Activity 'Verify IAM Deny Policy Blocks EC2 IMDS Modifications' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py'
-[36m[2026-02-12 17:22:36 DEBUG] [activity:317] Activity failed
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py", line 512, in steady_state
+        raise Exception("CloudFormation stack failed to complete")
+    chaoslib.exceptions.ActivityFailed: Exception: CloudFormation stack failed to complete
+[31m[2026-03-29 16:02:03 ERROR] [activity:268]   => failed: Exception: CloudFormation stack failed to complete
+[36m[2026-03-29 16:02:03 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-29 16:02:03 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-29 16:02:03 INFO] [activity:232] Action: Phase 2: Execute attack step 1.2 - Enumerate EC2 instances with attacker credentials
+[36m[2026-03-29 16:02:03 DEBUG] [python:33] Activity 'Phase 2: Execute attack step 1.2 - Enumerate EC2 instances with attacker credentials' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py'
+[36m[2026-03-29 16:02:03 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-03-29 16:02:03 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-29 16:02:03 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-03-29 16:02:03 DEBUG] [run:696] Running steady-state hypothesis after the method
+[32m[2026-03-29 16:02:03 INFO] [hypothesis:205] Steady state hypothesis: IAM Least-Privilege Access Control blocks EC2 enumeration
+[36m[2026-03-29 16:02:03 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[36m[2026-03-29 16:02:03 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-29 16:02:03 INFO] [activity:232] Probe: Verify IAM policy enforces Deny on ec2:DescribeInstances
+[36m[2026-03-29 16:02:03 DEBUG] [python:33] Activity 'Verify IAM policy enforces Deny on ec2:DescribeInstances' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py'
+[36m[2026-03-29 16:02:03 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-03-29 16:02:03 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-29 16:02:03 DEBUG] [hypothesis:247] allowed tolerance is True
+[36m[2026-03-29 16:02:03 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[31m[2026-03-29 16:02:03 CRITICAL] [run:716] Steady state probe 'Verify IAM policy enforces Deny on ec2:DescribeInstances' is not in the given tolerance so failing this experiment
+[32m[2026-03-29 16:02:03 INFO] [run:1072] Let's rollback...
+[36m[2026-03-29 16:02:03 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-03-29 16:02:03 INFO] [rollback:36] Rollback: Phase 4: Cleanup - Delete CloudFormation stack and all resources
+[36m[2026-03-29 16:02:03 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-29 16:02:03 INFO] [activity:232] Action: Phase 4: Cleanup - Delete CloudFormation stack and all resources
+[36m[2026-03-29 16:02:03 DEBUG] [python:33] Activity 'Phase 4: Cleanup - Delete CloudFormation stack and all resources' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py'
+[36m[2026-03-29 16:04:47 DEBUG] [activity:262]   => succeeded without any result value
+[36m[2026-03-29 16:04:47 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-29 16:04:47 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-03-29 16:04:47 INFO] [run:598] Experiment ended with status: deviated
+[32m[2026-03-29 16:04:47 INFO] [run:600] The steady-state has deviated, a weakness may have been discovered
+[36m[2026-03-29 16:04:47 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[36m[2026-03-29 16:04:47 DEBUG] [__init__:106] Cleaning up controls
+[36m[2026-03-29 16:04:47 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-03-29 16:16:54 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-03-29 16:16:54 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-03-29 16:16:54 DEBUG] [__init__:106] Using settings file '/home/debian/.chaostoolkit/settings.yaml'
+[36m[2026-03-29 16:16:54 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/debian/.chaostoolkit/settings.yaml'.
+[36m[2026-03-29 16:16:54 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-03-29 16:16:54 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-03-29 16:16:54 DEBUG] [caching:24] Building activity cache...
+[36m[2026-03-29 16:16:54 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-03-29 16:16:54 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-03-29 16:16:54 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-03-29 16:16:54 DEBUG] [secret:79] Loading secrets...
+[36m[2026-03-29 16:16:54 DEBUG] [secret:104] Done loading secrets
+[32m[2026-03-29 16:16:54 INFO] [experiment:112] Experiment looks valid
+[36m[2026-03-29 16:16:54 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-03-29 16:16:54 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-03-29 16:16:54 DEBUG] [caching:24] Building activity cache...
+[36m[2026-03-29 16:16:54 DEBUG] [caching:35] Cached 3 activities
+[36m[2026-03-29 16:16:54 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-03-29 16:16:54 DEBUG] [secret:79] Loading secrets...
+[36m[2026-03-29 16:16:54 DEBUG] [secret:104] Done loading secrets
+[36m[2026-03-29 16:16:54 DEBUG] [configuration:161] Loading dynamic configuration...
+[32m[2026-03-29 16:16:54 INFO] [run:440] Running experiment: SCE Experiment 1.3: Preventive Probe - IAM Least-Privilege EC2 Enumeration Blocking
+[36m[2026-03-29 16:16:54 DEBUG] [__init__:67] Initializing controls
+[32m[2026-03-29 16:16:54 INFO] [run:471] Steady-state strategy: after-method-only
+[32m[2026-03-29 16:16:54 INFO] [run:477] Rollbacks strategy: default
+[36m[2026-03-29 16:16:54 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[32m[2026-03-29 16:16:54 INFO] [run:778] Playing your experiment's method now...
+[36m[2026-03-29 16:16:54 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-03-29 16:16:54 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-29 16:16:54 INFO] [activity:232] Action: Phase 1: Deploy minimal IAM infrastructure (role, policies, user, credentials)
+[36m[2026-03-29 16:16:54 DEBUG] [python:33] Activity 'Phase 1: Deploy minimal IAM infrastructure (role, policies, user, credentials)' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py'
+[36m[2026-03-29 16:16:58 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-03-29 16:16:58 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-29 16:16:58 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-29 16:16:58 INFO] [activity:232] Action: Phase 2: Execute attack step 1.2 - Enumerate EC2 instances with attacker credentials
+[36m[2026-03-29 16:16:58 DEBUG] [python:33] Activity 'Phase 2: Execute attack step 1.2 - Enumerate EC2 instances with attacker credentials' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py'
+[36m[2026-03-29 16:16:58 DEBUG] [activity:317] Activity failed
     Traceback (most recent call last):
-      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
         return func(**arguments)
-      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py", line 591, in hypothesis_verification
-        raise ValueError("DevBuildRoleName not in test_artifacts")
-    ValueError: DevBuildRoleName not in test_artifacts
-    
-    During handling of the above exception, another exception occurred:
-    
-    Traceback (most recent call last):
-      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/activity.py", line 310, in run_activity
-        result = run_python_activity(activity, configuration, secrets)
-      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 58, in run_python_activity
-        raise ActivityFailed(
-            traceback.format_exception_only(type(x), x)[0].strip()
-        ).with_traceback(sys.exc_info()[2])
-      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
-        return func(**arguments)
-      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py", line 591, in hypothesis_verification
-        raise ValueError("DevBuildRoleName not in test_artifacts")
-    chaoslib.exceptions.ActivityFailed: ValueError: DevBuildRoleName not in test_artifacts
-[31m[2026-02-12 17:22:36 ERROR] [activity:268]   => failed: ValueError: DevBuildRoleName not in test_artifacts
-[36m[2026-02-12 17:22:36 DEBUG] [__init__:472] No controls to apply on 'activity'
-[33m[2026-02-12 17:22:36 WARNING] [hypothesis:232] Probe terminated unexpectedly, so its tolerance could not be validated
-[36m[2026-02-12 17:22:36 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
-[31m[2026-02-12 17:22:36 CRITICAL] [run:716] Steady state probe 'Verify IAM Deny Policy Blocks EC2 IMDS Modifications' is not in the given tolerance so failing this experiment
-[32m[2026-02-12 17:22:36 INFO] [run:598] Experiment ended with status: deviated
-[32m[2026-02-12 17:22:36 INFO] [run:600] The steady-state has deviated, a weakness may have been discovered
-[36m[2026-02-12 17:22:36 DEBUG] [__init__:472] No controls to apply on 'experiment'
-[36m[2026-02-12 17:22:36 DEBUG] [__init__:106] Cleaning up controls
-[36m[2026-02-12 17:22:36 DEBUG] [caching:42] Clearing activities cache
-[36m[2026-02-12 17:30:41 DEBUG] [__init__:101] ###############################################################################
-[36m[2026-02-12 17:30:41 DEBUG] [__init__:102] Running command 'run'
-[36m[2026-02-12 17:30:41 DEBUG] [__init__:106] Using settings file '/home/mmc/.chaostoolkit/settings.yaml'
-[36m[2026-02-12 17:30:41 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/mmc/.chaostoolkit/settings.yaml'.
-[36m[2026-02-12 17:30:41 DEBUG] [__init__:472] No controls to apply on 'loader'
-[36m[2026-02-12 17:30:41 DEBUG] [__init__:472] No controls to apply on 'loader'
-[36m[2026-02-12 17:30:41 DEBUG] [caching:24] Building activity cache...
-[36m[2026-02-12 17:30:41 DEBUG] [caching:35] Cached 3 activities
-[32m[2026-02-12 17:30:41 INFO] [experiment:59] Validating the experiment's syntax
-[36m[2026-02-12 17:30:41 DEBUG] [configuration:64] Loading configuration...
-[36m[2026-02-12 17:30:41 DEBUG] [secret:79] Loading secrets...
-[36m[2026-02-12 17:30:41 DEBUG] [secret:104] Done loading secrets
-[32m[2026-02-12 17:30:41 INFO] [experiment:112] Experiment looks valid
-[36m[2026-02-12 17:30:41 DEBUG] [caching:42] Clearing activities cache
-[36m[2026-02-12 17:30:41 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
-[36m[2026-02-12 17:30:41 DEBUG] [caching:24] Building activity cache...
-[36m[2026-02-12 17:30:41 DEBUG] [caching:35] Cached 3 activities
-[36m[2026-02-12 17:30:41 DEBUG] [configuration:64] Loading configuration...
-[36m[2026-02-12 17:30:41 DEBUG] [secret:79] Loading secrets...
-[36m[2026-02-12 17:30:41 DEBUG] [secret:104] Done loading secrets
-[36m[2026-02-12 17:30:41 DEBUG] [configuration:161] Loading dynamic configuration...
-[32m[2026-02-12 17:30:41 INFO] [run:440] Running experiment: SCE 1.3 Preventive Probe: EC2 IMDS Modification Denial (Fixed)
-[36m[2026-02-12 17:30:41 DEBUG] [__init__:67] Initializing controls
-[32m[2026-02-12 17:30:41 INFO] [run:471] Steady-state strategy: after-method-only
-[32m[2026-02-12 17:30:41 INFO] [run:477] Rollbacks strategy: default
-[36m[2026-02-12 17:30:41 DEBUG] [__init__:472] No controls to apply on 'experiment'
-[32m[2026-02-12 17:30:41 INFO] [run:778] Playing your experiment's method now...
-[36m[2026-02-12 17:30:41 DEBUG] [__init__:472] No controls to apply on 'method'
-[36m[2026-02-12 17:30:41 DEBUG] [__init__:472] No controls to apply on 'activity'
-[32m[2026-02-12 17:30:41 INFO] [activity:232] Action: Prepare Test Infrastructure (CloudFormation Stack)
-[36m[2026-02-12 17:30:41 DEBUG] [python:33] Activity 'Prepare Test Infrastructure (CloudFormation Stack)' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py'
-[36m[2026-02-12 17:33:24 DEBUG] [activity:260]   => succeeded with 'True'
-[36m[2026-02-12 17:33:24 DEBUG] [__init__:472] No controls to apply on 'activity'
-[36m[2026-02-12 17:33:24 DEBUG] [__init__:472] No controls to apply on 'activity'
-[32m[2026-02-12 17:33:24 INFO] [activity:232] Action: Execute Attack: IMDS Weakening (T1552.005)
-[36m[2026-02-12 17:33:24 DEBUG] [python:33] Activity 'Execute Attack: IMDS Weakening (T1552.005)' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py'
-[36m[2026-02-12 17:33:27 DEBUG] [activity:317] Activity failed
-    Traceback (most recent call last):
-      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
-        return func(**arguments)
-      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py", line 557, in attack
-        credentials = exponential_backoff_retry(assume_role, max_retries=3)
-      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py", line 212, in exponential_backoff_retry
-        raise last_error
-      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py", line 194, in exponential_backoff_retry
-        return func()
-      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py", line 550, in assume_role
-        response = sts_client.assume_role(
-            RoleArn=role_arn,
-            RoleSessionName='sce-attack-session'
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py", line 330, in attack
+        response = ec2.describe_instances(
+            Filters=[{'Name': 'instance-state-name', 'Values': ['running']}]
         )
-      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/client.py", line 569, in _api_call
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/client.py", line 569, in _api_call
         return self._make_api_call(operation_name, kwargs)
                ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
-      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/client.py", line 1023, in _make_api_call
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/client.py", line 1023, in _make_api_call
         raise error_class(parsed_response, operation_name)
-    botocore.exceptions.ClientError: An error occurred (AccessDenied) when calling the AssumeRole operation: User: arn:aws:iam::396608802942:user/ChaosXploit-Labs is not authorized to perform: sts:AssumeRole on resource: arn:aws:iam::396608802942:role/sce-1-3-dev-build-role
+    botocore.exceptions.ClientError: An error occurred (AuthFailure) when calling the DescribeInstances operation: AWS was not able to validate the provided access credentials
     
     During handling of the above exception, another exception occurred:
     
     Traceback (most recent call last):
-      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/activity.py", line 310, in run_activity
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/activity.py", line 310, in run_activity
         result = run_python_activity(activity, configuration, secrets)
-      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 58, in run_python_activity
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 58, in run_python_activity
         raise ActivityFailed(
             traceback.format_exception_only(type(x), x)[0].strip()
         ).with_traceback(sys.exc_info()[2])
-      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
         return func(**arguments)
-      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py", line 557, in attack
-        credentials = exponential_backoff_retry(assume_role, max_retries=3)
-      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py", line 212, in exponential_backoff_retry
-        raise last_error
-      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py", line 194, in exponential_backoff_retry
-        return func()
-      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py", line 550, in assume_role
-        response = sts_client.assume_role(
-            RoleArn=role_arn,
-            RoleSessionName='sce-attack-session'
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py", line 330, in attack
+        response = ec2.describe_instances(
+            Filters=[{'Name': 'instance-state-name', 'Values': ['running']}]
         )
-      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/client.py", line 569, in _api_call
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/client.py", line 569, in _api_call
         return self._make_api_call(operation_name, kwargs)
                ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
-      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/client.py", line 1023, in _make_api_call
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/client.py", line 1023, in _make_api_call
         raise error_class(parsed_response, operation_name)
-    chaoslib.exceptions.ActivityFailed: botocore.exceptions.ClientError: An error occurred (AccessDenied) when calling the AssumeRole operation: User: arn:aws:iam::396608802942:user/ChaosXploit-Labs is not authorized to perform: sts:AssumeRole on resource: arn:aws:iam::396608802942:role/sce-1-3-dev-build-role
-[31m[2026-02-12 17:33:27 ERROR] [activity:268]   => failed: botocore.exceptions.ClientError: An error occurred (AccessDenied) when calling the AssumeRole operation: User: arn:aws:iam::396608802942:user/ChaosXploit-Labs is not authorized to perform: sts:AssumeRole on resource: arn:aws:iam::396608802942:role/sce-1-3-dev-build-role
-[36m[2026-02-12 17:33:27 DEBUG] [__init__:472] No controls to apply on 'activity'
-[36m[2026-02-12 17:33:27 DEBUG] [__init__:472] No controls to apply on 'method'
-[36m[2026-02-12 17:33:27 DEBUG] [run:696] Running steady-state hypothesis after the method
-[32m[2026-02-12 17:33:27 INFO] [hypothesis:205] Steady state hypothesis: Preventive Control: IAM Explicit Deny on EC2 IMDS Modification
-[36m[2026-02-12 17:33:27 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
-[36m[2026-02-12 17:33:27 DEBUG] [__init__:472] No controls to apply on 'activity'
-[32m[2026-02-12 17:33:27 INFO] [activity:232] Probe: Verify IAM Deny Policy Blocks EC2 IMDS Modifications
-[36m[2026-02-12 17:33:27 DEBUG] [python:33] Activity 'Verify IAM Deny Policy Blocks EC2 IMDS Modifications' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py'
-[36m[2026-02-12 17:33:28 DEBUG] [activity:317] Activity failed
-    Traceback (most recent call last):
-      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
-        return func(**arguments)
-      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py", line 852, in hypothesis_verification
-        raise AssertionError("Hypothesis verification failed")
-    AssertionError: Hypothesis verification failed
-    
-    During handling of the above exception, another exception occurred:
-    
-    Traceback (most recent call last):
-      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/activity.py", line 310, in run_activity
-        result = run_python_activity(activity, configuration, secrets)
-      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 58, in run_python_activity
-        raise ActivityFailed(
-            traceback.format_exception_only(type(x), x)[0].strip()
-        ).with_traceback(sys.exc_info()[2])
-      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
-        return func(**arguments)
-      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py", line 852, in hypothesis_verification
-        raise AssertionError("Hypothesis verification failed")
-    chaoslib.exceptions.ActivityFailed: AssertionError: Hypothesis verification failed
-[31m[2026-02-12 17:33:28 ERROR] [activity:268]   => failed: AssertionError: Hypothesis verification failed
-[36m[2026-02-12 17:33:28 DEBUG] [__init__:472] No controls to apply on 'activity'
-[33m[2026-02-12 17:33:28 WARNING] [hypothesis:232] Probe terminated unexpectedly, so its tolerance could not be validated
-[36m[2026-02-12 17:33:28 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
-[31m[2026-02-12 17:33:28 CRITICAL] [run:716] Steady state probe 'Verify IAM Deny Policy Blocks EC2 IMDS Modifications' is not in the given tolerance so failing this experiment
-[32m[2026-02-12 17:33:28 INFO] [run:598] Experiment ended with status: deviated
-[32m[2026-02-12 17:33:28 INFO] [run:600] The steady-state has deviated, a weakness may have been discovered
-[36m[2026-02-12 17:33:28 DEBUG] [__init__:472] No controls to apply on 'experiment'
-[36m[2026-02-12 17:33:28 DEBUG] [__init__:106] Cleaning up controls
-[36m[2026-02-12 17:33:28 DEBUG] [caching:42] Clearing activities cache
+    chaoslib.exceptions.ActivityFailed: botocore.exceptions.ClientError: An error occurred (AuthFailure) when calling the DescribeInstances operation: AWS was not able to validate the provided access credentials
+[31m[2026-03-29 16:16:58 ERROR] [activity:268]   => failed: botocore.exceptions.ClientError: An error occurred (AuthFailure) when calling the DescribeInstances operation: AWS was not able to validate the provided access credentials
+[36m[2026-03-29 16:16:58 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-29 16:16:58 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-03-29 16:16:58 DEBUG] [run:696] Running steady-state hypothesis after the method
+[32m[2026-03-29 16:16:58 INFO] [hypothesis:205] Steady state hypothesis: IAM Least-Privilege Access Control blocks EC2 enumeration
+[36m[2026-03-29 16:16:58 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[36m[2026-03-29 16:16:58 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-29 16:16:58 INFO] [activity:232] Probe: Verify IAM policy enforces Deny on ec2:DescribeInstances
+[36m[2026-03-29 16:16:58 DEBUG] [python:33] Activity 'Verify IAM policy enforces Deny on ec2:DescribeInstances' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py'
+[36m[2026-03-29 16:16:59 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-03-29 16:16:59 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-29 16:16:59 DEBUG] [hypothesis:247] allowed tolerance is True
+[36m[2026-03-29 16:16:59 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[31m[2026-03-29 16:16:59 CRITICAL] [run:716] Steady state probe 'Verify IAM policy enforces Deny on ec2:DescribeInstances' is not in the given tolerance so failing this experiment
+[32m[2026-03-29 16:16:59 INFO] [run:1072] Let's rollback...
+[36m[2026-03-29 16:16:59 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-03-29 16:16:59 INFO] [rollback:36] Rollback: Phase 4: Cleanup - Delete all IAM resources created in steady-state
+[36m[2026-03-29 16:16:59 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-29 16:16:59 INFO] [activity:232] Action: Phase 4: Cleanup - Delete all IAM resources created in steady-state
+[36m[2026-03-29 16:16:59 DEBUG] [python:33] Activity 'Phase 4: Cleanup - Delete all IAM resources created in steady-state' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py'
+[36m[2026-03-29 16:17:00 DEBUG] [activity:262]   => succeeded without any result value
+[36m[2026-03-29 16:17:00 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-29 16:17:00 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-03-29 16:17:00 INFO] [run:598] Experiment ended with status: deviated
+[32m[2026-03-29 16:17:00 INFO] [run:600] The steady-state has deviated, a weakness may have been discovered
+[36m[2026-03-29 16:17:00 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[36m[2026-03-29 16:17:00 DEBUG] [__init__:106] Cleaning up controls
+[36m[2026-03-29 16:17:00 DEBUG] [caching:42] Clearing activities cache

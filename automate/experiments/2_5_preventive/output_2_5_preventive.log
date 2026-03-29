@@ -2,78 +2,81 @@ STDOUT:
 
 
 STDERR:
-[32m[2026-03-17 13:43:45 INFO] Validating the experiment's syntax
-[32m[2026-03-17 13:43:45 INFO] Experiment looks valid
-[32m[2026-03-17 13:43:45 INFO] Running experiment: SCE 2.5 Preventive Probe - IMDS Hop-Limit Enforcement + IAM Deny Block Credential Theft Chain (Attack Nodes 1.2 + 2.2)
-[32m[2026-03-17 13:43:45 INFO] Steady-state strategy: after-method-only
-[32m[2026-03-17 13:43:45 INFO] Rollbacks strategy: default
-[32m[2026-03-17 13:43:45 INFO] Playing your experiment's method now...
-[32m[2026-03-17 13:43:45 INFO] Action: Provision CloudFormation stack with production-tagged target EC2 instance (IMDSv2 enforced), probe EC2 instance (simulates co-located attacker), attacker IAM role with Deny on ModifyInstanceMetadataOptions for Environment=production, and SSM-enabled instance profile
-2026-03-17T13:43:45Z [INFO] sce.2_5.preventive - === steady_state() -- stack: sce-experiment-1773751425-b69d513b ===
-2026-03-17T13:43:45Z [INFO] sce.2_5.preventive - Unique suffix: 1773751425-b69d513b
-2026-03-17T13:43:45Z [INFO] sce.2_5.preventive - AWS region: us-east-1
-2026-03-17T13:43:45Z [INFO] sce.2_5.preventive - Running pre-flight permission checks ...
-2026-03-17T13:43:45Z [INFO] botocore.credentials - Found credentials in shared credentials file: ~/.aws/credentials
-2026-03-17T13:43:47Z [INFO] sce.2_5.preventive - Deploying principal: arn:aws:iam::396608802942:user/ChaosXploit-Labs
-2026-03-17T13:43:48Z [INFO] sce.2_5.preventive - Pre-flight: all permissions appear allowed.
-2026-03-17T13:43:48Z [INFO] sce.2_5.preventive - Resolving latest AL2023 AMI via SSM parameter '/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-default-x86_64' ...
-2026-03-17T13:43:48Z [INFO] sce.2_5.preventive - Resolved AMI ID: ami-02dfbd4ff395f2a1b
-2026-03-17T13:43:49Z [INFO] sce.2_5.preventive - Account: 396608802942
-2026-03-17T13:43:49Z [INFO] sce.2_5.preventive - Validating CFN template string encoding ...
-2026-03-17T13:43:49Z [INFO] sce.2_5.preventive - Template validation passed -- all strings are ASCII-safe.
-2026-03-17T13:43:50Z [INFO] sce.2_5.preventive - Creating CloudFormation stack 'sce-experiment-1773751425-b69d513b' ...
-2026-03-17T13:43:51Z [INFO] sce.2_5.preventive - Waiting for CFN waiter 'stack_create_complete' on stack 'sce-experiment-1773751425-b69d513b' ...
-2026-03-17T13:46:58Z [INFO] sce.2_5.preventive - CFN waiter 'stack_create_complete' completed for 'sce-experiment-1773751425-b69d513b'.
-2026-03-17T13:46:58Z [INFO] sce.2_5.preventive - Stack outputs: {'AttackerRoleArn': 'arn:aws:iam::396608802942:role/sce-attacker-role-1773751425-b69d513b', 'VpcId': 'vpc-0e8430a8e2e8137e1', 'ProbeInstanceId': 'i-0e677b75882741fb9', 'TargetInstanceId': 'i-0a60aab0a96f5d592'}
-2026-03-17T13:46:58Z [INFO] sce.2_5.preventive - Outputs validated -- TargetInstanceId=i-0a60aab0a96f5d592 ProbeInstanceId=i-0e677b75882741fb9 AttackerRoleArn=arn:aws:iam::396608802942:role/sce-attacker-role-1773751425-b69d513b
-2026-03-17T13:46:59Z [INFO] sce.2_5.preventive - Baseline: IMDSv2 enforced on target instance i-0a60aab0a96f5d592.
-2026-03-17T13:46:59Z [INFO] sce.2_5.preventive - Waiting for target instance i-0a60aab0a96f5d592 to register with SSM ...
-2026-03-17T13:47:00Z [INFO] sce.2_5.preventive - Target instance i-0a60aab0a96f5d592 is SSM-reachable.
-2026-03-17T13:47:00Z [INFO] sce.2_5.preventive - Waiting for probe instance i-0e677b75882741fb9 to register with SSM ...
-2026-03-17T13:47:01Z [INFO] sce.2_5.preventive - Probe instance i-0e677b75882741fb9 is SSM-reachable.
-2026-03-17T13:47:02Z [INFO] sce.2_5.preventive - steady_state() complete.
-[32m[2026-03-17 13:47:02 INFO] Action: Execute chained attack: Step 1 (Attack 1.2) assume attacker role and attempt ec2:ModifyInstanceMetadataOptions to downgrade IMDS; Step 2 (Attack 2.2) from probe instance via SSM attempt unauthenticated IMDS credential retrieval against 169.254.169.254
-2026-03-17T13:47:02Z [INFO] sce.2_5.preventive - === attack() ===
-2026-03-17T13:47:02Z [INFO] sce.2_5.preventive - Target instance: i-0a60aab0a96f5d592 | Probe instance: i-0e677b75882741fb9 | Attacker role: arn:aws:iam::396608802942:role/sce-attacker-role-1773751425-b69d513b
-2026-03-17T13:47:02Z [INFO] sce.2_5.preventive - --- Step 1: Attempting IMDS weakening on target instance i-0a60aab0a96f5d592 ---
-2026-03-17T13:47:03Z [INFO] sce.2_5.preventive - Step 1: Assumed AttackerRole. Session: AROAVYV52CB7M6PHLSXIG:sce-attack-1-1773751425-b69d513b
-2026-03-17T13:47:03Z [INFO] sce.2_5.preventive - Step 1: Calling ec2:ModifyInstanceMetadataOptions on i-0a60aab0a96f5d592 (http_tokens=optional, hop_limit=2) ...
-2026-03-17T13:47:03Z [INFO] sce.2_5.preventive - Step 1: AccessDenied for ec2:ModifyInstanceMetadataOptions -- P2 IAM Deny control WORKING AS EXPECTED. Code: UnauthorizedOperation
-2026-03-17T13:47:03Z [INFO] sce.2_5.preventive - --- Step 2: Attempting IMDS credential retrieval from probe instance i-0e677b75882741fb9 ---
-2026-03-17T13:47:04Z [INFO] sce.2_5.preventive - Running SSM command on instance i-0e677b75882741fb9: ['curl -s -o /dev/null -w "%{http_code}" --max-time 5 http://169.254.169.254/latest/meta-data/iam/security-credentials/']
-2026-03-17T13:47:05Z [INFO] sce.2_5.preventive - SSM command c0a08cf6-0081-4182-958b-2525085b711d submitted to instance i-0e677b75882741fb9.
-2026-03-17T13:47:11Z [INFO] sce.2_5.preventive - SSM command c0a08cf6-0081-4182-958b-2525085b711d result: status=Success rc=0 stdout='401' stderr=''
-2026-03-17T13:47:11Z [INFO] sce.2_5.preventive - Step 2a: IMDSv1 unauthenticated request HTTP code: '401'
-2026-03-17T13:47:11Z [INFO] sce.2_5.preventive - Running SSM command on instance i-0e677b75882741fb9: ['curl -s -o /dev/null -w "%{http_code}" --max-time 5 -H "X-aws-ec2-metadata-token: INVALID_TOKEN_SCE_TEST" http://169.254.169.254/latest/meta-data/iam/security-credentials/']
-2026-03-17T13:47:12Z [INFO] sce.2_5.preventive - SSM command 612ab717-fb17-4d25-ada3-f116a0d0504d submitted to instance i-0e677b75882741fb9.
-2026-03-17T13:47:17Z [INFO] sce.2_5.preventive - SSM command 612ab717-fb17-4d25-ada3-f116a0d0504d result: status=Success rc=0 stdout='401' stderr=''
-2026-03-17T13:47:17Z [INFO] sce.2_5.preventive - Step 2b: IMDSv1 invalid-token request HTTP code: '401'
-2026-03-17T13:47:17Z [INFO] sce.2_5.preventive - Running SSM command on instance i-0e677b75882741fb9: ['TOKEN=$(curl -s -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600" --max-time 5) && curl -s -o /dev/null -w "%{http_code}" --max-time 5 -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/iam/security-credentials/']
-2026-03-17T13:47:18Z [INFO] sce.2_5.preventive - SSM command fb669817-97db-44af-ab7d-c5fc51428b96 submitted to instance i-0e677b75882741fb9.
-2026-03-17T13:47:24Z [INFO] sce.2_5.preventive - SSM command fb669817-97db-44af-ab7d-c5fc51428b96 result: status=Success rc=0 stdout='200' stderr=''
-2026-03-17T13:47:24Z [INFO] sce.2_5.preventive - Step 2c: IMDSv2 valid-token IMDS credentials check: HTTP code: '200' stdout: '200'
-2026-03-17T13:47:24Z [INFO] sce.2_5.preventive - Step 2: IMDS credentials endpoint did not return HTTP 200 -- preventive controls appear effective.
-2026-03-17T13:47:24Z [INFO] sce.2_5.preventive - attack() complete. Result: {'step1_executed': True, 'step1_access_denied': True, 'step1_error_code': 'UnauthorizedOperation', 'step1_error_message': 'You are not authorized to perform this operation. User: arn:aws:sts::396608802942:assumed-role/sce-attacker-role-1773751425-b69d513b/sce-attack-1-1773751425-b69d513b is not authorized to perform: ec2:ModifyInstanceMetadataOptions on resource: arn:aws:ec2:us-east-1:396608802942:instance/i-0a60aab0a96f5d592 with an explicit deny in an identity-based policy. Encoded authorization failure message: B9iQdlCZpQ6X0RKbINAHg3sZn9SI3iBXx2uPV99hYQ9EwDnWxLiweZlyXJRLbkkc-mPWeNTy5dWSSwArElY9tAS_xhaVp8E17zPThaogsC0Ny8RrF6zdwovcGCnQz4nrM-NNvjdlyi7EGqiFESafU0nxw0v4S0xAk7cEwGcvz9Rgcauqms37eQF2J98ln5CMxOefLDmQn2ep8rK8VcW8qNRftAoW-yKcZaWkeukAcix-mCaVREwtTSRxNTne5mM20w5PJ8Aulqo-7cr9YX7fQ-jc-7wzVOwGpkI6enTO1JxH7VE0F8V1eQjYphv0IRChs0KnM4AOx1iuoIZdpxua792ONPUw4pKjbO8SY9tCBjILlxw0uc2xK5cvfgVCQwh2kPEV0lJg3RtbN3VhkH2bB577JT64aNQmnsA3C2fVNt4zn_t3KDZiLbSvxlhS5RxFCJL5Rr-3ffH8881eUZczHAwoklPucUWKLjTs_e4OpzvyM7XmAlo2lh2hFQQG7YPZH6XHt9Z5SC_dydnQZbv6ii2PSIxTA_07yuMpy0KnvFk4-lZEx71NsuCXMeguNYJkPHR6EQ0bfkWbU32a7QY5K9a2NZK0EvGyQSzv2mWlor67V9kvianozpLmkXEDQDjIL2LepIWUXHC1N857kLeu-KXFgcp5nwwAoj183PuoxzSV0btXgVRsl1_jjn9ugmlg1YgXO4ImENynZiwThqYwwLjIh0xbkgcijoPpDJ8rjkLhEvSU7n1yDzeMb2HxgH2zXUGmCHfNG9BoBkwYtJdgMQ7_T2WktXxYje26XBHA7lgpQZZM5zLitFtav7arPvAJlq2u54vfB8Pfv4OuANC4a2zN97LDzb8JQOQY06rVLHyxZbUauiJBT72ttEmOJRAva4fOAJUweuREGeDVQnLFMHxW7L-Erw1cqvU0FF65G5ij67kG7Am7g39pabhSUgvpYcbSDMKY_y5uMuUYYa2pUkk-uG4HeuTKqiGGHthKRtLb85YjZs_nPg4VQ62aL2smEXZ3-BiEZalH-zdCP5jRUHRCUz8n9dleK3Ym13KMFrJcL5aJYjEsBWGMmUXfVxEos4cf1cGIaNvKn6HY9FDDfiSnQVRxH49xreo_s2cHfSOQ5L019TCahNGFYDtRHnheR0El0j7fsD9107XeYk2I7LlRRjc2YMQVZrvhTl3pHuMjQcMsBv4liDGwl4F2N3OCqxkvTQEYLwMYX5-H_5ZdKkNRumS94x77cqQXredwapUIJaUAVoFIIg3b1aNyDhe348nIjVJsaMLYJ9X6kVjohcxOLTDdffn_a7ru_CBQJR_1f78JnEHhhglX3uxMg41DD3CB', 'step2_executed': True, 'step2a_http_code': '401', 'step2b_http_code': '401', 'step2_imds_accessible': False, 'step2a_ssm_status': 'Success', 'step2b_ssm_status': 'Success', 'step2c_http_code': '200', 'step2c_ssm_status': 'Success'}
-[32m[2026-03-17 13:47:24 INFO] Steady state hypothesis: Target EC2 instance has IMDSv2 enforced (http_tokens=required, hop_limit=1), attacker role carries explicit Deny on ec2:ModifyInstanceMetadataOptions for Environment=production, and probe instance is SSM-reachable
-[32m[2026-03-17 13:47:24 INFO] Probe: Verify IAM Deny blocked Attack 1.2 IMDS weakening (H1), target IMDS state unchanged (H2), and Attack 2.2 IMDS credential retrieval blocked by IMDSv2 enforcement (H3)
-2026-03-17T13:47:24Z [INFO] sce.2_5.preventive - === hypothesis_verification() ===
-2026-03-17T13:47:24Z [INFO] sce.2_5.preventive - [H1] PASS -- ec2:ModifyInstanceMetadataOptions was denied at stage 'UnauthorizedOperation'. Error code: UnauthorizedOperation
-2026-03-17T13:47:24Z [INFO] sce.2_5.preventive - [H2] PASS -- Target instance i-0a60aab0a96f5d592 IMDS unchanged: HttpTokens=required HopLimit=1 State=applied
-2026-03-17T13:47:24Z [INFO] sce.2_5.preventive - [H3] PASS -- IMDS credential endpoint did not return HTTP 200 for IMDSv1 requests. Step2a HTTP code: '401' (expected 401/404/empty). Step2b HTTP code: '401' (expected 401/404/empty). IMDSv2 enforcement is blocking unauthenticated IMDS access from the probe instance.
-2026-03-17T13:47:24Z [INFO] sce.2_5.preventive - [H3] Sub-step 2a confirmed HTTP 401 -- IMDSv2 token required, IMDSv1 request rejected.
-2026-03-17T13:47:24Z [INFO] sce.2_5.preventive - hypothesis_verification() -> PASS. Both preventive controls are effective: IAM Deny blocked IMDS weakening (H1), target IMDS state preserved http_tokens=required hop_limit=1 (H2), IMDSv2 enforcement blocked IMDS credential access (H3).
-[32m[2026-03-17 13:47:24 INFO] Steady state hypothesis is met!
-[32m[2026-03-17 13:47:24 INFO] Let's rollback...
-[32m[2026-03-17 13:47:24 INFO] Rollback: Delete CloudFormation stack and all provisioned experiment resources (VPC, EC2 instances, IAM roles, security groups)
-[32m[2026-03-17 13:47:24 INFO] Action: Delete CloudFormation stack and all provisioned experiment resources (VPC, EC2 instances, IAM roles, security groups)
-2026-03-17T13:47:24Z [INFO] sce.2_5.preventive - === rollback() -- stack: 'sce-experiment-1773751425-b69d513b' ===
-2026-03-17T13:47:25Z [INFO] sce.2_5.preventive - Stack 'sce-experiment-1773751425-b69d513b' current status: CREATE_COMPLETE
-2026-03-17T13:47:25Z [INFO] sce.2_5.preventive - Stack deletion initiated for 'sce-experiment-1773751425-b69d513b'.
-2026-03-17T13:47:25Z [INFO] sce.2_5.preventive - Waiting for CFN waiter 'stack_delete_complete' on stack 'sce-experiment-1773751425-b69d513b' ...
-2026-03-17T13:48:49Z [INFO] sce.2_5.preventive - CFN waiter 'stack_delete_complete' completed for 'sce-experiment-1773751425-b69d513b'.
-2026-03-17T13:48:49Z [INFO] sce.2_5.preventive - Stack 'sce-experiment-1773751425-b69d513b' deleted successfully.
-2026-03-17T13:48:49Z [INFO] sce.2_5.preventive - rollback() complete.
-[32m[2026-03-17 13:48:49 INFO] Experiment ended with status: completed
+[32m[2026-03-29 19:10:48 INFO] Validating the experiment's syntax
+[32m[2026-03-29 19:10:48 INFO] Experiment looks valid
+[32m[2026-03-29 19:10:48 INFO] Running experiment: SCE 2.5 Preventive Probe: IMDS Weakening Prevention (Revised)
+[32m[2026-03-29 19:10:48 INFO] Steady-state strategy: after-method-only
+[32m[2026-03-29 19:10:48 INFO] Rollbacks strategy: default
+[32m[2026-03-29 19:10:48 INFO] Playing your experiment's method now...
+[32m[2026-03-29 19:10:48 INFO] Action: deploy-iam-infrastructure
+2026-03-29 19:10:48,619 - INFO - [steady_state] ================================================================================
+2026-03-29 19:10:48,619 - INFO - [steady_state] STEADY STATE: Deploying IAM-based experiment infrastructure
+2026-03-29 19:10:48,619 - INFO - [steady_state] ================================================================================
+2026-03-29 19:10:48,619 - INFO - [_install_boto3] boto3 already installed
+2026-03-29 19:10:48,624 - INFO - [load] Found credentials in shared credentials file: ~/.aws/credentials
+2026-03-29 19:10:49,137 - INFO - [_get_account_id] AWS Account ID: 396608802942
+2026-03-29 19:10:49,137 - INFO - [_generate_stack_name] Generated stack name: sce-imds-preventive-1774804249
+2026-03-29 19:10:49,137 - INFO - [steady_state] Creating CloudFormation template...
+2026-03-29 19:10:49,137 - INFO - [steady_state] Deploying CloudFormation stack: sce-imds-preventive-1774804249
+2026-03-29 19:10:49,788 - INFO - [steady_state] Stack creation initiated: arn:aws:cloudformation:us-east-1:396608802942:stack/sce-imds-preventive-1774804249/3b1e7f30-2b92-11f1-916f-0affda7b6827
+2026-03-29 19:10:49,788 - INFO - [_wait_for_stack_completion] Waiting for stack completion (max 300s)...
+2026-03-29 19:10:49,910 - INFO - [_wait_for_stack_completion] Stack status: CREATE_IN_PROGRESS (elapsed: 0.0s)
+2026-03-29 19:10:55,030 - INFO - [_wait_for_stack_completion] Stack status: CREATE_IN_PROGRESS (elapsed: 5.1s)
+2026-03-29 19:11:00,151 - INFO - [_wait_for_stack_completion] Stack status: CREATE_IN_PROGRESS (elapsed: 10.2s)
+2026-03-29 19:11:05,269 - INFO - [_wait_for_stack_completion] Stack status: CREATE_IN_PROGRESS (elapsed: 15.4s)
+2026-03-29 19:11:10,388 - INFO - [_wait_for_stack_completion] Stack status: CREATE_IN_PROGRESS (elapsed: 20.5s)
+2026-03-29 19:11:15,506 - INFO - [_wait_for_stack_completion] Stack status: CREATE_IN_PROGRESS (elapsed: 25.6s)
+2026-03-29 19:11:20,630 - INFO - [_wait_for_stack_completion] Stack status: CREATE_IN_PROGRESS (elapsed: 30.7s)
+2026-03-29 19:11:25,750 - INFO - [_wait_for_stack_completion] Stack status: CREATE_IN_PROGRESS (elapsed: 35.8s)
+2026-03-29 19:11:30,869 - INFO - [_wait_for_stack_completion] Stack status: CREATE_IN_PROGRESS (elapsed: 41.0s)
+2026-03-29 19:11:35,990 - INFO - [_wait_for_stack_completion] Stack status: CREATE_IN_PROGRESS (elapsed: 46.1s)
+2026-03-29 19:11:41,107 - INFO - [_wait_for_stack_completion] Stack status: CREATE_IN_PROGRESS (elapsed: 51.2s)
+2026-03-29 19:11:46,227 - INFO - [_wait_for_stack_completion] Stack creation completed successfully in 56.3s
+2026-03-29 19:11:46,227 - INFO - [steady_state] Extracting resource outputs from stack...
+2026-03-29 19:11:46,351 - INFO - [steady_state] Restricted Role ARN: arn:aws:iam::396608802942:role/sce-imds-restricted-1774804249
+2026-03-29 19:11:46,351 - INFO - [_wait_for_iam_propagation] Waiting for IAM role propagation (sce-imds-restricted-1774804249)...
+2026-03-29 19:11:46,782 - INFO - [_wait_for_iam_propagation] IAM role propagated successfully after 0.0s
+2026-03-29 19:11:46,782 - INFO - [steady_state] Verifying role configuration...
+2026-03-29 19:11:46,910 - INFO - [steady_state] Role verified: sce-imds-restricted-1774804249
+2026-03-29 19:11:47,025 - INFO - [steady_state] Inline policies: ['DenyIMDSModification']
+2026-03-29 19:11:47,025 - INFO - [steady_state] Steady state deployment completed successfully
+[32m[2026-03-29 19:11:47 INFO] Action: execute-attack-steps
+2026-03-29 19:11:47,027 - INFO - [attack] ================================================================================
+2026-03-29 19:11:47,027 - INFO - [attack] ATTACK: Simulating attacker actions
+2026-03-29 19:11:47,027 - INFO - [attack] ================================================================================
+2026-03-29 19:11:47,038 - INFO - [attack] Step 1/2: Assuming restricted role: arn:aws:iam::396608802942:role/sce-imds-restricted-1774804249
+2026-03-29 19:11:47,458 - INFO - [attack] Role assumed successfully: arn:aws:sts::396608802942:assumed-role/sce-imds-restricted-1774804249/sce-attack-simulation
+2026-03-29 19:11:47,461 - INFO - [attack] Attack Step 1.1: Attempting DescribeInstances with restricted role...
+2026-03-29 19:11:47,881 - INFO - [attack] DescribeInstances blocked as expected: UnauthorizedOperation
+2026-03-29 19:11:47,881 - INFO - [attack] Attack Step 2.1: Attempting ModifyInstanceMetadataOptions with restricted role...
+2026-03-29 19:11:48,032 - INFO - [attack] ModifyInstanceMetadataOptions returned: InvalidInstanceID.Malformed
+2026-03-29 19:11:48,032 - INFO - [attack] Attack simulation completed
+[32m[2026-03-29 19:11:48 INFO] Steady state hypothesis: IAM Deny Policies Block IMDS Weakening Attempts
+[32m[2026-03-29 19:11:48 INFO] Probe: verify-preventive-controls-imds
+2026-03-29 19:11:48,034 - INFO - [hypothesis_verification] ================================================================================
+2026-03-29 19:11:48,034 - INFO - [hypothesis_verification] HYPOTHESIS VERIFICATION: Preventive Control Assessment
+2026-03-29 19:11:48,034 - INFO - [hypothesis_verification] ================================================================================
+2026-03-29 19:11:48,034 - INFO - [hypothesis_verification] CHECK 1: Verifying DescribeInstances access denial...
+2026-03-29 19:11:48,034 - INFO - [hypothesis_verification] PASSED: DescribeInstances blocked with error: UnauthorizedOperation
+2026-03-29 19:11:48,034 - INFO - [hypothesis_verification] CHECK 2: Verifying ModifyInstanceMetadataOptions access denial...
+2026-03-29 19:11:48,034 - INFO - [hypothesis_verification] PASSED: ModifyInstanceMetadataOptions blocked with error: InvalidInstanceID.Malformed
+2026-03-29 19:11:48,034 - INFO - [hypothesis_verification] CHECK 3: Verifying restrictive IAM policies still in place...
+2026-03-29 19:11:48,595 - WARNING - [hypothesis_verification] Could not verify IAM policies: 'RolePolicyDocument'
+2026-03-29 19:11:48,595 - INFO - [hypothesis_verification] ================================================================================
+2026-03-29 19:11:48,595 - INFO - [hypothesis_verification] HYPOTHESIS VERIFICATION: ALL PREVENTIVE CONTROLS VERIFIED
+2026-03-29 19:11:48,595 - INFO - [hypothesis_verification] ================================================================================
+[32m[2026-03-29 19:11:48 INFO] Steady state hypothesis is met!
+[32m[2026-03-29 19:11:48 INFO] Let's rollback...
+[32m[2026-03-29 19:11:48 INFO] Rollback: cleanup-experiment-resources
+[32m[2026-03-29 19:11:48 INFO] Action: cleanup-experiment-resources
+2026-03-29 19:11:48,596 - INFO - [rollback] ================================================================================
+2026-03-29 19:11:48,596 - INFO - [rollback] ROLLBACK: Cleaning up experiment resources
+2026-03-29 19:11:48,596 - INFO - [rollback] ================================================================================
+2026-03-29 19:11:48,603 - INFO - [rollback] Deleting CloudFormation stack: sce-imds-preventive-1774804249
+2026-03-29 19:11:49,184 - INFO - [rollback] Stack deletion initiated
+2026-03-29 19:11:49,184 - INFO - [rollback] Waiting for stack deletion...
+2026-03-29 19:12:40,536 - INFO - [rollback] Stack deletion completed (not found)
+[32m[2026-03-29 19:12:40 INFO] Experiment ended with status: completed
 
 
 RETURN CODE: 0

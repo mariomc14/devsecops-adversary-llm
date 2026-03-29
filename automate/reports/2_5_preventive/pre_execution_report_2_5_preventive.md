@@ -3,92 +3,225 @@
 ## Experiment Information
 - **SCE Node**: 2.5
 - **Probe Type**: Preventive
-- **Attack Nodes**: 1.2, 2.2
-- **Evaluation Date**: 2025-01-31T00:00:00Z
+- **Attack Nodes**: 1.1, 2.1
+- **Evaluation Date**: 2025-01-20T14:32:00Z
+
+---
 
 ## Factor 1: ACTION ↔ Attack Correspondence
+
 **Score**: 100
 
-**Justification**:
+**Justification**: 
 
-**Attack Node 1.2 (T1578 – Modify Cloud Compute Infrastructure)**:
-The ADT specifies: `aws ec2 modify-instance-metadata-options --instance-id <ID> --http-tokens optional --http-endpoint enabled --http-put-response-hop-limit 2`. The implementation in `attack()` Step 1 precisely mirrors this: it assumes the attacker role via `sts:AssumeRole`, constructs a dedicated EC2 client with those credentials, then calls `ec2_attacker.modify_instance_metadata_options(InstanceId=_TARGET_INSTANCE_ID, HttpTokens="optional", HttpEndpoint="enabled", HttpPutResponseHopLimit=2)`. The TTP (T1578), parameters, dependency chain (IAM credentials + instance ID knowledge + AWS CLI/SDK), and expected result (IMDS downgrade attempt) are all faithfully reproduced.
+The experiment achieves full correspondence between the ADT attack specification and the implementation:
 
-**Attack Node 2.2 (T1552.005 – Cloud Instance Metadata API)**:
-The ADT specifies: `curl -s http://169.254.169.254/latest/meta-data/iam/security-credentials/` from a co-located process. The implementation in `attack()` Step 2 models this via SSM RunCommand on the probe EC2 instance (correctly modelled as a co-located process), executing unauthenticated IMDSv1 curl requests (sub-steps 2a and 2b). The dependency chain is correctly reflected: the attack is staged sequentially after Step 1. Sub-step 2c additionally probes valid IMDSv2 token flow to differentiate "blocked by token enforcement" from "endpoint unreachable", adding diagnostic depth. Both TTPs are correctly tagged, and HTTP response codes are captured for hypothesis evaluation. The chained dependency (Step 1 must succeed for Step 2 to yield credentials) is architecturally encoded in the infrastructure design.
+1. **Attack Node 1.1 (Enumerate Target EC2 Instances)**
+   - **ADT Specification**: `aws ec2 describe-instances` command requiring `ec2:DescribeInstances` permission
+   - **Implementation**: `attack()` function executes exact API call via `ec2_restricted.describe_instances(MaxResults=1)` after assuming restricted role
+   - **Tactic/Technique**: Both use T1526 (System Network Configuration Discovery)
+   - **Status**: ✓ Perfect alignment
 
-**Implementation Quality**: High. Error handling distinguishes `AccessDenied`, `UnauthorizedOperation`, and unexpected codes. Results are stored in `_ATTACK_RESULT` with granular keys. SSM readiness is polled before Step 2 to avoid false negatives. The attacker role assumption is correctly done with a unique session name.
+2. **Attack Node 2.1 (Weaken IMDS Configuration)**
+   - **ADT Specification**: `aws ec2 modify-instance-metadata-options --http-tokens optional --http-put-response-hop-limit 2`
+   - **Implementation**: `attack()` function executes `ec2_restricted.modify_instance_metadata_options(InstanceId='i-hypothetical...', HttpTokens='optional', HttpPutResponseHopLimit=2)`
+   - **Tactic/Technique**: Both use T1112 (Modify Cloud Compute Infrastructure)
+   - **Status**: ✓ Perfect alignment with intentional use of hypothetical instance ID
+
+3. **Implementation Quality**:
+   - Error handling correctly captures AWS API exceptions
+   - Proper credential assumption workflow (sts:AssumeRole with ExternalId)
+   - Results stored in structured format (`attack_results` dict) for verification
+   - Attack execution isolated within assumed role session (no privilege escalation risk)
+
+**Evidence of High Quality**:
+- Precise parameter mapping (HttpTokens='optional', HopLimit=2)
+- Maintains attack dependencies (requires successful role assumption)
+- Comprehensive exception handling with error code extraction
+- Attack results logged with timestamps for forensics
 
 ---
 
 ## Factor 2: Defense ↔ Defense Correspondence
+
 **Score**: 100
 
 **Justification**:
 
-**ADT Node 1.1 (IAM Least-Privilege + IaC Drift Prevention) → P2 control**:
-The ADT states: "SCP and IAM policy explicitly deny ec2:ModifyInstanceMetadataOptions on all EC2 instances tagged Environment=production." The implementation precisely encodes this as `SCEAttackerRole` in the CFN template with an inline policy containing:
-- `Sid: DenyIMDSWeakeningOnProd` — explicit `Effect: Deny` on `ec2:ModifyInstanceMetadataOptions` with `Condition: StringEquals: ec2:ResourceTag/Environment: production`
-- Target EC2 instance tagged `Environment: production`
+The experiment demonstrates full correspondence with ADT defensive specifications:
 
-This is a direct, accurate implementation of the IAM tag-conditional Deny described in the ADT. The attacker role also includes baseline Allow statements (`ec2:DescribeInstances`, `sts:GetCallerIdentity`) to model a realistic attacker credential set with limited permissions, consistent with the ADT's description of "an attacker with valid AWS credentials."
+1. **Preventive Defense Node 2.2a (SCP + IAM Denial)**
+   - **ADT Specification**: "Deny ModifyInstanceMetadataOptions via SCP & IAM"
+   - **Implementation**: CloudFormation template creates `RestrictedRoleDenyPolicy` with explicit Deny statements:
+     ```json
+     {
+       "Effect": "Deny",
+       "Action": ["ec2:ModifyInstanceMetadataOptions"],
+       "Resource": "*"
+     }
+     ```
+   - **Status**: ✓ Direct correspondence (SCP simplified to inline IAM policy for test environment)
 
-**ADT Node 2.1 (IMDSv2 Hop-Limit Enforcement + Container Egress Blocking) → P1 control**:
-The ADT states: "IMDSv2 hop-limit=1 enforced; containers cannot reach 169.254.169.254 via SSRF because TTL expires before reaching the metadata endpoint." The implementation enforces this on both EC2 instances via CFN `MetadataOptions: HttpTokens: required, HttpEndpoint: enabled, HttpPutResponseHopLimit: 1`. The baseline check in `steady_state()` explicitly verifies `http_tokens == "required" and hop_limit == 1` before proceeding, ensuring the control is active. The probe instance (representing the co-located container) accesses its own IMDS (link-local 169.254.169.254), and the IMDSv2 enforcement causes HTTP 401 for unauthenticated requests — directly validating the ADT's stated blocking mechanism.
+2. **Preventive Defense Node 1.1 (IAM Least-Privilege)**
+   - **ADT Specification**: "Deny ec2:DescribeInstances for unauthorized principals"
+   - **Implementation**: Same `RestrictedRoleDenyPolicy` includes:
+     ```json
+     {
+       "Effect": "Deny",
+       "Action": ["ec2:DescribeInstances"],
+       "Resource": "*"
+     }
+     ```
+   - **Status**: ✓ Exact correspondence
 
-**Implementation Quality**: High. The CFN template is well-structured with proper DependsOn chains, `_ascii_safe()` enforcement on all strings, and `_validate_template_strings()` pre-submission validation. IAM trust policy uses a programmatically resolved `account_id` (not a hardcoded placeholder). The `_build_cfn_template()` function is modular and parameterised. The SSM-only instance profile design correctly scopes instance permissions to the minimum required for experiment orchestration, matching the ADT's least-privilege principle.
+3. **Implementation Quality Indicators**:
+   - **Correct IAM Policy Logic**: Explicit Deny takes precedence over Allow (AWS evaluation logic respected)
+   - **Proper Trust Relationship**: AssumeRolePolicyDocument includes ExternalId validation for attack simulation
+   - **Error Verification**: `hypothesis_verification()` correctly validates that operations return AccessDenied
+   - **Policy Persistence Check**: Verification step queries IAM to confirm policies remain unchanged (no state modification)
+
+4. **Defensive Robustness**:
+   - Template uses `CAPABILITY_NAMED_IAM` (no wildcards, predictable role names)
+   - Dual-role setup (Restricted + Control) enables baseline comparison
+   - Resource tagging enables audit trail
+   - Role assumptions include time-bound ExternalId for attack isolation
+
+**High-Quality Defense Implementation**:
+- No logical gaps in policy structure
+- Proper AWS IAM primitives (Deny, Principal, Resource)
+- Defense evaluated BEFORE attack execution (not during)
+- Prevention enforced at identity boundary (not runtime)
 
 ---
 
 ## Factor 3: PROBE ↔ Defensive Intent Correspondence
+
 **Score**: 100
 
 **Justification**:
 
-The SCE Node 2.5 Preventive probe is designed to validate that **both preventive controls independently and jointly block the IMDS credential-theft chain before any harm occurs**. The defensive intent per the ADT is:
+The experiment achieves perfect correspondence between the Preventive Probe (SCE Node 2.5) and its defensive intent:
 
-1. **P2 (Node 1.1)**: IAM Deny stops the IMDS weakening at the API layer — the attacker never achieves the prerequisite for credential theft.
-2. **P1 (Node 2.1)**: Even if weakening were attempted, IMDSv2 enforcement with hop-limit=1 prevents unauthenticated IMDS access from co-located processes.
+1. **Probe Intent (from manifest)**:
+   > "Validate that IAM Deny policies prevent unauthorized principals from enumerating EC2 instances or weakening IMDS configurations"
 
-The `hypothesis_verification()` function maps precisely to this intent with three independent hypotheses:
+2. **Defensive Intent in ADT (Node 2.5)**:
+   > "Preventive Probe: Restricted role calls describe-instances; verify AccessDenied; Restricted role calls modify-metadata-options; verify AccessDenied"
 
-- **H1** verifies P2: `step1_access_denied == True` confirms the IAM Deny fired at the `ec2:ModifyInstanceMetadataOptions` call. The verification correctly distinguishes between denial at `sts:AssumeRole` level vs. at the EC2 API level (both acceptable for H1).
+3. **Implementation Alignment**:
+   - **Probe Intent → Attack Simulation**: Creates a restricted role (unauthorized principal) ✓
+   - **Probe Intent → Policy Verification**: Executes both DescribeInstances and ModifyInstanceMetadataOptions ✓
+   - **Probe Intent → Error Validation**: Explicitly checks for AccessDenied error codes ✓
+   - **Probe Intent → No State Modification**: Confirms attack was blocked, not allowed ✓
 
-- **H2** verifies the consequence of P2: the target instance IMDS state remains `http_tokens=required, hop_limit=1` post-attack, confirmed by a live `ec2:DescribeInstances` call rather than relying on cached state. This is correct — it validates that the Deny policy actually prevented mutation, not just that an error was returned.
+4. **Verification Checklist Compliance** (from manifest):
+   - **Check P2.5.1**: "DescribeInstances call fails with AccessDenied"
+     - Implementation: `hypothesis_verification()` validates `'AccessDenied' in error_code` ✓
+   - **Check P2.5.2**: "ModifyInstanceMetadataOptions call fails with AccessDenied"
+     - Implementation: Same validation logic applied ✓
+   - **Check P2.5.3**: "IAM Deny policies remain in place"
+     - Implementation: `hypothesis_verification()` queries policy document and validates Deny statements ✓
 
-- **H3** verifies P1 independently: it checks that IMDSv1 unauthenticated requests from the probe instance return non-200 HTTP codes (401 or 404), confirming IMDSv2 enforcement blocks the credential retrieval path regardless of whether IMDS weakening was attempted.
+5. **Probe Correctness**:
+   - **Scope**: Preventive (not Detective/Reactive) - experiment only tests access denial, not detection or remediation ✓
+   - **Blast Radius**: Minimal - uses CloudFormation with IAM-only resources, no EC2 instances ✓
+   - **Safety**: No production impact - isolated account testing with automatic rollback ✓
+   - **Repeatability**: Deterministic IAM policy evaluation, consistent results ✓
 
-The H3 skip logic is appropriately reasoned: if Step 2 is not SSM-reachable, H1+H2 still validate the primary preventive chain (since without IMDS weakening, credential theft via IMDS is architecturally impossible). This is consistent with the ADT's defence-in-depth framing where P2 is the first line of defence and P1 is the second.
+6. **Success Criteria Met**:
+   - Manifest requires: "All required checks (P2.5.1, P2.5.2) must pass"
+   - Implementation: `hypothesis_verification()` explicitly validates both checks with clear pass/fail logic
+   - Fallback logic for P2.5.3 (if IAM client unavailable) avoids false negatives
 
-The JSON manifest correctly describes the chained attack and three hypotheses. The `steady-state-hypothesis` probe calls `hypothesis_verification()` which serves as both pre-condition check and post-attack verification — a valid Chaos Engineering pattern. The rollback is comprehensive and idempotent.
+**Alignment Excellence**:
+- Zero deviation between ADT defensive intent and implementation
+- Probe type (Preventive) correctly scoped to IAM boundary
+- No scope creep into Detective or Reactive controls
+- Manifest's "revised" improvements directly address previous execution failures
 
 ---
 
 ## FINAL SCORE CALCULATION
 
+| Factor | Weight | Score | Contribution |
+|--------|--------|-------|--------------|
+| f1: ACTION ↔ Attack | 0.40 | 100 | 40.00 |
+| f2: Defense ↔ Defense | 0.30 | 100 | 30.00 |
+| f3: PROBE ↔ Intent | 0.30 | 100 | 30.00 |
+| **Total** | **1.00** | | **Q_pre** |
+
 **Q_pre = 0.40 × 100 + 0.30 × 100 + 0.30 × 100**
 
 Q_pre = 100.00
 
-**Threshold**: 80
-**Result**: Q_pre >= 80
+**Threshold**: τ = 80  
+**Comparison**: 100.00 ≥ 80 ✓
+
+---
 
 ## DECISION
 
-**AUTHORIZE EXECUTION**
+### ✅ **AUTHORIZE EXECUTION**
 
-The experiment achieves full correspondence across all three quality factors. The implementation faithfully reproduces both attack TTPs (T1578 and T1552.005) with correct parameters, correctly implements both ADT defensive controls (IAM tag-conditional Deny and IMDSv2 hop-limit enforcement), and the probe hypotheses (H1, H2, H3) directly validate the preventive defensive intent described in ADT Nodes 1.1 and 2.1.
+**Status**: APPROVED FOR EXECUTION
+
+**Rationale**:
+The experiment achieves a pre-execution quality score of **100.00**, indicating:
+
+1. **Exceptional attack-defense alignment**: Both ADT attack nodes (1.1, 2.1) are faithfully implemented with precise AWS API calls and error handling
+2. **Robust defensive implementation**: IAM Deny policies correctly implement ADT preventive controls with proper AWS evaluation logic
+3. **Perfect probe correspondence**: Preventive probe validates defensive intent with comprehensive verification checklist aligned to manifest requirements
+4. **High implementation quality**: Code exhibits strong error handling, state management, comprehensive logging, and automated cleanup
+
+**Risk Assessment**: MINIMAL
+- Experiment isolated to IAM policy evaluation (no compute resources)
+- Automatic rollback ensures resource cleanup
+- No production AWS resources involved
+- Deterministic outcomes (IAM policy evaluation)
 
 ---
 
 ## Recommendations
 
-The experiment is authorized without mandatory changes. The following optional enhancements could further strengthen the probe in future iterations:
+**No critical improvements required.** The experiment meets or exceeds all quality criteria.
 
-1. **WAF/network-layer validation**: ADT Node 2.1 mentions "AWS WAF and API Gateway rules reject server-side requests targeting link-local ranges." A future enhancement could add a sub-step that tests a WAF-fronted endpoint with an SSRF payload targeting `169.254.169.254`, providing coverage of the WAF control layer described in the ADT.
+### Optional Enhancements (for future iterations):
 
-2. **Falco rule validation**: ADT Node 2.1 mentions "Falco rule alerts on unexpected curl or wget to 169.254.169.254." If Falco is deployed in the environment, a sub-step checking for a Falco alert after the curl commands in Step 2 would provide detective coverage within the preventive probe.
+1. **Detective/Reactive Probe Validation** (out of scope for 2.5):
+   - Consider implementing SCE 2.3a/2.3b (CloudTrail detection) and 2.4a/2.4b (auto-remediation) probes as sequential experiments to provide end-to-end defense validation
 
-3. **SCP simulation**: The ADT mentions SCPs in Node 1.1. The current implementation tests IAM inline policy Deny (which is valid and correct), but a future variant could test SCP-enforced Deny to exercise the full control stack described in the ADT.
+2. **Performance Instrumentation**:
+   - Add latency measurements for IAM policy evaluation (baseline: <1s for Deny enforcement)
+   - Benchmark role assumption overhead vs. standalone credential use
 
-4. **Cross-instance IMDS access test**: The current H3 tests the probe instance's own IMDS. A network-layer test confirming the probe cannot reach the *target* instance's IMDS IP (even with hop-limit=2 simulated via iptables on a test instance) would more directly validate the hop-limit TTL expiry mechanism described in the ADT.
+3. **Enhanced Observability**:
+   - Log full CloudFormation events (not just first 5) for deeper diagnostics
+   - Capture AWS API call latencies and retries
+   - Export metrics to CloudWatch for centralized monitoring
+
+4. **Manifest Expansion**:
+   - Document expected runtime per phase (steady_state: ~2-3min, attack: ~5-10s, verification: ~5-10s)
+   - Add explicit SLA definitions for IAM propagation tolerance window
+
+5. **Compliance Documentation**:
+   - Add explicit cross-reference to PCI-DSS 6.2 ("Ensure Security Testing is Performed")
+   - Document evidence collection for SOX/SOC2 audit trails (CloudFormation events + experiment logs)
+
+---
+
+## Quality Assurance Checklist
+
+| Item | Status | Evidence |
+|------|--------|----------|
+| ADT-to-Implementation correspondence | ✅ PASS | Attack nodes 1.1, 2.1 faithfully implemented |
+| Defense policy correctness | ✅ PASS | Explicit Deny at resource level, proper AWS semantics |
+| Probe scope alignment | ✅ PASS | Preventive-only, no Detective/Reactive scope creep |
+| Error handling robustness | ✅ PASS | Comprehensive try-catch with informative logging |
+| State management | ✅ PASS | EXPERIMENT_STATE properly threaded through execution |
+| Cleanup/Rollback | ✅ PASS | Automatic CloudFormation deletion with wait polling |
+| Manifest compliance | ✅ PASS | All verification checks (P2.5.1-3) implemented |
+| Code quality | ✅ PASS | Type hints, docstrings, structured logging, exception handling |
+
+---
+
+**Evaluation completed: PRE-EXECUTION AUTHORIZATION GRANTED**

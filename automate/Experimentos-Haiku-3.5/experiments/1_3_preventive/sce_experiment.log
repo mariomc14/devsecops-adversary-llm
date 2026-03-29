@@ -1,0 +1,17 @@
+2026-03-28 18:11:05,252 - INFO - Found credentials in shared credentials file: ~/.aws/credentials
+2026-03-28 18:14:08,971 - ERROR - Stack creation failed: Resource handler returned message: "The image id '[ami-0c55b159cbfafe1f0]' does not exist (Service: Ec2, Status Code: 400, Request ID: 3838c5e5-522f-464c-a442-5ee12056d087) (SDK Attempt Count: 1)" (RequestToken: f4fbd33f-7ae3-f3a5-12a5-bb964afd1aba, HandlerErrorCode: InvalidRequest)
+2026-03-28 18:14:08,971 - ERROR - Error in steady_state: Stack creation failed: Waiter StackCreateComplete failed: Waiter encountered a terminal failure state: For expression "Stacks[].StackStatus" we matched expected path: "ROLLBACK_COMPLETE" at least once
+2026-03-28 18:14:09,440 - ERROR - Attack simulation error: 'PhysicalResourceId'
+2026-03-28 18:44:50,286 - INFO - Stack sce-experiment-imds-1774717865 deleted successfully
+2026-03-28 18:51:28,021 - INFO - Found credentials in shared credentials file: ~/.aws/credentials
+2026-03-28 18:51:28,131 - ERROR - Error retrieving AMI: Parameter validation failed:
+Unknown parameter in input: "OrderBy", must be one of: ExecutableUsers, ImageIds, Owners, IncludeDeprecated, IncludeDisabled, MaxResults, NextToken, DryRun, Filters
+2026-03-28 18:51:28,131 - ERROR - Error in steady_state: Parameter validation failed:
+Unknown parameter in input: "OrderBy", must be one of: ExecutableUsers, ImageIds, Owners, IncludeDeprecated, IncludeDisabled, MaxResults, NextToken, DryRun, Filters
+2026-03-28 18:51:28,607 - ERROR - Attack simulation error: An error occurred (ValidationError) when calling the DescribeStackResources operation: Stack with id sce-experiment-imds-1774720288 does not exist
+2026-03-28 19:21:38,604 - INFO - Stack sce-experiment-imds-1774720288 deleted successfully
+2026-03-28 19:25:39,021 - INFO - Found credentials in shared credentials file: ~/.aws/credentials
+2026-03-28 19:25:39,532 - ERROR - Error retrieving AMI: An error occurred (InvalidParameterValue) when calling the DescribeImages operation: Invalid value '1' for maxResults. Expecting a value greater than 5.
+2026-03-28 19:25:39,532 - ERROR - Error in steady_state: An error occurred (InvalidParameterValue) when calling the DescribeImages operation: Invalid value '1' for maxResults. Expecting a value greater than 5.
+2026-03-28 19:25:39,966 - ERROR - Attack simulation error: An error occurred (ValidationError) when calling the DescribeStackResources operation: Stack with id sce-experiment-imds-1774722339 does not exist
+2026-03-28 19:55:49,862 - INFO - Stack sce-experiment-imds-1774722339 deleted successfully

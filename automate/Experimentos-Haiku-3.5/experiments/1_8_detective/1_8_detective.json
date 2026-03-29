@@ -1,0 +1,51 @@
+{
+    "title": "EC2 IMDS Configuration Change Detection Experiment",
+    "description": "Validate detective controls for detecting unauthorized IMDS configuration modifications",
+    "tags": ["ec2", "imds", "security", "detective"],
+    "steady-state-hypothesis": {
+        "title": "IMDS Configuration Changes Should Be Detectable",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "IMDS Configuration Change Detection",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.1_8_detective",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "Prepare IMDS Monitoring Environment",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_8_detective",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "Simulate IMDS Configuration Modification",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_8_detective",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "Clean Up Experiment Resources",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_8_detective",
+                "func": "rollback"
+            }
+        }
+    ]
+}

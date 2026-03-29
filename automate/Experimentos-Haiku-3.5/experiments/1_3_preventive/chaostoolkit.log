@@ -1,0 +1,252 @@
+[36m[2026-03-28 17:29:54 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-03-28 17:29:54 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-03-28 17:29:54 DEBUG] [__init__:106] Using settings file '/home/debian/.chaostoolkit/settings.yaml'
+[36m[2026-03-28 17:29:54 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/debian/.chaostoolkit/settings.yaml'.
+[36m[2026-03-28 17:29:54 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-03-28 17:29:54 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-03-28 17:29:54 DEBUG] [caching:24] Building activity cache...
+[36m[2026-03-28 17:29:54 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-03-28 17:29:54 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-03-28 17:29:54 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-03-28 17:29:54 DEBUG] [secret:79] Loading secrets...
+[36m[2026-03-28 17:29:54 DEBUG] [secret:104] Done loading secrets
+[32m[2026-03-28 17:29:54 INFO] [experiment:112] Experiment looks valid
+[36m[2026-03-28 17:29:54 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-03-28 17:29:54 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-03-28 17:29:54 DEBUG] [caching:24] Building activity cache...
+[36m[2026-03-28 17:29:54 DEBUG] [caching:35] Cached 3 activities
+[36m[2026-03-28 17:29:54 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-03-28 17:29:54 DEBUG] [secret:79] Loading secrets...
+[36m[2026-03-28 17:29:54 DEBUG] [secret:104] Done loading secrets
+[36m[2026-03-28 17:29:54 DEBUG] [configuration:161] Loading dynamic configuration...
+[32m[2026-03-28 17:29:54 INFO] [run:440] Running experiment: AWS EC2 IMDS Protection Bypass Preventive Probe
+[36m[2026-03-28 17:29:54 DEBUG] [__init__:67] Initializing controls
+[32m[2026-03-28 17:29:54 INFO] [run:471] Steady-state strategy: after-method-only
+[32m[2026-03-28 17:29:54 INFO] [run:477] Rollbacks strategy: default
+[36m[2026-03-28 17:29:54 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[32m[2026-03-28 17:29:54 INFO] [run:778] Playing your experiment's method now...
+[36m[2026-03-28 17:29:54 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-03-28 17:29:54 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-28 17:29:54 INFO] [activity:232] Action: Prepare IMDS Experiment Resources
+[36m[2026-03-28 17:29:54 DEBUG] [python:33] Activity 'Prepare IMDS Experiment Resources' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py'
+[36m[2026-03-28 17:32:58 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-03-28 17:32:58 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-28 17:32:58 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-28 17:32:58 INFO] [activity:232] Action: Simulate IMDS Configuration Attack
+[36m[2026-03-28 17:32:58 DEBUG] [python:33] Activity 'Simulate IMDS Configuration Attack' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py'
+[36m[2026-03-28 17:32:58 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-03-28 17:32:58 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-28 17:32:58 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-03-28 17:32:58 DEBUG] [run:696] Running steady-state hypothesis after the method
+[32m[2026-03-28 17:32:58 INFO] [hypothesis:205] Steady state hypothesis: IMDS Configuration Security
+[36m[2026-03-28 17:32:58 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[36m[2026-03-28 17:32:58 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-28 17:32:58 INFO] [activity:232] Probe: Verify IMDS Protection Controls
+[36m[2026-03-28 17:32:58 DEBUG] [python:33] Activity 'Verify IMDS Protection Controls' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py'
+[36m[2026-03-28 18:03:08 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-03-28 18:03:08 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-28 18:03:08 DEBUG] [hypothesis:247] allowed tolerance is True
+[32m[2026-03-28 18:03:08 INFO] [hypothesis:260] Steady state hypothesis is met!
+[36m[2026-03-28 18:03:08 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[32m[2026-03-28 18:03:08 INFO] [run:1072] Let's rollback...
+[36m[2026-03-28 18:03:08 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-03-28 18:03:08 INFO] [rollback:36] Rollback: Clean Up Experiment Resources
+[36m[2026-03-28 18:03:08 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-28 18:03:08 INFO] [activity:232] Action: Clean Up Experiment Resources
+[36m[2026-03-28 18:03:08 DEBUG] [python:33] Activity 'Clean Up Experiment Resources' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py'
+[36m[2026-03-28 18:03:39 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-03-28 18:03:39 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-28 18:03:39 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-03-28 18:03:39 INFO] [run:598] Experiment ended with status: completed
+[36m[2026-03-28 18:03:39 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[36m[2026-03-28 18:03:39 DEBUG] [__init__:106] Cleaning up controls
+[36m[2026-03-28 18:03:39 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-03-28 18:11:05 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-03-28 18:11:05 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-03-28 18:11:05 DEBUG] [__init__:106] Using settings file '/home/debian/.chaostoolkit/settings.yaml'
+[36m[2026-03-28 18:11:05 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/debian/.chaostoolkit/settings.yaml'.
+[36m[2026-03-28 18:11:05 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-03-28 18:11:05 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-03-28 18:11:05 DEBUG] [caching:24] Building activity cache...
+[36m[2026-03-28 18:11:05 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-03-28 18:11:05 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-03-28 18:11:05 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-03-28 18:11:05 DEBUG] [secret:79] Loading secrets...
+[36m[2026-03-28 18:11:05 DEBUG] [secret:104] Done loading secrets
+[32m[2026-03-28 18:11:05 INFO] [experiment:112] Experiment looks valid
+[36m[2026-03-28 18:11:05 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-03-28 18:11:05 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-03-28 18:11:05 DEBUG] [caching:24] Building activity cache...
+[36m[2026-03-28 18:11:05 DEBUG] [caching:35] Cached 3 activities
+[36m[2026-03-28 18:11:05 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-03-28 18:11:05 DEBUG] [secret:79] Loading secrets...
+[36m[2026-03-28 18:11:05 DEBUG] [secret:104] Done loading secrets
+[36m[2026-03-28 18:11:05 DEBUG] [configuration:161] Loading dynamic configuration...
+[32m[2026-03-28 18:11:05 INFO] [run:440] Running experiment: AWS EC2 IMDS Protection Bypass Preventive Probe
+[36m[2026-03-28 18:11:05 DEBUG] [__init__:67] Initializing controls
+[32m[2026-03-28 18:11:05 INFO] [run:471] Steady-state strategy: after-method-only
+[32m[2026-03-28 18:11:05 INFO] [run:477] Rollbacks strategy: default
+[36m[2026-03-28 18:11:05 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[32m[2026-03-28 18:11:05 INFO] [run:778] Playing your experiment's method now...
+[36m[2026-03-28 18:11:05 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-03-28 18:11:05 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-28 18:11:05 INFO] [activity:232] Action: Prepare IMDS Experiment Resources
+[36m[2026-03-28 18:11:05 DEBUG] [python:33] Activity 'Prepare IMDS Experiment Resources' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py'
+[36m[2026-03-28 18:14:08 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-03-28 18:14:08 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-28 18:14:08 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-28 18:14:08 INFO] [activity:232] Action: Simulate IMDS Configuration Attack
+[36m[2026-03-28 18:14:08 DEBUG] [python:33] Activity 'Simulate IMDS Configuration Attack' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py'
+[36m[2026-03-28 18:14:09 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-03-28 18:14:09 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-28 18:14:09 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-03-28 18:14:09 DEBUG] [run:696] Running steady-state hypothesis after the method
+[32m[2026-03-28 18:14:09 INFO] [hypothesis:205] Steady state hypothesis: IMDS Configuration Security
+[36m[2026-03-28 18:14:09 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[36m[2026-03-28 18:14:09 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-28 18:14:09 INFO] [activity:232] Probe: Verify IMDS Protection Controls
+[36m[2026-03-28 18:14:09 DEBUG] [python:33] Activity 'Verify IMDS Protection Controls' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py'
+[36m[2026-03-28 18:44:19 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-03-28 18:44:19 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-28 18:44:19 DEBUG] [hypothesis:247] allowed tolerance is True
+[32m[2026-03-28 18:44:19 INFO] [hypothesis:260] Steady state hypothesis is met!
+[36m[2026-03-28 18:44:19 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[32m[2026-03-28 18:44:19 INFO] [run:1072] Let's rollback...
+[36m[2026-03-28 18:44:19 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-03-28 18:44:19 INFO] [rollback:36] Rollback: Clean Up Experiment Resources
+[36m[2026-03-28 18:44:19 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-28 18:44:19 INFO] [activity:232] Action: Clean Up Experiment Resources
+[36m[2026-03-28 18:44:19 DEBUG] [python:33] Activity 'Clean Up Experiment Resources' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py'
+[36m[2026-03-28 18:44:50 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-03-28 18:44:50 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-28 18:44:50 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-03-28 18:44:50 INFO] [run:598] Experiment ended with status: completed
+[36m[2026-03-28 18:44:50 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[36m[2026-03-28 18:44:50 DEBUG] [__init__:106] Cleaning up controls
+[36m[2026-03-28 18:44:50 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-03-28 18:51:27 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-03-28 18:51:27 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-03-28 18:51:27 DEBUG] [__init__:106] Using settings file '/home/debian/.chaostoolkit/settings.yaml'
+[36m[2026-03-28 18:51:27 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/debian/.chaostoolkit/settings.yaml'.
+[36m[2026-03-28 18:51:27 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-03-28 18:51:27 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-03-28 18:51:27 DEBUG] [caching:24] Building activity cache...
+[36m[2026-03-28 18:51:27 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-03-28 18:51:27 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-03-28 18:51:27 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-03-28 18:51:27 DEBUG] [secret:79] Loading secrets...
+[36m[2026-03-28 18:51:27 DEBUG] [secret:104] Done loading secrets
+[32m[2026-03-28 18:51:28 INFO] [experiment:112] Experiment looks valid
+[36m[2026-03-28 18:51:28 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-03-28 18:51:28 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-03-28 18:51:28 DEBUG] [caching:24] Building activity cache...
+[36m[2026-03-28 18:51:28 DEBUG] [caching:35] Cached 3 activities
+[36m[2026-03-28 18:51:28 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-03-28 18:51:28 DEBUG] [secret:79] Loading secrets...
+[36m[2026-03-28 18:51:28 DEBUG] [secret:104] Done loading secrets
+[36m[2026-03-28 18:51:28 DEBUG] [configuration:161] Loading dynamic configuration...
+[32m[2026-03-28 18:51:28 INFO] [run:440] Running experiment: AWS EC2 IMDS Protection Bypass Preventive Probe
+[36m[2026-03-28 18:51:28 DEBUG] [__init__:67] Initializing controls
+[32m[2026-03-28 18:51:28 INFO] [run:471] Steady-state strategy: after-method-only
+[32m[2026-03-28 18:51:28 INFO] [run:477] Rollbacks strategy: default
+[36m[2026-03-28 18:51:28 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[32m[2026-03-28 18:51:28 INFO] [run:778] Playing your experiment's method now...
+[36m[2026-03-28 18:51:28 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-03-28 18:51:28 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-28 18:51:28 INFO] [activity:232] Action: Prepare IMDS Experiment Resources
+[36m[2026-03-28 18:51:28 DEBUG] [python:33] Activity 'Prepare IMDS Experiment Resources' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py'
+[36m[2026-03-28 18:51:28 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-03-28 18:51:28 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-28 18:51:28 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-28 18:51:28 INFO] [activity:232] Action: Simulate IMDS Configuration Attack
+[36m[2026-03-28 18:51:28 DEBUG] [python:33] Activity 'Simulate IMDS Configuration Attack' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py'
+[36m[2026-03-28 18:51:28 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-03-28 18:51:28 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-28 18:51:28 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-03-28 18:51:28 DEBUG] [run:696] Running steady-state hypothesis after the method
+[32m[2026-03-28 18:51:28 INFO] [hypothesis:205] Steady state hypothesis: IMDS Configuration Security
+[36m[2026-03-28 18:51:28 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[36m[2026-03-28 18:51:28 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-28 18:51:28 INFO] [activity:232] Probe: Verify IMDS Protection Controls
+[36m[2026-03-28 18:51:28 DEBUG] [python:33] Activity 'Verify IMDS Protection Controls' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py'
+[36m[2026-03-28 19:21:37 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-03-28 19:21:37 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-28 19:21:37 DEBUG] [hypothesis:247] allowed tolerance is True
+[32m[2026-03-28 19:21:37 INFO] [hypothesis:260] Steady state hypothesis is met!
+[36m[2026-03-28 19:21:37 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[32m[2026-03-28 19:21:37 INFO] [run:1072] Let's rollback...
+[36m[2026-03-28 19:21:37 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-03-28 19:21:37 INFO] [rollback:36] Rollback: Clean Up Experiment Resources
+[36m[2026-03-28 19:21:37 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-28 19:21:37 INFO] [activity:232] Action: Clean Up Experiment Resources
+[36m[2026-03-28 19:21:37 DEBUG] [python:33] Activity 'Clean Up Experiment Resources' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py'
+[36m[2026-03-28 19:21:38 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-03-28 19:21:38 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-28 19:21:38 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-03-28 19:21:38 INFO] [run:598] Experiment ended with status: completed
+[36m[2026-03-28 19:21:38 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[36m[2026-03-28 19:21:38 DEBUG] [__init__:106] Cleaning up controls
+[36m[2026-03-28 19:21:38 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-03-28 19:25:38 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-03-28 19:25:38 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-03-28 19:25:38 DEBUG] [__init__:106] Using settings file '/home/debian/.chaostoolkit/settings.yaml'
+[36m[2026-03-28 19:25:38 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/debian/.chaostoolkit/settings.yaml'.
+[36m[2026-03-28 19:25:38 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-03-28 19:25:38 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-03-28 19:25:38 DEBUG] [caching:24] Building activity cache...
+[36m[2026-03-28 19:25:38 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-03-28 19:25:38 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-03-28 19:25:38 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-03-28 19:25:38 DEBUG] [secret:79] Loading secrets...
+[36m[2026-03-28 19:25:38 DEBUG] [secret:104] Done loading secrets
+[32m[2026-03-28 19:25:39 INFO] [experiment:112] Experiment looks valid
+[36m[2026-03-28 19:25:39 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-03-28 19:25:39 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-03-28 19:25:39 DEBUG] [caching:24] Building activity cache...
+[36m[2026-03-28 19:25:39 DEBUG] [caching:35] Cached 3 activities
+[36m[2026-03-28 19:25:39 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-03-28 19:25:39 DEBUG] [secret:79] Loading secrets...
+[36m[2026-03-28 19:25:39 DEBUG] [secret:104] Done loading secrets
+[36m[2026-03-28 19:25:39 DEBUG] [configuration:161] Loading dynamic configuration...
+[32m[2026-03-28 19:25:39 INFO] [run:440] Running experiment: AWS EC2 IMDS Protection Bypass Preventive Probe
+[36m[2026-03-28 19:25:39 DEBUG] [__init__:67] Initializing controls
+[32m[2026-03-28 19:25:39 INFO] [run:471] Steady-state strategy: after-method-only
+[32m[2026-03-28 19:25:39 INFO] [run:477] Rollbacks strategy: default
+[36m[2026-03-28 19:25:39 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[32m[2026-03-28 19:25:39 INFO] [run:778] Playing your experiment's method now...
+[36m[2026-03-28 19:25:39 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-03-28 19:25:39 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-28 19:25:39 INFO] [activity:232] Action: Prepare IMDS Experiment Resources
+[36m[2026-03-28 19:25:39 DEBUG] [python:33] Activity 'Prepare IMDS Experiment Resources' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py'
+[36m[2026-03-28 19:25:39 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-03-28 19:25:39 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-28 19:25:39 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-28 19:25:39 INFO] [activity:232] Action: Simulate IMDS Configuration Attack
+[36m[2026-03-28 19:25:39 DEBUG] [python:33] Activity 'Simulate IMDS Configuration Attack' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py'
+[36m[2026-03-28 19:25:39 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-03-28 19:25:39 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-28 19:25:39 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-03-28 19:25:39 DEBUG] [run:696] Running steady-state hypothesis after the method
+[32m[2026-03-28 19:25:39 INFO] [hypothesis:205] Steady state hypothesis: IMDS Configuration Security
+[36m[2026-03-28 19:25:39 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[36m[2026-03-28 19:25:39 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-28 19:25:39 INFO] [activity:232] Probe: Verify IMDS Protection Controls
+[36m[2026-03-28 19:25:39 DEBUG] [python:33] Activity 'Verify IMDS Protection Controls' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py'
+[36m[2026-03-28 19:55:49 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-03-28 19:55:49 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-28 19:55:49 DEBUG] [hypothesis:247] allowed tolerance is True
+[32m[2026-03-28 19:55:49 INFO] [hypothesis:260] Steady state hypothesis is met!
+[36m[2026-03-28 19:55:49 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[32m[2026-03-28 19:55:49 INFO] [run:1072] Let's rollback...
+[36m[2026-03-28 19:55:49 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-03-28 19:55:49 INFO] [rollback:36] Rollback: Clean Up Experiment Resources
+[36m[2026-03-28 19:55:49 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-28 19:55:49 INFO] [activity:232] Action: Clean Up Experiment Resources
+[36m[2026-03-28 19:55:49 DEBUG] [python:33] Activity 'Clean Up Experiment Resources' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py'
+[36m[2026-03-28 19:55:49 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-03-28 19:55:49 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-28 19:55:49 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-03-28 19:55:49 INFO] [run:598] Experiment ended with status: completed
+[36m[2026-03-28 19:55:49 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[36m[2026-03-28 19:55:49 DEBUG] [__init__:106] Cleaning up controls
+[36m[2026-03-28 19:55:49 DEBUG] [caching:42] Clearing activities cache

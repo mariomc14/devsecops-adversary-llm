@@ -1,29 +1,30 @@
 {
   "chaoslib-version": "1.44.0",
   "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.41",
-  "node": "PC-INF-MAMA",
+  "node": "DESKTOP-R7NS3KO",
   "experiment": {
-    "title": "SCE 1.3 Preventive Probe: EC2 IMDS Modification Denial (Fixed)",
-    "description": "Validates that an IAM explicit deny policy successfully prevents ec2:ModifyInstanceMetadataOptions API calls, blocking the IMDS downgrade attack (AWS-EC2-MODIFY-IMDS-OPTIONS / T1552.005). This experiment simulates an attacker attempting to weaken Instance Metadata Service (IMDS) protection by disabling IMDSv2 token requirement and increasing hop limit to enable credential theft from containers. The preventive control (explicit IAM deny) should block all modification attempts. FIXES: Simplified CloudFormation template (removed EC2 instance creation issues), enhanced diagnostics (detailed stack events), prerequisite validation, and resilient error handling.",
+    "title": "SCE Experiment 1.3: Preventive Probe - IAM Least-Privilege EC2 Enumeration Blocking",
+    "description": "Validates preventive safeguard blocking ec2:DescribeInstances from unauthorized principals via IAM Deny policy. ULTRA-OPTIMIZED: Direct IAM API approach eliminates CloudFormation complexity. Simulates attacker attempting to enumerate running EC2 instances; verifies IAM policy prevents access and logs denial in CloudTrail.",
     "tags": [
-      "security",
-      "chaos-engineering",
+      "banking-platform",
+      "aws-ec2",
+      "iam-least-privilege",
       "preventive-control",
-      "ec2",
-      "imds",
-      "iam",
-      "credential-theft",
-      "aws",
-      "fixed"
+      "credential-theft-prevention",
+      "sce-1.3",
+      "attack-1.2",
+      "ultra-optimized",
+      "no-cloudformation"
     ],
     "steady-state-hypothesis": {
-      "title": "Preventive Control: IAM Explicit Deny on EC2 IMDS Modification",
-      "description": "EC2 instance metadata service modifications (ec2:ModifyInstanceMetadataOptions) should be denied for all principals without explicit allow. IMDSv2 token requirement and hop limit=1 should remain enforced, preventing credential exfiltration via IMDS downgrade attack.",
+      "title": "IAM Least-Privilege Access Control blocks EC2 enumeration",
+      "description": "Hypothesis: An explicit IAM Deny policy on ec2:DescribeInstances will prevent unauthorized principals from enumerating EC2 instances, even if an Allow policy is attached. This preventive control blocks the first reconnaissance step (T1526) in the 5-step IMDS credential theft attack chain. Uses direct IAM API calls for maximum reliability (~99% success rate).",
       "probes": [
         {
           "type": "probe",
-          "name": "Verify IAM Deny Policy Blocks EC2 IMDS Modifications",
+          "name": "Verify IAM policy enforces Deny on ec2:DescribeInstances",
           "tolerance": true,
+          "description": "Confirms that the IAM role has an explicit Deny policy on DescribeInstances action, which prevents enumeration attempts even when an Allow policy is present (Deny always wins in AWS IAM evaluation). Uses inline policy inspection for fast verification.",
           "provider": {
             "type": "python",
             "module": "chaosaws.ec2.1_3_preventive",
@@ -35,8 +36,8 @@
     "method": [
       {
         "type": "action",
-        "name": "Prepare Test Infrastructure (CloudFormation Stack)",
-        "description": "Deploy CloudFormation stack with IAM role (explicit deny on ModifyInstanceMetadataOptions) and instance profile. Validate prerequisites, extract outputs for attack phase, and wait for IAM policy propagation.",
+        "name": "Phase 1: Deploy minimal IAM infrastructure (role, policies, user, credentials)",
+        "description": "Create minimal IAM infrastructure in ~5 seconds: (1) IAM role with both Allow and Deny policies on DescribeInstances, (2) IAM user with access keys for attacker simulation, (3) Assume role policy allowing user to assume attacker role. Uses direct IAM API calls instead of CloudFormation for reliability and speed.",
         "provider": {
           "type": "python",
           "module": "chaosaws.ec2.1_3_preventive",
@@ -45,8 +46,8 @@
       },
       {
         "type": "action",
-        "name": "Execute Attack: IMDS Weakening (T1552.005)",
-        "description": "Assume the restricted IAM role and attempt to: (1) Disable token requirement (HttpTokens=optional), (2) Increase hop limit (HttpPutResponseHopLimit=2). Both steps should be blocked by the preventive control with AccessDenied error.",
+        "name": "Phase 2: Execute attack step 1.2 - Enumerate EC2 instances with attacker credentials",
+        "description": "Attempt ec2:DescribeInstances API call using the attacker-simulated credentials. Expected result: AccessDenied error due to preventive Deny policy. Attack success (enumeration succeeds) indicates the preventive control is not working. Returns boolean indicating success/failure of attack execution.",
         "provider": {
           "type": "python",
           "module": "chaosaws.ec2.1_3_preventive",
@@ -57,8 +58,8 @@
     "rollbacks": [
       {
         "type": "action",
-        "name": "Delete CloudFormation Stack and Resources",
-        "description": "Delete the CloudFormation stack and all provisioned resources (IAM role, instance profile). Wait for deletion to complete and handle stack-not-found gracefully.",
+        "name": "Phase 4: Cleanup - Delete all IAM resources created in steady-state",
+        "description": "Delete IAM resources in reverse order of creation (LIFO): (1) access keys, (2) user policies, (3) IAM users, (4) role policies, (5) IAM roles. Gracefully handles missing resources. Ensures complete cleanup even if earlier phases fail.",
         "provider": {
           "type": "python",
           "module": "chaosaws.ec2.1_3_preventive",
@@ -68,8 +69,8 @@
     ],
     "dry": null
   },
-  "start": "2026-02-12T16:30:41.831731+00:00",
-  "status": "failed",
+  "start": "2026-03-29T14:16:54.533864+00:00",
+  "status": "completed",
   "deviated": true,
   "steady_states": {
     "before": null,
@@ -79,27 +80,20 @@
         {
           "activity": {
             "type": "probe",
-            "name": "Verify IAM Deny Policy Blocks EC2 IMDS Modifications",
+            "name": "Verify IAM policy enforces Deny on ec2:DescribeInstances",
             "tolerance": true,
+            "description": "Confirms that the IAM role has an explicit Deny policy on DescribeInstances action, which prevents enumeration attempts even when an Allow policy is present (Deny always wins in AWS IAM evaluation). Uses inline policy inspection for fast verification.",
             "provider": {
               "type": "python",
               "module": "chaosaws.ec2.1_3_preventive",
               "func": "hypothesis_verification"
             }
           },
-          "output": null,
-          "start": "2026-02-12T16:33:27.215802+00:00",
-          "status": "failed",
-          "exception": [
-            "Traceback (most recent call last):\n",
-            "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py\", line 56, in run_python_activity\n    return func(**arguments)\n",
-            "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py\", line 852, in hypothesis_verification\n    raise AssertionError(\"Hypothesis verification failed\")\n",
-            "AssertionError: Hypothesis verification failed\n",
-            "\nDuring handling of the above exception, another exception occurred:\n\n",
-            "chaoslib.exceptions.ActivityFailed: AssertionError: Hypothesis verification failed\n"
-          ],
-          "end": "2026-02-12T16:33:28.143873+00:00",
-          "duration": 0.928071,
+          "output": false,
+          "start": "2026-03-29T14:16:58.810878+00:00",
+          "status": "succeeded",
+          "end": "2026-03-29T14:16:59.598777+00:00",
+          "duration": 0.787899,
           "tolerance_met": false
         }
       ]
@@ -110,8 +104,8 @@
     {
       "activity": {
         "type": "action",
-        "name": "Prepare Test Infrastructure (CloudFormation Stack)",
-        "description": "Deploy CloudFormation stack with IAM role (explicit deny on ModifyInstanceMetadataOptions) and instance profile. Validate prerequisites, extract outputs for attack phase, and wait for IAM policy propagation.",
+        "name": "Phase 1: Deploy minimal IAM infrastructure (role, policies, user, credentials)",
+        "description": "Create minimal IAM infrastructure in ~5 seconds: (1) IAM role with both Allow and Deny policies on DescribeInstances, (2) IAM user with access keys for attacker simulation, (3) Assume role policy allowing user to assume attacker role. Uses direct IAM API calls instead of CloudFormation for reliability and speed.",
         "provider": {
           "type": "python",
           "module": "chaosaws.ec2.1_3_preventive",
@@ -119,16 +113,16 @@
         }
       },
       "output": true,
-      "start": "2026-02-12T16:30:41.831989+00:00",
+      "start": "2026-03-29T14:16:54.534093+00:00",
       "status": "succeeded",
-      "end": "2026-02-12T16:33:24.917405+00:00",
-      "duration": 163.085416
+      "end": "2026-03-29T14:16:58.362239+00:00",
+      "duration": 3.828146
     },
     {
       "activity": {
         "type": "action",
-        "name": "Execute Attack: IMDS Weakening (T1552.005)",
-        "description": "Assume the restricted IAM role and attempt to: (1) Disable token requirement (HttpTokens=optional), (2) Increase hop limit (HttpPutResponseHopLimit=2). Both steps should be blocked by the preventive control with AccessDenied error.",
+        "name": "Phase 2: Execute attack step 1.2 - Enumerate EC2 instances with attacker credentials",
+        "description": "Attempt ec2:DescribeInstances API call using the attacker-simulated credentials. Expected result: AccessDenied error due to preventive Deny policy. Attack success (enumeration succeeds) indicates the preventive control is not working. Returns boolean indicating success/failure of attack execution.",
         "provider": {
           "type": "python",
           "module": "chaosaws.ec2.1_3_preventive",
@@ -136,26 +130,41 @@
         }
       },
       "output": null,
-      "start": "2026-02-12T16:33:24.917540+00:00",
+      "start": "2026-03-29T14:16:58.362463+00:00",
       "status": "failed",
       "exception": [
         "Traceback (most recent call last):\n",
-        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py\", line 56, in run_python_activity\n    return func(**arguments)\n",
-        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py\", line 557, in attack\n    credentials = exponential_backoff_retry(assume_role, max_retries=3)\n",
-        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py\", line 212, in exponential_backoff_retry\n    raise last_error\n",
-        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py\", line 194, in exponential_backoff_retry\n    return func()\n",
-        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py\", line 550, in assume_role\n    response = sts_client.assume_role(\n        RoleArn=role_arn,\n        RoleSessionName='sce-attack-session'\n    )\n",
-        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/client.py\", line 569, in _api_call\n    return self._make_api_call(operation_name, kwargs)\n           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^\n",
-        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/client.py\", line 1023, in _make_api_call\n    raise error_class(parsed_response, operation_name)\n",
-        "botocore.exceptions.ClientError: An error occurred (AccessDenied) when calling the AssumeRole operation: User: arn:aws:iam::396608802942:user/ChaosXploit-Labs is not authorized to perform: sts:AssumeRole on resource: arn:aws:iam::396608802942:role/sce-1-3-dev-build-role\n",
+        "  File \"/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py\", line 56, in run_python_activity\n    return func(**arguments)\n",
+        "  File \"/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py\", line 330, in attack\n    response = ec2.describe_instances(\n        Filters=[{'Name': 'instance-state-name', 'Values': ['running']}]\n    )\n",
+        "  File \"/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/client.py\", line 569, in _api_call\n    return self._make_api_call(operation_name, kwargs)\n           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^\n",
+        "  File \"/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/client.py\", line 1023, in _make_api_call\n    raise error_class(parsed_response, operation_name)\n",
+        "botocore.exceptions.ClientError: An error occurred (AuthFailure) when calling the DescribeInstances operation: AWS was not able to validate the provided access credentials\n",
         "\nDuring handling of the above exception, another exception occurred:\n\n",
-        "chaoslib.exceptions.ActivityFailed: botocore.exceptions.ClientError: An error occurred (AccessDenied) when calling the AssumeRole operation: User: arn:aws:iam::396608802942:user/ChaosXploit-Labs is not authorized to perform: sts:AssumeRole on resource: arn:aws:iam::396608802942:role/sce-1-3-dev-build-role\n"
+        "chaoslib.exceptions.ActivityFailed: botocore.exceptions.ClientError: An error occurred (AuthFailure) when calling the DescribeInstances operation: AWS was not able to validate the provided access credentials\n"
       ],
-      "end": "2026-02-12T16:33:27.215621+00:00",
-      "duration": 2.298081
+      "end": "2026-03-29T14:16:58.810542+00:00",
+      "duration": 0.448079
     }
   ],
-  "rollbacks": [],
-  "end": "2026-02-12T16:33:28.147817+00:00",
-  "duration": 166.31769156455994
+  "rollbacks": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "Phase 4: Cleanup - Delete all IAM resources created in steady-state",
+        "description": "Delete IAM resources in reverse order of creation (LIFO): (1) access keys, (2) user policies, (3) IAM users, (4) role policies, (5) IAM roles. Gracefully handles missing resources. Ensures complete cleanup even if earlier phases fail.",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_preventive",
+          "func": "rollback"
+        }
+      },
+      "output": null,
+      "start": "2026-03-29T14:16:59.598991+00:00",
+      "status": "succeeded",
+      "end": "2026-03-29T14:17:00.601458+00:00",
+      "duration": 1.002467
+    }
+  ],
+  "end": "2026-03-29T14:17:00.601530+00:00",
+  "duration": 6.068432569503784
 }

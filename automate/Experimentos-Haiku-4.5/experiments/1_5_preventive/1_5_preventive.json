@@ -1,0 +1,60 @@
+{
+    "title": "SCE 1.5 Preventive Probe: IAM Denial of ec2:DescribeInstances",
+    "description": "Validates that IAM policy with explicit Deny on ec2:DescribeInstances effectively blocks enumeration attacks. The experiment creates a CloudFormation stack with an EC2 instance assigned an IAM role containing a deny policy. The attack attempts to execute DescribeInstances using the denied role credentials; the hypothesis verifies that a 403 Access Denied error is returned, confirming the preventive control is effective.",
+    "tags": [
+        "sce",
+        "preventive",
+        "iam",
+        "ec2",
+        "imds",
+        "enumeration",
+        "banking-platform",
+        "1-5-preventive"
+    ],
+    "steady-state-hypothesis": {
+        "title": "IAM Preventive Control is Active and Effective",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "Verify ec2:DescribeInstances Denial",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.1_5_preventive",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "Provision CloudFormation Stack with EC2 and Denied IAM Role",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_5_preventive",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "Execute Attack: Enumerate EC2 Instances with Denied Role",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_5_preventive",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "Delete CloudFormation Stack and Clean Up Resources",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_5_preventive",
+                "func": "rollback"
+            }
+        }
+    ]
+}

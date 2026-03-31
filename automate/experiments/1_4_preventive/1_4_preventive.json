@@ -1,0 +1,51 @@
+{
+    "title": "SCE Experiment 1.4 - Preventive Probe: IAM Permission Boundary Blocks IMDS Modification",
+    "description": "Validates that IAM permission boundaries and restrictive policies successfully prevent unauthorized modification of EC2 Instance Metadata Service (IMDS) configuration. This experiment creates an EC2 instance with IMDSv2 enforced and a hop limit of 1, then attempts to weaken these settings using credentials subject to a permission boundary that explicitly denies ec2:ModifyInstanceMetadataOptions. The hypothesis is verified by confirming the modification attempt is blocked and the secure IMDS configuration remains unchanged.",
+    "tags": ["sce-1.4", "preventive", "imds", "permission-boundary", "ec2", "iam", "banking-platform"],
+    "steady-state-hypothesis": {
+        "title": "IMDS Configuration Remains Secure After Attack Attempt",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "verify-preventive-safeguard-blocked-imds-modification",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.1_4_preventive",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "deploy-ec2-instance-with-permission-boundary",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_4_preventive",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "attempt-imds-weakening-attack",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_4_preventive",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "cleanup-all-experiment-resources",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_4_preventive",
+                "func": "rollback"
+            }
+        }
+    ]
+}

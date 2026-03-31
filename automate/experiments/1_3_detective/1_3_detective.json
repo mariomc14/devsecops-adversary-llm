@@ -1,26 +1,14 @@
 {
-    "title": "SCE Experiment 1.3: Detective Probe - CloudTrail + EventBridge Detection of EC2 Enumeration (FINAL)",
-    "description": "Validates detective safeguards detect and log unauthorized ec2:DescribeInstances API calls. This experiment confirms that: (1) IAM preventive policy blocks enumeration attempt, (2) CloudTrail + EventBridge detective infrastructure logs/detects the blocked attempt. Primary success criterion is that attack is blocked; CloudTrail/EventBridge evidence is secondary (eventual consistency acceptable per AWS SLA). Attack Node: 1.2 (T1526 - Gather Victim Host Information).",
-    "tags": [
-        "banking-platform",
-        "aws-ec2",
-        "cloudtrail-detection",
-        "eventbridge-alerting",
-        "detective-control",
-        "iam-prevention",
-        "sce-1.3",
-        "attack-1.2",
-        "final-production"
-    ],
+    "title": "SCE Experiment 1.3 - Detective Probe: CloudTrail EC2 Reconnaissance Detection",
+    "description": "Validates CloudTrail logs EC2 reconnaissance attempts (ec2:DescribeInstances) from test IAM user within 30-minute SLA. Tests detective control effectiveness for MITRE ATT&CK T1580 (Cloud Infrastructure Discovery).",
+    "tags": ["detective", "cloudtrail", "reconnaissance", "ec2", "mitre-t1580", "sce"],
     "steady-state-hypothesis": {
-        "title": "Preventive & Detective Controls Block and Log EC2 Enumeration",
-        "description": "Hypothesis: An attacker with temporary AWS credentials (simulating compromised CI/CD or EC2 role) will attempt to enumerate running EC2 instances via DescribeInstances. IAM Deny policy (preventive) will block the API call, and CloudTrail + EventBridge (detective) will log and detect the attempt. Success is defined as: (1) attack blocked by preventive IAM policy, (2) detective evidence present or in-flight within SLA.",
+        "title": "CloudTrail detects EC2 reconnaissance within 30-minute SLA",
         "probes": [
             {
                 "type": "probe",
-                "name": "Verify IAM Deny blocks DescribeInstances AND detective safeguards monitor",
+                "name": "Verify CloudTrail logs DescribeInstances from test user",
                 "tolerance": true,
-                "description": "Primary: Confirm attack is blocked by IAM Deny policy (preventive working). Secondary: Confirm CloudTrail + EventBridge infrastructure is configured to detect and log the blocked attempt (detective readiness). CloudTrail events may take up to 30 minutes to appear (AWS eventual consistency); test uses fast-fail polling (max 1000s) to validate infrastructure while honoring SLA.",
                 "provider": {
                     "type": "python",
                     "module": "chaosaws.ec2.1_3_detective",
@@ -32,8 +20,7 @@
     "method": [
         {
             "type": "action",
-            "name": "Phase 1: Deploy test infrastructure (IAM role with Allow+Deny, EventBridge rule)",
-            "description": "Create CloudFormation-equivalent resources: IAM role with both Allow (DescribeInstances) and Deny (DescribeInstances) policies to simulate preventive control, IAM user with temporary access key, EventBridge rule configured to detect denied API calls. Resources are tagged with experiment identifier and timestamp for tracking.",
+            "name": "Provision CloudTrail and IAM test infrastructure",
             "provider": {
                 "type": "python",
                 "module": "chaosaws.ec2.1_3_detective",
@@ -42,8 +29,7 @@
         },
         {
             "type": "action",
-            "name": "Phase 2: Execute attack - Attempt EC2 enumeration with attacker credentials",
-            "description": "Execute Attack Node 1.2: Use IAM user credentials to call ec2:DescribeInstances. Expected outcome: API call is blocked by IAM Deny policy (AccessDenied error). This blocked attempt generates detective evidence (CloudTrail log + potential EventBridge event) for validation in Phase 3.",
+            "name": "Execute EC2 reconnaissance with test credentials",
             "provider": {
                 "type": "python",
                 "module": "chaosaws.ec2.1_3_detective",
@@ -54,8 +40,7 @@
     "rollbacks": [
         {
             "type": "action",
-            "name": "Phase 4: Cleanup - Delete all test infrastructure resources",
-            "description": "Delete CloudFormation-equivalent resources in reverse order (LIFO): EventBridge rule, IAM policies, IAM user, IAM role. Handle gracefully if resources already deleted. Ensure no dangling IAM artifacts remain.",
+            "name": "Delete CloudTrail and CloudFormation stack",
             "provider": {
                 "type": "python",
                 "module": "chaosaws.ec2.1_3_detective",

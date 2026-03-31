@@ -1,163 +1,191 @@
-[36m[2026-03-29 16:21:50 DEBUG] [__init__:101] ###############################################################################
-[36m[2026-03-29 16:21:50 DEBUG] [__init__:102] Running command 'run'
-[36m[2026-03-29 16:21:50 DEBUG] [__init__:106] Using settings file '/home/debian/.chaostoolkit/settings.yaml'
-[36m[2026-03-29 16:21:50 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/debian/.chaostoolkit/settings.yaml'.
-[36m[2026-03-29 16:21:50 DEBUG] [__init__:472] No controls to apply on 'loader'
-[36m[2026-03-29 16:21:50 DEBUG] [__init__:472] No controls to apply on 'loader'
-[36m[2026-03-29 16:21:50 DEBUG] [caching:24] Building activity cache...
-[36m[2026-03-29 16:21:50 DEBUG] [caching:35] Cached 3 activities
-[32m[2026-03-29 16:21:50 INFO] [experiment:59] Validating the experiment's syntax
-[36m[2026-03-29 16:21:50 DEBUG] [configuration:64] Loading configuration...
-[36m[2026-03-29 16:21:50 DEBUG] [secret:79] Loading secrets...
-[36m[2026-03-29 16:21:50 DEBUG] [secret:104] Done loading secrets
-[32m[2026-03-29 16:21:50 INFO] [experiment:112] Experiment looks valid
-[36m[2026-03-29 16:21:50 DEBUG] [caching:42] Clearing activities cache
-[36m[2026-03-29 16:21:50 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
-[36m[2026-03-29 16:21:50 DEBUG] [caching:24] Building activity cache...
-[36m[2026-03-29 16:21:50 DEBUG] [caching:35] Cached 3 activities
-[36m[2026-03-29 16:21:50 DEBUG] [configuration:64] Loading configuration...
-[36m[2026-03-29 16:21:50 DEBUG] [secret:79] Loading secrets...
-[36m[2026-03-29 16:21:50 DEBUG] [secret:104] Done loading secrets
-[36m[2026-03-29 16:21:50 DEBUG] [configuration:161] Loading dynamic configuration...
-[32m[2026-03-29 16:21:50 INFO] [run:440] Running experiment: SCE Experiment 1.3: Detective Probe - CloudTrail + EventBridge + GuardDuty Detection of EC2 Enumeration
-[36m[2026-03-29 16:21:50 DEBUG] [__init__:67] Initializing controls
-[32m[2026-03-29 16:21:50 INFO] [run:471] Steady-state strategy: after-method-only
-[32m[2026-03-29 16:21:50 INFO] [run:477] Rollbacks strategy: default
-[36m[2026-03-29 16:21:50 DEBUG] [__init__:472] No controls to apply on 'experiment'
-[32m[2026-03-29 16:21:50 INFO] [run:778] Playing your experiment's method now...
-[36m[2026-03-29 16:21:50 DEBUG] [__init__:472] No controls to apply on 'method'
-[36m[2026-03-29 16:21:50 DEBUG] [__init__:472] No controls to apply on 'activity'
-[32m[2026-03-29 16:21:50 INFO] [activity:232] Action: Phase 1: Deploy test infrastructure (IAM, EventBridge rule) and configure detective controls
-[36m[2026-03-29 16:21:50 DEBUG] [python:33] Activity 'Phase 1: Deploy test infrastructure (IAM, EventBridge rule) and configure detective controls' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_detective.py'
-[36m[2026-03-29 16:21:54 DEBUG] [activity:260]   => succeeded with 'True'
-[36m[2026-03-29 16:21:54 DEBUG] [__init__:472] No controls to apply on 'activity'
-[36m[2026-03-29 16:21:54 DEBUG] [__init__:472] No controls to apply on 'activity'
-[32m[2026-03-29 16:21:54 INFO] [activity:232] Action: Phase 2: Execute attack step 1.2 - Attempt to enumerate EC2 instances
-[36m[2026-03-29 16:21:54 DEBUG] [python:33] Activity 'Phase 2: Execute attack step 1.2 - Attempt to enumerate EC2 instances' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_detective.py'
-[36m[2026-03-29 16:21:55 DEBUG] [activity:317] Activity failed
-    Traceback (most recent call last):
-      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
-        return func(**arguments)
-      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_detective.py", line 561, in attack
-        response = ec2.describe_instances(
-            Filters=[{'Name': 'instance-state-name', 'Values': ['running']}]
-        )
-      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/client.py", line 569, in _api_call
-        return self._make_api_call(operation_name, kwargs)
-               ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
-      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/client.py", line 1023, in _make_api_call
-        raise error_class(parsed_response, operation_name)
-    botocore.exceptions.ClientError: An error occurred (AuthFailure) when calling the DescribeInstances operation: AWS was not able to validate the provided access credentials
-    
-    During handling of the above exception, another exception occurred:
-    
-    Traceback (most recent call last):
-      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/activity.py", line 310, in run_activity
-        result = run_python_activity(activity, configuration, secrets)
-      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 58, in run_python_activity
-        raise ActivityFailed(
-            traceback.format_exception_only(type(x), x)[0].strip()
-        ).with_traceback(sys.exc_info()[2])
-      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
-        return func(**arguments)
-      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_detective.py", line 561, in attack
-        response = ec2.describe_instances(
-            Filters=[{'Name': 'instance-state-name', 'Values': ['running']}]
-        )
-      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/client.py", line 569, in _api_call
-        return self._make_api_call(operation_name, kwargs)
-               ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
-      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/client.py", line 1023, in _make_api_call
-        raise error_class(parsed_response, operation_name)
-    chaoslib.exceptions.ActivityFailed: botocore.exceptions.ClientError: An error occurred (AuthFailure) when calling the DescribeInstances operation: AWS was not able to validate the provided access credentials
-[31m[2026-03-29 16:21:55 ERROR] [activity:268]   => failed: botocore.exceptions.ClientError: An error occurred (AuthFailure) when calling the DescribeInstances operation: AWS was not able to validate the provided access credentials
-[36m[2026-03-29 16:21:55 DEBUG] [__init__:472] No controls to apply on 'activity'
-[36m[2026-03-29 16:21:55 DEBUG] [__init__:472] No controls to apply on 'method'
-[36m[2026-03-29 16:21:55 DEBUG] [run:696] Running steady-state hypothesis after the method
-[32m[2026-03-29 16:21:55 INFO] [hypothesis:205] Steady state hypothesis: Detective safeguards (CloudTrail, EventBridge, GuardDuty) detect unauthorized EC2 API calls
-[36m[2026-03-29 16:21:55 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
-[36m[2026-03-29 16:21:55 DEBUG] [__init__:472] No controls to apply on 'activity'
-[32m[2026-03-29 16:21:55 INFO] [activity:232] Probe: Verify CloudTrail, EventBridge, and GuardDuty detect unauthorized DescribeInstances
-[36m[2026-03-29 16:21:55 DEBUG] [python:33] Activity 'Verify CloudTrail, EventBridge, and GuardDuty detect unauthorized DescribeInstances' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_detective.py'
-[36m[2026-03-29 16:51:55 DEBUG] [activity:260]   => succeeded with 'False'
-[36m[2026-03-29 16:51:55 DEBUG] [__init__:472] No controls to apply on 'activity'
-[36m[2026-03-29 16:51:55 DEBUG] [hypothesis:247] allowed tolerance is True
-[36m[2026-03-29 16:51:55 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
-[31m[2026-03-29 16:51:55 CRITICAL] [run:716] Steady state probe 'Verify CloudTrail, EventBridge, and GuardDuty detect unauthorized DescribeInstances' is not in the given tolerance so failing this experiment
-[32m[2026-03-29 16:51:55 INFO] [run:1072] Let's rollback...
-[36m[2026-03-29 16:51:55 DEBUG] [__init__:472] No controls to apply on 'rollback'
-[32m[2026-03-29 16:51:55 INFO] [rollback:36] Rollback: Phase 4: Cleanup - Delete all resources including EventBridge rule and IAM resources
-[36m[2026-03-29 16:51:55 DEBUG] [__init__:472] No controls to apply on 'activity'
-[32m[2026-03-29 16:51:55 INFO] [activity:232] Action: Phase 4: Cleanup - Delete all resources including EventBridge rule and IAM resources
-[36m[2026-03-29 16:51:55 DEBUG] [python:33] Activity 'Phase 4: Cleanup - Delete all resources including EventBridge rule and IAM resources' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_detective.py'
-[36m[2026-03-29 16:51:56 DEBUG] [activity:262]   => succeeded without any result value
-[36m[2026-03-29 16:51:56 DEBUG] [__init__:472] No controls to apply on 'activity'
-[36m[2026-03-29 16:51:56 DEBUG] [__init__:472] No controls to apply on 'rollback'
-[32m[2026-03-29 16:51:56 INFO] [run:598] Experiment ended with status: deviated
-[32m[2026-03-29 16:51:56 INFO] [run:600] The steady-state has deviated, a weakness may have been discovered
-[36m[2026-03-29 16:51:56 DEBUG] [__init__:472] No controls to apply on 'experiment'
-[36m[2026-03-29 16:51:56 DEBUG] [__init__:106] Cleaning up controls
-[36m[2026-03-29 16:51:56 DEBUG] [caching:42] Clearing activities cache
-[36m[2026-03-29 17:12:28 DEBUG] [__init__:101] ###############################################################################
-[36m[2026-03-29 17:12:28 DEBUG] [__init__:102] Running command 'run'
-[36m[2026-03-29 17:12:28 DEBUG] [__init__:106] Using settings file '/home/debian/.chaostoolkit/settings.yaml'
-[36m[2026-03-29 17:12:28 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/debian/.chaostoolkit/settings.yaml'.
-[36m[2026-03-29 17:12:28 DEBUG] [__init__:472] No controls to apply on 'loader'
-[36m[2026-03-29 17:12:28 DEBUG] [__init__:472] No controls to apply on 'loader'
-[36m[2026-03-29 17:12:28 DEBUG] [caching:24] Building activity cache...
-[36m[2026-03-29 17:12:28 DEBUG] [caching:35] Cached 3 activities
-[32m[2026-03-29 17:12:28 INFO] [experiment:59] Validating the experiment's syntax
-[36m[2026-03-29 17:12:28 DEBUG] [configuration:64] Loading configuration...
-[36m[2026-03-29 17:12:28 DEBUG] [secret:79] Loading secrets...
-[36m[2026-03-29 17:12:28 DEBUG] [secret:104] Done loading secrets
-[32m[2026-03-29 17:12:28 INFO] [experiment:112] Experiment looks valid
-[36m[2026-03-29 17:12:28 DEBUG] [caching:42] Clearing activities cache
-[36m[2026-03-29 17:12:28 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
-[36m[2026-03-29 17:12:28 DEBUG] [caching:24] Building activity cache...
-[36m[2026-03-29 17:12:28 DEBUG] [caching:35] Cached 3 activities
-[36m[2026-03-29 17:12:28 DEBUG] [configuration:64] Loading configuration...
-[36m[2026-03-29 17:12:28 DEBUG] [secret:79] Loading secrets...
-[36m[2026-03-29 17:12:28 DEBUG] [secret:104] Done loading secrets
-[36m[2026-03-29 17:12:28 DEBUG] [configuration:161] Loading dynamic configuration...
-[32m[2026-03-29 17:12:28 INFO] [run:440] Running experiment: SCE Experiment 1.3: Detective Probe - CloudTrail + EventBridge Detection of EC2 Enumeration (FINAL)
-[36m[2026-03-29 17:12:28 DEBUG] [__init__:67] Initializing controls
-[32m[2026-03-29 17:12:28 INFO] [run:471] Steady-state strategy: after-method-only
-[32m[2026-03-29 17:12:28 INFO] [run:477] Rollbacks strategy: default
-[36m[2026-03-29 17:12:28 DEBUG] [__init__:472] No controls to apply on 'experiment'
-[32m[2026-03-29 17:12:28 INFO] [run:778] Playing your experiment's method now...
-[36m[2026-03-29 17:12:28 DEBUG] [__init__:472] No controls to apply on 'method'
-[36m[2026-03-29 17:12:28 DEBUG] [__init__:472] No controls to apply on 'activity'
-[32m[2026-03-29 17:12:28 INFO] [activity:232] Action: Phase 1: Deploy test infrastructure (IAM role with Allow+Deny, EventBridge rule)
-[36m[2026-03-29 17:12:28 DEBUG] [python:33] Activity 'Phase 1: Deploy test infrastructure (IAM role with Allow+Deny, EventBridge rule)' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_detective.py'
-[36m[2026-03-29 17:12:43 DEBUG] [activity:260]   => succeeded with 'True'
-[36m[2026-03-29 17:12:43 DEBUG] [__init__:472] No controls to apply on 'activity'
-[36m[2026-03-29 17:12:43 DEBUG] [__init__:472] No controls to apply on 'activity'
-[32m[2026-03-29 17:12:43 INFO] [activity:232] Action: Phase 2: Execute attack - Attempt EC2 enumeration with attacker credentials
-[36m[2026-03-29 17:12:43 DEBUG] [python:33] Activity 'Phase 2: Execute attack - Attempt EC2 enumeration with attacker credentials' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_detective.py'
-[36m[2026-03-29 17:12:43 DEBUG] [activity:260]   => succeeded with 'False'
-[36m[2026-03-29 17:12:43 DEBUG] [__init__:472] No controls to apply on 'activity'
-[36m[2026-03-29 17:12:43 DEBUG] [__init__:472] No controls to apply on 'method'
-[36m[2026-03-29 17:12:43 DEBUG] [run:696] Running steady-state hypothesis after the method
-[32m[2026-03-29 17:12:43 INFO] [hypothesis:205] Steady state hypothesis: Preventive & Detective Controls Block and Log EC2 Enumeration
-[36m[2026-03-29 17:12:43 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
-[36m[2026-03-29 17:12:43 DEBUG] [__init__:472] No controls to apply on 'activity'
-[32m[2026-03-29 17:12:43 INFO] [activity:232] Probe: Verify IAM Deny blocks DescribeInstances AND detective safeguards monitor
-[36m[2026-03-29 17:12:43 DEBUG] [python:33] Activity 'Verify IAM Deny blocks DescribeInstances AND detective safeguards monitor' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_detective.py'
-[36m[2026-03-29 17:29:27 DEBUG] [activity:260]   => succeeded with 'True'
-[36m[2026-03-29 17:29:27 DEBUG] [__init__:472] No controls to apply on 'activity'
-[36m[2026-03-29 17:29:27 DEBUG] [hypothesis:247] allowed tolerance is True
-[32m[2026-03-29 17:29:27 INFO] [hypothesis:260] Steady state hypothesis is met!
-[36m[2026-03-29 17:29:27 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
-[32m[2026-03-29 17:29:27 INFO] [run:1072] Let's rollback...
-[36m[2026-03-29 17:29:27 DEBUG] [__init__:472] No controls to apply on 'rollback'
-[32m[2026-03-29 17:29:27 INFO] [rollback:36] Rollback: Phase 4: Cleanup - Delete all test infrastructure resources
-[36m[2026-03-29 17:29:27 DEBUG] [__init__:472] No controls to apply on 'activity'
-[32m[2026-03-29 17:29:27 INFO] [activity:232] Action: Phase 4: Cleanup - Delete all test infrastructure resources
-[36m[2026-03-29 17:29:27 DEBUG] [python:33] Activity 'Phase 4: Cleanup - Delete all test infrastructure resources' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_detective.py'
-[36m[2026-03-29 17:29:28 DEBUG] [activity:262]   => succeeded without any result value
-[36m[2026-03-29 17:29:28 DEBUG] [__init__:472] No controls to apply on 'activity'
-[36m[2026-03-29 17:29:28 DEBUG] [__init__:472] No controls to apply on 'rollback'
-[32m[2026-03-29 17:29:28 INFO] [run:598] Experiment ended with status: completed
-[36m[2026-03-29 17:29:28 DEBUG] [__init__:472] No controls to apply on 'experiment'
-[36m[2026-03-29 17:29:28 DEBUG] [__init__:106] Cleaning up controls
-[36m[2026-03-29 17:29:28 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-03-31 17:54:19 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-03-31 17:54:19 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-03-31 17:54:19 DEBUG] [__init__:106] Using settings file '/home/debian/.chaostoolkit/settings.yaml'
+[36m[2026-03-31 17:54:19 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/debian/.chaostoolkit/settings.yaml'.
+[36m[2026-03-31 17:54:19 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-03-31 17:54:19 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-03-31 17:54:19 DEBUG] [caching:24] Building activity cache...
+[36m[2026-03-31 17:54:19 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-03-31 17:54:19 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-03-31 17:54:19 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-03-31 17:54:19 DEBUG] [secret:79] Loading secrets...
+[36m[2026-03-31 17:54:19 DEBUG] [secret:104] Done loading secrets
+[32m[2026-03-31 17:54:19 INFO] [experiment:112] Experiment looks valid
+[36m[2026-03-31 17:54:19 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-03-31 17:54:19 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-03-31 17:54:19 DEBUG] [caching:24] Building activity cache...
+[36m[2026-03-31 17:54:19 DEBUG] [caching:35] Cached 3 activities
+[36m[2026-03-31 17:54:19 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-03-31 17:54:19 DEBUG] [secret:79] Loading secrets...
+[36m[2026-03-31 17:54:19 DEBUG] [secret:104] Done loading secrets
+[36m[2026-03-31 17:54:19 DEBUG] [configuration:161] Loading dynamic configuration...
+[32m[2026-03-31 17:54:19 INFO] [run:440] Running experiment: SCE Experiment 1.3 - Detective Probe: EC2 Reconnaissance Detection
+[36m[2026-03-31 17:54:19 DEBUG] [__init__:67] Initializing controls
+[32m[2026-03-31 17:54:19 INFO] [run:471] Steady-state strategy: after-method-only
+[32m[2026-03-31 17:54:19 INFO] [run:477] Rollbacks strategy: default
+[36m[2026-03-31 17:54:19 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[32m[2026-03-31 17:54:19 INFO] [run:778] Playing your experiment's method now...
+[36m[2026-03-31 17:54:19 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-03-31 17:54:19 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-31 17:54:19 INFO] [activity:232] Action: Provision CloudTrail, CloudWatch, and target EC2 resources
+[36m[2026-03-31 17:54:19 DEBUG] [python:33] Activity 'Provision CloudTrail, CloudWatch, and target EC2 resources' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_detective.py'
+[36m[2026-03-31 17:59:44 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-03-31 17:59:44 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-31 17:59:44 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-31 17:59:44 INFO] [activity:232] Action: Execute EC2 reconnaissance attack using test IAM credentials
+[36m[2026-03-31 17:59:44 DEBUG] [python:33] Activity 'Execute EC2 reconnaissance attack using test IAM credentials' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_detective.py'
+[36m[2026-03-31 17:59:45 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-03-31 17:59:45 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-31 17:59:45 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-03-31 17:59:45 DEBUG] [run:696] Running steady-state hypothesis after the method
+[32m[2026-03-31 17:59:45 INFO] [hypothesis:205] Steady state hypothesis: Detective controls detect EC2 reconnaissance within 30-minute SLA
+[36m[2026-03-31 17:59:45 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[36m[2026-03-31 17:59:45 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-31 17:59:45 INFO] [activity:232] Probe: Verify CloudTrail and CloudWatch detect reconnaissance attack
+[36m[2026-03-31 17:59:45 DEBUG] [python:33] Activity 'Verify CloudTrail and CloudWatch detect reconnaissance attack' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_detective.py'
+[36m[2026-03-31 18:30:31 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-03-31 18:30:31 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-31 18:30:31 DEBUG] [hypothesis:247] allowed tolerance is True
+[36m[2026-03-31 18:30:31 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[31m[2026-03-31 18:30:31 CRITICAL] [run:716] Steady state probe 'Verify CloudTrail and CloudWatch detect reconnaissance attack' is not in the given tolerance so failing this experiment
+[32m[2026-03-31 18:30:31 INFO] [run:1072] Let's rollback...
+[36m[2026-03-31 18:30:31 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-03-31 18:30:31 INFO] [rollback:36] Rollback: Delete CloudFormation stack and cleanup all resources
+[36m[2026-03-31 18:30:31 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-31 18:30:31 INFO] [activity:232] Action: Delete CloudFormation stack and cleanup all resources
+[36m[2026-03-31 18:30:31 DEBUG] [python:33] Activity 'Delete CloudFormation stack and cleanup all resources' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_detective.py'
+[36m[2026-03-31 18:30:48 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-03-31 18:30:48 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-31 18:30:48 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-03-31 18:30:48 INFO] [run:598] Experiment ended with status: deviated
+[32m[2026-03-31 18:30:48 INFO] [run:600] The steady-state has deviated, a weakness may have been discovered
+[36m[2026-03-31 18:30:48 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[36m[2026-03-31 18:30:48 DEBUG] [__init__:106] Cleaning up controls
+[36m[2026-03-31 18:30:48 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-03-31 18:38:53 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-03-31 18:38:53 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-03-31 18:38:53 DEBUG] [__init__:106] Using settings file '/home/debian/.chaostoolkit/settings.yaml'
+[36m[2026-03-31 18:38:53 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/debian/.chaostoolkit/settings.yaml'.
+[36m[2026-03-31 18:38:53 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-03-31 18:38:53 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-03-31 18:38:53 DEBUG] [caching:24] Building activity cache...
+[36m[2026-03-31 18:38:53 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-03-31 18:38:53 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-03-31 18:38:53 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-03-31 18:38:53 DEBUG] [secret:79] Loading secrets...
+[36m[2026-03-31 18:38:53 DEBUG] [secret:104] Done loading secrets
+[32m[2026-03-31 18:38:53 INFO] [experiment:112] Experiment looks valid
+[36m[2026-03-31 18:38:53 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-03-31 18:38:53 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-03-31 18:38:53 DEBUG] [caching:24] Building activity cache...
+[36m[2026-03-31 18:38:53 DEBUG] [caching:35] Cached 3 activities
+[36m[2026-03-31 18:38:53 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-03-31 18:38:53 DEBUG] [secret:79] Loading secrets...
+[36m[2026-03-31 18:38:53 DEBUG] [secret:104] Done loading secrets
+[36m[2026-03-31 18:38:53 DEBUG] [configuration:161] Loading dynamic configuration...
+[32m[2026-03-31 18:38:53 INFO] [run:440] Running experiment: SCE Experiment 1.3 - Detective Probe: EC2 Reconnaissance Detection via CloudTrail
+[36m[2026-03-31 18:38:53 DEBUG] [__init__:67] Initializing controls
+[32m[2026-03-31 18:38:53 INFO] [run:471] Steady-state strategy: after-method-only
+[32m[2026-03-31 18:38:53 INFO] [run:477] Rollbacks strategy: default
+[36m[2026-03-31 18:38:53 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[32m[2026-03-31 18:38:53 INFO] [run:778] Playing your experiment's method now...
+[36m[2026-03-31 18:38:53 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-03-31 18:38:53 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-31 18:38:53 INFO] [activity:232] Action: Provision CloudTrail and target EC2 infrastructure
+[36m[2026-03-31 18:38:53 DEBUG] [python:33] Activity 'Provision CloudTrail and target EC2 infrastructure' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_detective.py'
+[36m[2026-03-31 18:43:03 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-03-31 18:43:03 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-31 18:43:03 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-31 18:43:03 INFO] [activity:232] Action: Execute EC2 reconnaissance attack with test IAM credentials
+[36m[2026-03-31 18:43:03 DEBUG] [python:33] Activity 'Execute EC2 reconnaissance attack with test IAM credentials' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_detective.py'
+[36m[2026-03-31 18:43:03 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-03-31 18:43:03 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-31 18:43:03 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-03-31 18:43:03 DEBUG] [run:696] Running steady-state hypothesis after the method
+[32m[2026-03-31 18:43:03 INFO] [hypothesis:205] Steady state hypothesis: Detective controls detect EC2 reconnaissance within 30-minute SLA
+[36m[2026-03-31 18:43:03 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[36m[2026-03-31 18:43:03 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-31 18:43:03 INFO] [activity:232] Probe: Verify CloudTrail logs DescribeInstances from test user
+[36m[2026-03-31 18:43:03 DEBUG] [python:33] Activity 'Verify CloudTrail logs DescribeInstances from test user' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_detective.py'
+[36m[2026-03-31 18:43:03 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-03-31 18:43:03 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-31 18:43:03 DEBUG] [hypothesis:247] allowed tolerance is True
+[36m[2026-03-31 18:43:03 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[31m[2026-03-31 18:43:03 CRITICAL] [run:716] Steady state probe 'Verify CloudTrail logs DescribeInstances from test user' is not in the given tolerance so failing this experiment
+[32m[2026-03-31 18:43:03 INFO] [run:1072] Let's rollback...
+[36m[2026-03-31 18:43:03 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-03-31 18:43:03 INFO] [rollback:36] Rollback: Delete CloudTrail and CloudFormation stack
+[36m[2026-03-31 18:43:03 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-31 18:43:03 INFO] [activity:232] Action: Delete CloudTrail and CloudFormation stack
+[36m[2026-03-31 18:43:03 DEBUG] [python:33] Activity 'Delete CloudTrail and CloudFormation stack' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_detective.py'
+[36m[2026-03-31 18:43:19 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-03-31 18:43:19 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-31 18:43:19 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-03-31 18:43:19 INFO] [run:598] Experiment ended with status: deviated
+[32m[2026-03-31 18:43:19 INFO] [run:600] The steady-state has deviated, a weakness may have been discovered
+[36m[2026-03-31 18:43:19 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[36m[2026-03-31 18:43:19 DEBUG] [__init__:106] Cleaning up controls
+[36m[2026-03-31 18:43:19 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-03-31 19:59:36 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-03-31 19:59:36 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-03-31 19:59:36 DEBUG] [__init__:106] Using settings file '/home/debian/.chaostoolkit/settings.yaml'
+[36m[2026-03-31 19:59:37 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/debian/.chaostoolkit/settings.yaml'.
+[36m[2026-03-31 19:59:37 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-03-31 19:59:37 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-03-31 19:59:37 DEBUG] [caching:24] Building activity cache...
+[36m[2026-03-31 19:59:37 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-03-31 19:59:37 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-03-31 19:59:37 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-03-31 19:59:37 DEBUG] [secret:79] Loading secrets...
+[36m[2026-03-31 19:59:37 DEBUG] [secret:104] Done loading secrets
+[32m[2026-03-31 19:59:37 INFO] [experiment:112] Experiment looks valid
+[36m[2026-03-31 19:59:37 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-03-31 19:59:37 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-03-31 19:59:37 DEBUG] [caching:24] Building activity cache...
+[36m[2026-03-31 19:59:37 DEBUG] [caching:35] Cached 3 activities
+[36m[2026-03-31 19:59:37 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-03-31 19:59:37 DEBUG] [secret:79] Loading secrets...
+[36m[2026-03-31 19:59:37 DEBUG] [secret:104] Done loading secrets
+[36m[2026-03-31 19:59:37 DEBUG] [configuration:161] Loading dynamic configuration...
+[32m[2026-03-31 19:59:37 INFO] [run:440] Running experiment: SCE Experiment 1.3 - Detective Probe: CloudTrail EC2 Reconnaissance Detection
+[36m[2026-03-31 19:59:37 DEBUG] [__init__:67] Initializing controls
+[32m[2026-03-31 19:59:37 INFO] [run:471] Steady-state strategy: after-method-only
+[32m[2026-03-31 19:59:37 INFO] [run:477] Rollbacks strategy: default
+[36m[2026-03-31 19:59:37 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[32m[2026-03-31 19:59:37 INFO] [run:778] Playing your experiment's method now...
+[36m[2026-03-31 19:59:37 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-03-31 19:59:37 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-31 19:59:37 INFO] [activity:232] Action: Provision CloudTrail and IAM test infrastructure
+[36m[2026-03-31 19:59:37 DEBUG] [python:33] Activity 'Provision CloudTrail and IAM test infrastructure' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_detective.py'
+[36m[2026-03-31 20:02:25 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-03-31 20:02:25 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-31 20:02:25 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-31 20:02:25 INFO] [activity:232] Action: Execute EC2 reconnaissance with test credentials
+[36m[2026-03-31 20:02:25 DEBUG] [python:33] Activity 'Execute EC2 reconnaissance with test credentials' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_detective.py'
+[36m[2026-03-31 20:02:26 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-03-31 20:02:26 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-31 20:02:26 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-03-31 20:02:26 DEBUG] [run:696] Running steady-state hypothesis after the method
+[32m[2026-03-31 20:02:26 INFO] [hypothesis:205] Steady state hypothesis: CloudTrail detects EC2 reconnaissance within 30-minute SLA
+[36m[2026-03-31 20:02:26 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[36m[2026-03-31 20:02:26 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-31 20:02:26 INFO] [activity:232] Probe: Verify CloudTrail logs DescribeInstances from test user
+[36m[2026-03-31 20:02:26 DEBUG] [python:33] Activity 'Verify CloudTrail logs DescribeInstances from test user' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_detective.py'
+[36m[2026-03-31 20:03:27 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-03-31 20:03:27 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-31 20:03:27 DEBUG] [hypothesis:247] allowed tolerance is True
+[32m[2026-03-31 20:03:27 INFO] [hypothesis:260] Steady state hypothesis is met!
+[36m[2026-03-31 20:03:27 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[32m[2026-03-31 20:03:27 INFO] [run:1072] Let's rollback...
+[36m[2026-03-31 20:03:27 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-03-31 20:03:27 INFO] [rollback:36] Rollback: Delete CloudTrail and CloudFormation stack
+[36m[2026-03-31 20:03:27 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-31 20:03:27 INFO] [activity:232] Action: Delete CloudTrail and CloudFormation stack
+[36m[2026-03-31 20:03:27 DEBUG] [python:33] Activity 'Delete CloudTrail and CloudFormation stack' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_detective.py'
+[36m[2026-03-31 20:04:14 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-03-31 20:04:14 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-31 20:04:14 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-03-31 20:04:14 INFO] [run:598] Experiment ended with status: completed
+[36m[2026-03-31 20:04:14 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[36m[2026-03-31 20:04:14 DEBUG] [__init__:106] Cleaning up controls
+[36m[2026-03-31 20:04:14 DEBUG] [caching:42] Clearing activities cache

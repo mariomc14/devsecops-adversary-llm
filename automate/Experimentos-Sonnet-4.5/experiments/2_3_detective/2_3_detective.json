@@ -1,0 +1,61 @@
+{
+    "title": "SCE 2.3 - IMDS Protection Weakening Detective Controls Validation",
+    "description": "Validates that CloudTrail event logging and EC2 API tracking successfully detect when an attacker weakens EC2 instance metadata service (IMDS) protection by modifying HttpTokens to optional and increasing HttpPutResponseHopLimit. This experiment verifies the 30-minute detection SLA for the banking platform's detective controls against credential theft attack vectors. Simplified version focusing on CloudTrail logging (AWS Config removed to avoid service conflicts in clean accounts).",
+    "tags": [
+        "aws",
+        "ec2",
+        "imds",
+        "detective-controls",
+        "cloudtrail",
+        "banking-platform",
+        "credential-theft",
+        "sce-2.3",
+        "simplified"
+    ],
+    "steady-state-hypothesis": {
+        "title": "Detective controls detect IMDS protection weakening within 30-minute SLA",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "verify-detective-controls-detect-imds-weakening",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.2_3_detective",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "provision-ec2-instance-with-imdsv2-and-cloudtrail-monitoring",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.2_3_detective",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "execute-reconnaissance-and-imds-weakening-attacks",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.2_3_detective",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "cleanup-all-experiment-resources-via-cloudformation",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.2_3_detective",
+                "func": "rollback"
+            }
+        }
+    ]
+}

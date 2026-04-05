@@ -1,0 +1,150 @@
+[36m[2026-04-04 14:19:35 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-04-04 14:19:35 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-04-04 14:19:35 DEBUG] [__init__:106] Using settings file '/home/debian/.chaostoolkit/settings.yaml'
+[36m[2026-04-04 14:19:35 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/debian/.chaostoolkit/settings.yaml'.
+[36m[2026-04-04 14:19:35 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-04 14:19:35 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-04 14:19:35 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-04 14:19:35 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-04-04 14:19:35 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-04-04 14:19:35 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-04 14:19:35 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-04 14:19:35 DEBUG] [secret:104] Done loading secrets
+[32m[2026-04-04 14:19:35 INFO] [experiment:112] Experiment looks valid
+[36m[2026-04-04 14:19:35 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-04 14:19:35 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-04-04 14:19:35 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-04 14:19:35 DEBUG] [caching:35] Cached 3 activities
+[36m[2026-04-04 14:19:35 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-04 14:19:35 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-04 14:19:35 DEBUG] [secret:104] Done loading secrets
+[36m[2026-04-04 14:19:35 DEBUG] [configuration:161] Loading dynamic configuration...
+[32m[2026-04-04 14:19:35 INFO] [run:440] Running experiment: SCE 2.3 - IMDS Protection Weakening Detective Controls Validation
+[36m[2026-04-04 14:19:35 DEBUG] [__init__:67] Initializing controls
+[32m[2026-04-04 14:19:35 INFO] [run:471] Steady-state strategy: after-method-only
+[32m[2026-04-04 14:19:35 INFO] [run:477] Rollbacks strategy: default
+[36m[2026-04-04 14:19:35 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[32m[2026-04-04 14:19:35 INFO] [run:778] Playing your experiment's method now...
+[36m[2026-04-04 14:19:35 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-04 14:19:35 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-04 14:19:35 INFO] [activity:232] Action: provision-ec2-instance-with-imdsv2-and-monitoring
+[36m[2026-04-04 14:19:35 DEBUG] [python:33] Activity 'provision-ec2-instance-with-imdsv2-and-monitoring' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_3_detective.py'
+[36m[2026-04-04 14:34:57 DEBUG] [activity:317] Activity failed
+    Traceback (most recent call last):
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_3_detective.py", line 437, in steady_state
+        raise Exception("Stack creation timeout")
+    Exception: Stack creation timeout
+    
+    During handling of the above exception, another exception occurred:
+    
+    Traceback (most recent call last):
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/activity.py", line 310, in run_activity
+        result = run_python_activity(activity, configuration, secrets)
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 58, in run_python_activity
+        raise ActivityFailed(
+            traceback.format_exception_only(type(x), x)[0].strip()
+        ).with_traceback(sys.exc_info()[2])
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_3_detective.py", line 437, in steady_state
+        raise Exception("Stack creation timeout")
+    chaoslib.exceptions.ActivityFailed: Exception: Stack creation timeout
+[31m[2026-04-04 14:34:57 ERROR] [activity:268]   => failed: Exception: Stack creation timeout
+[36m[2026-04-04 14:34:57 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-04 14:34:57 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-04 14:34:57 INFO] [activity:232] Action: execute-reconnaissance-and-imds-weakening-attacks
+[36m[2026-04-04 14:34:57 DEBUG] [python:33] Activity 'execute-reconnaissance-and-imds-weakening-attacks' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_3_detective.py'
+[36m[2026-04-04 14:34:57 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-04-04 14:34:57 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-04 14:34:57 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-04 14:34:57 DEBUG] [run:696] Running steady-state hypothesis after the method
+[32m[2026-04-04 14:34:57 INFO] [hypothesis:205] Steady state hypothesis: Detective controls detect IMDS protection weakening within 30-minute SLA
+[36m[2026-04-04 14:34:57 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[36m[2026-04-04 14:34:57 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-04 14:34:57 INFO] [activity:232] Probe: verify-detective-controls-detect-imds-weakening
+[36m[2026-04-04 14:34:57 DEBUG] [python:33] Activity 'verify-detective-controls-detect-imds-weakening' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_3_detective.py'
+[36m[2026-04-04 14:34:57 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-04-04 14:34:57 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-04 14:34:57 DEBUG] [hypothesis:247] allowed tolerance is True
+[36m[2026-04-04 14:34:57 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[31m[2026-04-04 14:34:57 CRITICAL] [run:716] Steady state probe 'verify-detective-controls-detect-imds-weakening' is not in the given tolerance so failing this experiment
+[32m[2026-04-04 14:34:57 INFO] [run:1072] Let's rollback...
+[36m[2026-04-04 14:34:57 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-04 14:34:57 INFO] [rollback:36] Rollback: cleanup-all-experiment-resources-via-cloudformation
+[36m[2026-04-04 14:34:57 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-04 14:34:57 INFO] [activity:232] Action: cleanup-all-experiment-resources-via-cloudformation
+[36m[2026-04-04 14:34:57 DEBUG] [python:33] Activity 'cleanup-all-experiment-resources-via-cloudformation' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_3_detective.py'
+[36m[2026-04-04 14:35:14 DEBUG] [activity:262]   => succeeded without any result value
+[36m[2026-04-04 14:35:14 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-04 14:35:14 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-04 14:35:14 INFO] [run:598] Experiment ended with status: deviated
+[32m[2026-04-04 14:35:14 INFO] [run:600] The steady-state has deviated, a weakness may have been discovered
+[36m[2026-04-04 14:35:14 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[36m[2026-04-04 14:35:14 DEBUG] [__init__:106] Cleaning up controls
+[36m[2026-04-04 14:35:14 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-04 14:43:12 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-04-04 14:43:12 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-04-04 14:43:12 DEBUG] [__init__:106] Using settings file '/home/debian/.chaostoolkit/settings.yaml'
+[36m[2026-04-04 14:43:12 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/debian/.chaostoolkit/settings.yaml'.
+[36m[2026-04-04 14:43:12 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-04 14:43:12 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-04 14:43:12 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-04 14:43:12 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-04-04 14:43:12 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-04-04 14:43:12 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-04 14:43:12 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-04 14:43:12 DEBUG] [secret:104] Done loading secrets
+[32m[2026-04-04 14:43:12 INFO] [experiment:112] Experiment looks valid
+[36m[2026-04-04 14:43:12 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-04 14:43:12 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-04-04 14:43:12 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-04 14:43:12 DEBUG] [caching:35] Cached 3 activities
+[36m[2026-04-04 14:43:12 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-04 14:43:12 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-04 14:43:12 DEBUG] [secret:104] Done loading secrets
+[36m[2026-04-04 14:43:12 DEBUG] [configuration:161] Loading dynamic configuration...
+[32m[2026-04-04 14:43:12 INFO] [run:440] Running experiment: SCE 2.3 - IMDS Protection Weakening Detective Controls Validation
+[36m[2026-04-04 14:43:12 DEBUG] [__init__:67] Initializing controls
+[32m[2026-04-04 14:43:12 INFO] [run:471] Steady-state strategy: after-method-only
+[32m[2026-04-04 14:43:12 INFO] [run:477] Rollbacks strategy: default
+[36m[2026-04-04 14:43:12 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[32m[2026-04-04 14:43:12 INFO] [run:778] Playing your experiment's method now...
+[36m[2026-04-04 14:43:12 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-04 14:43:12 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-04 14:43:12 INFO] [activity:232] Action: provision-ec2-instance-with-imdsv2-and-cloudtrail-monitoring
+[36m[2026-04-04 14:43:12 DEBUG] [python:33] Activity 'provision-ec2-instance-with-imdsv2-and-cloudtrail-monitoring' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_3_detective.py'
+[36m[2026-04-04 14:47:25 DEBUG] [activity:262]   => succeeded without any result value
+[36m[2026-04-04 14:47:25 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-04 14:47:25 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-04 14:47:25 INFO] [activity:232] Action: execute-reconnaissance-and-imds-weakening-attacks
+[36m[2026-04-04 14:47:25 DEBUG] [python:33] Activity 'execute-reconnaissance-and-imds-weakening-attacks' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_3_detective.py'
+[36m[2026-04-04 14:47:31 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-04-04 14:47:31 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-04 14:47:31 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-04 14:47:31 DEBUG] [run:696] Running steady-state hypothesis after the method
+[32m[2026-04-04 14:47:31 INFO] [hypothesis:205] Steady state hypothesis: Detective controls detect IMDS protection weakening within 30-minute SLA
+[36m[2026-04-04 14:47:31 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[36m[2026-04-04 14:47:31 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-04 14:47:31 INFO] [activity:232] Probe: verify-detective-controls-detect-imds-weakening
+[36m[2026-04-04 14:47:31 DEBUG] [python:33] Activity 'verify-detective-controls-detect-imds-weakening' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_3_detective.py'
+[36m[2026-04-04 15:18:06 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-04-04 15:18:06 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-04 15:18:06 DEBUG] [hypothesis:247] allowed tolerance is True
+[36m[2026-04-04 15:18:06 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[31m[2026-04-04 15:18:06 CRITICAL] [run:716] Steady state probe 'verify-detective-controls-detect-imds-weakening' is not in the given tolerance so failing this experiment
+[32m[2026-04-04 15:18:06 INFO] [run:1072] Let's rollback...
+[36m[2026-04-04 15:18:06 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-04 15:18:06 INFO] [rollback:36] Rollback: cleanup-all-experiment-resources-via-cloudformation
+[36m[2026-04-04 15:18:06 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-04 15:18:06 INFO] [activity:232] Action: cleanup-all-experiment-resources-via-cloudformation
+[36m[2026-04-04 15:18:06 DEBUG] [python:33] Activity 'cleanup-all-experiment-resources-via-cloudformation' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_3_detective.py'
+[36m[2026-04-04 15:28:30 DEBUG] [activity:262]   => succeeded without any result value
+[36m[2026-04-04 15:28:30 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-04 15:28:30 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-04 15:28:30 INFO] [run:598] Experiment ended with status: deviated
+[32m[2026-04-04 15:28:30 INFO] [run:600] The steady-state has deviated, a weakness may have been discovered
+[36m[2026-04-04 15:28:30 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[36m[2026-04-04 15:28:30 DEBUG] [__init__:106] Cleaning up controls
+[36m[2026-04-04 15:28:30 DEBUG] [caching:42] Clearing activities cache

@@ -1,0 +1,100 @@
+STDOUT:
+[STEADY_STATE] Starting environment provisioning...
+[STEADY_STATE] Stack name: sce-experiment-2-3-1775231997
+[STEADY_STATE] Creating CloudFormation stack...
+[STEADY_STATE] Waiting for stack creation (up to 30 minutes)...
+[STEADY_STATE] Stack status: CREATE_IN_PROGRESS
+[STEADY_STATE] Stack status: CREATE_IN_PROGRESS
+[STEADY_STATE] Stack status: CREATE_IN_PROGRESS
+[STEADY_STATE] Stack status: CREATE_IN_PROGRESS
+[STEADY_STATE] Stack status: CREATE_IN_PROGRESS
+[STEADY_STATE] Stack status: CREATE_IN_PROGRESS
+[STEADY_STATE] Stack status: CREATE_IN_PROGRESS
+[STEADY_STATE] Stack status: CREATE_IN_PROGRESS
+[STEADY_STATE] Stack status: CREATE_IN_PROGRESS
+[STEADY_STATE] Stack status: CREATE_IN_PROGRESS
+[STEADY_STATE] Stack status: CREATE_COMPLETE
+[STEADY_STATE] Instance ID: i-02aadf6eec96bb16a
+[STEADY_STATE] Waiting for instance to be running and SSM ready...
+[STEADY_STATE] Instance state: running
+[STEADY_STATE] SSM ping status: Online
+[STEADY_STATE] Waiting for user data completion (iptables setup)...
+[STEADY_STATE] User data status: ready
+[STEADY_STATE] Environment provisioning complete
+[STEADY_STATE] Instance i-02aadf6eec96bb16a ready with container isolation controls
+[ATTACK] Starting attack sequence...
+[ATTACK] Step 1: Modifying instance metadata options to weaken protections...
+[ATTACK] Command: aws ec2 modify-instance-metadata-options --instance-id i-02aadf6eec96bb16a --http-tokens optional --http-put-response-hop-limit 2
+[ATTACK] Step 1 complete: IMDS protections weakened
+[ATTACK] Step 2: Attempting to access IMDS from container context...
+[ATTACK] Command: docker run --rm alpine:latest sh -c 'wget -q -O - http://169.254.169.254/latest/meta-data/iam/security-credentials/ 2>&1'
+[ATTACK] Step 2 SSM Command ID: 3e0813a6-edd0-4140-a126-9e271f553d12
+[ATTACK] Waiting for container IMDS access attempt (up to 30 minutes)...
+[ATTACK] Error checking command: An error occurred (InvocationDoesNotExist) when calling the GetCommandInvocation operation: 
+[ATTACK] Command status: InProgress
+[ATTACK] Command status: Success
+[ATTACK] Command output:
+latest: Pulling from library/alpine
+589002ba0eae: Pulling fs layer
+589002ba0eae: Download complete
+589002ba0eae: Pull complete
+Digest: sha256:25109184c71bdad752c8312a8623239686a9a2071e8825f20acb8f2198c3f659
+Status: Downloaded newer image for alpine:latest
+docker.io/library/alpine:latest
+Terminated
+BLOCKED
+
+[ATTACK] Command errors:
++ docker pull alpine:latest
++ docker run --rm alpine:latest sh -c 'timeout 10 wget -q -O - http://169.254.169.254/latest/meta-data/iam/security-credentials/ 2>&1 || echo BLOCKED'
+
+[ATTACK] Attack sequence complete
+[HYPOTHESIS] Verifying preventive control effectiveness...
+[HYPOTHESIS] Verification 1: Checking iptables rules...
+[HYPOTHESIS] iptables rules:
+    4   240 DROP       all  --  *      *       172.17.0.0/16        169.254.169.254     
+    0     0 DROP       all  --  *      docker0  0.0.0.0/0            169.254.169.254     
+
+[HYPOTHESIS] ✓ iptables DROP rules confirmed active
+[HYPOTHESIS] Verification 2: Verifying container IMDS access was blocked...
+[HYPOTHESIS] Verification command ID: ce9034f1-5e34-4e92-8e9e-10ad3a3ecff0
+[HYPOTHESIS] Error in verification: An error occurred (InvocationDoesNotExist) when calling the GetCommandInvocation operation: 
+[HYPOTHESIS] Verification status: Success
+[HYPOTHESIS] Verification output:
+Container IMDS access result: Terminated
+BLOCKED
+ACCESS_BLOCKED
+
+[HYPOTHESIS] ✓ Container IMDS access successfully blocked by iptables
+[HYPOTHESIS] ✓ PREVENTIVE CONTROL VERIFIED: Container network isolation successfully blocked IMDS access
+[HYPOTHESIS] ✓ iptables rules prevented credential exfiltration from container namespace
+[HYPOTHESIS] ✓ Attack surface reduced despite weakened metadata service configuration
+[ROLLBACK] Starting cleanup...
+[ROLLBACK] Deleting stack sce-experiment-2-3-1775231997...
+[ROLLBACK] Waiting for stack deletion (up to 30 minutes)...
+[ROLLBACK] Stack status: DELETE_IN_PROGRESS
+[ROLLBACK] Stack status: DELETE_IN_PROGRESS
+[ROLLBACK] Stack status: DELETE_IN_PROGRESS
+[ROLLBACK] Stack deleted successfully
+[ROLLBACK] Stack sce-experiment-2-3-1775231997 deleted successfully
+
+
+STDERR:
+[32m[2026-04-03 17:59:57 INFO] Validating the experiment's syntax
+[32m[2026-04-03 17:59:57 INFO] Experiment looks valid
+[32m[2026-04-03 17:59:57 INFO] Running experiment: SCE 2.3 Preventive - Container Network Isolation Prevents IMDS Access
+[32m[2026-04-03 17:59:57 INFO] Steady-state strategy: after-method-only
+[32m[2026-04-03 17:59:57 INFO] Rollbacks strategy: default
+[32m[2026-04-03 17:59:57 INFO] Playing your experiment's method now...
+[32m[2026-04-03 17:59:57 INFO] Action: provision-ec2-with-container-isolation
+[32m[2026-04-03 18:02:39 INFO] Action: execute-imds-weakening-and-container-access-attack
+[32m[2026-04-03 18:03:11 INFO] Steady state hypothesis: Container network isolation blocks IMDS access from container namespace
+[32m[2026-04-03 18:03:11 INFO] Probe: verify-container-imds-blocking
+[32m[2026-04-03 18:03:37 INFO] Steady state hypothesis is met!
+[32m[2026-04-03 18:03:37 INFO] Let's rollback...
+[32m[2026-04-03 18:03:37 INFO] Rollback: cleanup-all-experiment-resources
+[32m[2026-04-03 18:03:37 INFO] Action: cleanup-all-experiment-resources
+[32m[2026-04-03 18:04:39 INFO] Experiment ended with status: completed
+
+
+RETURN CODE: 0

@@ -1,0 +1,376 @@
+[36m[2026-04-04 20:04:38 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-04-04 20:04:38 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-04-04 20:04:38 DEBUG] [__init__:106] Using settings file '/home/debian/.chaostoolkit/settings.yaml'
+[36m[2026-04-04 20:04:38 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/debian/.chaostoolkit/settings.yaml'.
+[36m[2026-04-04 20:04:38 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-04 20:04:38 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-04 20:04:38 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-04 20:04:38 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-04-04 20:04:38 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-04-04 20:04:38 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-04 20:04:38 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-04 20:04:38 DEBUG] [secret:104] Done loading secrets
+[32m[2026-04-04 20:04:38 INFO] [experiment:112] Experiment looks valid
+[36m[2026-04-04 20:04:38 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-04 20:04:38 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-04-04 20:04:38 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-04 20:04:38 DEBUG] [caching:35] Cached 3 activities
+[36m[2026-04-04 20:04:38 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-04 20:04:38 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-04 20:04:38 DEBUG] [secret:104] Done loading secrets
+[36m[2026-04-04 20:04:38 DEBUG] [configuration:161] Loading dynamic configuration...
+[32m[2026-04-04 20:04:38 INFO] [run:440] Running experiment: SCE 3.3 - IMDS Credential Theft Reactive Control Validation
+[36m[2026-04-04 20:04:38 DEBUG] [__init__:67] Initializing controls
+[32m[2026-04-04 20:04:38 INFO] [run:471] Steady-state strategy: after-method-only
+[32m[2026-04-04 20:04:38 INFO] [run:477] Rollbacks strategy: default
+[36m[2026-04-04 20:04:38 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[32m[2026-04-04 20:04:38 INFO] [run:778] Playing your experiment's method now...
+[36m[2026-04-04 20:04:38 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-04 20:04:38 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-04 20:04:38 INFO] [activity:232] Action: deploy-experiment-infrastructure
+[36m[2026-04-04 20:04:38 DEBUG] [python:33] Activity 'deploy-experiment-infrastructure' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/3_3_reactive.py'
+[36m[2026-04-04 20:15:29 DEBUG] [activity:317] Activity failed
+    Traceback (most recent call last):
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/3_3_reactive.py", line 565, in steady_state
+        raise Exception("Stack creation did not complete within timeout")
+    Exception: Stack creation did not complete within timeout
+    
+    During handling of the above exception, another exception occurred:
+    
+    Traceback (most recent call last):
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/activity.py", line 310, in run_activity
+        result = run_python_activity(activity, configuration, secrets)
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 58, in run_python_activity
+        raise ActivityFailed(
+            traceback.format_exception_only(type(x), x)[0].strip()
+        ).with_traceback(sys.exc_info()[2])
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/3_3_reactive.py", line 565, in steady_state
+        raise Exception("Stack creation did not complete within timeout")
+    chaoslib.exceptions.ActivityFailed: Exception: Stack creation did not complete within timeout
+[31m[2026-04-04 20:15:29 ERROR] [activity:268]   => failed: Exception: Stack creation did not complete within timeout
+[36m[2026-04-04 20:15:29 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-04 20:15:29 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-04 20:15:29 INFO] [activity:232] Action: execute-imds-credential-theft-attack-chain
+[36m[2026-04-04 20:15:29 DEBUG] [python:33] Activity 'execute-imds-credential-theft-attack-chain' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/3_3_reactive.py'
+[36m[2026-04-04 20:15:29 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-04-04 20:15:29 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-04 20:15:29 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-04 20:15:29 DEBUG] [run:696] Running steady-state hypothesis after the method
+[32m[2026-04-04 20:15:29 INFO] [hypothesis:205] Steady state hypothesis: Reactive Control Successfully Revokes Stolen Credentials
+[36m[2026-04-04 20:15:29 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[36m[2026-04-04 20:15:29 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-04 20:15:29 INFO] [activity:232] Probe: verify-credential-revocation-and-incident-response
+[36m[2026-04-04 20:15:29 DEBUG] [python:33] Activity 'verify-credential-revocation-and-incident-response' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/3_3_reactive.py'
+[36m[2026-04-04 20:46:28 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-04-04 20:46:28 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-04 20:46:28 DEBUG] [hypothesis:247] allowed tolerance is True
+[36m[2026-04-04 20:46:28 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[31m[2026-04-04 20:46:28 CRITICAL] [run:716] Steady state probe 'verify-credential-revocation-and-incident-response' is not in the given tolerance so failing this experiment
+[32m[2026-04-04 20:46:28 INFO] [run:1072] Let's rollback...
+[36m[2026-04-04 20:46:28 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-04 20:46:28 INFO] [rollback:36] Rollback: teardown-experiment-infrastructure
+[36m[2026-04-04 20:46:28 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-04 20:46:28 INFO] [activity:232] Action: teardown-experiment-infrastructure
+[36m[2026-04-04 20:46:28 DEBUG] [python:33] Activity 'teardown-experiment-infrastructure' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/3_3_reactive.py'
+[36m[2026-04-04 20:46:44 DEBUG] [activity:262]   => succeeded without any result value
+[36m[2026-04-04 20:46:44 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-04 20:46:44 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-04 20:46:44 INFO] [run:598] Experiment ended with status: deviated
+[32m[2026-04-04 20:46:44 INFO] [run:600] The steady-state has deviated, a weakness may have been discovered
+[36m[2026-04-04 20:46:44 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[36m[2026-04-04 20:46:44 DEBUG] [__init__:106] Cleaning up controls
+[36m[2026-04-04 20:46:44 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-04 21:38:14 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-04-04 21:38:14 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-04-04 21:38:14 DEBUG] [__init__:106] Using settings file '/home/debian/.chaostoolkit/settings.yaml'
+[36m[2026-04-04 21:38:14 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/debian/.chaostoolkit/settings.yaml'.
+[36m[2026-04-04 21:38:14 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-04 21:38:14 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-04 21:38:14 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-04 21:38:14 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-04-04 21:38:14 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-04-04 21:38:14 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-04 21:38:14 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-04 21:38:14 DEBUG] [secret:104] Done loading secrets
+[32m[2026-04-04 21:38:14 INFO] [experiment:112] Experiment looks valid
+[36m[2026-04-04 21:38:14 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-04 21:38:14 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-04-04 21:38:14 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-04 21:38:14 DEBUG] [caching:35] Cached 3 activities
+[36m[2026-04-04 21:38:14 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-04 21:38:14 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-04 21:38:14 DEBUG] [secret:104] Done loading secrets
+[36m[2026-04-04 21:38:14 DEBUG] [configuration:161] Loading dynamic configuration...
+[32m[2026-04-04 21:38:14 INFO] [run:440] Running experiment: SCE 3.3 - IMDS Credential Theft Reactive Control (FIXED)
+[36m[2026-04-04 21:38:14 DEBUG] [__init__:67] Initializing controls
+[32m[2026-04-04 21:38:14 INFO] [run:471] Steady-state strategy: after-method-only
+[32m[2026-04-04 21:38:14 INFO] [run:477] Rollbacks strategy: default
+[36m[2026-04-04 21:38:14 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[32m[2026-04-04 21:38:14 INFO] [run:778] Playing your experiment's method now...
+[36m[2026-04-04 21:38:14 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-04 21:38:14 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-04 21:38:14 INFO] [activity:232] Action: deploy-experiment-infrastructure
+[36m[2026-04-04 21:38:14 DEBUG] [python:33] Activity 'deploy-experiment-infrastructure' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/3_3_reactive.py'
+[36m[2026-04-04 21:38:15 DEBUG] [activity:317] Activity failed
+    Traceback (most recent call last):
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/3_3_reactive.py", line 591, in steady_state
+        raise Exception("Failed to get subnet")
+    Exception: Failed to get subnet
+    
+    During handling of the above exception, another exception occurred:
+    
+    Traceback (most recent call last):
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/activity.py", line 310, in run_activity
+        result = run_python_activity(activity, configuration, secrets)
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 58, in run_python_activity
+        raise ActivityFailed(
+            traceback.format_exception_only(type(x), x)[0].strip()
+        ).with_traceback(sys.exc_info()[2])
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/3_3_reactive.py", line 591, in steady_state
+        raise Exception("Failed to get subnet")
+    chaoslib.exceptions.ActivityFailed: Exception: Failed to get subnet
+[31m[2026-04-04 21:38:15 ERROR] [activity:268]   => failed: Exception: Failed to get subnet
+[36m[2026-04-04 21:38:15 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-04 21:38:15 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-04 21:38:15 INFO] [activity:232] Action: execute-imds-credential-theft-attack
+[36m[2026-04-04 21:38:15 DEBUG] [python:33] Activity 'execute-imds-credential-theft-attack' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/3_3_reactive.py'
+[36m[2026-04-04 21:38:15 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-04-04 21:38:15 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-04 21:38:15 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-04 21:38:15 DEBUG] [run:696] Running steady-state hypothesis after the method
+[32m[2026-04-04 21:38:15 INFO] [hypothesis:205] Steady state hypothesis: Reactive Control Revokes Stolen Credentials
+[36m[2026-04-04 21:38:15 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[36m[2026-04-04 21:38:15 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-04 21:38:15 INFO] [activity:232] Probe: verify-credential-revocation-and-incident-response
+[36m[2026-04-04 21:38:15 DEBUG] [python:33] Activity 'verify-credential-revocation-and-incident-response' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/3_3_reactive.py'
+[36m[2026-04-04 21:38:15 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-04-04 21:38:15 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-04 21:38:15 DEBUG] [hypothesis:247] allowed tolerance is True
+[36m[2026-04-04 21:38:15 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[31m[2026-04-04 21:38:15 CRITICAL] [run:716] Steady state probe 'verify-credential-revocation-and-incident-response' is not in the given tolerance so failing this experiment
+[32m[2026-04-04 21:38:15 INFO] [run:1072] Let's rollback...
+[36m[2026-04-04 21:38:15 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-04 21:38:15 INFO] [rollback:36] Rollback: teardown-experiment-infrastructure
+[36m[2026-04-04 21:38:15 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-04 21:38:15 INFO] [activity:232] Action: teardown-experiment-infrastructure
+[36m[2026-04-04 21:38:15 DEBUG] [python:33] Activity 'teardown-experiment-infrastructure' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/3_3_reactive.py'
+[36m[2026-04-04 21:38:15 DEBUG] [activity:262]   => succeeded without any result value
+[36m[2026-04-04 21:38:15 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-04 21:38:15 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-04 21:38:15 INFO] [run:598] Experiment ended with status: deviated
+[32m[2026-04-04 21:38:15 INFO] [run:600] The steady-state has deviated, a weakness may have been discovered
+[36m[2026-04-04 21:38:15 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[36m[2026-04-04 21:38:15 DEBUG] [__init__:106] Cleaning up controls
+[36m[2026-04-04 21:38:15 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-04 22:05:24 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-04-04 22:05:24 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-04-04 22:05:24 DEBUG] [__init__:106] Using settings file '/home/debian/.chaostoolkit/settings.yaml'
+[36m[2026-04-04 22:05:24 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/debian/.chaostoolkit/settings.yaml'.
+[36m[2026-04-04 22:05:24 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-04 22:05:24 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-04 22:05:24 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-04 22:05:24 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-04-04 22:05:24 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-04-04 22:05:24 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-04 22:05:24 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-04 22:05:24 DEBUG] [secret:104] Done loading secrets
+[32m[2026-04-04 22:05:24 INFO] [experiment:112] Experiment looks valid
+[36m[2026-04-04 22:05:24 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-04 22:05:24 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-04-04 22:05:24 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-04 22:05:24 DEBUG] [caching:35] Cached 3 activities
+[36m[2026-04-04 22:05:24 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-04 22:05:24 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-04 22:05:24 DEBUG] [secret:104] Done loading secrets
+[36m[2026-04-04 22:05:24 DEBUG] [configuration:161] Loading dynamic configuration...
+[32m[2026-04-04 22:05:24 INFO] [run:440] Running experiment: SCE 3.3 - IMDS Credential Theft Reactive Control (FIXED v2)
+[36m[2026-04-04 22:05:24 DEBUG] [__init__:67] Initializing controls
+[32m[2026-04-04 22:05:24 INFO] [run:471] Steady-state strategy: after-method-only
+[32m[2026-04-04 22:05:24 INFO] [run:477] Rollbacks strategy: default
+[36m[2026-04-04 22:05:24 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[32m[2026-04-04 22:05:24 INFO] [run:778] Playing your experiment's method now...
+[36m[2026-04-04 22:05:24 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-04 22:05:24 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-04 22:05:24 INFO] [activity:232] Action: deploy-experiment-infrastructure
+[36m[2026-04-04 22:05:24 DEBUG] [python:33] Activity 'deploy-experiment-infrastructure' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/3_3_reactive.py'
+[36m[2026-04-04 22:09:37 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-04-04 22:09:37 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-04 22:09:37 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-04 22:09:37 INFO] [activity:232] Action: execute-imds-credential-theft-attack
+[36m[2026-04-04 22:09:37 DEBUG] [python:33] Activity 'execute-imds-credential-theft-attack' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/3_3_reactive.py'
+[36m[2026-04-04 22:09:43 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-04-04 22:09:43 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-04 22:09:43 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-04 22:09:43 DEBUG] [run:696] Running steady-state hypothesis after the method
+[32m[2026-04-04 22:09:43 INFO] [hypothesis:205] Steady state hypothesis: Reactive Control Revokes Stolen Credentials
+[36m[2026-04-04 22:09:43 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[36m[2026-04-04 22:09:43 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-04 22:09:43 INFO] [activity:232] Probe: verify-credential-revocation-and-incident-response
+[36m[2026-04-04 22:09:43 DEBUG] [python:33] Activity 'verify-credential-revocation-and-incident-response' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/3_3_reactive.py'
+[36m[2026-04-04 22:40:40 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-04-04 22:40:40 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-04 22:40:40 DEBUG] [hypothesis:247] allowed tolerance is True
+[36m[2026-04-04 22:40:40 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[31m[2026-04-04 22:40:40 CRITICAL] [run:716] Steady state probe 'verify-credential-revocation-and-incident-response' is not in the given tolerance so failing this experiment
+[32m[2026-04-04 22:40:40 INFO] [run:1072] Let's rollback...
+[36m[2026-04-04 22:40:40 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-04 22:40:40 INFO] [rollback:36] Rollback: teardown-experiment-infrastructure
+[36m[2026-04-04 22:40:40 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-04 22:40:40 INFO] [activity:232] Action: teardown-experiment-infrastructure
+[36m[2026-04-04 22:40:40 DEBUG] [python:33] Activity 'teardown-experiment-infrastructure' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/3_3_reactive.py'
+[36m[2026-04-04 22:43:45 DEBUG] [activity:262]   => succeeded without any result value
+[36m[2026-04-04 22:43:45 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-04 22:43:45 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-04 22:43:45 INFO] [run:598] Experiment ended with status: deviated
+[32m[2026-04-04 22:43:45 INFO] [run:600] The steady-state has deviated, a weakness may have been discovered
+[36m[2026-04-04 22:43:45 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[36m[2026-04-04 22:43:45 DEBUG] [__init__:106] Cleaning up controls
+[36m[2026-04-04 22:43:45 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-05 11:08:04 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-04-05 11:08:04 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-04-05 11:08:04 DEBUG] [__init__:106] Using settings file '/home/debian/.chaostoolkit/settings.yaml'
+[36m[2026-04-05 11:08:05 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/debian/.chaostoolkit/settings.yaml'.
+[36m[2026-04-05 11:08:05 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-05 11:08:05 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-05 11:08:05 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-05 11:08:05 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-04-05 11:08:05 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-04-05 11:08:05 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-05 11:08:05 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-05 11:08:05 DEBUG] [secret:104] Done loading secrets
+[32m[2026-04-05 11:08:05 INFO] [experiment:112] Experiment looks valid
+[36m[2026-04-05 11:08:05 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-05 11:08:05 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-04-05 11:08:05 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-05 11:08:05 DEBUG] [caching:35] Cached 3 activities
+[36m[2026-04-05 11:08:05 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-05 11:08:05 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-05 11:08:05 DEBUG] [secret:104] Done loading secrets
+[36m[2026-04-05 11:08:05 DEBUG] [configuration:161] Loading dynamic configuration...
+[32m[2026-04-05 11:08:05 INFO] [run:440] Running experiment: SCE 3.3 - IMDS Credential Theft Reactive Control
+[36m[2026-04-05 11:08:05 DEBUG] [__init__:67] Initializing controls
+[32m[2026-04-05 11:08:05 INFO] [run:471] Steady-state strategy: after-method-only
+[32m[2026-04-05 11:08:05 INFO] [run:477] Rollbacks strategy: default
+[36m[2026-04-05 11:08:05 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[32m[2026-04-05 11:08:05 INFO] [run:778] Playing your experiment's method now...
+[36m[2026-04-05 11:08:05 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-05 11:08:05 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-05 11:08:05 INFO] [activity:232] Action: deploy-experiment-infrastructure
+[36m[2026-04-05 11:08:05 DEBUG] [python:33] Activity 'deploy-experiment-infrastructure' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/3_3_reactive.py'
+[36m[2026-04-05 11:12:41 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-04-05 11:12:41 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-05 11:12:41 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-05 11:12:41 INFO] [activity:232] Action: execute-imds-credential-theft-attack
+[36m[2026-04-05 11:12:41 DEBUG] [python:33] Activity 'execute-imds-credential-theft-attack' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/3_3_reactive.py'
+[36m[2026-04-05 11:12:47 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-04-05 11:12:47 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-05 11:12:47 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-05 11:12:47 DEBUG] [run:696] Running steady-state hypothesis after the method
+[32m[2026-04-05 11:12:47 INFO] [hypothesis:205] Steady state hypothesis: Reactive Control Revokes Stolen Credentials Within SLA
+[36m[2026-04-05 11:12:47 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[36m[2026-04-05 11:12:47 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-05 11:12:47 INFO] [activity:232] Probe: verify-credential-revocation-and-incident-response
+[36m[2026-04-05 11:12:47 DEBUG] [python:33] Activity 'verify-credential-revocation-and-incident-response' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/3_3_reactive.py'
+[36m[2026-04-05 11:43:24 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-04-05 11:43:24 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-05 11:43:24 DEBUG] [hypothesis:247] allowed tolerance is True
+[36m[2026-04-05 11:43:24 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[31m[2026-04-05 11:43:24 CRITICAL] [run:716] Steady state probe 'verify-credential-revocation-and-incident-response' is not in the given tolerance so failing this experiment
+[32m[2026-04-05 11:43:24 INFO] [run:1072] Let's rollback...
+[36m[2026-04-05 11:43:24 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-05 11:43:24 INFO] [rollback:36] Rollback: teardown-experiment-infrastructure
+[36m[2026-04-05 11:43:24 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-05 11:43:24 INFO] [activity:232] Action: teardown-experiment-infrastructure
+[36m[2026-04-05 11:43:24 DEBUG] [python:33] Activity 'teardown-experiment-infrastructure' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/3_3_reactive.py'
+[36m[2026-04-05 11:45:57 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-04-05 11:45:57 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-05 11:45:57 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-05 11:45:57 INFO] [run:598] Experiment ended with status: deviated
+[32m[2026-04-05 11:45:57 INFO] [run:600] The steady-state has deviated, a weakness may have been discovered
+[36m[2026-04-05 11:45:57 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[36m[2026-04-05 11:45:57 DEBUG] [__init__:106] Cleaning up controls
+[36m[2026-04-05 11:45:57 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-05 12:11:28 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-04-05 12:11:28 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-04-05 12:11:28 DEBUG] [__init__:106] Using settings file '/home/debian/.chaostoolkit/settings.yaml'
+[36m[2026-04-05 12:11:28 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/debian/.chaostoolkit/settings.yaml'.
+[36m[2026-04-05 12:11:28 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-05 12:11:28 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-05 12:11:28 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-05 12:11:28 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-04-05 12:11:28 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-04-05 12:11:28 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-05 12:11:28 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-05 12:11:28 DEBUG] [secret:104] Done loading secrets
+[36m[2026-04-05 12:11:28 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-05 13:02:01 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-04-05 13:02:01 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-04-05 13:02:01 DEBUG] [__init__:106] Using settings file '/home/debian/.chaostoolkit/settings.yaml'
+[36m[2026-04-05 13:02:01 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/debian/.chaostoolkit/settings.yaml'.
+[36m[2026-04-05 13:02:01 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-05 13:02:01 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-05 13:02:01 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-05 13:02:01 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-04-05 13:02:01 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-04-05 13:02:01 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-05 13:02:01 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-05 13:02:01 DEBUG] [secret:104] Done loading secrets
+[32m[2026-04-05 13:02:01 INFO] [experiment:112] Experiment looks valid
+[36m[2026-04-05 13:02:01 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-05 13:02:01 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-04-05 13:02:01 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-05 13:02:01 DEBUG] [caching:35] Cached 3 activities
+[36m[2026-04-05 13:02:01 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-05 13:02:01 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-05 13:02:01 DEBUG] [secret:104] Done loading secrets
+[36m[2026-04-05 13:02:01 DEBUG] [configuration:161] Loading dynamic configuration...
+[32m[2026-04-05 13:02:01 INFO] [run:440] Running experiment: SCE 3.3 - IMDS Credential Theft Reactive Control
+[36m[2026-04-05 13:02:01 DEBUG] [__init__:67] Initializing controls
+[32m[2026-04-05 13:02:01 INFO] [run:471] Steady-state strategy: after-method-only
+[32m[2026-04-05 13:02:01 INFO] [run:477] Rollbacks strategy: default
+[36m[2026-04-05 13:02:01 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[32m[2026-04-05 13:02:01 INFO] [run:778] Playing your experiment's method now...
+[36m[2026-04-05 13:02:01 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-05 13:02:01 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-05 13:02:01 INFO] [activity:232] Action: deploy-experiment-infrastructure
+[36m[2026-04-05 13:02:01 DEBUG] [python:33] Activity 'deploy-experiment-infrastructure' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/3_3_reactive.py'
+[36m[2026-04-05 13:05:37 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-04-05 13:05:37 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-05 13:05:37 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-05 13:05:37 INFO] [activity:232] Action: execute-imds-credential-theft-attack
+[36m[2026-04-05 13:05:37 DEBUG] [python:33] Activity 'execute-imds-credential-theft-attack' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/3_3_reactive.py'
+[36m[2026-04-05 13:05:44 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-04-05 13:05:44 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-05 13:05:44 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-05 13:05:44 DEBUG] [run:696] Running steady-state hypothesis after the method
+[32m[2026-04-05 13:05:44 INFO] [hypothesis:205] Steady state hypothesis: Reactive Control Revokes Stolen Credentials Within SLA
+[36m[2026-04-05 13:05:44 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[36m[2026-04-05 13:05:44 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-05 13:05:44 INFO] [activity:232] Probe: verify-credential-revocation-and-incident-response
+[36m[2026-04-05 13:05:44 DEBUG] [python:33] Activity 'verify-credential-revocation-and-incident-response' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/3_3_reactive.py'
+[36m[2026-04-05 13:05:50 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-04-05 13:05:50 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-05 13:05:50 DEBUG] [hypothesis:247] allowed tolerance is True
+[32m[2026-04-05 13:05:50 INFO] [hypothesis:260] Steady state hypothesis is met!
+[36m[2026-04-05 13:05:50 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[32m[2026-04-05 13:05:50 INFO] [run:1072] Let's rollback...
+[36m[2026-04-05 13:05:50 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-05 13:05:50 INFO] [rollback:36] Rollback: teardown-experiment-infrastructure
+[36m[2026-04-05 13:05:50 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-05 13:05:50 INFO] [activity:232] Action: teardown-experiment-infrastructure
+[36m[2026-04-05 13:05:50 DEBUG] [python:33] Activity 'teardown-experiment-infrastructure' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/3_3_reactive.py'
+[36m[2026-04-05 13:08:23 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-04-05 13:08:23 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-05 13:08:23 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-05 13:08:23 INFO] [run:598] Experiment ended with status: completed
+[36m[2026-04-05 13:08:23 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[36m[2026-04-05 13:08:23 DEBUG] [__init__:106] Cleaning up controls
+[36m[2026-04-05 13:08:23 DEBUG] [caching:42] Clearing activities cache

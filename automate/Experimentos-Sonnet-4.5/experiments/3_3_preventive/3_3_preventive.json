@@ -1,0 +1,51 @@
+{
+    "title": "SCE 3.3 Preventive - IAM SourceIp Condition Blocks Stolen Credential Usage",
+    "description": "Validates that IAM policy conditions (aws:SourceIp) prevent EC2 instance profile credentials from being used outside authorized VPC CIDR ranges. This experiment simulates credential theft from IMDS and verifies that preventive controls deny API calls made from unauthorized network contexts, blocking the attack before data access occurs.",
+    "tags": ["preventive", "iam", "ec2", "imds", "credential-theft", "network-isolation"],
+    "steady-state-hypothesis": {
+        "title": "IAM Preventive Controls Block Unauthorized Credential Usage",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "verify-sourceip-condition-enforcement",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.3_3_preventive",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "setup-ec2-instance-with-restricted-iam-role",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.3_3_preventive",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "simulate-imds-credential-theft-attack",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.3_3_preventive",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "cleanup-cloudformation-stack-and-resources",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.3_3_preventive",
+                "func": "rollback"
+            }
+        }
+    ]
+}

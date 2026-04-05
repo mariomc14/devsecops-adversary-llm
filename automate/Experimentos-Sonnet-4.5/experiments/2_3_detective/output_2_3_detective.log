@@ -1,0 +1,736 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-04-04 14:43:12 INFO] Validating the experiment's syntax
+[32m[2026-04-04 14:43:12 INFO] Experiment looks valid
+[32m[2026-04-04 14:43:12 INFO] Running experiment: SCE 2.3 - IMDS Protection Weakening Detective Controls Validation
+[32m[2026-04-04 14:43:12 INFO] Steady-state strategy: after-method-only
+[32m[2026-04-04 14:43:12 INFO] Rollbacks strategy: default
+[32m[2026-04-04 14:43:12 INFO] Playing your experiment's method now...
+[32m[2026-04-04 14:43:12 INFO] Action: provision-ec2-instance-with-imdsv2-and-cloudtrail-monitoring
+2026-04-04 14:43:12,596 - INFO - Using AWS region: us-east-1
+2026-04-04 14:43:12,600 - INFO - Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-04 14:43:13,168 - INFO - AWS Account ID: 396608802942
+2026-04-04 14:43:13,168 - INFO - Caller Identity: arn:aws:iam::396608802942:user/ChaosXploit-Labs
+2026-04-04 14:43:13,168 - INFO - Creating CloudFormation stack: sce-imds-detective-1775306592
+2026-04-04 14:43:13,168 - INFO - Region: us-east-1
+2026-04-04 14:43:13,789 - INFO - Stack creation initiated
+2026-04-04 14:43:13,919 - INFO - Stack status: CREATE_IN_PROGRESS
+2026-04-04 14:43:13,919 - INFO - Waiting 15s before retry... (elapsed: 0s, remaining: 900s)
+2026-04-04 14:43:29,379 - INFO - Stack status: CREATE_IN_PROGRESS
+2026-04-04 14:43:29,379 - INFO - Waiting 22.5s before retry... (elapsed: 15s, remaining: 885s)
+2026-04-04 14:43:52,349 - INFO - Stack status: CREATE_IN_PROGRESS
+2026-04-04 14:43:52,350 - INFO - Waiting 30s before retry... (elapsed: 38s, remaining: 862s)
+2026-04-04 14:44:22,813 - INFO - Stack status: CREATE_IN_PROGRESS
+2026-04-04 14:44:22,813 - INFO - Waiting 30s before retry... (elapsed: 69s, remaining: 831s)
+2026-04-04 14:44:53,273 - INFO - Stack status: CREATE_IN_PROGRESS
+2026-04-04 14:44:53,273 - INFO - Waiting 30s before retry... (elapsed: 99s, remaining: 801s)
+2026-04-04 14:45:23,722 - INFO - Stack status: CREATE_IN_PROGRESS
+2026-04-04 14:45:23,722 - INFO - Waiting 30s before retry... (elapsed: 129s, remaining: 771s)
+2026-04-04 14:45:54,181 - INFO - Stack status: CREATE_IN_PROGRESS
+2026-04-04 14:45:54,181 - INFO - Waiting 30s before retry... (elapsed: 160s, remaining: 740s)
+2026-04-04 14:46:24,636 - INFO - Stack status: CREATE_COMPLETE
+2026-04-04 14:46:24,753 - INFO - Instance created: i-02c5014e27574fd62
+2026-04-04 14:46:25,259 - INFO - Instance state: running
+2026-04-04 14:46:25,259 - INFO - Waiting for CloudTrail to become active (60s)...
+2026-04-04 14:47:25,444 - INFO - Initial IMDS configuration:
+2026-04-04 14:47:25,444 - INFO -   HttpTokens: required
+2026-04-04 14:47:25,444 - INFO -   HttpPutResponseHopLimit: 1
+2026-04-04 14:47:25,444 - INFO -   HttpEndpoint: enabled
+2026-04-04 14:47:25,444 - INFO - Steady state preparation complete
+[32m[2026-04-04 14:47:25 INFO] Action: execute-reconnaissance-and-imds-weakening-attacks
+2026-04-04 14:47:25,450 - INFO - Using AWS region: us-east-1
+2026-04-04 14:47:25,462 - INFO - ================================================================================
+2026-04-04 14:47:25,462 - INFO - ATTACK STEP 1.2: Identify Target EC2 Instance (Reconnaissance)
+2026-04-04 14:47:25,462 - INFO - ================================================================================
+2026-04-04 14:47:25,462 - INFO - Executing: aws ec2 describe-instances with filters...
+2026-04-04 14:47:25,982 - INFO - Target identified: i-02c5014e27574fd62
+2026-04-04 14:47:25,983 - INFO - IAM Instance Profile: arn:aws:iam::396608802942:instance-profile/sce-imds-detective-1775306592-InstanceProfile-nIwxsjOKrMWN
+2026-04-04 14:47:25,983 - INFO - Current IMDS Config: {'State': 'applied', 'HttpTokens': 'required', 'HttpPutResponseHopLimit': 1, 'HttpEndpoint': 'enabled', 'HttpProtocolIpv6': 'disabled', 'InstanceMetadataTags': 'disabled'}
+2026-04-04 14:47:25,983 - INFO - Initial HttpTokens: required
+2026-04-04 14:47:25,983 - INFO - Initial HttpPutResponseHopLimit: 1
+2026-04-04 14:47:30,983 - INFO - ================================================================================
+2026-04-04 14:47:30,983 - INFO - ATTACK STEP 2.2: Weaken IMDS Protection Settings
+2026-04-04 14:47:30,983 - INFO - ================================================================================
+2026-04-04 14:47:30,983 - INFO - Executing: aws ec2 modify-instance-metadata-options on i-02c5014e27574fd62
+2026-04-04 14:47:30,983 - INFO - Changing HttpTokens to 'optional' (enables IMDSv1)
+2026-04-04 14:47:30,983 - INFO - Increasing HttpPutResponseHopLimit to 2 (enables container access)
+2026-04-04 14:47:31,500 - INFO - Metadata options modification request submitted
+2026-04-04 14:47:31,500 - INFO - Response: {
+  "InstanceId": "i-02c5014e27574fd62",
+  "InstanceMetadataOptions": {
+    "State": "pending",
+    "HttpTokens": "optional",
+    "HttpPutResponseHopLimit": 2,
+    "HttpEndpoint": "enabled",
+    "HttpProtocolIpv6": "disabled",
+    "InstanceMetadataTags": "disabled"
+  },
+  "ResponseMetadata": {
+    "RequestId": "d7ccfdb2-93c5-4c95-90a7-f16418be8dcc",
+    "HTTPStatusCode": 200,
+    "HTTPHeaders": {
+      "x-amzn-requestid": "d7ccfdb2-93c5-4c95-90a7-f16418be8dcc",
+      "cache-control": "no-cache, no-store",
+      "strict-transport-security": "max-age=31536000; includeSubDomains",
+      "vary": "accept-encoding",
+      "content-type": "text/xml;charset=UTF-8",
+      "transfer-encoding": "chunked",
+      "date": "Sat, 04 Apr 2026 12:47:24 GMT",
+      "server": "AmazonEC2"
+    },
+    "RetryAttempts": 0
+  }
+}
+2026-04-04 14:47:31,664 - INFO - Current HttpTokens: optional, HopLimit: 2
+2026-04-04 14:47:31,664 - INFO - ✓ IMDS protection successfully weakened
+2026-04-04 14:47:31,664 - INFO -   - HttpTokens: required → optional (IMDSv1 enabled)
+2026-04-04 14:47:31,664 - INFO -   - HttpPutResponseHopLimit: 1 → 2 (container access enabled)
+2026-04-04 14:47:31,664 - INFO - Attack vector now exploitable for credential theft
+[32m[2026-04-04 14:47:31 INFO] Steady state hypothesis: Detective controls detect IMDS protection weakening within 30-minute SLA
+[32m[2026-04-04 14:47:31 INFO] Probe: verify-detective-controls-detect-imds-weakening
+2026-04-04 14:47:31,669 - INFO - Using AWS region: us-east-1
+2026-04-04 14:47:31,676 - INFO - ================================================================================
+2026-04-04 14:47:31,676 - INFO - HYPOTHESIS VERIFICATION: Detective Controls
+2026-04-04 14:47:31,676 - INFO - ================================================================================
+2026-04-04 14:47:31,676 - INFO - Verifying detection within 30-minute SLA (1800 seconds)
+2026-04-04 14:47:31,676 - INFO - Attack executed at: 2026-04-04 14:43:12
+2026-04-04 14:47:31,676 - INFO - 
+[DETECTION 1/2] CloudTrail Event Logging
+2026-04-04 14:47:31,676 - INFO - --------------------------------------------------------------------------------
+2026-04-04 14:47:31,676 - INFO - Searching for ModifyInstanceMetadataOptions event
+2026-04-04 14:47:31,676 - INFO - CloudTrail check attempt (elapsed: 0s / 1800s)
+2026-04-04 14:47:32,142 - INFO - Found 0 ModifyInstanceMetadataOptions events
+2026-04-04 14:47:32,143 - INFO - Event not found yet, CloudTrail may still be processing...
+2026-04-04 14:47:32,143 - INFO - Waiting 60s before retry... (elapsed: 0s, remaining: 1800s)
+2026-04-04 14:48:32,143 - INFO - CloudTrail check attempt (elapsed: 60s / 1800s)
+2026-04-04 14:48:32,254 - INFO - Found 0 ModifyInstanceMetadataOptions events
+2026-04-04 14:48:32,254 - INFO - Event not found yet, CloudTrail may still be processing...
+2026-04-04 14:48:32,254 - INFO - Waiting 90.0s before retry... (elapsed: 60s, remaining: 1740s)
+2026-04-04 14:50:02,255 - INFO - CloudTrail check attempt (elapsed: 150s / 1800s)
+2026-04-04 14:50:02,393 - INFO - Found 1 ModifyInstanceMetadataOptions events
+2026-04-04 14:50:02,393 - INFO - Event not found yet, CloudTrail may still be processing...
+2026-04-04 14:50:02,393 - INFO - Waiting 120s before retry... (elapsed: 150s, remaining: 1650s)
+2026-04-04 14:52:02,393 - INFO - CloudTrail check attempt (elapsed: 270s / 1800s)
+2026-04-04 14:52:02,530 - INFO - Found 1 ModifyInstanceMetadataOptions events
+2026-04-04 14:52:02,530 - INFO - Event not found yet, CloudTrail may still be processing...
+2026-04-04 14:52:02,530 - INFO - Waiting 120s before retry... (elapsed: 270s, remaining: 1530s)
+2026-04-04 14:54:02,531 - INFO - CloudTrail check attempt (elapsed: 390s / 1800s)
+2026-04-04 14:54:02,998 - INFO - Found 1 ModifyInstanceMetadataOptions events
+2026-04-04 14:54:02,998 - INFO - Event not found yet, CloudTrail may still be processing...
+2026-04-04 14:54:02,998 - INFO - Waiting 120s before retry... (elapsed: 391s, remaining: 1409s)
+2026-04-04 14:56:02,998 - INFO - CloudTrail check attempt (elapsed: 511s / 1800s)
+2026-04-04 14:56:03,144 - INFO - Found 1 ModifyInstanceMetadataOptions events
+2026-04-04 14:56:03,144 - INFO - Event not found yet, CloudTrail may still be processing...
+2026-04-04 14:56:03,144 - INFO - Waiting 120s before retry... (elapsed: 511s, remaining: 1289s)
+2026-04-04 14:58:03,144 - INFO - CloudTrail check attempt (elapsed: 631s / 1800s)
+2026-04-04 14:58:03,287 - INFO - Found 1 ModifyInstanceMetadataOptions events
+2026-04-04 14:58:03,287 - INFO - Event not found yet, CloudTrail may still be processing...
+2026-04-04 14:58:03,287 - INFO - Waiting 120s before retry... (elapsed: 631s, remaining: 1169s)
+2026-04-04 15:00:03,287 - INFO - CloudTrail check attempt (elapsed: 751s / 1800s)
+2026-04-04 15:00:03,769 - INFO - Found 1 ModifyInstanceMetadataOptions events
+2026-04-04 15:00:03,769 - INFO - Event not found yet, CloudTrail may still be processing...
+2026-04-04 15:00:03,769 - INFO - Waiting 120s before retry... (elapsed: 752s, remaining: 1048s)
+2026-04-04 15:02:03,769 - INFO - CloudTrail check attempt (elapsed: 872s / 1800s)
+2026-04-04 15:02:03,912 - INFO - Found 1 ModifyInstanceMetadataOptions events
+2026-04-04 15:02:03,913 - INFO - Event not found yet, CloudTrail may still be processing...
+2026-04-04 15:02:03,913 - INFO - Waiting 120s before retry... (elapsed: 872s, remaining: 928s)
+2026-04-04 15:04:03,913 - INFO - CloudTrail check attempt (elapsed: 992s / 1800s)
+2026-04-04 15:04:04,055 - INFO - Found 1 ModifyInstanceMetadataOptions events
+2026-04-04 15:04:04,055 - INFO - Event not found yet, CloudTrail may still be processing...
+2026-04-04 15:04:04,055 - INFO - Waiting 120s before retry... (elapsed: 992s, remaining: 808s)
+2026-04-04 15:06:04,055 - INFO - CloudTrail check attempt (elapsed: 1112s / 1800s)
+2026-04-04 15:06:04,531 - INFO - Found 1 ModifyInstanceMetadataOptions events
+2026-04-04 15:06:04,531 - INFO - Event not found yet, CloudTrail may still be processing...
+2026-04-04 15:06:04,531 - INFO - Waiting 120s before retry... (elapsed: 1112s, remaining: 688s)
+2026-04-04 15:08:04,531 - INFO - CloudTrail check attempt (elapsed: 1232s / 1800s)
+2026-04-04 15:08:04,668 - INFO - Found 1 ModifyInstanceMetadataOptions events
+2026-04-04 15:08:04,668 - INFO - Event not found yet, CloudTrail may still be processing...
+2026-04-04 15:08:04,668 - INFO - Waiting 120s before retry... (elapsed: 1232s, remaining: 568s)
+2026-04-04 15:10:04,668 - INFO - CloudTrail check attempt (elapsed: 1352s / 1800s)
+2026-04-04 15:10:04,811 - INFO - Found 1 ModifyInstanceMetadataOptions events
+2026-04-04 15:10:04,811 - INFO - Event not found yet, CloudTrail may still be processing...
+2026-04-04 15:10:04,811 - INFO - Waiting 120s before retry... (elapsed: 1353s, remaining: 447s)
+2026-04-04 15:12:04,811 - INFO - CloudTrail check attempt (elapsed: 1473s / 1800s)
+2026-04-04 15:12:05,284 - INFO - Found 1 ModifyInstanceMetadataOptions events
+2026-04-04 15:12:05,284 - INFO - Event not found yet, CloudTrail may still be processing...
+2026-04-04 15:12:05,284 - INFO - Waiting 120s before retry... (elapsed: 1473s, remaining: 327s)
+2026-04-04 15:14:05,284 - INFO - CloudTrail check attempt (elapsed: 1593s / 1800s)
+2026-04-04 15:14:05,435 - INFO - Found 1 ModifyInstanceMetadataOptions events
+2026-04-04 15:14:05,436 - INFO - Event not found yet, CloudTrail may still be processing...
+2026-04-04 15:14:05,436 - INFO - Waiting 120s before retry... (elapsed: 1593s, remaining: 207s)
+2026-04-04 15:16:05,436 - INFO - CloudTrail check attempt (elapsed: 1713s / 1800s)
+2026-04-04 15:16:05,595 - INFO - Found 1 ModifyInstanceMetadataOptions events
+2026-04-04 15:16:05,595 - INFO - Event not found yet, CloudTrail may still be processing...
+2026-04-04 15:16:05,595 - INFO - Waiting 120s before retry... (elapsed: 1713s, remaining: 87s)
+2026-04-04 15:18:05,595 - ERROR - Timeout after 1800s
+2026-04-04 15:18:05,595 - ERROR - ✗ DETECTION FAILED: CloudTrail event not found within SLA
+2026-04-04 15:18:05,595 - INFO - 
+[DETECTION 2/2] EC2 Metadata Change Verification
+2026-04-04 15:18:05,595 - INFO - --------------------------------------------------------------------------------
+2026-04-04 15:18:05,595 - INFO - Verifying metadata configuration change via EC2 API
+2026-04-04 15:18:06,157 - INFO - Current metadata configuration:
+2026-04-04 15:18:06,158 - INFO -   HttpTokens: optional
+2026-04-04 15:18:06,158 - INFO -   HttpPutResponseHopLimit: 2
+2026-04-04 15:18:06,158 - INFO - ✓ DETECTION VERIFIED: EC2 API confirms metadata weakening
+2026-04-04 15:18:06,158 - INFO - 
+================================================================================
+2026-04-04 15:18:06,158 - INFO - DETECTIVE CONTROLS SUMMARY
+2026-04-04 15:18:06,158 - INFO - ================================================================================
+2026-04-04 15:18:06,158 - INFO - CloudTrail Event Logging:      ✗ FAIL
+2026-04-04 15:18:06,158 - INFO - Metadata Change Verification:  ✓ PASS
+2026-04-04 15:18:06,158 - ERROR - 
+✗ HYPOTHESIS REJECTED: Detective controls failed to detect attack within 30-minute SLA
+2026-04-04 15:18:06,158 - ERROR -   - Review CloudTrail configuration and logging status
+2026-04-04 15:18:06,158 - ERROR -   - Verify IAM permissions for CloudTrail and EC2 services
+2026-04-04 15:18:06,158 - ERROR -   - Check CloudTrail event delivery latency in your region
+[31m[2026-04-04 15:18:06 CRITICAL] Steady state probe 'verify-detective-controls-detect-imds-weakening' is not in the given tolerance so failing this experiment
+[32m[2026-04-04 15:18:06 INFO] Let's rollback...
+[32m[2026-04-04 15:18:06 INFO] Rollback: cleanup-all-experiment-resources-via-cloudformation
+[32m[2026-04-04 15:18:06 INFO] Action: cleanup-all-experiment-resources-via-cloudformation
+2026-04-04 15:18:06,163 - INFO - Using AWS region: us-east-1
+2026-04-04 15:18:06,172 - INFO - Deleting CloudFormation stack: sce-imds-detective-1775306592
+2026-04-04 15:18:06,799 - INFO - Stack deletion initiated
+2026-04-04 15:18:06,921 - INFO - Stack deletion status: DELETE_IN_PROGRESS
+2026-04-04 15:18:06,921 - INFO - Waiting 15s before retry... (elapsed: 0s, remaining: 600s)
+2026-04-04 15:18:22,384 - INFO - Stack deletion status: DELETE_IN_PROGRESS
+2026-04-04 15:18:22,384 - INFO - Waiting 22.5s before retry... (elapsed: 15s, remaining: 585s)
+2026-04-04 15:18:45,340 - INFO - Stack deletion status: DELETE_IN_PROGRESS
+2026-04-04 15:18:45,340 - INFO - Waiting 30s before retry... (elapsed: 38s, remaining: 562s)
+2026-04-04 15:19:15,805 - INFO - Stack deletion status: DELETE_FAILED
+2026-04-04 15:19:15,805 - WARNING - Stack deletion encountered issue: DELETE_FAILED
+2026-04-04 15:19:16,175 - INFO - ================================================================================
+2026-04-04 15:19:16,175 - INFO - CloudFormation Stack Events for sce-imds-detective-1775306592:
+2026-04-04 15:19:16,175 - INFO - ================================================================================
+2026-04-04 15:19:16,176 - INFO - 2026-04-04 13:18:55.004000+00:00 | AWS::CloudFormation::Stack | sce-imds-detective-1775306592
+2026-04-04 15:19:16,176 - INFO -   Status: DELETE_FAILED
+2026-04-04 15:19:16,176 - INFO -   Reason: The following resource(s) failed to delete: [TrailBucket]. 
+2026-04-04 15:19:16,176 - INFO - 2026-04-04 13:18:54.742000+00:00 | AWS::EC2::VPC | VPC
+2026-04-04 15:19:16,176 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:19:16,176 - INFO - 2026-04-04 13:18:52.946000+00:00 | AWS::EC2::VPC | VPC
+2026-04-04 15:19:16,176 - INFO -   Status: DELETE_IN_PROGRESS
+2026-04-04 15:19:16,176 - INFO - 2026-04-04 13:18:52.572000+00:00 | AWS::EC2::Subnet | Subnet
+2026-04-04 15:19:16,176 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:19:16,176 - INFO - 2026-04-04 13:18:52.176000+00:00 | AWS::EC2::RouteTable | RouteTable
+2026-04-04 15:19:16,176 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:19:16,176 - INFO - 2026-04-04 13:18:50.873000+00:00 | AWS::EC2::RouteTable | RouteTable
+2026-04-04 15:19:16,176 - INFO -   Status: DELETE_IN_PROGRESS
+2026-04-04 15:19:16,176 - INFO - 2026-04-04 13:18:50.849000+00:00 | AWS::EC2::Subnet | Subnet
+2026-04-04 15:19:16,176 - INFO -   Status: DELETE_IN_PROGRESS
+2026-04-04 15:19:16,176 - INFO - 2026-04-04 13:18:50.490000+00:00 | AWS::EC2::SubnetRouteTableAssociation | SubnetRouteTableAssociation
+2026-04-04 15:19:16,176 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:19:16,176 - INFO - 2026-04-04 13:18:46.764000+00:00 | AWS::IAM::Role | InstanceRole
+2026-04-04 15:19:16,176 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:19:16,176 - INFO - 2026-04-04 13:18:36.524000+00:00 | AWS::EC2::InternetGateway | InternetGateway
+2026-04-04 15:19:16,176 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:19:16,176 - INFO - ================================================================================
+2026-04-04 15:19:16,176 - INFO - Waiting 30s before retry... (elapsed: 69s, remaining: 531s)
+2026-04-04 15:19:46,653 - INFO - Stack deletion status: DELETE_FAILED
+2026-04-04 15:19:46,653 - WARNING - Stack deletion encountered issue: DELETE_FAILED
+2026-04-04 15:19:46,988 - INFO - ================================================================================
+2026-04-04 15:19:46,988 - INFO - CloudFormation Stack Events for sce-imds-detective-1775306592:
+2026-04-04 15:19:46,988 - INFO - ================================================================================
+2026-04-04 15:19:46,988 - INFO - 2026-04-04 13:18:55.004000+00:00 | AWS::CloudFormation::Stack | sce-imds-detective-1775306592
+2026-04-04 15:19:46,988 - INFO -   Status: DELETE_FAILED
+2026-04-04 15:19:46,988 - INFO -   Reason: The following resource(s) failed to delete: [TrailBucket]. 
+2026-04-04 15:19:46,988 - INFO - 2026-04-04 13:18:54.742000+00:00 | AWS::EC2::VPC | VPC
+2026-04-04 15:19:46,988 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:19:46,988 - INFO - 2026-04-04 13:18:52.946000+00:00 | AWS::EC2::VPC | VPC
+2026-04-04 15:19:46,988 - INFO -   Status: DELETE_IN_PROGRESS
+2026-04-04 15:19:46,988 - INFO - 2026-04-04 13:18:52.572000+00:00 | AWS::EC2::Subnet | Subnet
+2026-04-04 15:19:46,988 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:19:46,988 - INFO - 2026-04-04 13:18:52.176000+00:00 | AWS::EC2::RouteTable | RouteTable
+2026-04-04 15:19:46,988 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:19:46,988 - INFO - 2026-04-04 13:18:50.873000+00:00 | AWS::EC2::RouteTable | RouteTable
+2026-04-04 15:19:46,988 - INFO -   Status: DELETE_IN_PROGRESS
+2026-04-04 15:19:46,988 - INFO - 2026-04-04 13:18:50.849000+00:00 | AWS::EC2::Subnet | Subnet
+2026-04-04 15:19:46,988 - INFO -   Status: DELETE_IN_PROGRESS
+2026-04-04 15:19:46,988 - INFO - 2026-04-04 13:18:50.490000+00:00 | AWS::EC2::SubnetRouteTableAssociation | SubnetRouteTableAssociation
+2026-04-04 15:19:46,988 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:19:46,988 - INFO - 2026-04-04 13:18:46.764000+00:00 | AWS::IAM::Role | InstanceRole
+2026-04-04 15:19:46,988 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:19:46,988 - INFO - 2026-04-04 13:18:36.524000+00:00 | AWS::EC2::InternetGateway | InternetGateway
+2026-04-04 15:19:46,989 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:19:46,989 - INFO - ================================================================================
+2026-04-04 15:19:46,989 - INFO - Waiting 30s before retry... (elapsed: 100s, remaining: 500s)
+2026-04-04 15:20:17,475 - INFO - Stack deletion status: DELETE_FAILED
+2026-04-04 15:20:17,475 - WARNING - Stack deletion encountered issue: DELETE_FAILED
+2026-04-04 15:20:17,800 - INFO - ================================================================================
+2026-04-04 15:20:17,801 - INFO - CloudFormation Stack Events for sce-imds-detective-1775306592:
+2026-04-04 15:20:17,801 - INFO - ================================================================================
+2026-04-04 15:20:17,801 - INFO - 2026-04-04 13:18:55.004000+00:00 | AWS::CloudFormation::Stack | sce-imds-detective-1775306592
+2026-04-04 15:20:17,801 - INFO -   Status: DELETE_FAILED
+2026-04-04 15:20:17,801 - INFO -   Reason: The following resource(s) failed to delete: [TrailBucket]. 
+2026-04-04 15:20:17,801 - INFO - 2026-04-04 13:18:54.742000+00:00 | AWS::EC2::VPC | VPC
+2026-04-04 15:20:17,801 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:20:17,801 - INFO - 2026-04-04 13:18:52.946000+00:00 | AWS::EC2::VPC | VPC
+2026-04-04 15:20:17,801 - INFO -   Status: DELETE_IN_PROGRESS
+2026-04-04 15:20:17,801 - INFO - 2026-04-04 13:18:52.572000+00:00 | AWS::EC2::Subnet | Subnet
+2026-04-04 15:20:17,801 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:20:17,801 - INFO - 2026-04-04 13:18:52.176000+00:00 | AWS::EC2::RouteTable | RouteTable
+2026-04-04 15:20:17,801 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:20:17,801 - INFO - 2026-04-04 13:18:50.873000+00:00 | AWS::EC2::RouteTable | RouteTable
+2026-04-04 15:20:17,801 - INFO -   Status: DELETE_IN_PROGRESS
+2026-04-04 15:20:17,801 - INFO - 2026-04-04 13:18:50.849000+00:00 | AWS::EC2::Subnet | Subnet
+2026-04-04 15:20:17,801 - INFO -   Status: DELETE_IN_PROGRESS
+2026-04-04 15:20:17,801 - INFO - 2026-04-04 13:18:50.490000+00:00 | AWS::EC2::SubnetRouteTableAssociation | SubnetRouteTableAssociation
+2026-04-04 15:20:17,801 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:20:17,801 - INFO - 2026-04-04 13:18:46.764000+00:00 | AWS::IAM::Role | InstanceRole
+2026-04-04 15:20:17,801 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:20:17,801 - INFO - 2026-04-04 13:18:36.524000+00:00 | AWS::EC2::InternetGateway | InternetGateway
+2026-04-04 15:20:17,801 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:20:17,801 - INFO - ================================================================================
+2026-04-04 15:20:17,801 - INFO - Waiting 30s before retry... (elapsed: 131s, remaining: 469s)
+2026-04-04 15:20:48,261 - INFO - Stack deletion status: DELETE_FAILED
+2026-04-04 15:20:48,261 - WARNING - Stack deletion encountered issue: DELETE_FAILED
+2026-04-04 15:20:48,595 - INFO - ================================================================================
+2026-04-04 15:20:48,595 - INFO - CloudFormation Stack Events for sce-imds-detective-1775306592:
+2026-04-04 15:20:48,595 - INFO - ================================================================================
+2026-04-04 15:20:48,595 - INFO - 2026-04-04 13:18:55.004000+00:00 | AWS::CloudFormation::Stack | sce-imds-detective-1775306592
+2026-04-04 15:20:48,595 - INFO -   Status: DELETE_FAILED
+2026-04-04 15:20:48,595 - INFO -   Reason: The following resource(s) failed to delete: [TrailBucket]. 
+2026-04-04 15:20:48,595 - INFO - 2026-04-04 13:18:54.742000+00:00 | AWS::EC2::VPC | VPC
+2026-04-04 15:20:48,595 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:20:48,595 - INFO - 2026-04-04 13:18:52.946000+00:00 | AWS::EC2::VPC | VPC
+2026-04-04 15:20:48,595 - INFO -   Status: DELETE_IN_PROGRESS
+2026-04-04 15:20:48,595 - INFO - 2026-04-04 13:18:52.572000+00:00 | AWS::EC2::Subnet | Subnet
+2026-04-04 15:20:48,595 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:20:48,595 - INFO - 2026-04-04 13:18:52.176000+00:00 | AWS::EC2::RouteTable | RouteTable
+2026-04-04 15:20:48,595 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:20:48,595 - INFO - 2026-04-04 13:18:50.873000+00:00 | AWS::EC2::RouteTable | RouteTable
+2026-04-04 15:20:48,595 - INFO -   Status: DELETE_IN_PROGRESS
+2026-04-04 15:20:48,595 - INFO - 2026-04-04 13:18:50.849000+00:00 | AWS::EC2::Subnet | Subnet
+2026-04-04 15:20:48,595 - INFO -   Status: DELETE_IN_PROGRESS
+2026-04-04 15:20:48,595 - INFO - 2026-04-04 13:18:50.490000+00:00 | AWS::EC2::SubnetRouteTableAssociation | SubnetRouteTableAssociation
+2026-04-04 15:20:48,595 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:20:48,595 - INFO - 2026-04-04 13:18:46.764000+00:00 | AWS::IAM::Role | InstanceRole
+2026-04-04 15:20:48,595 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:20:48,595 - INFO - 2026-04-04 13:18:36.524000+00:00 | AWS::EC2::InternetGateway | InternetGateway
+2026-04-04 15:20:48,595 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:20:48,595 - INFO - ================================================================================
+2026-04-04 15:20:48,595 - INFO - Waiting 30s before retry... (elapsed: 161s, remaining: 439s)
+2026-04-04 15:21:19,046 - INFO - Stack deletion status: DELETE_FAILED
+2026-04-04 15:21:19,046 - WARNING - Stack deletion encountered issue: DELETE_FAILED
+2026-04-04 15:21:19,372 - INFO - ================================================================================
+2026-04-04 15:21:19,372 - INFO - CloudFormation Stack Events for sce-imds-detective-1775306592:
+2026-04-04 15:21:19,372 - INFO - ================================================================================
+2026-04-04 15:21:19,372 - INFO - 2026-04-04 13:18:55.004000+00:00 | AWS::CloudFormation::Stack | sce-imds-detective-1775306592
+2026-04-04 15:21:19,372 - INFO -   Status: DELETE_FAILED
+2026-04-04 15:21:19,372 - INFO -   Reason: The following resource(s) failed to delete: [TrailBucket]. 
+2026-04-04 15:21:19,372 - INFO - 2026-04-04 13:18:54.742000+00:00 | AWS::EC2::VPC | VPC
+2026-04-04 15:21:19,372 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:21:19,372 - INFO - 2026-04-04 13:18:52.946000+00:00 | AWS::EC2::VPC | VPC
+2026-04-04 15:21:19,372 - INFO -   Status: DELETE_IN_PROGRESS
+2026-04-04 15:21:19,372 - INFO - 2026-04-04 13:18:52.572000+00:00 | AWS::EC2::Subnet | Subnet
+2026-04-04 15:21:19,372 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:21:19,372 - INFO - 2026-04-04 13:18:52.176000+00:00 | AWS::EC2::RouteTable | RouteTable
+2026-04-04 15:21:19,372 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:21:19,372 - INFO - 2026-04-04 13:18:50.873000+00:00 | AWS::EC2::RouteTable | RouteTable
+2026-04-04 15:21:19,372 - INFO -   Status: DELETE_IN_PROGRESS
+2026-04-04 15:21:19,372 - INFO - 2026-04-04 13:18:50.849000+00:00 | AWS::EC2::Subnet | Subnet
+2026-04-04 15:21:19,372 - INFO -   Status: DELETE_IN_PROGRESS
+2026-04-04 15:21:19,372 - INFO - 2026-04-04 13:18:50.490000+00:00 | AWS::EC2::SubnetRouteTableAssociation | SubnetRouteTableAssociation
+2026-04-04 15:21:19,372 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:21:19,372 - INFO - 2026-04-04 13:18:46.764000+00:00 | AWS::IAM::Role | InstanceRole
+2026-04-04 15:21:19,372 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:21:19,372 - INFO - 2026-04-04 13:18:36.524000+00:00 | AWS::EC2::InternetGateway | InternetGateway
+2026-04-04 15:21:19,372 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:21:19,372 - INFO - ================================================================================
+2026-04-04 15:21:19,372 - INFO - Waiting 30s before retry... (elapsed: 192s, remaining: 408s)
+2026-04-04 15:21:49,828 - INFO - Stack deletion status: DELETE_FAILED
+2026-04-04 15:21:49,828 - WARNING - Stack deletion encountered issue: DELETE_FAILED
+2026-04-04 15:21:50,165 - INFO - ================================================================================
+2026-04-04 15:21:50,165 - INFO - CloudFormation Stack Events for sce-imds-detective-1775306592:
+2026-04-04 15:21:50,165 - INFO - ================================================================================
+2026-04-04 15:21:50,165 - INFO - 2026-04-04 13:18:55.004000+00:00 | AWS::CloudFormation::Stack | sce-imds-detective-1775306592
+2026-04-04 15:21:50,165 - INFO -   Status: DELETE_FAILED
+2026-04-04 15:21:50,165 - INFO -   Reason: The following resource(s) failed to delete: [TrailBucket]. 
+2026-04-04 15:21:50,165 - INFO - 2026-04-04 13:18:54.742000+00:00 | AWS::EC2::VPC | VPC
+2026-04-04 15:21:50,165 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:21:50,165 - INFO - 2026-04-04 13:18:52.946000+00:00 | AWS::EC2::VPC | VPC
+2026-04-04 15:21:50,165 - INFO -   Status: DELETE_IN_PROGRESS
+2026-04-04 15:21:50,165 - INFO - 2026-04-04 13:18:52.572000+00:00 | AWS::EC2::Subnet | Subnet
+2026-04-04 15:21:50,165 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:21:50,165 - INFO - 2026-04-04 13:18:52.176000+00:00 | AWS::EC2::RouteTable | RouteTable
+2026-04-04 15:21:50,165 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:21:50,165 - INFO - 2026-04-04 13:18:50.873000+00:00 | AWS::EC2::RouteTable | RouteTable
+2026-04-04 15:21:50,165 - INFO -   Status: DELETE_IN_PROGRESS
+2026-04-04 15:21:50,165 - INFO - 2026-04-04 13:18:50.849000+00:00 | AWS::EC2::Subnet | Subnet
+2026-04-04 15:21:50,165 - INFO -   Status: DELETE_IN_PROGRESS
+2026-04-04 15:21:50,165 - INFO - 2026-04-04 13:18:50.490000+00:00 | AWS::EC2::SubnetRouteTableAssociation | SubnetRouteTableAssociation
+2026-04-04 15:21:50,165 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:21:50,165 - INFO - 2026-04-04 13:18:46.764000+00:00 | AWS::IAM::Role | InstanceRole
+2026-04-04 15:21:50,165 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:21:50,165 - INFO - 2026-04-04 13:18:36.524000+00:00 | AWS::EC2::InternetGateway | InternetGateway
+2026-04-04 15:21:50,165 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:21:50,165 - INFO - ================================================================================
+2026-04-04 15:21:50,165 - INFO - Waiting 30s before retry... (elapsed: 223s, remaining: 377s)
+2026-04-04 15:22:20,617 - INFO - Stack deletion status: DELETE_FAILED
+2026-04-04 15:22:20,617 - WARNING - Stack deletion encountered issue: DELETE_FAILED
+2026-04-04 15:22:20,948 - INFO - ================================================================================
+2026-04-04 15:22:20,948 - INFO - CloudFormation Stack Events for sce-imds-detective-1775306592:
+2026-04-04 15:22:20,948 - INFO - ================================================================================
+2026-04-04 15:22:20,949 - INFO - 2026-04-04 13:18:55.004000+00:00 | AWS::CloudFormation::Stack | sce-imds-detective-1775306592
+2026-04-04 15:22:20,949 - INFO -   Status: DELETE_FAILED
+2026-04-04 15:22:20,949 - INFO -   Reason: The following resource(s) failed to delete: [TrailBucket]. 
+2026-04-04 15:22:20,949 - INFO - 2026-04-04 13:18:54.742000+00:00 | AWS::EC2::VPC | VPC
+2026-04-04 15:22:20,949 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:22:20,949 - INFO - 2026-04-04 13:18:52.946000+00:00 | AWS::EC2::VPC | VPC
+2026-04-04 15:22:20,949 - INFO -   Status: DELETE_IN_PROGRESS
+2026-04-04 15:22:20,949 - INFO - 2026-04-04 13:18:52.572000+00:00 | AWS::EC2::Subnet | Subnet
+2026-04-04 15:22:20,949 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:22:20,949 - INFO - 2026-04-04 13:18:52.176000+00:00 | AWS::EC2::RouteTable | RouteTable
+2026-04-04 15:22:20,949 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:22:20,949 - INFO - 2026-04-04 13:18:50.873000+00:00 | AWS::EC2::RouteTable | RouteTable
+2026-04-04 15:22:20,949 - INFO -   Status: DELETE_IN_PROGRESS
+2026-04-04 15:22:20,949 - INFO - 2026-04-04 13:18:50.849000+00:00 | AWS::EC2::Subnet | Subnet
+2026-04-04 15:22:20,949 - INFO -   Status: DELETE_IN_PROGRESS
+2026-04-04 15:22:20,949 - INFO - 2026-04-04 13:18:50.490000+00:00 | AWS::EC2::SubnetRouteTableAssociation | SubnetRouteTableAssociation
+2026-04-04 15:22:20,949 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:22:20,949 - INFO - 2026-04-04 13:18:46.764000+00:00 | AWS::IAM::Role | InstanceRole
+2026-04-04 15:22:20,949 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:22:20,949 - INFO - 2026-04-04 13:18:36.524000+00:00 | AWS::EC2::InternetGateway | InternetGateway
+2026-04-04 15:22:20,949 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:22:20,949 - INFO - ================================================================================
+2026-04-04 15:22:20,949 - INFO - Waiting 30s before retry... (elapsed: 254s, remaining: 346s)
+2026-04-04 15:22:51,418 - INFO - Stack deletion status: DELETE_FAILED
+2026-04-04 15:22:51,418 - WARNING - Stack deletion encountered issue: DELETE_FAILED
+2026-04-04 15:22:51,760 - INFO - ================================================================================
+2026-04-04 15:22:51,760 - INFO - CloudFormation Stack Events for sce-imds-detective-1775306592:
+2026-04-04 15:22:51,760 - INFO - ================================================================================
+2026-04-04 15:22:51,760 - INFO - 2026-04-04 13:18:55.004000+00:00 | AWS::CloudFormation::Stack | sce-imds-detective-1775306592
+2026-04-04 15:22:51,760 - INFO -   Status: DELETE_FAILED
+2026-04-04 15:22:51,760 - INFO -   Reason: The following resource(s) failed to delete: [TrailBucket]. 
+2026-04-04 15:22:51,760 - INFO - 2026-04-04 13:18:54.742000+00:00 | AWS::EC2::VPC | VPC
+2026-04-04 15:22:51,760 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:22:51,760 - INFO - 2026-04-04 13:18:52.946000+00:00 | AWS::EC2::VPC | VPC
+2026-04-04 15:22:51,760 - INFO -   Status: DELETE_IN_PROGRESS
+2026-04-04 15:22:51,760 - INFO - 2026-04-04 13:18:52.572000+00:00 | AWS::EC2::Subnet | Subnet
+2026-04-04 15:22:51,760 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:22:51,761 - INFO - 2026-04-04 13:18:52.176000+00:00 | AWS::EC2::RouteTable | RouteTable
+2026-04-04 15:22:51,761 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:22:51,761 - INFO - 2026-04-04 13:18:50.873000+00:00 | AWS::EC2::RouteTable | RouteTable
+2026-04-04 15:22:51,761 - INFO -   Status: DELETE_IN_PROGRESS
+2026-04-04 15:22:51,761 - INFO - 2026-04-04 13:18:50.849000+00:00 | AWS::EC2::Subnet | Subnet
+2026-04-04 15:22:51,761 - INFO -   Status: DELETE_IN_PROGRESS
+2026-04-04 15:22:51,761 - INFO - 2026-04-04 13:18:50.490000+00:00 | AWS::EC2::SubnetRouteTableAssociation | SubnetRouteTableAssociation
+2026-04-04 15:22:51,761 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:22:51,761 - INFO - 2026-04-04 13:18:46.764000+00:00 | AWS::IAM::Role | InstanceRole
+2026-04-04 15:22:51,761 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:22:51,761 - INFO - 2026-04-04 13:18:36.524000+00:00 | AWS::EC2::InternetGateway | InternetGateway
+2026-04-04 15:22:51,761 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:22:51,761 - INFO - ================================================================================
+2026-04-04 15:22:51,761 - INFO - Waiting 30s before retry... (elapsed: 284s, remaining: 316s)
+2026-04-04 15:23:22,243 - INFO - Stack deletion status: DELETE_FAILED
+2026-04-04 15:23:22,243 - WARNING - Stack deletion encountered issue: DELETE_FAILED
+2026-04-04 15:23:22,575 - INFO - ================================================================================
+2026-04-04 15:23:22,575 - INFO - CloudFormation Stack Events for sce-imds-detective-1775306592:
+2026-04-04 15:23:22,575 - INFO - ================================================================================
+2026-04-04 15:23:22,575 - INFO - 2026-04-04 13:18:55.004000+00:00 | AWS::CloudFormation::Stack | sce-imds-detective-1775306592
+2026-04-04 15:23:22,575 - INFO -   Status: DELETE_FAILED
+2026-04-04 15:23:22,575 - INFO -   Reason: The following resource(s) failed to delete: [TrailBucket]. 
+2026-04-04 15:23:22,575 - INFO - 2026-04-04 13:18:54.742000+00:00 | AWS::EC2::VPC | VPC
+2026-04-04 15:23:22,575 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:23:22,575 - INFO - 2026-04-04 13:18:52.946000+00:00 | AWS::EC2::VPC | VPC
+2026-04-04 15:23:22,575 - INFO -   Status: DELETE_IN_PROGRESS
+2026-04-04 15:23:22,575 - INFO - 2026-04-04 13:18:52.572000+00:00 | AWS::EC2::Subnet | Subnet
+2026-04-04 15:23:22,575 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:23:22,575 - INFO - 2026-04-04 13:18:52.176000+00:00 | AWS::EC2::RouteTable | RouteTable
+2026-04-04 15:23:22,575 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:23:22,575 - INFO - 2026-04-04 13:18:50.873000+00:00 | AWS::EC2::RouteTable | RouteTable
+2026-04-04 15:23:22,575 - INFO -   Status: DELETE_IN_PROGRESS
+2026-04-04 15:23:22,575 - INFO - 2026-04-04 13:18:50.849000+00:00 | AWS::EC2::Subnet | Subnet
+2026-04-04 15:23:22,575 - INFO -   Status: DELETE_IN_PROGRESS
+2026-04-04 15:23:22,575 - INFO - 2026-04-04 13:18:50.490000+00:00 | AWS::EC2::SubnetRouteTableAssociation | SubnetRouteTableAssociation
+2026-04-04 15:23:22,575 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:23:22,575 - INFO - 2026-04-04 13:18:46.764000+00:00 | AWS::IAM::Role | InstanceRole
+2026-04-04 15:23:22,575 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:23:22,575 - INFO - 2026-04-04 13:18:36.524000+00:00 | AWS::EC2::InternetGateway | InternetGateway
+2026-04-04 15:23:22,575 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:23:22,575 - INFO - ================================================================================
+2026-04-04 15:23:22,575 - INFO - Waiting 30s before retry... (elapsed: 315s, remaining: 285s)
+2026-04-04 15:23:53,037 - INFO - Stack deletion status: DELETE_FAILED
+2026-04-04 15:23:53,037 - WARNING - Stack deletion encountered issue: DELETE_FAILED
+2026-04-04 15:23:53,361 - INFO - ================================================================================
+2026-04-04 15:23:53,361 - INFO - CloudFormation Stack Events for sce-imds-detective-1775306592:
+2026-04-04 15:23:53,361 - INFO - ================================================================================
+2026-04-04 15:23:53,361 - INFO - 2026-04-04 13:18:55.004000+00:00 | AWS::CloudFormation::Stack | sce-imds-detective-1775306592
+2026-04-04 15:23:53,361 - INFO -   Status: DELETE_FAILED
+2026-04-04 15:23:53,361 - INFO -   Reason: The following resource(s) failed to delete: [TrailBucket]. 
+2026-04-04 15:23:53,361 - INFO - 2026-04-04 13:18:54.742000+00:00 | AWS::EC2::VPC | VPC
+2026-04-04 15:23:53,361 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:23:53,361 - INFO - 2026-04-04 13:18:52.946000+00:00 | AWS::EC2::VPC | VPC
+2026-04-04 15:23:53,361 - INFO -   Status: DELETE_IN_PROGRESS
+2026-04-04 15:23:53,361 - INFO - 2026-04-04 13:18:52.572000+00:00 | AWS::EC2::Subnet | Subnet
+2026-04-04 15:23:53,361 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:23:53,361 - INFO - 2026-04-04 13:18:52.176000+00:00 | AWS::EC2::RouteTable | RouteTable
+2026-04-04 15:23:53,361 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:23:53,361 - INFO - 2026-04-04 13:18:50.873000+00:00 | AWS::EC2::RouteTable | RouteTable
+2026-04-04 15:23:53,361 - INFO -   Status: DELETE_IN_PROGRESS
+2026-04-04 15:23:53,361 - INFO - 2026-04-04 13:18:50.849000+00:00 | AWS::EC2::Subnet | Subnet
+2026-04-04 15:23:53,361 - INFO -   Status: DELETE_IN_PROGRESS
+2026-04-04 15:23:53,361 - INFO - 2026-04-04 13:18:50.490000+00:00 | AWS::EC2::SubnetRouteTableAssociation | SubnetRouteTableAssociation
+2026-04-04 15:23:53,361 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:23:53,361 - INFO - 2026-04-04 13:18:46.764000+00:00 | AWS::IAM::Role | InstanceRole
+2026-04-04 15:23:53,361 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:23:53,361 - INFO - 2026-04-04 13:18:36.524000+00:00 | AWS::EC2::InternetGateway | InternetGateway
+2026-04-04 15:23:53,361 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:23:53,361 - INFO - ================================================================================
+2026-04-04 15:23:53,361 - INFO - Waiting 30s before retry... (elapsed: 346s, remaining: 254s)
+2026-04-04 15:24:23,805 - INFO - Stack deletion status: DELETE_FAILED
+2026-04-04 15:24:23,805 - WARNING - Stack deletion encountered issue: DELETE_FAILED
+2026-04-04 15:24:24,134 - INFO - ================================================================================
+2026-04-04 15:24:24,134 - INFO - CloudFormation Stack Events for sce-imds-detective-1775306592:
+2026-04-04 15:24:24,134 - INFO - ================================================================================
+2026-04-04 15:24:24,134 - INFO - 2026-04-04 13:18:55.004000+00:00 | AWS::CloudFormation::Stack | sce-imds-detective-1775306592
+2026-04-04 15:24:24,134 - INFO -   Status: DELETE_FAILED
+2026-04-04 15:24:24,134 - INFO -   Reason: The following resource(s) failed to delete: [TrailBucket]. 
+2026-04-04 15:24:24,134 - INFO - 2026-04-04 13:18:54.742000+00:00 | AWS::EC2::VPC | VPC
+2026-04-04 15:24:24,134 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:24:24,134 - INFO - 2026-04-04 13:18:52.946000+00:00 | AWS::EC2::VPC | VPC
+2026-04-04 15:24:24,134 - INFO -   Status: DELETE_IN_PROGRESS
+2026-04-04 15:24:24,134 - INFO - 2026-04-04 13:18:52.572000+00:00 | AWS::EC2::Subnet | Subnet
+2026-04-04 15:24:24,134 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:24:24,134 - INFO - 2026-04-04 13:18:52.176000+00:00 | AWS::EC2::RouteTable | RouteTable
+2026-04-04 15:24:24,134 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:24:24,134 - INFO - 2026-04-04 13:18:50.873000+00:00 | AWS::EC2::RouteTable | RouteTable
+2026-04-04 15:24:24,134 - INFO -   Status: DELETE_IN_PROGRESS
+2026-04-04 15:24:24,134 - INFO - 2026-04-04 13:18:50.849000+00:00 | AWS::EC2::Subnet | Subnet
+2026-04-04 15:24:24,134 - INFO -   Status: DELETE_IN_PROGRESS
+2026-04-04 15:24:24,134 - INFO - 2026-04-04 13:18:50.490000+00:00 | AWS::EC2::SubnetRouteTableAssociation | SubnetRouteTableAssociation
+2026-04-04 15:24:24,134 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:24:24,134 - INFO - 2026-04-04 13:18:46.764000+00:00 | AWS::IAM::Role | InstanceRole
+2026-04-04 15:24:24,134 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:24:24,134 - INFO - 2026-04-04 13:18:36.524000+00:00 | AWS::EC2::InternetGateway | InternetGateway
+2026-04-04 15:24:24,134 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:24:24,134 - INFO - ================================================================================
+2026-04-04 15:24:24,134 - INFO - Waiting 30s before retry... (elapsed: 377s, remaining: 223s)
+2026-04-04 15:24:54,601 - INFO - Stack deletion status: DELETE_FAILED
+2026-04-04 15:24:54,601 - WARNING - Stack deletion encountered issue: DELETE_FAILED
+2026-04-04 15:24:54,935 - INFO - ================================================================================
+2026-04-04 15:24:54,935 - INFO - CloudFormation Stack Events for sce-imds-detective-1775306592:
+2026-04-04 15:24:54,935 - INFO - ================================================================================
+2026-04-04 15:24:54,935 - INFO - 2026-04-04 13:18:55.004000+00:00 | AWS::CloudFormation::Stack | sce-imds-detective-1775306592
+2026-04-04 15:24:54,935 - INFO -   Status: DELETE_FAILED
+2026-04-04 15:24:54,935 - INFO -   Reason: The following resource(s) failed to delete: [TrailBucket]. 
+2026-04-04 15:24:54,935 - INFO - 2026-04-04 13:18:54.742000+00:00 | AWS::EC2::VPC | VPC
+2026-04-04 15:24:54,935 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:24:54,935 - INFO - 2026-04-04 13:18:52.946000+00:00 | AWS::EC2::VPC | VPC
+2026-04-04 15:24:54,935 - INFO -   Status: DELETE_IN_PROGRESS
+2026-04-04 15:24:54,935 - INFO - 2026-04-04 13:18:52.572000+00:00 | AWS::EC2::Subnet | Subnet
+2026-04-04 15:24:54,935 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:24:54,935 - INFO - 2026-04-04 13:18:52.176000+00:00 | AWS::EC2::RouteTable | RouteTable
+2026-04-04 15:24:54,935 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:24:54,935 - INFO - 2026-04-04 13:18:50.873000+00:00 | AWS::EC2::RouteTable | RouteTable
+2026-04-04 15:24:54,935 - INFO -   Status: DELETE_IN_PROGRESS
+2026-04-04 15:24:54,935 - INFO - 2026-04-04 13:18:50.849000+00:00 | AWS::EC2::Subnet | Subnet
+2026-04-04 15:24:54,935 - INFO -   Status: DELETE_IN_PROGRESS
+2026-04-04 15:24:54,935 - INFO - 2026-04-04 13:18:50.490000+00:00 | AWS::EC2::SubnetRouteTableAssociation | SubnetRouteTableAssociation
+2026-04-04 15:24:54,935 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:24:54,935 - INFO - 2026-04-04 13:18:46.764000+00:00 | AWS::IAM::Role | InstanceRole
+2026-04-04 15:24:54,935 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:24:54,935 - INFO - 2026-04-04 13:18:36.524000+00:00 | AWS::EC2::InternetGateway | InternetGateway
+2026-04-04 15:24:54,935 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:24:54,935 - INFO - ================================================================================
+2026-04-04 15:24:54,935 - INFO - Waiting 30s before retry... (elapsed: 408s, remaining: 192s)
+2026-04-04 15:25:25,380 - INFO - Stack deletion status: DELETE_FAILED
+2026-04-04 15:25:25,381 - WARNING - Stack deletion encountered issue: DELETE_FAILED
+2026-04-04 15:25:25,714 - INFO - ================================================================================
+2026-04-04 15:25:25,714 - INFO - CloudFormation Stack Events for sce-imds-detective-1775306592:
+2026-04-04 15:25:25,714 - INFO - ================================================================================
+2026-04-04 15:25:25,714 - INFO - 2026-04-04 13:18:55.004000+00:00 | AWS::CloudFormation::Stack | sce-imds-detective-1775306592
+2026-04-04 15:25:25,714 - INFO -   Status: DELETE_FAILED
+2026-04-04 15:25:25,714 - INFO -   Reason: The following resource(s) failed to delete: [TrailBucket]. 
+2026-04-04 15:25:25,714 - INFO - 2026-04-04 13:18:54.742000+00:00 | AWS::EC2::VPC | VPC
+2026-04-04 15:25:25,714 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:25:25,714 - INFO - 2026-04-04 13:18:52.946000+00:00 | AWS::EC2::VPC | VPC
+2026-04-04 15:25:25,714 - INFO -   Status: DELETE_IN_PROGRESS
+2026-04-04 15:25:25,715 - INFO - 2026-04-04 13:18:52.572000+00:00 | AWS::EC2::Subnet | Subnet
+2026-04-04 15:25:25,715 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:25:25,715 - INFO - 2026-04-04 13:18:52.176000+00:00 | AWS::EC2::RouteTable | RouteTable
+2026-04-04 15:25:25,715 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:25:25,715 - INFO - 2026-04-04 13:18:50.873000+00:00 | AWS::EC2::RouteTable | RouteTable
+2026-04-04 15:25:25,715 - INFO -   Status: DELETE_IN_PROGRESS
+2026-04-04 15:25:25,715 - INFO - 2026-04-04 13:18:50.849000+00:00 | AWS::EC2::Subnet | Subnet
+2026-04-04 15:25:25,715 - INFO -   Status: DELETE_IN_PROGRESS
+2026-04-04 15:25:25,715 - INFO - 2026-04-04 13:18:50.490000+00:00 | AWS::EC2::SubnetRouteTableAssociation | SubnetRouteTableAssociation
+2026-04-04 15:25:25,715 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:25:25,715 - INFO - 2026-04-04 13:18:46.764000+00:00 | AWS::IAM::Role | InstanceRole
+2026-04-04 15:25:25,715 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:25:25,715 - INFO - 2026-04-04 13:18:36.524000+00:00 | AWS::EC2::InternetGateway | InternetGateway
+2026-04-04 15:25:25,715 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:25:25,715 - INFO - ================================================================================
+2026-04-04 15:25:25,715 - INFO - Waiting 30s before retry... (elapsed: 438s, remaining: 162s)
+2026-04-04 15:25:56,170 - INFO - Stack deletion status: DELETE_FAILED
+2026-04-04 15:25:56,170 - WARNING - Stack deletion encountered issue: DELETE_FAILED
+2026-04-04 15:25:56,503 - INFO - ================================================================================
+2026-04-04 15:25:56,503 - INFO - CloudFormation Stack Events for sce-imds-detective-1775306592:
+2026-04-04 15:25:56,503 - INFO - ================================================================================
+2026-04-04 15:25:56,503 - INFO - 2026-04-04 13:18:55.004000+00:00 | AWS::CloudFormation::Stack | sce-imds-detective-1775306592
+2026-04-04 15:25:56,503 - INFO -   Status: DELETE_FAILED
+2026-04-04 15:25:56,503 - INFO -   Reason: The following resource(s) failed to delete: [TrailBucket]. 
+2026-04-04 15:25:56,503 - INFO - 2026-04-04 13:18:54.742000+00:00 | AWS::EC2::VPC | VPC
+2026-04-04 15:25:56,503 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:25:56,503 - INFO - 2026-04-04 13:18:52.946000+00:00 | AWS::EC2::VPC | VPC
+2026-04-04 15:25:56,503 - INFO -   Status: DELETE_IN_PROGRESS
+2026-04-04 15:25:56,503 - INFO - 2026-04-04 13:18:52.572000+00:00 | AWS::EC2::Subnet | Subnet
+2026-04-04 15:25:56,503 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:25:56,503 - INFO - 2026-04-04 13:18:52.176000+00:00 | AWS::EC2::RouteTable | RouteTable
+2026-04-04 15:25:56,503 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:25:56,503 - INFO - 2026-04-04 13:18:50.873000+00:00 | AWS::EC2::RouteTable | RouteTable
+2026-04-04 15:25:56,503 - INFO -   Status: DELETE_IN_PROGRESS
+2026-04-04 15:25:56,503 - INFO - 2026-04-04 13:18:50.849000+00:00 | AWS::EC2::Subnet | Subnet
+2026-04-04 15:25:56,503 - INFO -   Status: DELETE_IN_PROGRESS
+2026-04-04 15:25:56,503 - INFO - 2026-04-04 13:18:50.490000+00:00 | AWS::EC2::SubnetRouteTableAssociation | SubnetRouteTableAssociation
+2026-04-04 15:25:56,503 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:25:56,503 - INFO - 2026-04-04 13:18:46.764000+00:00 | AWS::IAM::Role | InstanceRole
+2026-04-04 15:25:56,503 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:25:56,503 - INFO - 2026-04-04 13:18:36.524000+00:00 | AWS::EC2::InternetGateway | InternetGateway
+2026-04-04 15:25:56,503 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:25:56,503 - INFO - ================================================================================
+2026-04-04 15:25:56,503 - INFO - Waiting 30s before retry... (elapsed: 469s, remaining: 131s)
+2026-04-04 15:26:26,956 - INFO - Stack deletion status: DELETE_FAILED
+2026-04-04 15:26:26,956 - WARNING - Stack deletion encountered issue: DELETE_FAILED
+2026-04-04 15:26:27,292 - INFO - ================================================================================
+2026-04-04 15:26:27,293 - INFO - CloudFormation Stack Events for sce-imds-detective-1775306592:
+2026-04-04 15:26:27,293 - INFO - ================================================================================
+2026-04-04 15:26:27,293 - INFO - 2026-04-04 13:18:55.004000+00:00 | AWS::CloudFormation::Stack | sce-imds-detective-1775306592
+2026-04-04 15:26:27,293 - INFO -   Status: DELETE_FAILED
+2026-04-04 15:26:27,293 - INFO -   Reason: The following resource(s) failed to delete: [TrailBucket]. 
+2026-04-04 15:26:27,293 - INFO - 2026-04-04 13:18:54.742000+00:00 | AWS::EC2::VPC | VPC
+2026-04-04 15:26:27,293 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:26:27,293 - INFO - 2026-04-04 13:18:52.946000+00:00 | AWS::EC2::VPC | VPC
+2026-04-04 15:26:27,293 - INFO -   Status: DELETE_IN_PROGRESS
+2026-04-04 15:26:27,293 - INFO - 2026-04-04 13:18:52.572000+00:00 | AWS::EC2::Subnet | Subnet
+2026-04-04 15:26:27,293 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:26:27,293 - INFO - 2026-04-04 13:18:52.176000+00:00 | AWS::EC2::RouteTable | RouteTable
+2026-04-04 15:26:27,293 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:26:27,293 - INFO - 2026-04-04 13:18:50.873000+00:00 | AWS::EC2::RouteTable | RouteTable
+2026-04-04 15:26:27,293 - INFO -   Status: DELETE_IN_PROGRESS
+2026-04-04 15:26:27,293 - INFO - 2026-04-04 13:18:50.849000+00:00 | AWS::EC2::Subnet | Subnet
+2026-04-04 15:26:27,293 - INFO -   Status: DELETE_IN_PROGRESS
+2026-04-04 15:26:27,293 - INFO - 2026-04-04 13:18:50.490000+00:00 | AWS::EC2::SubnetRouteTableAssociation | SubnetRouteTableAssociation
+2026-04-04 15:26:27,293 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:26:27,293 - INFO - 2026-04-04 13:18:46.764000+00:00 | AWS::IAM::Role | InstanceRole
+2026-04-04 15:26:27,293 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:26:27,293 - INFO - 2026-04-04 13:18:36.524000+00:00 | AWS::EC2::InternetGateway | InternetGateway
+2026-04-04 15:26:27,293 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:26:27,293 - INFO - ================================================================================
+2026-04-04 15:26:27,293 - INFO - Waiting 30s before retry... (elapsed: 500s, remaining: 100s)
+2026-04-04 15:26:57,748 - INFO - Stack deletion status: DELETE_FAILED
+2026-04-04 15:26:57,748 - WARNING - Stack deletion encountered issue: DELETE_FAILED
+2026-04-04 15:26:58,127 - INFO - ================================================================================
+2026-04-04 15:26:58,128 - INFO - CloudFormation Stack Events for sce-imds-detective-1775306592:
+2026-04-04 15:26:58,128 - INFO - ================================================================================
+2026-04-04 15:26:58,128 - INFO - 2026-04-04 13:18:55.004000+00:00 | AWS::CloudFormation::Stack | sce-imds-detective-1775306592
+2026-04-04 15:26:58,128 - INFO -   Status: DELETE_FAILED
+2026-04-04 15:26:58,128 - INFO -   Reason: The following resource(s) failed to delete: [TrailBucket]. 
+2026-04-04 15:26:58,128 - INFO - 2026-04-04 13:18:54.742000+00:00 | AWS::EC2::VPC | VPC
+2026-04-04 15:26:58,128 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:26:58,128 - INFO - 2026-04-04 13:18:52.946000+00:00 | AWS::EC2::VPC | VPC
+2026-04-04 15:26:58,128 - INFO -   Status: DELETE_IN_PROGRESS
+2026-04-04 15:26:58,128 - INFO - 2026-04-04 13:18:52.572000+00:00 | AWS::EC2::Subnet | Subnet
+2026-04-04 15:26:58,128 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:26:58,128 - INFO - 2026-04-04 13:18:52.176000+00:00 | AWS::EC2::RouteTable | RouteTable
+2026-04-04 15:26:58,128 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:26:58,128 - INFO - 2026-04-04 13:18:50.873000+00:00 | AWS::EC2::RouteTable | RouteTable
+2026-04-04 15:26:58,128 - INFO -   Status: DELETE_IN_PROGRESS
+2026-04-04 15:26:58,128 - INFO - 2026-04-04 13:18:50.849000+00:00 | AWS::EC2::Subnet | Subnet
+2026-04-04 15:26:58,128 - INFO -   Status: DELETE_IN_PROGRESS
+2026-04-04 15:26:58,128 - INFO - 2026-04-04 13:18:50.490000+00:00 | AWS::EC2::SubnetRouteTableAssociation | SubnetRouteTableAssociation
+2026-04-04 15:26:58,128 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:26:58,128 - INFO - 2026-04-04 13:18:46.764000+00:00 | AWS::IAM::Role | InstanceRole
+2026-04-04 15:26:58,128 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:26:58,128 - INFO - 2026-04-04 13:18:36.524000+00:00 | AWS::EC2::InternetGateway | InternetGateway
+2026-04-04 15:26:58,128 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:26:58,128 - INFO - ================================================================================
+2026-04-04 15:26:58,128 - INFO - Waiting 30s before retry... (elapsed: 531s, remaining: 69s)
+2026-04-04 15:27:28,581 - INFO - Stack deletion status: DELETE_FAILED
+2026-04-04 15:27:28,581 - WARNING - Stack deletion encountered issue: DELETE_FAILED
+2026-04-04 15:27:28,912 - INFO - ================================================================================
+2026-04-04 15:27:28,912 - INFO - CloudFormation Stack Events for sce-imds-detective-1775306592:
+2026-04-04 15:27:28,912 - INFO - ================================================================================
+2026-04-04 15:27:28,912 - INFO - 2026-04-04 13:18:55.004000+00:00 | AWS::CloudFormation::Stack | sce-imds-detective-1775306592
+2026-04-04 15:27:28,912 - INFO -   Status: DELETE_FAILED
+2026-04-04 15:27:28,912 - INFO -   Reason: The following resource(s) failed to delete: [TrailBucket]. 
+2026-04-04 15:27:28,912 - INFO - 2026-04-04 13:18:54.742000+00:00 | AWS::EC2::VPC | VPC
+2026-04-04 15:27:28,912 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:27:28,912 - INFO - 2026-04-04 13:18:52.946000+00:00 | AWS::EC2::VPC | VPC
+2026-04-04 15:27:28,912 - INFO -   Status: DELETE_IN_PROGRESS
+2026-04-04 15:27:28,912 - INFO - 2026-04-04 13:18:52.572000+00:00 | AWS::EC2::Subnet | Subnet
+2026-04-04 15:27:28,912 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:27:28,912 - INFO - 2026-04-04 13:18:52.176000+00:00 | AWS::EC2::RouteTable | RouteTable
+2026-04-04 15:27:28,912 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:27:28,912 - INFO - 2026-04-04 13:18:50.873000+00:00 | AWS::EC2::RouteTable | RouteTable
+2026-04-04 15:27:28,912 - INFO -   Status: DELETE_IN_PROGRESS
+2026-04-04 15:27:28,912 - INFO - 2026-04-04 13:18:50.849000+00:00 | AWS::EC2::Subnet | Subnet
+2026-04-04 15:27:28,912 - INFO -   Status: DELETE_IN_PROGRESS
+2026-04-04 15:27:28,912 - INFO - 2026-04-04 13:18:50.490000+00:00 | AWS::EC2::SubnetRouteTableAssociation | SubnetRouteTableAssociation
+2026-04-04 15:27:28,912 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:27:28,912 - INFO - 2026-04-04 13:18:46.764000+00:00 | AWS::IAM::Role | InstanceRole
+2026-04-04 15:27:28,912 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:27:28,912 - INFO - 2026-04-04 13:18:36.524000+00:00 | AWS::EC2::InternetGateway | InternetGateway
+2026-04-04 15:27:28,912 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:27:28,912 - INFO - ================================================================================
+2026-04-04 15:27:28,912 - INFO - Waiting 30s before retry... (elapsed: 562s, remaining: 38s)
+2026-04-04 15:27:59,367 - INFO - Stack deletion status: DELETE_FAILED
+2026-04-04 15:27:59,367 - WARNING - Stack deletion encountered issue: DELETE_FAILED
+2026-04-04 15:27:59,704 - INFO - ================================================================================
+2026-04-04 15:27:59,704 - INFO - CloudFormation Stack Events for sce-imds-detective-1775306592:
+2026-04-04 15:27:59,704 - INFO - ================================================================================
+2026-04-04 15:27:59,704 - INFO - 2026-04-04 13:18:55.004000+00:00 | AWS::CloudFormation::Stack | sce-imds-detective-1775306592
+2026-04-04 15:27:59,704 - INFO -   Status: DELETE_FAILED
+2026-04-04 15:27:59,704 - INFO -   Reason: The following resource(s) failed to delete: [TrailBucket]. 
+2026-04-04 15:27:59,704 - INFO - 2026-04-04 13:18:54.742000+00:00 | AWS::EC2::VPC | VPC
+2026-04-04 15:27:59,704 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:27:59,704 - INFO - 2026-04-04 13:18:52.946000+00:00 | AWS::EC2::VPC | VPC
+2026-04-04 15:27:59,704 - INFO -   Status: DELETE_IN_PROGRESS
+2026-04-04 15:27:59,704 - INFO - 2026-04-04 13:18:52.572000+00:00 | AWS::EC2::Subnet | Subnet
+2026-04-04 15:27:59,704 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:27:59,704 - INFO - 2026-04-04 13:18:52.176000+00:00 | AWS::EC2::RouteTable | RouteTable
+2026-04-04 15:27:59,704 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:27:59,704 - INFO - 2026-04-04 13:18:50.873000+00:00 | AWS::EC2::RouteTable | RouteTable
+2026-04-04 15:27:59,704 - INFO -   Status: DELETE_IN_PROGRESS
+2026-04-04 15:27:59,704 - INFO - 2026-04-04 13:18:50.849000+00:00 | AWS::EC2::Subnet | Subnet
+2026-04-04 15:27:59,704 - INFO -   Status: DELETE_IN_PROGRESS
+2026-04-04 15:27:59,704 - INFO - 2026-04-04 13:18:50.490000+00:00 | AWS::EC2::SubnetRouteTableAssociation | SubnetRouteTableAssociation
+2026-04-04 15:27:59,704 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:27:59,704 - INFO - 2026-04-04 13:18:46.764000+00:00 | AWS::IAM::Role | InstanceRole
+2026-04-04 15:27:59,704 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:27:59,704 - INFO - 2026-04-04 13:18:36.524000+00:00 | AWS::EC2::InternetGateway | InternetGateway
+2026-04-04 15:27:59,704 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:27:59,704 - INFO - ================================================================================
+2026-04-04 15:27:59,704 - INFO - Waiting 30s before retry... (elapsed: 592s, remaining: 8s)
+2026-04-04 15:28:29,704 - ERROR - Timeout after 600s
+2026-04-04 15:28:29,704 - WARNING - Stack deletion timeout - resources may require manual cleanup
+2026-04-04 15:28:30,378 - INFO - ================================================================================
+2026-04-04 15:28:30,378 - INFO - CloudFormation Stack Events for sce-imds-detective-1775306592:
+2026-04-04 15:28:30,378 - INFO - ================================================================================
+2026-04-04 15:28:30,378 - INFO - 2026-04-04 13:18:55.004000+00:00 | AWS::CloudFormation::Stack | sce-imds-detective-1775306592
+2026-04-04 15:28:30,378 - INFO -   Status: DELETE_FAILED
+2026-04-04 15:28:30,378 - INFO -   Reason: The following resource(s) failed to delete: [TrailBucket]. 
+2026-04-04 15:28:30,378 - INFO - 2026-04-04 13:18:54.742000+00:00 | AWS::EC2::VPC | VPC
+2026-04-04 15:28:30,378 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:28:30,378 - INFO - 2026-04-04 13:18:52.946000+00:00 | AWS::EC2::VPC | VPC
+2026-04-04 15:28:30,378 - INFO -   Status: DELETE_IN_PROGRESS
+2026-04-04 15:28:30,378 - INFO - 2026-04-04 13:18:52.572000+00:00 | AWS::EC2::Subnet | Subnet
+2026-04-04 15:28:30,378 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:28:30,378 - INFO - 2026-04-04 13:18:52.176000+00:00 | AWS::EC2::RouteTable | RouteTable
+2026-04-04 15:28:30,378 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:28:30,378 - INFO - 2026-04-04 13:18:50.873000+00:00 | AWS::EC2::RouteTable | RouteTable
+2026-04-04 15:28:30,378 - INFO -   Status: DELETE_IN_PROGRESS
+2026-04-04 15:28:30,378 - INFO - 2026-04-04 13:18:50.849000+00:00 | AWS::EC2::Subnet | Subnet
+2026-04-04 15:28:30,378 - INFO -   Status: DELETE_IN_PROGRESS
+2026-04-04 15:28:30,378 - INFO - 2026-04-04 13:18:50.490000+00:00 | AWS::EC2::SubnetRouteTableAssociation | SubnetRouteTableAssociation
+2026-04-04 15:28:30,378 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:28:30,378 - INFO - 2026-04-04 13:18:46.764000+00:00 | AWS::IAM::Role | InstanceRole
+2026-04-04 15:28:30,378 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:28:30,378 - INFO - 2026-04-04 13:18:36.524000+00:00 | AWS::EC2::InternetGateway | InternetGateway
+2026-04-04 15:28:30,378 - INFO -   Status: DELETE_COMPLETE
+2026-04-04 15:28:30,378 - INFO - ================================================================================
+[32m[2026-04-04 15:28:30 INFO] Experiment ended with status: deviated
+[32m[2026-04-04 15:28:30 INFO] The steady-state has deviated, a weakness may have been discovered
+
+
+RETURN CODE: 1

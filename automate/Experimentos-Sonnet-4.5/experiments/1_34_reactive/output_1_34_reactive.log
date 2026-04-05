@@ -1,0 +1,407 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-04-03 17:12:24 INFO] Validating the experiment's syntax
+[32m[2026-04-03 17:12:24 INFO] Experiment looks valid
+[32m[2026-04-03 17:12:24 INFO] Running experiment: SCE Experiment 1.34 - IMDS Reactive Remediation Validation
+[32m[2026-04-03 17:12:24 INFO] Steady-state strategy: after-method-only
+[32m[2026-04-03 17:12:24 INFO] Rollbacks strategy: default
+[32m[2026-04-03 17:12:24 INFO] Playing your experiment's method now...
+[32m[2026-04-03 17:12:24 INFO] Action: deploy-reactive-control-infrastructure
+2026-04-03 17:12:24,421 - INFO - === Starting Steady State Setup ===
+2026-04-03 17:12:24,426 - INFO - Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-03 17:12:24,541 - INFO - Stack name: sce-imds-reactive-1775229144
+2026-04-03 17:12:25,232 - INFO - Using AMI: ami-0622c21dd3d2b1075
+2026-04-03 17:12:25,232 - INFO - Creating CloudFormation stack...
+2026-04-03 17:12:26,043 - INFO - Waiting for stack create to complete...
+2026-04-03 17:15:16,228 - INFO - Stack create completed successfully
+2026-04-03 17:15:16,349 - INFO - Instance ID: i-08661371877d1a690
+2026-04-03 17:15:16,350 - INFO - Role Name: SCE-BankingAPIRole-1775229144
+2026-04-03 17:15:16,350 - INFO - Waiting for IAM role propagation (30 seconds)...
+2026-04-03 17:15:46,350 - INFO - Waiting for instance to reach running state...
+2026-04-03 17:15:47,061 - INFO - Original IMDS config: {'HttpTokens': 'required', 'HttpPutResponseHopLimit': 1}
+2026-04-03 17:15:47,061 - INFO - === Steady State Setup Complete ===
+[32m[2026-04-03 17:15:47 INFO] Action: execute-imds-weakening-attack
+2026-04-03 17:15:47,062 - INFO - === Starting Attack Execution ===
+2026-04-03 17:15:47,065 - INFO - Attacking instance: i-08661371877d1a690
+2026-04-03 17:15:47,065 - INFO - Weakening IMDS protection: setting HttpTokens=optional, HopLimit=2
+2026-04-03 17:15:47,958 - INFO - Attack executed successfully. Response: 200
+2026-04-03 17:15:53,133 - INFO - Current IMDS config - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:15:53,133 - INFO - Attack successful: IMDS protections weakened
+2026-04-03 17:15:53,133 - INFO - === Attack Execution Complete ===
+[32m[2026-04-03 17:15:53 INFO] Steady state hypothesis: Reactive IMDS remediation controls function within SLA
+[32m[2026-04-03 17:15:53 INFO] Probe: verify-automated-imds-remediation
+2026-04-03 17:15:53,134 - INFO - === Starting Hypothesis Verification (Reactive Probe) ===
+2026-04-03 17:15:53,155 - INFO - Polling for reactive remediation (30-minute SLA)...
+2026-04-03 17:15:53,155 - INFO - Polling attempt at 0s / 1800s
+2026-04-03 17:15:53,661 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:15:54,117 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:16:09,117 - INFO - Polling attempt at 15s / 1800s
+2026-04-03 17:16:09,293 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:16:09,405 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:16:24,405 - INFO - Polling attempt at 31s / 1800s
+2026-04-03 17:16:24,580 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:16:24,699 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:16:39,699 - INFO - Polling attempt at 46s / 1800s
+2026-04-03 17:16:39,868 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:16:39,998 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:16:54,998 - INFO - Polling attempt at 61s / 1800s
+2026-04-03 17:16:55,165 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:16:55,291 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:17:10,291 - INFO - Polling attempt at 77s / 1800s
+2026-04-03 17:17:10,467 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:17:10,601 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:17:25,601 - INFO - Polling attempt at 92s / 1800s
+2026-04-03 17:17:25,783 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:17:25,912 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:17:40,912 - INFO - Polling attempt at 107s / 1800s
+2026-04-03 17:17:41,083 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:17:41,208 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:17:56,208 - INFO - Polling attempt at 123s / 1800s
+2026-04-03 17:17:56,427 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:17:56,541 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:18:11,541 - INFO - Polling attempt at 138s / 1800s
+2026-04-03 17:18:11,720 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:18:11,836 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:18:26,836 - INFO - Polling attempt at 153s / 1800s
+2026-04-03 17:18:27,028 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:18:27,147 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:18:42,147 - INFO - Polling attempt at 168s / 1800s
+2026-04-03 17:18:42,323 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:18:42,441 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:18:57,442 - INFO - Polling attempt at 184s / 1800s
+2026-04-03 17:18:57,619 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:18:57,748 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:19:12,748 - INFO - Polling attempt at 199s / 1800s
+2026-04-03 17:19:12,929 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:19:13,053 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:19:28,053 - INFO - Polling attempt at 214s / 1800s
+2026-04-03 17:19:28,228 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:19:28,344 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:19:43,345 - INFO - Polling attempt at 230s / 1800s
+2026-04-03 17:19:43,509 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:19:43,628 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:19:58,628 - INFO - Polling attempt at 245s / 1800s
+2026-04-03 17:19:59,163 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:19:59,284 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:20:14,284 - INFO - Polling attempt at 261s / 1800s
+2026-04-03 17:20:14,468 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:20:14,595 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:20:29,595 - INFO - Polling attempt at 276s / 1800s
+2026-04-03 17:20:29,769 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:20:29,886 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:20:44,886 - INFO - Polling attempt at 291s / 1800s
+2026-04-03 17:20:45,107 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:20:45,233 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:21:00,233 - INFO - Polling attempt at 307s / 1800s
+2026-04-03 17:21:00,407 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:21:00,533 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:21:15,533 - INFO - Polling attempt at 322s / 1800s
+2026-04-03 17:21:15,721 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:21:15,843 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:21:30,844 - INFO - Polling attempt at 337s / 1800s
+2026-04-03 17:21:31,016 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:21:31,132 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:21:46,132 - INFO - Polling attempt at 352s / 1800s
+2026-04-03 17:21:46,308 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:21:46,431 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:22:01,431 - INFO - Polling attempt at 368s / 1800s
+2026-04-03 17:22:01,605 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:22:01,729 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:22:16,729 - INFO - Polling attempt at 383s / 1800s
+2026-04-03 17:22:16,904 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:22:17,020 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:22:32,020 - INFO - Polling attempt at 398s / 1800s
+2026-04-03 17:22:32,199 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:22:32,319 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:22:47,319 - INFO - Polling attempt at 414s / 1800s
+2026-04-03 17:22:47,490 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:22:47,607 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:23:02,607 - INFO - Polling attempt at 429s / 1800s
+2026-04-03 17:23:02,783 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:23:02,913 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:23:17,913 - INFO - Polling attempt at 444s / 1800s
+2026-04-03 17:23:18,088 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:23:18,204 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:23:33,204 - INFO - Polling attempt at 460s / 1800s
+2026-04-03 17:23:33,432 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:23:33,551 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:23:48,551 - INFO - Polling attempt at 475s / 1800s
+2026-04-03 17:23:48,722 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:23:48,846 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:24:03,846 - INFO - Polling attempt at 490s / 1800s
+2026-04-03 17:24:04,036 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:24:04,167 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:24:19,167 - INFO - Polling attempt at 506s / 1800s
+2026-04-03 17:24:19,804 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:24:19,932 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:24:34,932 - INFO - Polling attempt at 521s / 1800s
+2026-04-03 17:24:35,121 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:24:35,237 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:24:50,237 - INFO - Polling attempt at 537s / 1800s
+2026-04-03 17:24:50,408 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:24:50,526 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:25:05,526 - INFO - Polling attempt at 552s / 1800s
+2026-04-03 17:25:05,702 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:25:05,826 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:25:20,826 - INFO - Polling attempt at 567s / 1800s
+2026-04-03 17:25:21,006 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:25:21,131 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:25:36,131 - INFO - Polling attempt at 582s / 1800s
+2026-04-03 17:25:36,312 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:25:36,422 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:25:51,422 - INFO - Polling attempt at 598s / 1800s
+2026-04-03 17:25:51,600 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:25:51,724 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:26:06,724 - INFO - Polling attempt at 613s / 1800s
+2026-04-03 17:26:06,896 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:26:07,018 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:26:22,018 - INFO - Polling attempt at 628s / 1800s
+2026-04-03 17:26:22,255 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:26:22,373 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:26:37,373 - INFO - Polling attempt at 644s / 1800s
+2026-04-03 17:26:37,551 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:26:37,676 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:26:52,677 - INFO - Polling attempt at 659s / 1800s
+2026-04-03 17:26:52,873 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:26:53,001 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:27:08,001 - INFO - Polling attempt at 674s / 1800s
+2026-04-03 17:27:08,171 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:27:08,285 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:27:23,285 - INFO - Polling attempt at 690s / 1800s
+2026-04-03 17:27:23,469 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:27:23,585 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:27:38,586 - INFO - Polling attempt at 705s / 1800s
+2026-04-03 17:27:38,755 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:27:38,868 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:27:53,868 - INFO - Polling attempt at 720s / 1800s
+2026-04-03 17:27:54,047 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:27:54,163 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:28:09,164 - INFO - Polling attempt at 736s / 1800s
+2026-04-03 17:28:09,342 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:28:09,465 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:28:24,465 - INFO - Polling attempt at 751s / 1800s
+2026-04-03 17:28:24,640 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:28:24,766 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:28:39,766 - INFO - Polling attempt at 766s / 1800s
+2026-04-03 17:28:40,293 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:28:40,419 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:28:55,419 - INFO - Polling attempt at 782s / 1800s
+2026-04-03 17:28:55,592 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:28:55,710 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:29:10,711 - INFO - Polling attempt at 797s / 1800s
+2026-04-03 17:29:10,929 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:29:11,054 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:29:26,054 - INFO - Polling attempt at 812s / 1800s
+2026-04-03 17:29:26,225 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:29:26,343 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:29:41,344 - INFO - Polling attempt at 828s / 1800s
+2026-04-03 17:29:41,534 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:29:41,663 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:29:56,663 - INFO - Polling attempt at 843s / 1800s
+2026-04-03 17:29:56,838 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:29:56,953 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:30:11,953 - INFO - Polling attempt at 858s / 1800s
+2026-04-03 17:30:12,120 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:30:12,239 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:30:27,239 - INFO - Polling attempt at 874s / 1800s
+2026-04-03 17:30:27,414 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:30:27,535 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:30:42,537 - INFO - Polling attempt at 889s / 1800s
+2026-04-03 17:30:42,713 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:30:42,827 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:30:57,827 - INFO - Polling attempt at 904s / 1800s
+2026-04-03 17:30:58,008 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:30:58,133 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:31:13,134 - INFO - Polling attempt at 919s / 1800s
+2026-04-03 17:31:13,315 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:31:13,771 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:31:28,772 - INFO - Polling attempt at 935s / 1800s
+2026-04-03 17:31:28,953 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:31:29,082 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:31:44,082 - INFO - Polling attempt at 950s / 1800s
+2026-04-03 17:31:44,265 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:31:44,390 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:31:59,390 - INFO - Polling attempt at 966s / 1800s
+2026-04-03 17:31:59,618 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:31:59,747 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:32:14,747 - INFO - Polling attempt at 981s / 1800s
+2026-04-03 17:32:14,927 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:32:15,048 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:32:30,048 - INFO - Polling attempt at 996s / 1800s
+2026-04-03 17:32:30,230 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:32:30,359 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:32:45,359 - INFO - Polling attempt at 1012s / 1800s
+2026-04-03 17:32:45,875 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:32:45,992 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:33:00,992 - INFO - Polling attempt at 1027s / 1800s
+2026-04-03 17:33:01,160 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:33:01,272 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:33:16,272 - INFO - Polling attempt at 1043s / 1800s
+2026-04-03 17:33:16,455 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:33:16,582 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:33:31,582 - INFO - Polling attempt at 1058s / 1800s
+2026-04-03 17:33:31,758 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:33:31,881 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:33:46,881 - INFO - Polling attempt at 1073s / 1800s
+2026-04-03 17:33:47,066 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:33:47,178 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:34:02,179 - INFO - Polling attempt at 1089s / 1800s
+2026-04-03 17:34:02,352 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:34:02,477 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:34:17,478 - INFO - Polling attempt at 1104s / 1800s
+2026-04-03 17:34:17,650 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:34:17,766 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:34:32,767 - INFO - Polling attempt at 1119s / 1800s
+2026-04-03 17:34:32,944 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:34:33,062 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:34:48,062 - INFO - Polling attempt at 1134s / 1800s
+2026-04-03 17:34:48,275 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:34:48,394 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:35:03,394 - INFO - Polling attempt at 1150s / 1800s
+2026-04-03 17:35:03,577 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:35:03,700 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:35:18,700 - INFO - Polling attempt at 1165s / 1800s
+2026-04-03 17:35:18,887 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:35:19,004 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:35:34,004 - INFO - Polling attempt at 1180s / 1800s
+2026-04-03 17:35:34,289 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:35:34,409 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:35:49,409 - INFO - Polling attempt at 1196s / 1800s
+2026-04-03 17:35:49,581 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:35:49,704 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:36:04,704 - INFO - Polling attempt at 1211s / 1800s
+2026-04-03 17:36:04,870 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:36:04,996 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:36:19,996 - INFO - Polling attempt at 1226s / 1800s
+2026-04-03 17:36:20,181 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:36:20,316 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:36:35,316 - INFO - Polling attempt at 1242s / 1800s
+2026-04-03 17:36:35,493 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:36:35,617 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:36:50,617 - INFO - Polling attempt at 1257s / 1800s
+2026-04-03 17:36:50,798 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:36:50,917 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:37:05,917 - INFO - Polling attempt at 1272s / 1800s
+2026-04-03 17:37:06,442 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:37:06,569 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:37:21,569 - INFO - Polling attempt at 1288s / 1800s
+2026-04-03 17:37:21,742 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:37:21,868 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:37:36,868 - INFO - Polling attempt at 1303s / 1800s
+2026-04-03 17:37:37,107 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:37:37,225 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:37:52,225 - INFO - Polling attempt at 1319s / 1800s
+2026-04-03 17:37:52,428 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:37:52,547 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:38:07,547 - INFO - Polling attempt at 1334s / 1800s
+2026-04-03 17:38:07,826 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:38:07,943 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:38:22,945 - INFO - Polling attempt at 1349s / 1800s
+2026-04-03 17:38:23,118 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:38:23,249 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:38:38,249 - INFO - Polling attempt at 1365s / 1800s
+2026-04-03 17:38:38,428 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:38:38,551 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:38:53,552 - INFO - Polling attempt at 1380s / 1800s
+2026-04-03 17:38:53,726 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:38:53,843 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:39:08,843 - INFO - Polling attempt at 1395s / 1800s
+2026-04-03 17:39:09,027 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:39:09,198 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:39:24,198 - INFO - Polling attempt at 1411s / 1800s
+2026-04-03 17:39:24,372 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:39:24,495 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:39:39,495 - INFO - Polling attempt at 1426s / 1800s
+2026-04-03 17:39:39,675 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:39:39,800 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:39:54,800 - INFO - Polling attempt at 1441s / 1800s
+2026-04-03 17:39:54,972 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:39:55,094 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:40:10,094 - INFO - Polling attempt at 1456s / 1800s
+2026-04-03 17:40:10,266 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:40:10,384 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:40:25,384 - INFO - Polling attempt at 1472s / 1800s
+2026-04-03 17:40:25,612 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:40:25,738 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:40:40,739 - INFO - Polling attempt at 1487s / 1800s
+2026-04-03 17:40:40,912 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:40:41,030 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:40:56,031 - INFO - Polling attempt at 1502s / 1800s
+2026-04-03 17:40:56,208 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:40:56,331 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:41:11,331 - INFO - Polling attempt at 1518s / 1800s
+2026-04-03 17:41:11,861 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:41:11,991 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:41:26,992 - INFO - Polling attempt at 1533s / 1800s
+2026-04-03 17:41:27,164 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:41:27,288 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:41:42,288 - INFO - Polling attempt at 1549s / 1800s
+2026-04-03 17:41:42,470 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:41:42,588 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:41:57,588 - INFO - Polling attempt at 1564s / 1800s
+2026-04-03 17:41:57,762 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:41:57,879 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:42:12,880 - INFO - Polling attempt at 1579s / 1800s
+2026-04-03 17:42:13,049 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:42:13,168 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:42:28,168 - INFO - Polling attempt at 1595s / 1800s
+2026-04-03 17:42:28,344 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:42:28,456 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:42:43,456 - INFO - Polling attempt at 1610s / 1800s
+2026-04-03 17:42:43,626 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:42:43,749 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:42:58,749 - INFO - Polling attempt at 1625s / 1800s
+2026-04-03 17:42:58,926 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:42:59,043 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:43:14,044 - INFO - Polling attempt at 1640s / 1800s
+2026-04-03 17:43:14,274 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:43:14,388 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:43:29,389 - INFO - Polling attempt at 1656s / 1800s
+2026-04-03 17:43:29,566 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:43:29,681 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:43:44,681 - INFO - Polling attempt at 1671s / 1800s
+2026-04-03 17:43:44,862 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:43:44,989 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:43:59,989 - INFO - Polling attempt at 1686s / 1800s
+2026-04-03 17:44:00,169 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:44:00,282 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:44:15,282 - INFO - Polling attempt at 1702s / 1800s
+2026-04-03 17:44:15,458 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:44:15,583 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:44:30,583 - INFO - Polling attempt at 1717s / 1800s
+2026-04-03 17:44:30,772 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:44:30,891 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:44:45,891 - INFO - Polling attempt at 1732s / 1800s
+2026-04-03 17:44:46,078 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:44:46,198 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:45:01,198 - INFO - Polling attempt at 1748s / 1800s
+2026-04-03 17:45:01,383 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:45:01,502 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:45:16,502 - INFO - Polling attempt at 1763s / 1800s
+2026-04-03 17:45:16,676 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:45:16,789 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:45:31,789 - INFO - Polling attempt at 1778s / 1800s
+2026-04-03 17:45:32,318 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:45:32,432 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:45:47,432 - INFO - Polling attempt at 1794s / 1800s
+2026-04-03 17:45:47,611 - INFO - Current IMDS - HttpTokens: optional, HopLimit: 2
+2026-04-03 17:45:47,735 - INFO - Partial remediation: IMDS not reverted, No quarantine tag, No deny policy
+2026-04-03 17:46:02,735 - ERROR - ✗ Reactive remediation NOT detected within 30-minute SLA
+2026-04-03 17:46:02,735 - ERROR - Expected: IMDS reverted, quarantine tag, deny policy applied
+[31m[2026-04-03 17:46:02 CRITICAL] Steady state probe 'verify-automated-imds-remediation' is not in the given tolerance so failing this experiment
+[32m[2026-04-03 17:46:02 INFO] Let's rollback...
+[32m[2026-04-03 17:46:02 INFO] Rollback: teardown-experiment-infrastructure
+[32m[2026-04-03 17:46:02 INFO] Action: teardown-experiment-infrastructure
+2026-04-03 17:46:02,737 - INFO - === Starting Rollback ===
+2026-04-03 17:46:03,220 - INFO - Deleting stack: sce-imds-reactive-1775229144
+2026-04-03 17:46:03,496 - INFO - Waiting for stack delete to complete...
+2026-04-03 17:47:05,451 - INFO - Stack delete completed successfully
+2026-04-03 17:47:05,451 - INFO - Stack deleted successfully
+2026-04-03 17:47:05,452 - INFO - === Rollback Complete ===
+[32m[2026-04-03 17:47:05 INFO] Experiment ended with status: deviated
+[32m[2026-04-03 17:47:05 INFO] The steady-state has deviated, a weakness may have been discovered
+
+
+RETURN CODE: 1

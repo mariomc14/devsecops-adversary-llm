@@ -1,0 +1,64 @@
+[36m[2026-04-04 18:12:27 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-04-04 18:12:27 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-04-04 18:12:27 DEBUG] [__init__:106] Using settings file '/home/debian/.chaostoolkit/settings.yaml'
+[36m[2026-04-04 18:12:27 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/debian/.chaostoolkit/settings.yaml'.
+[36m[2026-04-04 18:12:27 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-04 18:12:27 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-04 18:12:27 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-04 18:12:27 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-04-04 18:12:27 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-04-04 18:12:27 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-04 18:12:27 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-04 18:12:27 DEBUG] [secret:104] Done loading secrets
+[32m[2026-04-04 18:12:27 INFO] [experiment:112] Experiment looks valid
+[36m[2026-04-04 18:12:27 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-04 18:12:27 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-04-04 18:12:27 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-04 18:12:27 DEBUG] [caching:35] Cached 3 activities
+[36m[2026-04-04 18:12:27 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-04 18:12:27 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-04 18:12:27 DEBUG] [secret:104] Done loading secrets
+[36m[2026-04-04 18:12:27 DEBUG] [configuration:161] Loading dynamic configuration...
+[32m[2026-04-04 18:12:27 INFO] [run:440] Running experiment: SCE 3.3 - Detective Probe: IMDS Credential Theft Detection Validation
+[36m[2026-04-04 18:12:27 DEBUG] [__init__:67] Initializing controls
+[32m[2026-04-04 18:12:27 INFO] [run:471] Steady-state strategy: after-method-only
+[32m[2026-04-04 18:12:27 INFO] [run:477] Rollbacks strategy: default
+[36m[2026-04-04 18:12:27 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[32m[2026-04-04 18:12:27 INFO] [run:778] Playing your experiment's method now...
+[36m[2026-04-04 18:12:27 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-04 18:12:27 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-04 18:12:27 INFO] [activity:232] Action: provision-banking-platform-test-environment
+[36m[2026-04-04 18:12:27 DEBUG] [python:33] Activity 'provision-banking-platform-test-environment' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/3_3_detective.py'
+[36m[2026-04-04 18:19:13 DEBUG] [activity:262]   => succeeded without any result value
+[36m[2026-04-04 18:19:13 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-04 18:19:13 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-04 18:19:13 INFO] [activity:232] Action: execute-imds-credential-theft-attack-chain
+[36m[2026-04-04 18:19:13 DEBUG] [python:33] Activity 'execute-imds-credential-theft-attack-chain' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/3_3_detective.py'
+[36m[2026-04-04 18:29:44 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-04-04 18:29:44 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-04 18:29:44 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-04 18:29:44 DEBUG] [run:696] Running steady-state hypothesis after the method
+[32m[2026-04-04 18:29:44 INFO] [hypothesis:205] Steady state hypothesis: Detective Controls Identify IMDS Credential Compromise
+[36m[2026-04-04 18:29:44 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[36m[2026-04-04 18:29:44 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-04 18:29:44 INFO] [activity:232] Probe: verify-cloudtrail-logging-and-detection
+[36m[2026-04-04 18:29:44 DEBUG] [python:33] Activity 'verify-cloudtrail-logging-and-detection' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/3_3_detective.py'
+[36m[2026-04-04 18:59:44 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-04-04 18:59:44 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-04 18:59:44 DEBUG] [hypothesis:247] allowed tolerance is True
+[36m[2026-04-04 18:59:44 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[31m[2026-04-04 18:59:44 CRITICAL] [run:716] Steady state probe 'verify-cloudtrail-logging-and-detection' is not in the given tolerance so failing this experiment
+[32m[2026-04-04 18:59:44 INFO] [run:1072] Let's rollback...
+[36m[2026-04-04 18:59:44 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-04 18:59:44 INFO] [rollback:36] Rollback: cleanup-all-experiment-resources
+[36m[2026-04-04 18:59:44 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-04 18:59:44 INFO] [activity:232] Action: cleanup-all-experiment-resources
+[36m[2026-04-04 18:59:44 DEBUG] [python:33] Activity 'cleanup-all-experiment-resources' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/3_3_detective.py'
+[36m[2026-04-04 19:14:45 DEBUG] [activity:262]   => succeeded without any result value
+[36m[2026-04-04 19:14:45 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-04 19:14:45 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-04 19:14:45 INFO] [run:598] Experiment ended with status: deviated
+[32m[2026-04-04 19:14:45 INFO] [run:600] The steady-state has deviated, a weakness may have been discovered
+[36m[2026-04-04 19:14:45 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[36m[2026-04-04 19:14:45 DEBUG] [__init__:106] Cleaning up controls
+[36m[2026-04-04 19:14:45 DEBUG] [caching:42] Clearing activities cache

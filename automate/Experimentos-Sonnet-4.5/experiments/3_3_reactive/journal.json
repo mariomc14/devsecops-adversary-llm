@@ -1,0 +1,149 @@
+{
+  "chaoslib-version": "1.44.0",
+  "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.41",
+  "node": "DESKTOP-R7NS3KO",
+  "experiment": {
+    "title": "SCE 3.3 - IMDS Credential Theft Reactive Control",
+    "description": "Validates automated credential revocation when IMDS protections are weakened and credentials are exfiltrated. Tests EventBridge → Lambda → IAM policy injection with MTTR measurement.",
+    "tags": [
+      "aws",
+      "ec2",
+      "imds",
+      "iam",
+      "reactive-control",
+      "sce",
+      "pci-dss"
+    ],
+    "steady-state-hypothesis": {
+      "title": "Reactive Control Revokes Stolen Credentials Within SLA",
+      "probes": [
+        {
+          "type": "probe",
+          "name": "verify-credential-revocation-and-incident-response",
+          "tolerance": true,
+          "provider": {
+            "type": "python",
+            "module": "chaosaws.ec2.3_3_reactive",
+            "func": "hypothesis_verification"
+          }
+        }
+      ]
+    },
+    "method": [
+      {
+        "type": "action",
+        "name": "deploy-experiment-infrastructure",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.3_3_reactive",
+          "func": "steady_state"
+        }
+      },
+      {
+        "type": "action",
+        "name": "execute-imds-credential-theft-attack",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.3_3_reactive",
+          "func": "attack"
+        }
+      }
+    ],
+    "rollbacks": [
+      {
+        "type": "action",
+        "name": "teardown-experiment-infrastructure",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.3_3_reactive",
+          "func": "rollback"
+        }
+      }
+    ],
+    "dry": null
+  },
+  "start": "2026-04-05T11:02:01.740255+00:00",
+  "status": "completed",
+  "deviated": false,
+  "steady_states": {
+    "before": null,
+    "after": {
+      "steady_state_met": true,
+      "probes": [
+        {
+          "activity": {
+            "type": "probe",
+            "name": "verify-credential-revocation-and-incident-response",
+            "tolerance": true,
+            "provider": {
+              "type": "python",
+              "module": "chaosaws.ec2.3_3_reactive",
+              "func": "hypothesis_verification"
+            }
+          },
+          "output": true,
+          "start": "2026-04-05T11:05:44.104957+00:00",
+          "status": "succeeded",
+          "end": "2026-04-05T11:05:50.241592+00:00",
+          "duration": 6.136635,
+          "tolerance_met": true
+        }
+      ]
+    },
+    "during": []
+  },
+  "run": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "deploy-experiment-infrastructure",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.3_3_reactive",
+          "func": "steady_state"
+        }
+      },
+      "output": true,
+      "start": "2026-04-05T11:02:01.740515+00:00",
+      "status": "succeeded",
+      "end": "2026-04-05T11:05:37.725108+00:00",
+      "duration": 215.984593
+    },
+    {
+      "activity": {
+        "type": "action",
+        "name": "execute-imds-credential-theft-attack",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.3_3_reactive",
+          "func": "attack"
+        }
+      },
+      "output": true,
+      "start": "2026-04-05T11:05:37.725242+00:00",
+      "status": "succeeded",
+      "end": "2026-04-05T11:05:44.104798+00:00",
+      "duration": 6.379556
+    }
+  ],
+  "rollbacks": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "teardown-experiment-infrastructure",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.3_3_reactive",
+          "func": "rollback"
+        }
+      },
+      "output": true,
+      "start": "2026-04-05T11:05:50.241806+00:00",
+      "status": "succeeded",
+      "end": "2026-04-05T11:08:23.867956+00:00",
+      "duration": 153.62615
+    }
+  ],
+  "end": "2026-04-05T11:08:23.868026+00:00",
+  "duration": 382.1288812160492
+}

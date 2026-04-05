@@ -1,13 +1,13 @@
 # SCE Experiment Tracking Summary
 
-**Session date**: 2026-04-01 01:21:49
+**Session date**: 2026-04-05 23:39:44
 
 
 | Experimento | # Loop | Q_pre | Q_post |
 |---|---|---|---|
-| 1_3_detective | 1 | 100.00 | 50.00 |
-| 1_3_detective | 2 | 100.00 | 0.00 |
-| 1_3_detective | 3 | 85.00 | 100.00 |
+| 1_3_preventive | 1 | 100.00 | 0.00 |
+| 1_3_preventive | 2 | 100.00 | 0.00 |
+| 1_3_preventive | 3 | 100.00 | 100.00 |
 
 ## Legend
 - **Q_pre**: Pre-execution quality score (0–100)

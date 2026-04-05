@@ -1,0 +1,94 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-04-05 13:02:01 INFO] Validating the experiment's syntax
+[32m[2026-04-05 13:02:01 INFO] Experiment looks valid
+[32m[2026-04-05 13:02:01 INFO] Running experiment: SCE 3.3 - IMDS Credential Theft Reactive Control
+[32m[2026-04-05 13:02:01 INFO] Steady-state strategy: after-method-only
+[32m[2026-04-05 13:02:01 INFO] Rollbacks strategy: default
+[32m[2026-04-05 13:02:01 INFO] Playing your experiment's method now...
+[32m[2026-04-05 13:02:01 INFO] Action: deploy-experiment-infrastructure
+2026-04-05 13:02:01,748 - INFO - Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-05 13:02:02,304 - INFO - AWS clients initialized (Region: us-east-1, Account: 396608802942)
+2026-04-05 13:02:02,304 - INFO - ================================================================================
+2026-04-05 13:02:02,304 - INFO - INFRASTRUCTURE DEPLOYMENT: sce-1775386922
+2026-04-05 13:02:02,304 - INFO - ================================================================================
+2026-04-05 13:02:02,977 - INFO - Using VPC: vpc-00bd1a657644bac9b
+2026-04-05 13:02:03,202 - INFO - Using subnet: subnet-0c49eab7705b0418e
+2026-04-05 13:02:03,531 - INFO - Using AMI: ami-0622c21dd3d2b1075
+2026-04-05 13:02:03,532 - INFO - Creating stack...
+2026-04-05 13:02:04,294 - INFO - Stack status: CREATE_IN_PROGRESS
+2026-04-05 13:02:06,413 - INFO - Stack status: CREATE_IN_PROGRESS
+2026-04-05 13:02:09,533 - INFO - Stack status: CREATE_IN_PROGRESS
+2026-04-05 13:02:14,151 - INFO - Stack status: CREATE_IN_PROGRESS
+2026-04-05 13:02:21,356 - INFO - Stack status: CREATE_IN_PROGRESS
+2026-04-05 13:02:31,933 - INFO - Stack status: CREATE_IN_PROGRESS
+2026-04-05 13:02:47,572 - INFO - Stack status: CREATE_IN_PROGRESS
+2026-04-05 13:03:10,805 - INFO - Stack status: CREATE_IN_PROGRESS
+2026-04-05 13:03:45,440 - INFO - Stack status: CREATE_IN_PROGRESS
+2026-04-05 13:04:37,148 - INFO - Stack status: CREATE_IN_PROGRESS
+2026-04-05 13:05:37,606 - INFO - Stack status: CREATE_COMPLETE
+2026-04-05 13:05:37,606 - INFO - Stack creation met after 213.0s
+2026-04-05 13:05:37,723 - INFO - Instance: i-070640efcb966c3fe
+2026-04-05 13:05:37,723 - INFO - Role: SCE1775386922-EC2
+2026-04-05 13:05:37,723 - INFO - ✓ Infrastructure ready
+[32m[2026-04-05 13:05:37 INFO] Action: execute-imds-credential-theft-attack
+2026-04-05 13:05:37,733 - INFO - ================================================================================
+2026-04-05 13:05:37,733 - INFO - EXECUTING ATTACK
+2026-04-05 13:05:37,733 - INFO - ================================================================================
+2026-04-05 13:05:37,733 - INFO - [ATTACK 1] Weakening IMDS...
+2026-04-05 13:05:38,639 - INFO - ✓ IMDS weakened
+2026-04-05 13:05:43,639 - INFO - [ATTACK 2] Simulating credential access...
+2026-04-05 13:05:43,640 - INFO - ✓ Target role: SCE1775386922-EC2
+2026-04-05 13:05:43,640 - INFO - [ATTACK 3] Triggering reactive control...
+2026-04-05 13:05:44,103 - INFO - ✓ EventBridge event sent
+2026-04-05 13:05:44,103 - INFO - ================================================================================
+[32m[2026-04-05 13:05:44 INFO] Steady state hypothesis: Reactive Control Revokes Stolen Credentials Within SLA
+[32m[2026-04-05 13:05:44 INFO] Probe: verify-credential-revocation-and-incident-response
+2026-04-05 13:05:44,123 - INFO - ================================================================================
+2026-04-05 13:05:44,123 - INFO - HYPOTHESIS VERIFICATION
+2026-04-05 13:05:44,123 - INFO - ================================================================================
+2026-04-05 13:05:44,123 - INFO - Role: SCE1775386922-EC2
+2026-04-05 13:05:44,123 - INFO - Lambda: sce-revoke-1775386922
+2026-04-05 13:05:44,123 - INFO - MTTR SLA: 300s (5 min)
+2026-04-05 13:05:44,123 - INFO - Polling SLA: 1800s (30 min)
+2026-04-05 13:05:44,123 - INFO - 
+[CHECK 1] Lambda invocation...
+2026-04-05 13:05:49,790 - INFO - Lambda invocation met after 5.6s
+2026-04-05 13:05:49,790 - INFO - ✓ Lambda executed
+2026-04-05 13:05:49,790 - INFO - Lambda time: 5.7s
+2026-04-05 13:05:49,790 - INFO - 
+[CHECK 2] IAM policy revocation...
+2026-04-05 13:05:50,240 - INFO - ✓ Revocation policy verified
+2026-04-05 13:05:50,240 - INFO - Policy application met after 0.0s
+2026-04-05 13:05:50,240 - INFO - ✓ Credentials revoked
+2026-04-05 13:05:50,240 - INFO - Revocation time: 6.1s
+2026-04-05 13:05:50,240 - INFO - ✓ MTTR SLA MET
+2026-04-05 13:05:50,240 - INFO - ================================================================================
+2026-04-05 13:05:50,240 - INFO - ✓ VERIFICATION COMPLETE
+2026-04-05 13:05:50,240 - INFO - ================================================================================
+[32m[2026-04-05 13:05:50 INFO] Steady state hypothesis is met!
+[32m[2026-04-05 13:05:50 INFO] Let's rollback...
+[32m[2026-04-05 13:05:50 INFO] Rollback: teardown-experiment-infrastructure
+[32m[2026-04-05 13:05:50 INFO] Action: teardown-experiment-infrastructure
+2026-04-05 13:05:50,243 - INFO - ================================================================================
+2026-04-05 13:05:50,243 - INFO - ROLLBACK
+2026-04-05 13:05:50,243 - INFO - ================================================================================
+2026-04-05 13:05:50,243 - INFO - Deleting stack: sce-1775386922
+2026-04-05 13:05:51,001 - INFO - Stack status: DELETE_IN_PROGRESS
+2026-04-05 13:05:53,117 - INFO - Stack status: DELETE_IN_PROGRESS
+2026-04-05 13:05:56,240 - INFO - Stack status: DELETE_IN_PROGRESS
+2026-04-05 13:06:00,859 - INFO - Stack status: DELETE_IN_PROGRESS
+2026-04-05 13:06:08,075 - INFO - Stack status: DELETE_IN_PROGRESS
+2026-04-05 13:06:18,658 - INFO - Stack status: DELETE_IN_PROGRESS
+2026-04-05 13:06:34,298 - INFO - Stack status: DELETE_IN_PROGRESS
+2026-04-05 13:06:57,528 - INFO - Stack status: DELETE_IN_PROGRESS
+2026-04-05 13:07:32,152 - INFO - Stack status: DELETE_IN_PROGRESS
+2026-04-05 13:08:23,867 - INFO - Stack deleted
+2026-04-05 13:08:23,867 - INFO - Stack deletion met after 152.5s
+2026-04-05 13:08:23,867 - INFO - ✓ Rollback complete
+[32m[2026-04-05 13:08:23 INFO] Experiment ended with status: completed
+
+
+RETURN CODE: 0

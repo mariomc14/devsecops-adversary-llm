@@ -1,0 +1,51 @@
+{
+    "title": "SCE Experiment 1.34 - IMDS Reactive Remediation Validation",
+    "description": "Validates automated reactive response to IMDS protection weakening (Attack 1.2). Tests EventBridge detection, Lambda remediation function, IAM policy enforcement, and instance quarantine workflow. Verifies MTTR target of <5 minutes for auto-remediation with 30-minute SLA for AWS eventual consistency.",
+    "tags": ["aws", "ec2", "imds", "reactive", "incident-response", "sce-1.34", "banking-platform"],
+    "steady-state-hypothesis": {
+        "title": "Reactive IMDS remediation controls function within SLA",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "verify-automated-imds-remediation",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.1_34_reactive",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "deploy-reactive-control-infrastructure",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_34_reactive",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "execute-imds-weakening-attack",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_34_reactive",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "teardown-experiment-infrastructure",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_34_reactive",
+                "func": "rollback"
+            }
+        }
+    ]
+}

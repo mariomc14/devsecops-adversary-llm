@@ -1,0 +1,80 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-04-05 21:28:07 INFO] Validating the experiment's syntax
+[32m[2026-04-05 21:28:07 INFO] Experiment looks valid
+[32m[2026-04-05 21:28:07 INFO] Running experiment: SCE 1.3 Preventive Probe: Least-Privilege IAM Blocks ec2:ModifyInstanceMetadataOptions on Hardened Banking EC2 Instances
+[32m[2026-04-05 21:28:07 INFO] Steady-state strategy: after-method-only
+[32m[2026-04-05 21:28:07 INFO] Rollbacks strategy: default
+[32m[2026-04-05 21:28:07 INFO] Playing your experiment's method now...
+[32m[2026-04-05 21:28:07 INFO] Action: provision-self-contained-vpc-hardened-ec2-and-restricted-iam-role-via-cloudformation
+2026-04-05T21:28:07  INFO     === PHASE 1: steady_state ===
+2026-04-05T21:28:07  INFO     Resolved AWS region: us-east-1
+2026-04-05T21:28:07  INFO     Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-05T21:28:08  INFO     Resolved AWS account ID: 396608802942
+2026-04-05T21:28:08  INFO     === PRE-FLIGHT: Validating IAM permissions ===
+2026-04-05T21:28:08  INFO     Executing as: Account=396608802942  UserId=AIDAVYV52CB7NS4OZUVC5  ARN=arn:aws:iam::396608802942:user/ChaosXploit-Labs
+2026-04-05T21:28:09  INFO     Pre-flight IAM simulation: all required actions appear allowed.
+2026-04-05T21:28:09  INFO     Stack name: sce-experiment-1775417289
+2026-04-05T21:28:10  INFO     Resolved AMI via SSM: ami-0622c21dd3d2b1075 (region=us-east-1)
+2026-04-05T21:28:10  INFO     Selected instance type: t3.micro
+2026-04-05T21:28:10  INFO     AMI: ami-0622c21dd3d2b1075 | InstanceType: t3.micro
+2026-04-05T21:28:10  INFO     ASCII guard passed: template contains only valid ASCII characters.
+2026-04-05T21:28:10  INFO     Creating CloudFormation stack: sce-experiment-1775417289
+2026-04-05T21:28:11  INFO     Waiting for stack sce-experiment-1775417289 to reach CREATE_COMPLETE ...
+2026-04-05T21:28:11  INFO     Stack sce-experiment-1775417289  status=CREATE_IN_PROGRESS
+2026-04-05T21:28:27  INFO     Stack sce-experiment-1775417289  status=CREATE_IN_PROGRESS
+2026-04-05T21:28:42  INFO     Stack sce-experiment-1775417289  status=CREATE_IN_PROGRESS
+2026-04-05T21:28:58  INFO     Stack sce-experiment-1775417289  status=CREATE_COMPLETE
+2026-04-05T21:28:58  INFO     Stack outputs: {'RestrictedRoleName': 'sce-1-3-restricted-1775417289', 'VpcId': 'vpc-0dfe16581b2ad14e0', 'SubnetId': 'subnet-02129f8ea8f9289b3', 'HardenedInstanceId': 'i-00b20b944cda9b67e', 'PrivilegedRoleArn': 'arn:aws:iam::396608802942:role/sce-1-3-privileged-1775417289', 'RestrictedRoleArn': 'arn:aws:iam::396608802942:role/sce-1-3-restricted-1775417289'}
+2026-04-05T21:28:58  INFO     Resources | Instance: i-00b20b944cda9b67e | RestrictedRole: arn:aws:iam::396608802942:role/sce-1-3-restricted-1775417289 | PrivilegedRole: arn:aws:iam::396608802942:role/sce-1-3-privileged-1775417289
+2026-04-05T21:28:58  INFO     Waiting for instance i-00b20b944cda9b67e to reach running state ...
+2026-04-05T21:28:59  INFO     Instance i-00b20b944cda9b67e state: running
+2026-04-05T21:28:59  INFO     IMDS baseline | HttpTokens=required | HopLimit=1
+2026-04-05T21:28:59  INFO     IMDSv2 baseline confirmed: HttpTokens=required, HopLimit=1
+2026-04-05T21:28:59  INFO     Assuming RestrictedRole ...
+2026-04-05T21:28:59  INFO     Assumed role arn:aws:iam::396608802942:role/sce-1-3-restricted-1775417289 on attempt 1. Expires: 2026-04-05 20:28:59+00:00
+2026-04-05T21:28:59  INFO     Assuming PrivilegedRole ...
+2026-04-05T21:29:00  INFO     Assumed role arn:aws:iam::396608802942:role/sce-1-3-privileged-1775417289 on attempt 1. Expires: 2026-04-05 20:28:59+00:00
+2026-04-05T21:29:00  INFO     === PHASE 1 COMPLETE: steady_state ===
+[32m[2026-04-05 21:29:00 INFO] Action: execute-t1552-005-imds-downgrade-attempt-as-restricted-principal
+2026-04-05T21:29:00  INFO     === PHASE 2: attack (T1552.005 - IMDS Downgrade Attempt) ===
+2026-04-05T21:29:00  INFO     STEP A: Baseline positive test - calling ModifyInstanceMetadataOptions with PrivilegedRole (expect success) ...
+2026-04-05T21:29:00  INFO     STEP A PASS: PrivilegedRole successfully called ModifyInstanceMetadataOptions. EC2 API is reachable and functional.
+2026-04-05T21:29:00  INFO     Restoring IMDSv2 (HttpTokens=required, HopLimit=1) ...
+2026-04-05T21:29:01  INFO     IMDSv2 restored after baseline test.
+2026-04-05T21:29:01  INFO     STEP B: Deny test - calling ModifyInstanceMetadataOptions with RestrictedRole (expect AccessDenied) ...
+2026-04-05T21:29:01  INFO     Restricted principal | ARN: arn:aws:sts::396608802942:assumed-role/sce-1-3-restricted-1775417289/sce-1-3-restricted | UserId: AROAVYV52CB7OLPRADUPG:sce-1-3-restricted
+2026-04-05T21:29:02  ERROR    Unexpected error during deny test: Code=UnauthorizedOperation | Message=You are not authorized to perform this operation. User: arn:aws:sts::396608802942:assumed-role/sce-1-3-restricted-1775417289/sce-1-3-restricted is not authorized to perform: ec2:ModifyInstanceMetadataOptions on resource: arn:aws:ec2:us-east-1:396608802942:instance/i-00b20b944cda9b67e with an explicit deny in an identity-based policy: arn:aws:iam::396608802942:policy/sce-1-3-deny-imds-1775417289. Encoded authorization failure message: 2rnXJjXSza0Wl3zxoZIMvW6HvL-6Hw-lKmy2uvMqxq1OTat6BDRDqYS7YhEoIx-t-PAlXamCsCBYIBjIXK9rKg5k01IfzR-2iDADCxe5JXvyvk4j3KzgbH47HrOZup-AwJ1e_QvARMDlyFTQUm4Cbv0pqd6A8ZIcdGcAA3YyvqN8deWloFhfcIqY-9llpmywIJHzzWD5p_CW2JKyS2cU0scGVkjqHLtrKTB2fSNWl8CF0i1xtqk3-CO91yEJR-TvPXZO_ZLdMJEDKsX7yZG9hGKoNdCVMh-jyeFV27Krsqm4R3LQy_qyVwP36koXIntBGuQ2dt0kMrhA6e2xdzY6jpC8IFKE1DYULspMQSkTETx2gFRH0ia-cUJp-_rD0Oc7XeqLmZqFsoOStqN0_I16-HduKFODeLqIwEY2GAXd_dHqneaIiGe6w8DWrUh4qAbvYLsQfEnPvCgs1pvjSWsuI1cabmJEcNddZHZ6f_EKXeyGV6YgBWEpydZzpgKbbKoIgg3oczkKGXPYIYdo6qHW56vMM0OpagJgVKsDdFW9y68fOnsE8-JHzliixYvFurq-6OLaNufOYRfpsAu9jn42dxw6yfAUrpkuLHV3akCrNwWbSQ7X6INFc5F6lsYS2YAE1bnHVEnXOT-qa2cCr7GYRRhLHwaPA4FjAsou300yAizcrDbk0iNc6Dsqk2uqtJnoRyHAp_OmxsBIuCz36XL9BJwAyINJ8EfB7p9VzyILX-gw1dDQlY5jomxLyY-ZWHynQk4ZPGBDHObe08iDUpgOUg0CCumTbwD_Imt9Y2O35-2gBqZ7at1OZdxgmeQ7CDIE5JeVgVDAthvTj8CzrzurFoc5kPrNyzd5L-GoO5ek2ZBPrnSL5oPc2ft7wBEu7v_Ry4wZv1Kp2_pfsPtKB58brPtJT0j9T91FGA6vM71qy9An1TCaBf-dEwWu8sUcjPD7vmv51ULnkR0X1giXc1bQ7yPUeA8gUcldfb6ndZ5a_ZDJwLR9v6NYLfVawlwfPUvbGkEr8bJczsfYZEnnwWwVdYcAvjJ4bZeadqxC2aBLDUjZ3H_kE-A13CsljnqY7aF0PGiN9IZvlO3cf4vscVKbZPkZA44eXWN7v3PD0KErkugXx0meBkNNCe7DtzZbCf2zEsW16Zt_3geYyhnA6Jlep6ygWExYosBW_eanesLOvay2Tb3pwQmZu_QQSqE3LNHBNmt0O_kk30Ya8_gpydmIQ6G8FRMhZdMkb4aF6Vz0YXsWEUZkkl8G4qPos7Q8V3s_MGWbc1fH8wkfC41GNr9CulcTrp46jMTPShOa5EBqR82sSxYPfFtk4DK5VmdS791unRqBT-Mugv3yAAQctb48hut4W9gp3118vky-vre5wmpoK61y7qHXDwbC6YPpRaxnfTs
+2026-04-05T21:29:03  INFO     Post-attack IMDS | HttpTokens=required | HopLimit=1
+2026-04-05T21:29:03  INFO     === PHASE 2 COMPLETE: baseline_api_works=True | access_denied=False | attack_succeeded=False ===
+[32m[2026-04-05 21:29:03 INFO] Steady state hypothesis: Hardened EC2 instance exists with IMDSv2 enforced and restricted IAM role is denied ec2:ModifyInstanceMetadataOptions and ec2:DescribeInstances
+[32m[2026-04-05 21:29:03 INFO] Probe: verify-iam-deny-blocks-imds-downgrade-and-describe-and-imds-baseline-intact
+2026-04-05T21:29:03  INFO     === PHASE 3: hypothesis_verification (Preventive) ===
+2026-04-05T21:29:03  INFO     CHECK 0 PASS - Infrastructure was ready. baseline_api_works=True
+2026-04-05T21:29:03  ERROR    CHECK 1 FAIL - ec2:ModifyInstanceMetadataOptions was NOT denied for the restricted principal. attack_succeeded=False | error_code=UnauthorizedOperation | error_message=You are not authorized to perform this operation. User: arn:aws:sts::396608802942:assumed-role/sce-1-3-restricted-1775417289/sce-1-3-restricted is not authorized to perform: ec2:ModifyInstanceMetadataOptions on resource: arn:aws:ec2:us-east-1:396608802942:instance/i-00b20b944cda9b67e with an explicit deny in an identity-based policy: arn:aws:iam::396608802942:policy/sce-1-3-deny-imds-1775417289. Encoded authorization failure message: 2rnXJjXSza0Wl3zxoZIMvW6HvL-6Hw-lKmy2uvMqxq1OTat6BDRDqYS7YhEoIx-t-PAlXamCsCBYIBjIXK9rKg5k01IfzR-2iDADCxe5JXvyvk4j3KzgbH47HrOZup-AwJ1e_QvARMDlyFTQUm4Cbv0pqd6A8ZIcdGcAA3YyvqN8deWloFhfcIqY-9llpmywIJHzzWD5p_CW2JKyS2cU0scGVkjqHLtrKTB2fSNWl8CF0i1xtqk3-CO91yEJR-TvPXZO_ZLdMJEDKsX7yZG9hGKoNdCVMh-jyeFV27Krsqm4R3LQy_qyVwP36koXIntBGuQ2dt0kMrhA6e2xdzY6jpC8IFKE1DYULspMQSkTETx2gFRH0ia-cUJp-_rD0Oc7XeqLmZqFsoOStqN0_I16-HduKFODeLqIwEY2GAXd_dHqneaIiGe6w8DWrUh4qAbvYLsQfEnPvCgs1pvjSWsuI1cabmJEcNddZHZ6f_EKXeyGV6YgBWEpydZzpgKbbKoIgg3oczkKGXPYIYdo6qHW56vMM0OpagJgVKsDdFW9y68fOnsE8-JHzliixYvFurq-6OLaNufOYRfpsAu9jn42dxw6yfAUrpkuLHV3akCrNwWbSQ7X6INFc5F6lsYS2YAE1bnHVEnXOT-qa2cCr7GYRRhLHwaPA4FjAsou300yAizcrDbk0iNc6Dsqk2uqtJnoRyHAp_OmxsBIuCz36XL9BJwAyINJ8EfB7p9VzyILX-gw1dDQlY5jomxLyY-ZWHynQk4ZPGBDHObe08iDUpgOUg0CCumTbwD_Imt9Y2O35-2gBqZ7at1OZdxgmeQ7CDIE5JeVgVDAthvTj8CzrzurFoc5kPrNyzd5L-GoO5ek2ZBPrnSL5oPc2ft7wBEu7v_Ry4wZv1Kp2_pfsPtKB58brPtJT0j9T91FGA6vM71qy9An1TCaBf-dEwWu8sUcjPD7vmv51ULnkR0X1giXc1bQ7yPUeA8gUcldfb6ndZ5a_ZDJwLR9v6NYLfVawlwfPUvbGkEr8bJczsfYZEnnwWwVdYcAvjJ4bZeadqxC2aBLDUjZ3H_kE-A13CsljnqY7aF0PGiN9IZvlO3cf4vscVKbZPkZA44eXWN7v3PD0KErkugXx0meBkNNCe7DtzZbCf2zEsW16Zt_3geYyhnA6Jlep6ygWExYosBW_eanesLOvay2Tb3pwQmZu_QQSqE3LNHBNmt0O_kk30Ya8_gpydmIQ6G8FRMhZdMkb4aF6Vz0YXsWEUZkkl8G4qPos7Q8V3s_MGWbc1fH8wkfC41GNr9CulcTrp46jMTPShOa5EBqR82sSxYPfFtk4DK5VmdS791unRqBT-Mugv3yAAQctb48hut4W9gp3118vky-vre5wmpoK61y7qHXDwbC6YPpRaxnfTs
+2026-04-05T21:29:03  INFO     CHECK 2 PASS - IMDS unchanged: HttpTokens=required, HopLimit=1.
+2026-04-05T21:29:03  WARNING  CHECK 3 INCONCLUSIVE - Unexpected error: UnauthorizedOperation - You are not authorized to perform this operation. User: arn:aws:sts::396608802942:assumed-role/sce-1-3-restricted-1775417289/sce-1-3-restricted is not authorized to perform: ec2:DescribeInstances with an explicit deny in an identity-based policy: arn:aws:iam::396608802942:policy/sce-1-3-deny-imds-1775417289
+2026-04-05T21:29:03  INFO     === HYPOTHESIS VERIFICATION SUMMARY ===
+2026-04-05T21:29:03  INFO       check_1_attack_denied                      -> FAIL
+2026-04-05T21:29:03  INFO       check_2_imds_unchanged                     -> PASS
+2026-04-05T21:29:03  INFO       check_3_describe_denied                    -> SKIP/INCONCLUSIVE
+2026-04-05T21:29:03  ERROR    Overall hypothesis result: FAIL (DEVIATED) - One or more preventive controls did not behave as specified in ADT node 1.1. A security weakness may have been discovered.
+2026-04-05T21:29:03  INFO     === PHASE 3 COMPLETE ===
+[31m[2026-04-05 21:29:03 CRITICAL] Steady state probe 'verify-iam-deny-blocks-imds-downgrade-and-describe-and-imds-baseline-intact' is not in the given tolerance so failing this experiment
+[32m[2026-04-05 21:29:03 INFO] Let's rollback...
+[32m[2026-04-05 21:29:03 INFO] Rollback: teardown-cloudformation-stack-and-all-experiment-resources-including-vpc
+[32m[2026-04-05 21:29:03 INFO] Action: teardown-cloudformation-stack-and-all-experiment-resources-including-vpc
+2026-04-05T21:29:03  INFO     === PHASE 4: rollback ===
+2026-04-05T21:29:03  INFO     Stack sce-experiment-1775417289 current status: CREATE_COMPLETE
+2026-04-05T21:29:04  INFO     Delete request sent for stack sce-experiment-1775417289.
+2026-04-05T21:29:04  INFO     Stack sce-experiment-1775417289  status=DELETE_IN_PROGRESS
+2026-04-05T21:29:19  INFO     Stack sce-experiment-1775417289  status=DELETE_IN_PROGRESS
+2026-04-05T21:29:35  INFO     Stack sce-experiment-1775417289  status=DELETE_IN_PROGRESS
+2026-04-05T21:29:50  INFO     Stack sce-experiment-1775417289 confirmed deleted (no longer exists).
+[32m[2026-04-05 21:29:50 INFO] Experiment ended with status: deviated
+[32m[2026-04-05 21:29:50 INFO] The steady-state has deviated, a weakness may have been discovered
+
+
+RETURN CODE: 1

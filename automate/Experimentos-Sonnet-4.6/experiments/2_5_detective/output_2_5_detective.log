@@ -1,0 +1,390 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-04-13 11:29:55 INFO] Validating the experiment's syntax
+[32m[2026-04-13 11:29:56 INFO] Experiment looks valid
+[32m[2026-04-13 11:29:56 INFO] Running experiment: SCE Experiment 2.5 - Detective Probe: IMDS Weakening and Credential Access Detectability
+[32m[2026-04-13 11:29:56 INFO] Steady-state strategy: after-method-only
+[32m[2026-04-13 11:29:56 INFO] Rollbacks strategy: default
+[32m[2026-04-13 11:29:56 INFO] Playing your experiment's method now...
+[32m[2026-04-13 11:29:56 INFO] Action: Create IAM roles and instance profile via boto3 (no Description field to avoid ValidationError); resolve AMI at runtime via SSM public parameter; deploy CloudFormation stack with networking and EC2 only; get-or-create GuardDuty detector; wait for EC2 running; assert IMDSv2 baseline HttpTokens=required HopLimit=1
+2026-04-13T11:29:56Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:29:57Z  INFO      ======================================================================
+2026-04-13T11:29:57Z  INFO      SCE Experiment 2.5 - Detective Probe  |  steady_state()
+2026-04-13T11:29:57Z  INFO      Account=396608802942  Region=us-east-1  Stack=sce-experiment-1776072597
+2026-04-13T11:29:57Z  INFO      ======================================================================
+2026-04-13T11:29:57Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:29:57Z  INFO      [GD] Reusing pre-existing detector: 4eca2fb0a65336b4c500a5ccaa3684ae
+2026-04-13T11:29:58Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:29:58Z  INFO      [AMI] Resolved via SSM: ami-0e10497160c48e829
+2026-04-13T11:29:59Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:29:59Z  INFO      [IAM] inst_role_name    = sce-ir-eriment-1776072597
+2026-04-13T11:29:59Z  INFO      [IAM] flowlog_role_name = sce-fl-eriment-1776072597
+2026-04-13T11:29:59Z  INFO      [IAM] profile_name      = sce-ip-eriment-1776072597
+2026-04-13T11:29:59Z  INFO      [IAM] Creating instance role ...
+2026-04-13T11:29:59Z  INFO      [IAM] Instance role created: sce-ir-eriment-1776072597
+2026-04-13T11:30:00Z  INFO      [IAM] Creating instance profile: sce-ip-eriment-1776072597
+2026-04-13T11:30:00Z  INFO      [IAM] Creating flow log role: sce-fl-eriment-1776072597
+2026-04-13T11:30:00Z  INFO      [IAM] Flow log role created: sce-fl-eriment-1776072597
+2026-04-13T11:30:01Z  INFO      [IAM] inst_role_arn  = arn:aws:iam::396608802942:role/sce-ir-eriment-1776072597
+2026-04-13T11:30:01Z  INFO      [IAM] fl_role_arn    = arn:aws:iam::396608802942:role/sce-fl-eriment-1776072597
+2026-04-13T11:30:01Z  INFO      [IAM] Waiting 20s for IAM propagation ...
+2026-04-13T11:30:21Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:30:21Z  INFO      [STEADY] Stack creation initiated: sce-experiment-1776072597
+2026-04-13T11:30:21Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:30:21Z  INFO      [CFN] Waiting for 'sce-experiment-1776072597' -> CREATE_COMPLETE ...
+2026-04-13T11:30:22Z  INFO      [CFN] Stack status: CREATE_IN_PROGRESS
+2026-04-13T11:30:38Z  INFO      [CFN] Stack status: CREATE_IN_PROGRESS
+2026-04-13T11:30:53Z  INFO      [CFN] Stack status: CREATE_IN_PROGRESS
+2026-04-13T11:31:09Z  INFO      [CFN] Stack status: CREATE_COMPLETE
+2026-04-13T11:31:09Z  INFO      [CFN] Target status reached: CREATE_COMPLETE
+2026-04-13T11:31:09Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:31:09Z  INFO      [STEADY] Stack outputs:
+2026-04-13T11:31:09Z  INFO               VpcId                  = vpc-08f1527c229ecb223
+2026-04-13T11:31:09Z  INFO               InstanceId             = i-0b6f4e8bf5f003e4e
+2026-04-13T11:31:09Z  INFO               FlowLogGroupName       = /sce/vpcflowlogs/sce-experiment-1776072597
+2026-04-13T11:31:09Z  INFO      [STEADY] Waiting for instance i-0b6f4e8bf5f003e4e to reach running state ...
+2026-04-13T11:31:09Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:31:10Z  INFO      [STEADY] Instance i-0b6f4e8bf5f003e4e is running.
+2026-04-13T11:31:10Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:31:11Z  INFO      [STEADY] Baseline IMDS: HttpTokens=required  HopLimit=1
+2026-04-13T11:31:11Z  INFO      [STEADY] Baseline verified - IMDSv2 enforced, HopLimit=1.
+2026-04-13T11:31:11Z  INFO      [STEADY] steady_state() complete.
+
+[32m[2026-04-13 11:31:11 INFO] Action: Execute attack node 1.2 (ec2:ModifyInstanceMetadataOptions HttpTokens=optional HopLimit=2) then attack node 2.2 (ec2:DescribeInstances to confirm weakened IMDS state persists as attacker precondition for unauthenticated IMDS credential retrieval)
+2026-04-13T11:31:11Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:31:11Z  INFO      ----------------------------------------------------------------------
+2026-04-13T11:31:11Z  INFO      [ATTACK] Node 1.2 - Weaken IMDS on i-0b6f4e8bf5f003e4e
+2026-04-13T11:31:11Z  INFO      [ATTACK] Setting HttpTokens=optional  HopLimit=2
+2026-04-13T11:31:12Z  INFO      [ATTACK] 1.2 - modify_instance_metadata_options succeeded.
+2026-04-13T11:31:20Z  INFO      [ATTACK] Node 2.2 - Confirm weakened IMDS state on i-0b6f4e8bf5f003e4e
+2026-04-13T11:31:21Z  INFO      [ATTACK] 2.2 - IMDS state: HttpTokens=optional  HopLimit=2
+2026-04-13T11:31:21Z  INFO      [ATTACK] 2.2 - Weakening CONFIRMED: no IMDSv2 token required; container bridge traversal enabled.
+2026-04-13T11:31:21Z  INFO      [ATTACK] Both attack nodes executed successfully.
+2026-04-13T11:31:21Z  INFO      ----------------------------------------------------------------------
+[32m[2026-04-13 11:31:21 INFO] Steady state hypothesis: Detective controls are active and all three signals fire within 30-minute SLA after IMDS weakening
+[32m[2026-04-13 11:31:21 INFO] Probe: Verify GuardDuty Policy:EC2/NoIMDSv2 finding, VPC Flow Log delivery pipeline activity, and EC2 control-plane IMDS state persistence all confirmed within 30-minute SLA after attack nodes 1.2 and 2.2
+2026-04-13T11:31:21Z  INFO      ======================================================================
+2026-04-13T11:31:21Z  INFO      [VERIFY] Detective Probe - starting validation
+2026-04-13T11:31:21Z  INFO      [VERIFY] Instance     : i-0b6f4e8bf5f003e4e
+2026-04-13T11:31:21Z  INFO      [VERIFY] Detector     : 4eca2fb0a65336b4c500a5ccaa3684ae
+2026-04-13T11:31:21Z  INFO      [VERIFY] FlowLogGroup : /sce/vpcflowlogs/sce-experiment-1776072597
+2026-04-13T11:31:21Z  INFO      [VERIFY] Attack epoch : 1776072672 (buffered: 1776072612)
+2026-04-13T11:31:21Z  INFO      [VERIFY] SLA window   : 1800s (30 min)
+2026-04-13T11:31:21Z  INFO      ======================================================================
+2026-04-13T11:31:21Z  INFO      
+[VERIFY] === Signal A: GuardDuty finding ===
+2026-04-13T11:31:21Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 1  elapsed=0s / SLA=1800s
+2026-04-13T11:31:21Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:31:21Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:31:41Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 2  elapsed=20s / SLA=1800s
+2026-04-13T11:31:41Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:31:42Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:32:02Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 3  elapsed=41s / SLA=1800s
+2026-04-13T11:32:02Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:32:03Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:32:23Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 4  elapsed=61s / SLA=1800s
+2026-04-13T11:32:23Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:32:23Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:32:43Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 5  elapsed=82s / SLA=1800s
+2026-04-13T11:32:44Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:32:44Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:33:04Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 6  elapsed=103s / SLA=1800s
+2026-04-13T11:33:04Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:33:05Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:33:25Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 7  elapsed=124s / SLA=1800s
+2026-04-13T11:33:25Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:33:26Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:33:46Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 8  elapsed=144s / SLA=1800s
+2026-04-13T11:33:46Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:33:46Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:34:06Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 9  elapsed=165s / SLA=1800s
+2026-04-13T11:34:06Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:34:07Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:34:27Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 10  elapsed=186s / SLA=1800s
+2026-04-13T11:34:27Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:34:28Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:34:48Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 11  elapsed=206s / SLA=1800s
+2026-04-13T11:34:48Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:34:48Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:35:08Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 12  elapsed=227s / SLA=1800s
+2026-04-13T11:35:08Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:35:09Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:35:29Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 13  elapsed=248s / SLA=1800s
+2026-04-13T11:35:29Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:35:29Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:35:49Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 14  elapsed=268s / SLA=1800s
+2026-04-13T11:35:49Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:35:50Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:36:10Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 15  elapsed=289s / SLA=1800s
+2026-04-13T11:36:10Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:36:11Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:36:31Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 16  elapsed=309s / SLA=1800s
+2026-04-13T11:36:31Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:36:31Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:36:51Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 17  elapsed=330s / SLA=1800s
+2026-04-13T11:36:51Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:36:52Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:37:12Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 18  elapsed=350s / SLA=1800s
+2026-04-13T11:37:12Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:37:12Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:37:32Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 19  elapsed=371s / SLA=1800s
+2026-04-13T11:37:32Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:37:33Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:37:53Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 20  elapsed=392s / SLA=1800s
+2026-04-13T11:37:53Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:37:54Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:38:14Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 21  elapsed=412s / SLA=1800s
+2026-04-13T11:38:14Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:38:14Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:38:34Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 22  elapsed=433s / SLA=1800s
+2026-04-13T11:38:34Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:38:35Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:38:55Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 23  elapsed=454s / SLA=1800s
+2026-04-13T11:38:55Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:38:56Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:39:16Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 24  elapsed=474s / SLA=1800s
+2026-04-13T11:39:16Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:39:16Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:39:36Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 25  elapsed=495s / SLA=1800s
+2026-04-13T11:39:36Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:39:37Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:39:57Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 26  elapsed=515s / SLA=1800s
+2026-04-13T11:39:57Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:39:57Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:40:17Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 27  elapsed=536s / SLA=1800s
+2026-04-13T11:40:17Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:40:18Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:40:38Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 28  elapsed=556s / SLA=1800s
+2026-04-13T11:40:38Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:40:38Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:40:58Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 29  elapsed=577s / SLA=1800s
+2026-04-13T11:40:58Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:40:59Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:41:19Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 30  elapsed=598s / SLA=1800s
+2026-04-13T11:41:19Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:41:19Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:41:39Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 31  elapsed=618s / SLA=1800s
+2026-04-13T11:41:39Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:41:40Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:42:00Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 32  elapsed=639s / SLA=1800s
+2026-04-13T11:42:00Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:42:01Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:42:21Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 33  elapsed=659s / SLA=1800s
+2026-04-13T11:42:21Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:42:21Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:42:41Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 34  elapsed=680s / SLA=1800s
+2026-04-13T11:42:41Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:42:42Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:43:02Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 35  elapsed=701s / SLA=1800s
+2026-04-13T11:43:02Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:43:02Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:43:22Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 36  elapsed=721s / SLA=1800s
+2026-04-13T11:43:23Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:43:24Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:43:44Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 37  elapsed=742s / SLA=1800s
+2026-04-13T11:43:44Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:43:44Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:44:04Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 38  elapsed=763s / SLA=1800s
+2026-04-13T11:44:04Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:44:05Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:44:25Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 39  elapsed=783s / SLA=1800s
+2026-04-13T11:44:25Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:44:25Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:44:45Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 40  elapsed=804s / SLA=1800s
+2026-04-13T11:44:45Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:44:46Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:45:06Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 41  elapsed=825s / SLA=1800s
+2026-04-13T11:45:06Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:45:07Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:45:27Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 42  elapsed=845s / SLA=1800s
+2026-04-13T11:45:27Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:45:27Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:45:47Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 43  elapsed=866s / SLA=1800s
+2026-04-13T11:45:47Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:45:48Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:46:08Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 44  elapsed=886s / SLA=1800s
+2026-04-13T11:46:08Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:46:08Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:46:28Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 45  elapsed=907s / SLA=1800s
+2026-04-13T11:46:28Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:46:29Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:46:49Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 46  elapsed=928s / SLA=1800s
+2026-04-13T11:46:49Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:46:49Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:47:09Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 47  elapsed=948s / SLA=1800s
+2026-04-13T11:47:09Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:47:10Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:47:30Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 48  elapsed=969s / SLA=1800s
+2026-04-13T11:47:30Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:47:30Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:47:50Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 49  elapsed=989s / SLA=1800s
+2026-04-13T11:47:50Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:47:51Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:48:11Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 50  elapsed=1010s / SLA=1800s
+2026-04-13T11:48:11Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:48:11Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:48:31Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 51  elapsed=1030s / SLA=1800s
+2026-04-13T11:48:31Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:48:32Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:48:52Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 52  elapsed=1051s / SLA=1800s
+2026-04-13T11:48:52Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:48:53Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:49:13Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 53  elapsed=1071s / SLA=1800s
+2026-04-13T11:49:13Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:49:13Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:49:33Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 54  elapsed=1092s / SLA=1800s
+2026-04-13T11:49:33Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:49:34Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:49:54Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 55  elapsed=1112s / SLA=1800s
+2026-04-13T11:49:54Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:49:54Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:50:14Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 56  elapsed=1133s / SLA=1800s
+2026-04-13T11:50:14Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:50:15Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:50:35Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 57  elapsed=1154s / SLA=1800s
+2026-04-13T11:50:35Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:50:35Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:50:55Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 58  elapsed=1174s / SLA=1800s
+2026-04-13T11:50:55Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:50:56Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:51:16Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 59  elapsed=1195s / SLA=1800s
+2026-04-13T11:51:16Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:51:16Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:51:36Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 60  elapsed=1215s / SLA=1800s
+2026-04-13T11:51:36Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:51:37Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:51:57Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 61  elapsed=1236s / SLA=1800s
+2026-04-13T11:51:57Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:51:58Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:52:18Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 62  elapsed=1256s / SLA=1800s
+2026-04-13T11:52:18Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:52:18Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:52:38Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 63  elapsed=1277s / SLA=1800s
+2026-04-13T11:52:38Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:52:39Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:52:59Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 64  elapsed=1297s / SLA=1800s
+2026-04-13T11:52:59Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:52:59Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:53:19Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 65  elapsed=1318s / SLA=1800s
+2026-04-13T11:53:19Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:53:20Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:53:40Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 66  elapsed=1339s / SLA=1800s
+2026-04-13T11:53:40Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:53:40Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:54:00Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 67  elapsed=1359s / SLA=1800s
+2026-04-13T11:54:00Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:54:01Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:54:21Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 68  elapsed=1380s / SLA=1800s
+2026-04-13T11:54:21Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:54:22Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:54:42Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 69  elapsed=1400s / SLA=1800s
+2026-04-13T11:54:42Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:54:42Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:55:02Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 70  elapsed=1421s / SLA=1800s
+2026-04-13T11:55:02Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:55:03Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:55:23Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 71  elapsed=1441s / SLA=1800s
+2026-04-13T11:55:23Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:55:23Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:55:43Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 72  elapsed=1462s / SLA=1800s
+2026-04-13T11:55:43Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:55:44Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:56:04Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 73  elapsed=1483s / SLA=1800s
+2026-04-13T11:56:04Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:56:04Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:56:24Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 74  elapsed=1503s / SLA=1800s
+2026-04-13T11:56:24Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:56:25Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:56:45Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 75  elapsed=1524s / SLA=1800s
+2026-04-13T11:56:45Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:56:45Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:57:05Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 76  elapsed=1544s / SLA=1800s
+2026-04-13T11:57:05Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:57:06Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:57:26Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 77  elapsed=1565s / SLA=1800s
+2026-04-13T11:57:26Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:57:27Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:57:47Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 78  elapsed=1585s / SLA=1800s
+2026-04-13T11:57:47Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:57:47Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:58:07Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 79  elapsed=1606s / SLA=1800s
+2026-04-13T11:58:07Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:58:08Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:58:28Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 80  elapsed=1626s / SLA=1800s
+2026-04-13T11:58:28Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:58:28Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:58:48Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 81  elapsed=1647s / SLA=1800s
+2026-04-13T11:58:48Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:58:49Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:59:09Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 82  elapsed=1668s / SLA=1800s
+2026-04-13T11:59:09Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:59:09Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:59:29Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 83  elapsed=1688s / SLA=1800s
+2026-04-13T11:59:29Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:59:30Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T11:59:50Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 84  elapsed=1709s / SLA=1800s
+2026-04-13T11:59:50Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T11:59:50Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:00:10Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 85  elapsed=1729s / SLA=1800s
+2026-04-13T12:00:10Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:00:11Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:00:31Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 86  elapsed=1750s / SLA=1800s
+2026-04-13T12:00:31Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:00:32Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:00:52Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 87  elapsed=1770s / SLA=1800s
+2026-04-13T12:00:52Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:00:52Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:01:12Z  INFO      [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - attempt 88  elapsed=1791s / SLA=1800s
+2026-04-13T12:01:12Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:01:13Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:01:33Z  WARNING   [POLL] GuardDuty-Policy-EC2-NoIMDSv2 - SLA of 1800s exhausted without meeting condition.
+2026-04-13T12:01:33Z  INFO      
+[VERIFY] === Signal B: VPC Flow Log delivery ===
+2026-04-13T12:01:33Z  INFO      [POLL] VPC-Flow-Log-Stream - attempt 1  elapsed=0s / SLA=1800s
+2026-04-13T12:01:33Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:01:34Z  INFO      [FL] Log streams in group: 1
+2026-04-13T12:01:34Z  INFO      [FL] Newest stream: eni-036c2ac64cfcbb195-all  lastEventTs=1776072673000
+2026-04-13T12:01:34Z  INFO      [FL] PASS  Flow Log delivery pipeline is active.
+2026-04-13T12:01:34Z  INFO      [POLL] VPC-Flow-Log-Stream - condition MET at attempt 1 (0s elapsed).
+2026-04-13T12:01:34Z  INFO      
+[VERIFY] === Signal C: EC2 control-plane / CloudTrail proxy ===
+2026-04-13T12:01:34Z  INFO      [POLL] IMDS-State-Persisted - attempt 1  elapsed=0s / SLA=1800s
+2026-04-13T12:01:34Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:01:34Z  INFO      [CT] EC2 IMDS state: HttpTokens=optional  HopLimit=2
+2026-04-13T12:01:34Z  INFO      [CT] PASS  IMDS weakened state persists - ModifyInstanceMetadataOptions durably recorded.
+2026-04-13T12:01:34Z  INFO      [POLL] IMDS-State-Persisted - condition MET at attempt 1 (0s elapsed).
+2026-04-13T12:01:34Z  INFO      
+[VERIFY] -- Signal Summary ------------------------------------------
+2026-04-13T12:01:34Z  INFO      [VERIFY]   guardduty                 -> FAIL
+2026-04-13T12:01:34Z  INFO      [VERIFY]   flow_logs                 -> PASS
+2026-04-13T12:01:34Z  INFO      [VERIFY]   cloudtrail_proxy          -> PASS
+2026-04-13T12:01:34Z  INFO      [VERIFY] One or more signals NOT confirmed within SLA.
+2026-04-13T12:01:34Z  INFO      ======================================================================
+[31m[2026-04-13 12:01:34 CRITICAL] Steady state probe 'Verify GuardDuty Policy:EC2/NoIMDSv2 finding, VPC Flow Log delivery pipeline activity, and EC2 control-plane IMDS state persistence all confirmed within 30-minute SLA after attack nodes 1.2 and 2.2' is not in the given tolerance so failing this experiment
+[32m[2026-04-13 12:01:34 INFO] Let's rollback...
+[32m[2026-04-13 12:01:34 INFO] Rollback: Delete CloudFormation stack; delete boto3-created IAM roles and instance profile; delete GuardDuty detector only if created by this experiment; tolerant of missing resources and pre-existing conditions
+[32m[2026-04-13 12:01:34 INFO] Action: Delete CloudFormation stack; delete boto3-created IAM roles and instance profile; delete GuardDuty detector only if created by this experiment; tolerant of missing resources and pre-existing conditions
+2026-04-13T12:01:34Z  INFO      [ROLLBACK] Deleting stack: sce-experiment-1776072597
+2026-04-13T12:01:34Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:01:35Z  INFO      [ROLLBACK] delete_stack request accepted.
+2026-04-13T12:01:35Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:01:35Z  INFO      [CFN] Waiting for 'sce-experiment-1776072597' -> DELETE_COMPLETE ...
+2026-04-13T12:01:36Z  INFO      [CFN] Stack status: DELETE_IN_PROGRESS
+2026-04-13T12:01:51Z  INFO      [CFN] Stack status: DELETE_IN_PROGRESS
+2026-04-13T12:02:07Z  INFO      [CFN] Stack status: DELETE_IN_PROGRESS
+2026-04-13T12:02:22Z  INFO      [CFN] Stack 'sce-experiment-1776072597' deleted.
+2026-04-13T12:02:22Z  INFO      [ROLLBACK] Stack deleted successfully.
+2026-04-13T12:02:22Z  INFO      [ROLLBACK] Deleting IAM resources ...
+2026-04-13T12:02:22Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:02:23Z  INFO      [IAM-RB] Deleted instance profile: sce-ip-eriment-1776072597
+2026-04-13T12:02:24Z  INFO      [IAM-RB] Deleted role: sce-ir-eriment-1776072597
+2026-04-13T12:02:24Z  INFO      [IAM-RB] Deleted role: sce-fl-eriment-1776072597
+2026-04-13T12:02:24Z  INFO      [ROLLBACK] GuardDuty detector is pre-existing - NOT deleted.
+2026-04-13T12:02:24Z  INFO      [ROLLBACK] Teardown complete.
+[32m[2026-04-13 12:02:24 INFO] Experiment ended with status: deviated
+[32m[2026-04-13 12:02:24 INFO] The steady-state has deviated, a weakness may have been discovered
+
+
+RETURN CODE: 1

@@ -1,0 +1,63 @@
+{
+    "title": "SCE 1.8 Preventive Probe - IMDS Credential Harvest Block via Permission Boundary, IMDSv2 Launch Template Enforcement, and Security Group Egress Restriction",
+    "description": "Validates that an attacker holding ec2:ModifyInstanceMetadataOptions (Attack Nodes 1.2 and 1.7) is blocked from weakening IMDS configuration on banking EC2 hosts. Three mandatory preventive controls are verified independently: (A) IAM permission boundary explicitly denies ec2:ModifyInstanceMetadataOptions on the attacker role via iam:SimulatePrincipalPolicy; (B) launch template enforces HttpTokens=required and HttpPutResponseHopLimit=1 confirmed via ec2:DescribeInstances with 30-minute SLA polling; (C) security group has no egress rule permitting TCP/80 or any path to 169.254.0.0/16, confirmed via ec2:DescribeSecurityGroups with 30-minute SLA polling. Check D (SSM Run Command confirming HTTP 401 from unauthenticated IMDS curl) is best-effort. A dedicated SCEVerifier role (separate from the attacker SCERole) is used exclusively for probe verification, decoupling the probe from the attack IAM path that caused total probe failure in the previous execution.",
+    "tags": [
+        "sce",
+        "preventive",
+        "imds",
+        "ec2",
+        "iam",
+        "pci-dss",
+        "banking",
+        "attack-node-1.2",
+        "attack-node-1.7",
+        "T1578",
+        "T1552.005"
+    ],
+    "steady-state-hypothesis": {
+        "title": "All IMDS preventive controls are active: permission boundary denies ModifyInstanceMetadataOptions on SCERole, launch template enforces HttpTokens=required with HopLimit=1, and security group blocks all egress to 169.254.0.0/16",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "verify-imds-preventive-controls",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.1_8_preventive",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "provision-iam-and-ec2-stacks-with-verifier-role-and-imdsv2-enforcement",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_8_preventive",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "attack-attempt-modify-instance-metadata-options-to-weaken-imds-via-simulation-and-direct-call",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_8_preventive",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "delete-sce-cloudformation-stacks-ec2-then-iam",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_8_preventive",
+                "func": "rollback"
+            }
+        }
+    ]
+}

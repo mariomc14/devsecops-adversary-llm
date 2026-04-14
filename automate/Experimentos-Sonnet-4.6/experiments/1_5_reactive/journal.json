@@ -1,0 +1,167 @@
+{
+  "chaoslib-version": "1.44.0",
+  "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.41",
+  "node": "PC-INF-MAMA",
+  "experiment": {
+    "title": "SCE 1.5 Reactive Probe — IMDS Downgrade Auto-Remediation Validation",
+    "description": "Validates that when an attacker calls ec2:ModifyInstanceMetadataOptions to set HttpTokens=optional and HttpPutResponseHopLimit=2 on a banking platform EC2 instance, the reactive controls respond automatically within a 30-minute SLA: (1) EventBridge detects the CloudTrail ModifyInstanceMetadataOptions event, (2) the remediation Lambda restores HttpTokens=required and hop_limit=1, (3) a DenyAll inline policy is attached to the attacker IAM role to revoke its permissions, and (4) an SSM Parameter Store flag is written to provide a programmatic audit trail of the reactive response. Attack Node: 1.2 (T1562.008). Reactive Probe: SCE Experiment Node 1.5.",
+    "tags": [
+      "sce",
+      "imds",
+      "ec2",
+      "reactive",
+      "banking-platform",
+      "pci-dss",
+      "T1562.008",
+      "1_5_reactive"
+    ],
+    "steady-state-hypothesis": {
+      "title": "EC2 instance has IMDSv2 enforced (HttpTokens=required, HopLimit=1) and remediation infrastructure is deployed and operational",
+      "probes": [
+        {
+          "type": "probe",
+          "name": "Verify reactive controls restore IMDS hardening and revoke attacker credentials after ModifyInstanceMetadataOptions downgrade",
+          "tolerance": true,
+          "provider": {
+            "type": "python",
+            "module": "chaosaws.ec2.1_5_reactive",
+            "func": "hypothesis_verification"
+          }
+        }
+      ]
+    },
+    "method": [
+      {
+        "type": "action",
+        "name": "Provision experiment infrastructure via CloudFormation: EC2 instance with IMDSv2 enforced, attacker IAM role, remediation Lambda, EventBridge rule, and SSM remediation flag parameter",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_5_reactive",
+          "func": "steady_state"
+        }
+      },
+      {
+        "type": "action",
+        "name": "Execute Attack Node 1.2: assume attacker role and call ModifyInstanceMetadataOptions to downgrade IMDS to IMDSv1 (HttpTokens=optional, HopLimit=2) on the target EC2 instance",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_5_reactive",
+          "func": "attack"
+        }
+      }
+    ],
+    "rollbacks": [
+      {
+        "type": "action",
+        "name": "Delete CloudFormation stack and all experiment resources including EC2 instance, IAM roles, Lambda function, EventBridge rule, and SSM parameter",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_5_reactive",
+          "func": "rollback"
+        }
+      }
+    ],
+    "dry": null
+  },
+  "start": "2026-04-09T13:20:30.703605+00:00",
+  "status": "completed",
+  "deviated": false,
+  "steady_states": {
+    "before": null,
+    "after": {
+      "steady_state_met": true,
+      "probes": [
+        {
+          "activity": {
+            "type": "probe",
+            "name": "Verify reactive controls restore IMDS hardening and revoke attacker credentials after ModifyInstanceMetadataOptions downgrade",
+            "tolerance": true,
+            "provider": {
+              "type": "python",
+              "module": "chaosaws.ec2.1_5_reactive",
+              "func": "hypothesis_verification"
+            }
+          },
+          "output": true,
+          "start": "2026-04-09T13:23:48.490433+00:00",
+          "status": "succeeded",
+          "end": "2026-04-09T13:23:48.490582+00:00",
+          "duration": 0.000149,
+          "tolerance_met": true
+        }
+      ]
+    },
+    "during": []
+  },
+  "run": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "Provision experiment infrastructure via CloudFormation: EC2 instance with IMDSv2 enforced, attacker IAM role, remediation Lambda, EventBridge rule, and SSM remediation flag parameter",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_5_reactive",
+          "func": "steady_state"
+        }
+      },
+      "output": null,
+      "start": "2026-04-09T13:20:30.704032+00:00",
+      "status": "failed",
+      "exception": [
+        "Traceback (most recent call last):\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py\", line 56, in run_python_activity\n    return func(**arguments)\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_5_reactive.py\", line 594, in steady_state\n    _wait_stack(cf, stack_name, \"CREATE_COMPLETE\", timeout=900)\n    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_5_reactive.py\", line 450, in _wait_stack\n    raise RuntimeError(\n    ...<2 lines>...\n    )\n",
+        "RuntimeError: Stack sce-experiment-1775740830 reached terminal state ROLLBACK_IN_PROGRESS. Recent reasons: ['', '', '', '', '']\n",
+        "\nDuring handling of the above exception, another exception occurred:\n\n",
+        "chaoslib.exceptions.ActivityFailed: RuntimeError: Stack sce-experiment-1775740830 reached terminal state ROLLBACK_IN_PROGRESS. Recent reasons: ['', '', '', '', '']\n"
+      ],
+      "end": "2026-04-09T13:23:48.488801+00:00",
+      "duration": 197.784769
+    },
+    {
+      "activity": {
+        "type": "action",
+        "name": "Execute Attack Node 1.2: assume attacker role and call ModifyInstanceMetadataOptions to downgrade IMDS to IMDSv1 (HttpTokens=optional, HopLimit=2) on the target EC2 instance",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_5_reactive",
+          "func": "attack"
+        }
+      },
+      "output": null,
+      "start": "2026-04-09T13:23:48.489279+00:00",
+      "status": "failed",
+      "exception": [
+        "Traceback (most recent call last):\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py\", line 56, in run_python_activity\n    return func(**arguments)\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_5_reactive.py\", line 666, in attack\n    instance_id = _STATE[\"instance_id\"]\n                  ~~~~~~^^^^^^^^^^^^^^^\n",
+        "KeyError: 'instance_id'\n",
+        "\nDuring handling of the above exception, another exception occurred:\n\n",
+        "chaoslib.exceptions.ActivityFailed: KeyError: 'instance_id'\n"
+      ],
+      "end": "2026-04-09T13:23:48.490233+00:00",
+      "duration": 0.000954
+    }
+  ],
+  "rollbacks": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "Delete CloudFormation stack and all experiment resources including EC2 instance, IAM roles, Lambda function, EventBridge rule, and SSM parameter",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_5_reactive",
+          "func": "rollback"
+        }
+      },
+      "output": null,
+      "start": "2026-04-09T13:23:48.490895+00:00",
+      "status": "succeeded",
+      "end": "2026-04-09T13:23:48.490986+00:00",
+      "duration": 9.1e-05
+    }
+  ],
+  "end": "2026-04-09T13:23:48.491027+00:00",
+  "duration": 197.78968954086304
+}

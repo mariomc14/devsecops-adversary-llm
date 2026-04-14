@@ -1,0 +1,185 @@
+{
+  "chaoslib-version": "1.44.0",
+  "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.41",
+  "node": "PC-INF-MAMA",
+  "experiment": {
+    "title": "SCE Experiment 1.3 — Detective Probe: Detect IMDS Weakening via ModifyInstanceMetadataOptions",
+    "description": "Validates that the detective controls for Attack Node 1.2 (T1578 — Modify Cloud Compute Infrastructure) correctly detect when an adversary downgrades IMDS protection on a banking-platform EC2 instance by setting HttpTokens=optional and HttpPutResponseHopLimit=2. The experiment provisions a clean EC2 instance with IMDSv2 enforced as the steady state, executes the attack API call scoped to that instance, and then verifies three detection signals within a 30-minute SLA: (A) CloudTrail captures the ModifyInstanceMetadataOptions event in CloudWatch Logs, (B) the EventBridge rule matching that API call registers at least one invocation, and (C) the CloudWatch metric-filter alarm transitions to ALARM state. All infrastructure is created and destroyed by the experiment via CloudFormation.",
+    "tags": [
+      "sce",
+      "detective",
+      "imds",
+      "ec2",
+      "cloudtrail",
+      "eventbridge",
+      "cloudwatch",
+      "pci-dss",
+      "t1578",
+      "banking-platform"
+    ],
+    "steady-state-hypothesis": {
+      "title": "EC2 instance exists with IMDSv2 enforced, CloudTrail trail is active, and EventBridge rule is ENABLED — no prior ModifyInstanceMetadataOptions alarm is firing",
+      "probes": [
+        {
+          "type": "probe",
+          "name": "detective-signals-confirmed-within-sla",
+          "tolerance": true,
+          "provider": {
+            "type": "python",
+            "module": "chaosaws.ec2.1_3_detective",
+            "func": "hypothesis_verification"
+          }
+        }
+      ]
+    },
+    "method": [
+      {
+        "type": "action",
+        "name": "provision-experiment-infrastructure-via-cloudformation",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_detective",
+          "func": "steady_state"
+        }
+      },
+      {
+        "type": "action",
+        "name": "attack-step-1.2-weaken-imds-configuration-on-target-ec2-instance",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_detective",
+          "func": "attack"
+        }
+      }
+    ],
+    "rollbacks": [
+      {
+        "type": "action",
+        "name": "teardown-all-experiment-resources-via-cloudformation-stack-deletion",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_detective",
+          "func": "rollback"
+        }
+      }
+    ],
+    "dry": null
+  },
+  "start": "2026-04-07T11:51:50.802413+00:00",
+  "status": "completed",
+  "deviated": true,
+  "steady_states": {
+    "before": null,
+    "after": {
+      "steady_state_met": false,
+      "probes": [
+        {
+          "activity": {
+            "type": "probe",
+            "name": "detective-signals-confirmed-within-sla",
+            "tolerance": true,
+            "provider": {
+              "type": "python",
+              "module": "chaosaws.ec2.1_3_detective",
+              "func": "hypothesis_verification"
+            }
+          },
+          "output": false,
+          "start": "2026-04-07T11:51:51.878845+00:00",
+          "status": "succeeded",
+          "end": "2026-04-07T11:51:51.878960+00:00",
+          "duration": 0.000115,
+          "tolerance_met": false
+        }
+      ]
+    },
+    "during": []
+  },
+  "run": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "provision-experiment-infrastructure-via-cloudformation",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_detective",
+          "func": "steady_state"
+        }
+      },
+      "output": null,
+      "start": "2026-04-07T11:51:50.803152+00:00",
+      "status": "failed",
+      "exception": [
+        "Traceback (most recent call last):\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py\", line 56, in run_python_activity\n    return func(**arguments)\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_detective.py\", line 643, in steady_state\n    if _stack_exists(stack_name):\n       ~~~~~~~~~~~~~^^^^^^^^^^^^\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_detective.py\", line 552, in _stack_exists\n    cfn = _get_cfn_client()\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_detective.py\", line 512, in _get_cfn_client\n    return boto3.client(\"cfn\", region_name=_STATE[\"region\"])\n           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/boto3/__init__.py\", line 92, in client\n    return _get_default_session().client(*args, **kwargs)\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/boto3/session.py\", line 297, in client\n    return self._session.create_client(\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^\n        service_name,\n        ^^^^^^^^^^^^^\n    ...<8 lines>...\n        config=config,\n        ^^^^^^^^^^^^^^\n    )\n    ^\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/session.py\", line 997, in create_client\n    client = client_creator.create_client(\n        service_name=service_name,\n    ...<8 lines>...\n        auth_token=auth_token,\n    )\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/client.py\", line 132, in create_client\n    service_model = self._load_service_model(service_name, api_version)\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/client.py\", line 239, in _load_service_model\n    json_model = self._loader.load_service_model(\n        service_name, 'service-2', api_version=api_version\n    )\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/loaders.py\", line 143, in _wrapper\n    data = func(self, *args, **kwargs)\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/loaders.py\", line 409, in load_service_model\n    raise UnknownServiceError(\n    ...<2 lines>...\n    )\n",
+        "botocore.exceptions.UnknownServiceError: Unknown service: 'cfn'. Valid service names are: accessanalyzer, account, acm, acm-pca, amp, amplify, amplifybackend, amplifyuibuilder, apigateway, apigatewaymanagementapi, apigatewayv2, appconfig, appconfigdata, appfabric, appflow, appintegrations, application-autoscaling, application-insights, application-signals, applicationcostprofiler, appmesh, apprunner, appstream, appsync, apptest, arc-zonal-shift, artifact, athena, auditmanager, autoscaling, autoscaling-plans, b2bi, backup, backup-gateway, batch, bcm-data-exports, bedrock, bedrock-agent, bedrock-agent-runtime, bedrock-runtime, billingconductor, braket, budgets, ce, chatbot, chime, chime-sdk-identity, chime-sdk-media-pipelines, chime-sdk-meetings, chime-sdk-messaging, chime-sdk-voice, cleanrooms, cleanroomsml, cloud9, cloudcontrol, clouddirectory, cloudformation, cloudfront, cloudfront-keyvaluestore, cloudhsm, cloudhsmv2, cloudsearch, cloudsearchdomain, cloudtrail, cloudtrail-data, cloudwatch, codeartifact, codebuild, codecatalyst, codecommit, codeconnections, codedeploy, codeguru-reviewer, codeguru-security, codeguruprofiler, codepipeline, codestar-connections, codestar-notifications, cognito-identity, cognito-idp, cognito-sync, comprehend, comprehendmedical, compute-optimizer, config, connect, connect-contact-lens, connectcampaigns, connectcases, connectparticipant, controlcatalog, controltower, cost-optimization-hub, cur, customer-profiles, databrew, dataexchange, datapipeline, datasync, datazone, dax, deadline, detective, devicefarm, devops-guru, directconnect, discovery, dlm, dms, docdb, docdb-elastic, drs, ds, ds-data, dynamodb, dynamodbstreams, ebs, ec2, ec2-instance-connect, ecr, ecr-public, ecs, efs, eks, eks-auth, elastic-inference, elasticache, elasticbeanstalk, elastictranscoder, elb, elbv2, emr, emr-containers, emr-serverless, entityresolution, es, events, evidently, finspace, finspace-data, firehose, fis, fms, forecast, forecastquery, frauddetector, freetier, fsx, gamelift, geo-maps, geo-places, geo-routes, glacier, globalaccelerator, glue, grafana, greengrass, greengrassv2, groundstation, guardduty, health, healthlake, iam, identitystore, imagebuilder, importexport, inspector, inspector-scan, inspector2, internetmonitor, iot, iot-data, iot-jobs-data, iot1click-devices, iot1click-projects, iotanalytics, iotdeviceadvisor, iotevents, iotevents-data, iotfleethub, iotfleetwise, iotsecuretunneling, iotsitewise, iotthingsgraph, iottwinmaker, iotwireless, ivs, ivs-realtime, ivschat, kafka, kafkaconnect, kendra, kendra-ranking, keyspaces, kinesis, kinesis-video-archived-media, kinesis-video-media, kinesis-video-signaling, kinesis-video-webrtc-storage, kinesisanalytics, kinesisanalyticsv2, kinesisvideo, kms, lakeformation, lambda, launch-wizard, lex-models, lex-runtime, lexv2-models, lexv2-runtime, license-manager, license-manager-linux-subscriptions, license-manager-user-subscriptions, lightsail, location, logs, lookoutequipment, lookoutmetrics, lookoutvision, m2, machinelearning, macie2, mailmanager, managedblockchain, managedblockchain-query, marketplace-agreement, marketplace-catalog, marketplace-deployment, marketplace-entitlement, marketplace-reporting, marketplacecommerceanalytics, mediaconnect, mediaconvert, medialive, mediapackage, mediapackage-vod, mediapackagev2, mediastore, mediastore-data, mediatailor, medical-imaging, memorydb, meteringmarketplace, mgh, mgn, migration-hub-refactor-spaces, migrationhub-config, migrationhuborchestrator, migrationhubstrategy, mq, mturk, mwaa, neptune, neptune-graph, neptunedata, network-firewall, networkmanager, networkmonitor, oam, omics, opensearch, opensearchserverless, opsworks, opsworkscm, organizations, osis, outposts, panorama, payment-cryptography, payment-cryptography-data, pca-connector-ad, pca-connector-scep, pcs, personalize, personalize-events, personalize-runtime, pi, pinpoint, pinpoint-email, pinpoint-sms-voice, pinpoint-sms-voice-v2, pipes, polly, pricing, privatenetworks, proton, qapps, qbusiness, qconnect, qldb, qldb-session, quicksight, ram, rbin, rds, rds-data, redshift, redshift-data, redshift-serverless, rekognition, repostspace, resiliencehub, resource-explorer-2, resource-groups, resourcegroupstaggingapi, robomaker, rolesanywhere, route53, route53-recovery-cluster, route53-recovery-control-config, route53-recovery-readiness, route53domains, route53profiles, route53resolver, rum, s3, s3control, s3outposts, sagemaker, sagemaker-a2i-runtime, sagemaker-edge, sagemaker-featurestore-runtime, sagemaker-geospatial, sagemaker-metrics, sagemaker-runtime, savingsplans, scheduler, schemas, sdb, secretsmanager, securityhub, securitylake, serverlessrepo, service-quotas, servicecatalog, servicecatalog-appregistry, servicediscovery, ses, sesv2, shield, signer, simspaceweaver, sms, sms-voice, snow-device-management, snowball, sns, socialmessaging, sqs, ssm, ssm-contacts, ssm-incidents, ssm-quicksetup, ssm-sap, sso, sso-admin, sso-oidc, stepfunctions, storagegateway, sts, supplychain, support, support-app, swf, synthetics, taxsettings, textract, timestream-influxdb, timestream-query, timestream-write, tnb, transcribe, transfer, translate, trustedadvisor, verifiedpermissions, voice-id, vpc-lattice, waf, waf-regional, wafv2, wellarchitected, wisdom, workdocs, workmail, workmailmessageflow, workspaces, workspaces-thin-client, workspaces-web, xray\n",
+        "\nDuring handling of the above exception, another exception occurred:\n\n",
+        "chaoslib.exceptions.ActivityFailed: botocore.exceptions.UnknownServiceError: Unknown service: 'cfn'. Valid service names are: accessanalyzer, account, acm, acm-pca, amp, amplify, amplifybackend, amplifyuibuilder, apigateway, apigatewaymanagementapi, apigatewayv2, appconfig, appconfigdata, appfabric, appflow, appintegrations, application-autoscaling, application-insights, application-signals, applicationcostprofiler, appmesh, apprunner, appstream, appsync, apptest, arc-zonal-shift, artifact, athena, auditmanager, autoscaling, autoscaling-plans, b2bi, backup, backup-gateway, batch, bcm-data-exports, bedrock, bedrock-agent, bedrock-agent-runtime, bedrock-runtime, billingconductor, braket, budgets, ce, chatbot, chime, chime-sdk-identity, chime-sdk-media-pipelines, chime-sdk-meetings, chime-sdk-messaging, chime-sdk-voice, cleanrooms, cleanroomsml, cloud9, cloudcontrol, clouddirectory, cloudformation, cloudfront, cloudfront-keyvaluestore, cloudhsm, cloudhsmv2, cloudsearch, cloudsearchdomain, cloudtrail, cloudtrail-data, cloudwatch, codeartifact, codebuild, codecatalyst, codecommit, codeconnections, codedeploy, codeguru-reviewer, codeguru-security, codeguruprofiler, codepipeline, codestar-connections, codestar-notifications, cognito-identity, cognito-idp, cognito-sync, comprehend, comprehendmedical, compute-optimizer, config, connect, connect-contact-lens, connectcampaigns, connectcases, connectparticipant, controlcatalog, controltower, cost-optimization-hub, cur, customer-profiles, databrew, dataexchange, datapipeline, datasync, datazone, dax, deadline, detective, devicefarm, devops-guru, directconnect, discovery, dlm, dms, docdb, docdb-elastic, drs, ds, ds-data, dynamodb, dynamodbstreams, ebs, ec2, ec2-instance-connect, ecr, ecr-public, ecs, efs, eks, eks-auth, elastic-inference, elasticache, elasticbeanstalk, elastictranscoder, elb, elbv2, emr, emr-containers, emr-serverless, entityresolution, es, events, evidently, finspace, finspace-data, firehose, fis, fms, forecast, forecastquery, frauddetector, freetier, fsx, gamelift, geo-maps, geo-places, geo-routes, glacier, globalaccelerator, glue, grafana, greengrass, greengrassv2, groundstation, guardduty, health, healthlake, iam, identitystore, imagebuilder, importexport, inspector, inspector-scan, inspector2, internetmonitor, iot, iot-data, iot-jobs-data, iot1click-devices, iot1click-projects, iotanalytics, iotdeviceadvisor, iotevents, iotevents-data, iotfleethub, iotfleetwise, iotsecuretunneling, iotsitewise, iotthingsgraph, iottwinmaker, iotwireless, ivs, ivs-realtime, ivschat, kafka, kafkaconnect, kendra, kendra-ranking, keyspaces, kinesis, kinesis-video-archived-media, kinesis-video-media, kinesis-video-signaling, kinesis-video-webrtc-storage, kinesisanalytics, kinesisanalyticsv2, kinesisvideo, kms, lakeformation, lambda, launch-wizard, lex-models, lex-runtime, lexv2-models, lexv2-runtime, license-manager, license-manager-linux-subscriptions, license-manager-user-subscriptions, lightsail, location, logs, lookoutequipment, lookoutmetrics, lookoutvision, m2, machinelearning, macie2, mailmanager, managedblockchain, managedblockchain-query, marketplace-agreement, marketplace-catalog, marketplace-deployment, marketplace-entitlement, marketplace-reporting, marketplacecommerceanalytics, mediaconnect, mediaconvert, medialive, mediapackage, mediapackage-vod, mediapackagev2, mediastore, mediastore-data, mediatailor, medical-imaging, memorydb, meteringmarketplace, mgh, mgn, migration-hub-refactor-spaces, migrationhub-config, migrationhuborchestrator, migrationhubstrategy, mq, mturk, mwaa, neptune, neptune-graph, neptunedata, network-firewall, networkmanager, networkmonitor, oam, omics, opensearch, opensearchserverless, opsworks, opsworkscm, organizations, osis, outposts, panorama, payment-cryptography, payment-cryptography-data, pca-connector-ad, pca-connector-scep, pcs, personalize, personalize-events, personalize-runtime, pi, pinpoint, pinpoint-email, pinpoint-sms-voice, pinpoint-sms-voice-v2, pipes, polly, pricing, privatenetworks, proton, qapps, qbusiness, qconnect, qldb, qldb-session, quicksight, ram, rbin, rds, rds-data, redshift, redshift-data, redshift-serverless, rekognition, repostspace, resiliencehub, resource-explorer-2, resource-groups, resourcegroupstaggingapi, robomaker, rolesanywhere, route53, route53-recovery-cluster, route53-recovery-control-config, route53-recovery-readiness, route53domains, route53profiles, route53resolver, rum, s3, s3control, s3outposts, sagemaker, sagemaker-a2i-runtime, sagemaker-edge, sagemaker-featurestore-runtime, sagemaker-geospatial, sagemaker-metrics, sagemaker-runtime, savingsplans, scheduler, schemas, sdb, secretsmanager, securityhub, securitylake, serverlessrepo, service-quotas, servicecatalog, servicecatalog-appregistry, servicediscovery, ses, sesv2, shield, signer, simspaceweaver, sms, sms-voice, snow-device-management, snowball, sns, socialmessaging, sqs, ssm, ssm-contacts, ssm-incidents, ssm-quicksetup, ssm-sap, sso, sso-admin, sso-oidc, stepfunctions, storagegateway, sts, supplychain, support, support-app, swf, synthetics, taxsettings, textract, timestream-influxdb, timestream-query, timestream-write, tnb, transcribe, transfer, translate, trustedadvisor, verifiedpermissions, voice-id, vpc-lattice, waf, waf-regional, wafv2, wellarchitected, wisdom, workdocs, workmail, workmailmessageflow, workspaces, workspaces-thin-client, workspaces-web, xray\n"
+      ],
+      "end": "2026-04-07T11:51:51.878362+00:00",
+      "duration": 1.07521
+    },
+    {
+      "activity": {
+        "type": "action",
+        "name": "attack-step-1.2-weaken-imds-configuration-on-target-ec2-instance",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_detective",
+          "func": "attack"
+        }
+      },
+      "output": false,
+      "start": "2026-04-07T11:51:51.878500+00:00",
+      "status": "succeeded",
+      "end": "2026-04-07T11:51:51.878664+00:00",
+      "duration": 0.000164
+    }
+  ],
+  "rollbacks": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "teardown-all-experiment-resources-via-cloudformation-stack-deletion",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_detective",
+          "func": "rollback"
+        }
+      },
+      "output": null,
+      "start": "2026-04-07T11:51:51.879191+00:00",
+      "status": "failed",
+      "exception": [
+        "Traceback (most recent call last):\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py\", line 56, in run_python_activity\n    return func(**arguments)\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_detective.py\", line 960, in rollback\n    cfn = _get_cfn_client()\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_detective.py\", line 512, in _get_cfn_client\n    return boto3.client(\"cfn\", region_name=_STATE[\"region\"])\n           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/boto3/__init__.py\", line 92, in client\n    return _get_default_session().client(*args, **kwargs)\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/boto3/session.py\", line 297, in client\n    return self._session.create_client(\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^\n        service_name,\n        ^^^^^^^^^^^^^\n    ...<8 lines>...\n        config=config,\n        ^^^^^^^^^^^^^^\n    )\n    ^\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/session.py\", line 997, in create_client\n    client = client_creator.create_client(\n        service_name=service_name,\n    ...<8 lines>...\n        auth_token=auth_token,\n    )\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/client.py\", line 132, in create_client\n    service_model = self._load_service_model(service_name, api_version)\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/client.py\", line 239, in _load_service_model\n    json_model = self._loader.load_service_model(\n        service_name, 'service-2', api_version=api_version\n    )\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/loaders.py\", line 143, in _wrapper\n    data = func(self, *args, **kwargs)\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/loaders.py\", line 409, in load_service_model\n    raise UnknownServiceError(\n    ...<2 lines>...\n    )\n",
+        "botocore.exceptions.UnknownServiceError: Unknown service: 'cfn'. Valid service names are: accessanalyzer, account, acm, acm-pca, amp, amplify, amplifybackend, amplifyuibuilder, apigateway, apigatewaymanagementapi, apigatewayv2, appconfig, appconfigdata, appfabric, appflow, appintegrations, application-autoscaling, application-insights, application-signals, applicationcostprofiler, appmesh, apprunner, appstream, appsync, apptest, arc-zonal-shift, artifact, athena, auditmanager, autoscaling, autoscaling-plans, b2bi, backup, backup-gateway, batch, bcm-data-exports, bedrock, bedrock-agent, bedrock-agent-runtime, bedrock-runtime, billingconductor, braket, budgets, ce, chatbot, chime, chime-sdk-identity, chime-sdk-media-pipelines, chime-sdk-meetings, chime-sdk-messaging, chime-sdk-voice, cleanrooms, cleanroomsml, cloud9, cloudcontrol, clouddirectory, cloudformation, cloudfront, cloudfront-keyvaluestore, cloudhsm, cloudhsmv2, cloudsearch, cloudsearchdomain, cloudtrail, cloudtrail-data, cloudwatch, codeartifact, codebuild, codecatalyst, codecommit, codeconnections, codedeploy, codeguru-reviewer, codeguru-security, codeguruprofiler, codepipeline, codestar-connections, codestar-notifications, cognito-identity, cognito-idp, cognito-sync, comprehend, comprehendmedical, compute-optimizer, config, connect, connect-contact-lens, connectcampaigns, connectcases, connectparticipant, controlcatalog, controltower, cost-optimization-hub, cur, customer-profiles, databrew, dataexchange, datapipeline, datasync, datazone, dax, deadline, detective, devicefarm, devops-guru, directconnect, discovery, dlm, dms, docdb, docdb-elastic, drs, ds, ds-data, dynamodb, dynamodbstreams, ebs, ec2, ec2-instance-connect, ecr, ecr-public, ecs, efs, eks, eks-auth, elastic-inference, elasticache, elasticbeanstalk, elastictranscoder, elb, elbv2, emr, emr-containers, emr-serverless, entityresolution, es, events, evidently, finspace, finspace-data, firehose, fis, fms, forecast, forecastquery, frauddetector, freetier, fsx, gamelift, geo-maps, geo-places, geo-routes, glacier, globalaccelerator, glue, grafana, greengrass, greengrassv2, groundstation, guardduty, health, healthlake, iam, identitystore, imagebuilder, importexport, inspector, inspector-scan, inspector2, internetmonitor, iot, iot-data, iot-jobs-data, iot1click-devices, iot1click-projects, iotanalytics, iotdeviceadvisor, iotevents, iotevents-data, iotfleethub, iotfleetwise, iotsecuretunneling, iotsitewise, iotthingsgraph, iottwinmaker, iotwireless, ivs, ivs-realtime, ivschat, kafka, kafkaconnect, kendra, kendra-ranking, keyspaces, kinesis, kinesis-video-archived-media, kinesis-video-media, kinesis-video-signaling, kinesis-video-webrtc-storage, kinesisanalytics, kinesisanalyticsv2, kinesisvideo, kms, lakeformation, lambda, launch-wizard, lex-models, lex-runtime, lexv2-models, lexv2-runtime, license-manager, license-manager-linux-subscriptions, license-manager-user-subscriptions, lightsail, location, logs, lookoutequipment, lookoutmetrics, lookoutvision, m2, machinelearning, macie2, mailmanager, managedblockchain, managedblockchain-query, marketplace-agreement, marketplace-catalog, marketplace-deployment, marketplace-entitlement, marketplace-reporting, marketplacecommerceanalytics, mediaconnect, mediaconvert, medialive, mediapackage, mediapackage-vod, mediapackagev2, mediastore, mediastore-data, mediatailor, medical-imaging, memorydb, meteringmarketplace, mgh, mgn, migration-hub-refactor-spaces, migrationhub-config, migrationhuborchestrator, migrationhubstrategy, mq, mturk, mwaa, neptune, neptune-graph, neptunedata, network-firewall, networkmanager, networkmonitor, oam, omics, opensearch, opensearchserverless, opsworks, opsworkscm, organizations, osis, outposts, panorama, payment-cryptography, payment-cryptography-data, pca-connector-ad, pca-connector-scep, pcs, personalize, personalize-events, personalize-runtime, pi, pinpoint, pinpoint-email, pinpoint-sms-voice, pinpoint-sms-voice-v2, pipes, polly, pricing, privatenetworks, proton, qapps, qbusiness, qconnect, qldb, qldb-session, quicksight, ram, rbin, rds, rds-data, redshift, redshift-data, redshift-serverless, rekognition, repostspace, resiliencehub, resource-explorer-2, resource-groups, resourcegroupstaggingapi, robomaker, rolesanywhere, route53, route53-recovery-cluster, route53-recovery-control-config, route53-recovery-readiness, route53domains, route53profiles, route53resolver, rum, s3, s3control, s3outposts, sagemaker, sagemaker-a2i-runtime, sagemaker-edge, sagemaker-featurestore-runtime, sagemaker-geospatial, sagemaker-metrics, sagemaker-runtime, savingsplans, scheduler, schemas, sdb, secretsmanager, securityhub, securitylake, serverlessrepo, service-quotas, servicecatalog, servicecatalog-appregistry, servicediscovery, ses, sesv2, shield, signer, simspaceweaver, sms, sms-voice, snow-device-management, snowball, sns, socialmessaging, sqs, ssm, ssm-contacts, ssm-incidents, ssm-quicksetup, ssm-sap, sso, sso-admin, sso-oidc, stepfunctions, storagegateway, sts, supplychain, support, support-app, swf, synthetics, taxsettings, textract, timestream-influxdb, timestream-query, timestream-write, tnb, transcribe, transfer, translate, trustedadvisor, verifiedpermissions, voice-id, vpc-lattice, waf, waf-regional, wafv2, wellarchitected, wisdom, workdocs, workmail, workmailmessageflow, workspaces, workspaces-thin-client, workspaces-web, xray\n",
+        "\nDuring handling of the above exception, another exception occurred:\n\n",
+        "chaoslib.exceptions.ActivityFailed: botocore.exceptions.UnknownServiceError: Unknown service: 'cfn'. Valid service names are: accessanalyzer, account, acm, acm-pca, amp, amplify, amplifybackend, amplifyuibuilder, apigateway, apigatewaymanagementapi, apigatewayv2, appconfig, appconfigdata, appfabric, appflow, appintegrations, application-autoscaling, application-insights, application-signals, applicationcostprofiler, appmesh, apprunner, appstream, appsync, apptest, arc-zonal-shift, artifact, athena, auditmanager, autoscaling, autoscaling-plans, b2bi, backup, backup-gateway, batch, bcm-data-exports, bedrock, bedrock-agent, bedrock-agent-runtime, bedrock-runtime, billingconductor, braket, budgets, ce, chatbot, chime, chime-sdk-identity, chime-sdk-media-pipelines, chime-sdk-meetings, chime-sdk-messaging, chime-sdk-voice, cleanrooms, cleanroomsml, cloud9, cloudcontrol, clouddirectory, cloudformation, cloudfront, cloudfront-keyvaluestore, cloudhsm, cloudhsmv2, cloudsearch, cloudsearchdomain, cloudtrail, cloudtrail-data, cloudwatch, codeartifact, codebuild, codecatalyst, codecommit, codeconnections, codedeploy, codeguru-reviewer, codeguru-security, codeguruprofiler, codepipeline, codestar-connections, codestar-notifications, cognito-identity, cognito-idp, cognito-sync, comprehend, comprehendmedical, compute-optimizer, config, connect, connect-contact-lens, connectcampaigns, connectcases, connectparticipant, controlcatalog, controltower, cost-optimization-hub, cur, customer-profiles, databrew, dataexchange, datapipeline, datasync, datazone, dax, deadline, detective, devicefarm, devops-guru, directconnect, discovery, dlm, dms, docdb, docdb-elastic, drs, ds, ds-data, dynamodb, dynamodbstreams, ebs, ec2, ec2-instance-connect, ecr, ecr-public, ecs, efs, eks, eks-auth, elastic-inference, elasticache, elasticbeanstalk, elastictranscoder, elb, elbv2, emr, emr-containers, emr-serverless, entityresolution, es, events, evidently, finspace, finspace-data, firehose, fis, fms, forecast, forecastquery, frauddetector, freetier, fsx, gamelift, geo-maps, geo-places, geo-routes, glacier, globalaccelerator, glue, grafana, greengrass, greengrassv2, groundstation, guardduty, health, healthlake, iam, identitystore, imagebuilder, importexport, inspector, inspector-scan, inspector2, internetmonitor, iot, iot-data, iot-jobs-data, iot1click-devices, iot1click-projects, iotanalytics, iotdeviceadvisor, iotevents, iotevents-data, iotfleethub, iotfleetwise, iotsecuretunneling, iotsitewise, iotthingsgraph, iottwinmaker, iotwireless, ivs, ivs-realtime, ivschat, kafka, kafkaconnect, kendra, kendra-ranking, keyspaces, kinesis, kinesis-video-archived-media, kinesis-video-media, kinesis-video-signaling, kinesis-video-webrtc-storage, kinesisanalytics, kinesisanalyticsv2, kinesisvideo, kms, lakeformation, lambda, launch-wizard, lex-models, lex-runtime, lexv2-models, lexv2-runtime, license-manager, license-manager-linux-subscriptions, license-manager-user-subscriptions, lightsail, location, logs, lookoutequipment, lookoutmetrics, lookoutvision, m2, machinelearning, macie2, mailmanager, managedblockchain, managedblockchain-query, marketplace-agreement, marketplace-catalog, marketplace-deployment, marketplace-entitlement, marketplace-reporting, marketplacecommerceanalytics, mediaconnect, mediaconvert, medialive, mediapackage, mediapackage-vod, mediapackagev2, mediastore, mediastore-data, mediatailor, medical-imaging, memorydb, meteringmarketplace, mgh, mgn, migration-hub-refactor-spaces, migrationhub-config, migrationhuborchestrator, migrationhubstrategy, mq, mturk, mwaa, neptune, neptune-graph, neptunedata, network-firewall, networkmanager, networkmonitor, oam, omics, opensearch, opensearchserverless, opsworks, opsworkscm, organizations, osis, outposts, panorama, payment-cryptography, payment-cryptography-data, pca-connector-ad, pca-connector-scep, pcs, personalize, personalize-events, personalize-runtime, pi, pinpoint, pinpoint-email, pinpoint-sms-voice, pinpoint-sms-voice-v2, pipes, polly, pricing, privatenetworks, proton, qapps, qbusiness, qconnect, qldb, qldb-session, quicksight, ram, rbin, rds, rds-data, redshift, redshift-data, redshift-serverless, rekognition, repostspace, resiliencehub, resource-explorer-2, resource-groups, resourcegroupstaggingapi, robomaker, rolesanywhere, route53, route53-recovery-cluster, route53-recovery-control-config, route53-recovery-readiness, route53domains, route53profiles, route53resolver, rum, s3, s3control, s3outposts, sagemaker, sagemaker-a2i-runtime, sagemaker-edge, sagemaker-featurestore-runtime, sagemaker-geospatial, sagemaker-metrics, sagemaker-runtime, savingsplans, scheduler, schemas, sdb, secretsmanager, securityhub, securitylake, serverlessrepo, service-quotas, servicecatalog, servicecatalog-appregistry, servicediscovery, ses, sesv2, shield, signer, simspaceweaver, sms, sms-voice, snow-device-management, snowball, sns, socialmessaging, sqs, ssm, ssm-contacts, ssm-incidents, ssm-quicksetup, ssm-sap, sso, sso-admin, sso-oidc, stepfunctions, storagegateway, sts, supplychain, support, support-app, swf, synthetics, taxsettings, textract, timestream-influxdb, timestream-query, timestream-write, tnb, transcribe, transfer, translate, trustedadvisor, verifiedpermissions, voice-id, vpc-lattice, waf, waf-regional, wafv2, wellarchitected, wisdom, workdocs, workmail, workmailmessageflow, workspaces, workspaces-thin-client, workspaces-web, xray\n"
+      ],
+      "end": "2026-04-07T11:51:52.579673+00:00",
+      "duration": 0.700482
+    }
+  ],
+  "end": "2026-04-07T11:51:52.579746+00:00",
+  "duration": 1.7798523902893066
+}

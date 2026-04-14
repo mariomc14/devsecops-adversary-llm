@@ -1,0 +1,63 @@
+[36m[2026-04-13 12:13:11 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-04-13 12:13:11 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-04-13 12:13:11 DEBUG] [__init__:106] Using settings file '/home/mmc/.chaostoolkit/settings.yaml'
+[36m[2026-04-13 12:13:11 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/mmc/.chaostoolkit/settings.yaml'.
+[36m[2026-04-13 12:13:11 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-13 12:13:11 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-13 12:13:11 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-13 12:13:11 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-04-13 12:13:11 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-04-13 12:13:11 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-13 12:13:11 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-13 12:13:11 DEBUG] [secret:104] Done loading secrets
+[32m[2026-04-13 12:13:11 INFO] [experiment:112] Experiment looks valid
+[36m[2026-04-13 12:13:11 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-13 12:13:11 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-04-13 12:13:11 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-13 12:13:11 DEBUG] [caching:35] Cached 3 activities
+[36m[2026-04-13 12:13:11 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-13 12:13:11 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-13 12:13:11 DEBUG] [secret:104] Done loading secrets
+[36m[2026-04-13 12:13:11 DEBUG] [configuration:161] Loading dynamic configuration...
+[32m[2026-04-13 12:13:11 INFO] [run:440] Running experiment: SCE Experiment 2.5 - Reactive Probe: IMDS Tamper Automated Incident Response Validation
+[36m[2026-04-13 12:13:11 DEBUG] [__init__:67] Initializing controls
+[32m[2026-04-13 12:13:11 INFO] [run:471] Steady-state strategy: after-method-only
+[32m[2026-04-13 12:13:11 INFO] [run:477] Rollbacks strategy: default
+[36m[2026-04-13 12:13:11 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[32m[2026-04-13 12:13:11 INFO] [run:778] Playing your experiment's method now...
+[36m[2026-04-13 12:13:11 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-13 12:13:11 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-13 12:13:11 INFO] [activity:232] Action: Create IAM roles (EC2 instance role, SSM automation role) and instance profile via boto3 (no Description field); resolve AMI at runtime via SSM public parameter; deploy CloudFormation stack with VPC, normal SG, quarantine SG, SSM Automation document, and EC2 target (IMDSv2 enforced HopLimit=1); wait for EC2 running; resolve root EBS volume ID; assert baseline
+[36m[2026-04-13 12:13:11 DEBUG] [python:33] Activity 'Create IAM roles (EC2 instance role, SSM automation role) and instance profile via boto3 (no Description field); resolve AMI at runtime via SSM public parameter; deploy CloudFormation stack with VPC, normal SG, quarantine SG, SSM Automation document, and EC2 target (IMDSv2 enforced HopLimit=1); wait for EC2 running; resolve root EBS volume ID; assert baseline' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_5_reactive.py'
+[36m[2026-04-13 12:14:26 DEBUG] [activity:262]   => succeeded without any result value
+[36m[2026-04-13 12:14:26 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-13 12:14:26 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-13 12:14:26 INFO] [activity:232] Action: Execute attack node 1.2 (ec2:ModifyInstanceMetadataOptions HttpTokens=optional HopLimit=2), attack node 2.2 (ec2:DescribeInstances confirm weakened IMDS state), then start SSM Automation reactive playbook to simulate automated incident response pipeline
+[36m[2026-04-13 12:14:26 DEBUG] [python:33] Activity 'Execute attack node 1.2 (ec2:ModifyInstanceMetadataOptions HttpTokens=optional HopLimit=2), attack node 2.2 (ec2:DescribeInstances confirm weakened IMDS state), then start SSM Automation reactive playbook to simulate automated incident response pipeline' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_5_reactive.py'
+[36m[2026-04-13 12:14:36 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-04-13 12:14:36 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-13 12:14:36 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-13 12:14:36 DEBUG] [run:696] Running steady-state hypothesis after the method
+[32m[2026-04-13 12:14:36 INFO] [hypothesis:205] Steady state hypothesis: All five reactive signals confirmed within 30-minute SLA: SSM Automation success, IAM Deny-all revocation, quarantine SG assignment, EBS snapshot creation, and IMDS_TAMPER_DETECTED tag
+[36m[2026-04-13 12:14:36 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[36m[2026-04-13 12:14:36 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-13 12:14:36 INFO] [activity:232] Probe: Verify SSM Automation execution success, IAM Deny-all revocation policy on instance role, quarantine security group assignment, EBS snapshot for root volume, and SecurityStatus=IMDS_TAMPER_DETECTED tag all confirmed within 30-minute SLA after attack nodes 1.2 and 2.2
+[36m[2026-04-13 12:14:36 DEBUG] [python:33] Activity 'Verify SSM Automation execution success, IAM Deny-all revocation policy on instance role, quarantine security group assignment, EBS snapshot for root volume, and SecurityStatus=IMDS_TAMPER_DETECTED tag all confirmed within 30-minute SLA after attack nodes 1.2 and 2.2' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_5_reactive.py'
+[36m[2026-04-13 12:15:01 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-04-13 12:15:01 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-13 12:15:01 DEBUG] [hypothesis:247] allowed tolerance is True
+[32m[2026-04-13 12:15:01 INFO] [hypothesis:260] Steady state hypothesis is met!
+[36m[2026-04-13 12:15:01 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[32m[2026-04-13 12:15:01 INFO] [run:1072] Let's rollback...
+[36m[2026-04-13 12:15:01 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-13 12:15:01 INFO] [rollback:36] Rollback: Delete EBS snapshot created by reactive playbook; delete CloudFormation stack (VPC, SGs, SSM doc, EC2); delete boto3-created IAM resources including removing Deny-all revocation policy before role deletion; tolerant of missing resources
+[36m[2026-04-13 12:15:01 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-13 12:15:01 INFO] [activity:232] Action: Delete EBS snapshot created by reactive playbook; delete CloudFormation stack (VPC, SGs, SSM doc, EC2); delete boto3-created IAM resources including removing Deny-all revocation policy before role deletion; tolerant of missing resources
+[36m[2026-04-13 12:15:01 DEBUG] [python:33] Activity 'Delete EBS snapshot created by reactive playbook; delete CloudFormation stack (VPC, SGs, SSM doc, EC2); delete boto3-created IAM resources including removing Deny-all revocation policy before role deletion; tolerant of missing resources' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_5_reactive.py'
+[36m[2026-04-13 12:16:23 DEBUG] [activity:262]   => succeeded without any result value
+[36m[2026-04-13 12:16:23 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-13 12:16:23 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-13 12:16:23 INFO] [run:598] Experiment ended with status: completed
+[36m[2026-04-13 12:16:23 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[36m[2026-04-13 12:16:23 DEBUG] [__init__:106] Cleaning up controls
+[36m[2026-04-13 12:16:23 DEBUG] [caching:42] Clearing activities cache

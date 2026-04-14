@@ -1,0 +1,761 @@
+[36m[2026-04-10 12:12:09 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-04-10 12:12:09 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-04-10 12:12:09 DEBUG] [__init__:106] Using settings file '/home/mmc/.chaostoolkit/settings.yaml'
+[36m[2026-04-10 12:12:09 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/mmc/.chaostoolkit/settings.yaml'.
+[36m[2026-04-10 12:12:09 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-10 12:12:09 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-10 12:12:09 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-10 12:12:09 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-04-10 12:12:09 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-04-10 12:12:09 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-10 12:12:09 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-10 12:12:09 DEBUG] [secret:104] Done loading secrets
+[32m[2026-04-10 12:12:09 INFO] [experiment:112] Experiment looks valid
+[36m[2026-04-10 12:12:09 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-10 12:12:09 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-04-10 12:12:09 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-10 12:12:09 DEBUG] [caching:35] Cached 3 activities
+[36m[2026-04-10 12:12:09 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-10 12:12:09 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-10 12:12:09 DEBUG] [secret:104] Done loading secrets
+[36m[2026-04-10 12:12:09 DEBUG] [configuration:161] Loading dynamic configuration...
+[32m[2026-04-10 12:12:09 INFO] [run:440] Running experiment: SCE 1.8 Preventive Probe — IMDS Credential Harvest Block via Permission Boundary, Launch Template Enforcement, and Security Group Egress Restriction
+[36m[2026-04-10 12:12:09 DEBUG] [__init__:67] Initializing controls
+[32m[2026-04-10 12:12:09 INFO] [run:471] Steady-state strategy: after-method-only
+[32m[2026-04-10 12:12:09 INFO] [run:477] Rollbacks strategy: default
+[36m[2026-04-10 12:12:09 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[32m[2026-04-10 12:12:09 INFO] [run:778] Playing your experiment's method now...
+[36m[2026-04-10 12:12:09 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-10 12:12:09 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-10 12:12:09 INFO] [activity:232] Action: provision-experiment-stack-with-hardened-ec2-instance
+[36m[2026-04-10 12:12:09 DEBUG] [python:33] Activity 'provision-experiment-stack-with-hardened-ec2-instance' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py'
+[36m[2026-04-10 12:14:46 DEBUG] [activity:317] Activity failed
+    Traceback (most recent call last):
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py", line 497, in steady_state
+        stack = _wait_for_stack(stack_name, "CREATE_COMPLETE", STACK_CREATE_TIMEOUT)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py", line 424, in _wait_for_stack
+        raise RuntimeError(
+            f"Stack {stack_name} reached terminal failure state: {status}"
+        )
+    RuntimeError: Stack sce-experiment-1775815929 reached terminal failure state: ROLLBACK_COMPLETE
+    
+    During handling of the above exception, another exception occurred:
+    
+    Traceback (most recent call last):
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/activity.py", line 310, in run_activity
+        result = run_python_activity(activity, configuration, secrets)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 58, in run_python_activity
+        raise ActivityFailed(
+            traceback.format_exception_only(type(x), x)[0].strip()
+        ).with_traceback(sys.exc_info()[2])
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py", line 497, in steady_state
+        stack = _wait_for_stack(stack_name, "CREATE_COMPLETE", STACK_CREATE_TIMEOUT)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py", line 424, in _wait_for_stack
+        raise RuntimeError(
+            f"Stack {stack_name} reached terminal failure state: {status}"
+        )
+    chaoslib.exceptions.ActivityFailed: RuntimeError: Stack sce-experiment-1775815929 reached terminal failure state: ROLLBACK_COMPLETE
+[31m[2026-04-10 12:14:46 ERROR] [activity:268]   => failed: RuntimeError: Stack sce-experiment-1775815929 reached terminal failure state: ROLLBACK_COMPLETE
+[36m[2026-04-10 12:14:46 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-10 12:14:46 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-10 12:14:46 INFO] [activity:232] Action: attack-attempt-modify-instance-metadata-options-to-weaken-imds
+[36m[2026-04-10 12:14:46 DEBUG] [python:33] Activity 'attack-attempt-modify-instance-metadata-options-to-weaken-imds' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py'
+[36m[2026-04-10 12:14:46 DEBUG] [activity:317] Activity failed
+    Traceback (most recent call last):
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py", line 555, in attack
+        raise RuntimeError("steady_state() must be called before attack().")
+    RuntimeError: steady_state() must be called before attack().
+    
+    During handling of the above exception, another exception occurred:
+    
+    Traceback (most recent call last):
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/activity.py", line 310, in run_activity
+        result = run_python_activity(activity, configuration, secrets)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 58, in run_python_activity
+        raise ActivityFailed(
+            traceback.format_exception_only(type(x), x)[0].strip()
+        ).with_traceback(sys.exc_info()[2])
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py", line 555, in attack
+        raise RuntimeError("steady_state() must be called before attack().")
+    chaoslib.exceptions.ActivityFailed: RuntimeError: steady_state() must be called before attack().
+[31m[2026-04-10 12:14:46 ERROR] [activity:268]   => failed: RuntimeError: steady_state() must be called before attack().
+[36m[2026-04-10 12:14:46 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-10 12:14:46 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-10 12:14:46 DEBUG] [run:696] Running steady-state hypothesis after the method
+[32m[2026-04-10 12:14:46 INFO] [hypothesis:205] Steady state hypothesis: All three IMDS preventive controls are active: permission boundary denies ModifyInstanceMetadataOptions, launch template enforces HttpTokens=required with HopLimit=1, and security group blocks egress to 169.254.169.254/32
+[36m[2026-04-10 12:14:46 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[36m[2026-04-10 12:14:46 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-10 12:14:46 INFO] [activity:232] Probe: verify-imds-preventive-controls
+[36m[2026-04-10 12:14:46 DEBUG] [python:33] Activity 'verify-imds-preventive-controls' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py'
+[36m[2026-04-10 12:14:46 DEBUG] [activity:317] Activity failed
+    Traceback (most recent call last):
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py", line 650, in hypothesis_verification
+        raise RuntimeError("steady_state() must be called before hypothesis_verification().")
+    RuntimeError: steady_state() must be called before hypothesis_verification().
+    
+    During handling of the above exception, another exception occurred:
+    
+    Traceback (most recent call last):
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/activity.py", line 310, in run_activity
+        result = run_python_activity(activity, configuration, secrets)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 58, in run_python_activity
+        raise ActivityFailed(
+            traceback.format_exception_only(type(x), x)[0].strip()
+        ).with_traceback(sys.exc_info()[2])
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py", line 650, in hypothesis_verification
+        raise RuntimeError("steady_state() must be called before hypothesis_verification().")
+    chaoslib.exceptions.ActivityFailed: RuntimeError: steady_state() must be called before hypothesis_verification().
+[31m[2026-04-10 12:14:46 ERROR] [activity:268]   => failed: RuntimeError: steady_state() must be called before hypothesis_verification().
+[36m[2026-04-10 12:14:46 DEBUG] [__init__:472] No controls to apply on 'activity'
+[33m[2026-04-10 12:14:46 WARNING] [hypothesis:232] Probe terminated unexpectedly, so its tolerance could not be validated
+[36m[2026-04-10 12:14:46 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[31m[2026-04-10 12:14:46 CRITICAL] [run:716] Steady state probe 'verify-imds-preventive-controls' is not in the given tolerance so failing this experiment
+[32m[2026-04-10 12:14:46 INFO] [run:598] Experiment ended with status: deviated
+[32m[2026-04-10 12:14:46 INFO] [run:600] The steady-state has deviated, a weakness may have been discovered
+[36m[2026-04-10 12:14:46 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[36m[2026-04-10 12:14:46 DEBUG] [__init__:106] Cleaning up controls
+[36m[2026-04-10 12:14:46 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-10 12:25:36 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-04-10 12:25:36 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-04-10 12:25:36 DEBUG] [__init__:106] Using settings file '/home/mmc/.chaostoolkit/settings.yaml'
+[36m[2026-04-10 12:25:36 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/mmc/.chaostoolkit/settings.yaml'.
+[36m[2026-04-10 12:25:36 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-10 12:25:36 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-10 12:25:36 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-10 12:25:36 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-04-10 12:25:36 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-04-10 12:25:36 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-10 12:25:36 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-10 12:25:36 DEBUG] [secret:104] Done loading secrets
+[32m[2026-04-10 12:25:36 INFO] [experiment:112] Experiment looks valid
+[36m[2026-04-10 12:25:36 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-10 12:25:36 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-04-10 12:25:36 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-10 12:25:36 DEBUG] [caching:35] Cached 3 activities
+[36m[2026-04-10 12:25:36 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-10 12:25:36 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-10 12:25:36 DEBUG] [secret:104] Done loading secrets
+[36m[2026-04-10 12:25:36 DEBUG] [configuration:161] Loading dynamic configuration...
+[32m[2026-04-10 12:25:36 INFO] [run:440] Running experiment: SCE 1.8 Preventive Probe — IMDS Credential Harvest Block via Permission Boundary, Launch Template Enforcement, and Security Group Egress Restriction
+[36m[2026-04-10 12:25:36 DEBUG] [__init__:67] Initializing controls
+[32m[2026-04-10 12:25:36 INFO] [run:471] Steady-state strategy: after-method-only
+[32m[2026-04-10 12:25:36 INFO] [run:477] Rollbacks strategy: default
+[36m[2026-04-10 12:25:36 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[32m[2026-04-10 12:25:36 INFO] [run:778] Playing your experiment's method now...
+[36m[2026-04-10 12:25:36 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-10 12:25:36 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-10 12:25:36 INFO] [activity:232] Action: provision-experiment-stack-with-hardened-ec2-instance
+[36m[2026-04-10 12:25:36 DEBUG] [python:33] Activity 'provision-experiment-stack-with-hardened-ec2-instance' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py'
+[36m[2026-04-10 12:32:09 DEBUG] [activity:317] Activity failed
+    Traceback (most recent call last):
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py", line 719, in steady_state
+        ec2_cfn_stack = _wait_for_stack(ec2_stack, "CREATE_COMPLETE", STACK_CREATE_TIMEOUT)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py", line 282, in _wait_for_stack
+        raise RuntimeError(
+            f"Stack {stack_name} reached terminal failure state: {status}"
+        )
+    RuntimeError: Stack sce-ec2-1775816736 reached terminal failure state: ROLLBACK_COMPLETE
+    
+    During handling of the above exception, another exception occurred:
+    
+    Traceback (most recent call last):
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/activity.py", line 310, in run_activity
+        result = run_python_activity(activity, configuration, secrets)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 58, in run_python_activity
+        raise ActivityFailed(
+            traceback.format_exception_only(type(x), x)[0].strip()
+        ).with_traceback(sys.exc_info()[2])
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py", line 719, in steady_state
+        ec2_cfn_stack = _wait_for_stack(ec2_stack, "CREATE_COMPLETE", STACK_CREATE_TIMEOUT)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py", line 282, in _wait_for_stack
+        raise RuntimeError(
+            f"Stack {stack_name} reached terminal failure state: {status}"
+        )
+    chaoslib.exceptions.ActivityFailed: RuntimeError: Stack sce-ec2-1775816736 reached terminal failure state: ROLLBACK_COMPLETE
+[31m[2026-04-10 12:32:09 ERROR] [activity:268]   => failed: RuntimeError: Stack sce-ec2-1775816736 reached terminal failure state: ROLLBACK_COMPLETE
+[36m[2026-04-10 12:32:09 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-10 12:32:09 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-10 12:32:09 INFO] [activity:232] Action: attack-attempt-modify-instance-metadata-options-to-weaken-imds
+[36m[2026-04-10 12:32:09 DEBUG] [python:33] Activity 'attack-attempt-modify-instance-metadata-options-to-weaken-imds' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py'
+[36m[2026-04-10 12:32:09 DEBUG] [activity:317] Activity failed
+    Traceback (most recent call last):
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py", line 813, in attack
+        raise RuntimeError("steady_state() must be called before attack().")
+    RuntimeError: steady_state() must be called before attack().
+    
+    During handling of the above exception, another exception occurred:
+    
+    Traceback (most recent call last):
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/activity.py", line 310, in run_activity
+        result = run_python_activity(activity, configuration, secrets)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 58, in run_python_activity
+        raise ActivityFailed(
+            traceback.format_exception_only(type(x), x)[0].strip()
+        ).with_traceback(sys.exc_info()[2])
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py", line 813, in attack
+        raise RuntimeError("steady_state() must be called before attack().")
+    chaoslib.exceptions.ActivityFailed: RuntimeError: steady_state() must be called before attack().
+[31m[2026-04-10 12:32:09 ERROR] [activity:268]   => failed: RuntimeError: steady_state() must be called before attack().
+[36m[2026-04-10 12:32:09 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-10 12:32:09 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-10 12:32:09 DEBUG] [run:696] Running steady-state hypothesis after the method
+[32m[2026-04-10 12:32:09 INFO] [hypothesis:205] Steady state hypothesis: All IMDS preventive controls are active: permission boundary denies ModifyInstanceMetadataOptions, launch template enforces HttpTokens=required with HopLimit=1, security group blocks egress to 169.254.169.254/32, and SSM Run Command confirms unauthenticated IMDS access returns HTTP 401
+[36m[2026-04-10 12:32:09 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[36m[2026-04-10 12:32:09 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-10 12:32:09 INFO] [activity:232] Probe: verify-imds-preventive-controls
+[36m[2026-04-10 12:32:09 DEBUG] [python:33] Activity 'verify-imds-preventive-controls' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py'
+[36m[2026-04-10 12:32:09 DEBUG] [activity:317] Activity failed
+    Traceback (most recent call last):
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py", line 906, in hypothesis_verification
+        raise RuntimeError(
+            "steady_state() must be called before hypothesis_verification()."
+        )
+    RuntimeError: steady_state() must be called before hypothesis_verification().
+    
+    During handling of the above exception, another exception occurred:
+    
+    Traceback (most recent call last):
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/activity.py", line 310, in run_activity
+        result = run_python_activity(activity, configuration, secrets)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 58, in run_python_activity
+        raise ActivityFailed(
+            traceback.format_exception_only(type(x), x)[0].strip()
+        ).with_traceback(sys.exc_info()[2])
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py", line 906, in hypothesis_verification
+        raise RuntimeError(
+            "steady_state() must be called before hypothesis_verification()."
+        )
+    chaoslib.exceptions.ActivityFailed: RuntimeError: steady_state() must be called before hypothesis_verification().
+[31m[2026-04-10 12:32:09 ERROR] [activity:268]   => failed: RuntimeError: steady_state() must be called before hypothesis_verification().
+[36m[2026-04-10 12:32:09 DEBUG] [__init__:472] No controls to apply on 'activity'
+[33m[2026-04-10 12:32:09 WARNING] [hypothesis:232] Probe terminated unexpectedly, so its tolerance could not be validated
+[36m[2026-04-10 12:32:09 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[31m[2026-04-10 12:32:09 CRITICAL] [run:716] Steady state probe 'verify-imds-preventive-controls' is not in the given tolerance so failing this experiment
+[32m[2026-04-10 12:32:09 INFO] [run:598] Experiment ended with status: deviated
+[32m[2026-04-10 12:32:09 INFO] [run:600] The steady-state has deviated, a weakness may have been discovered
+[36m[2026-04-10 12:32:09 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[36m[2026-04-10 12:32:09 DEBUG] [__init__:106] Cleaning up controls
+[36m[2026-04-10 12:32:09 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-10 12:55:38 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-04-10 12:55:38 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-04-10 12:55:38 DEBUG] [__init__:106] Using settings file '/home/mmc/.chaostoolkit/settings.yaml'
+[36m[2026-04-10 12:55:39 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/mmc/.chaostoolkit/settings.yaml'.
+[36m[2026-04-10 12:55:39 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-10 12:55:39 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-10 12:55:39 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-10 12:55:39 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-04-10 12:55:39 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-04-10 12:55:39 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-10 12:55:39 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-10 12:55:39 DEBUG] [secret:104] Done loading secrets
+[32m[2026-04-10 12:55:39 INFO] [experiment:112] Experiment looks valid
+[36m[2026-04-10 12:55:39 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-10 12:55:39 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-04-10 12:55:39 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-10 12:55:39 DEBUG] [caching:35] Cached 3 activities
+[36m[2026-04-10 12:55:39 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-10 12:55:39 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-10 12:55:39 DEBUG] [secret:104] Done loading secrets
+[36m[2026-04-10 12:55:39 DEBUG] [configuration:161] Loading dynamic configuration...
+[32m[2026-04-10 12:55:39 INFO] [run:440] Running experiment: SCE 1.8 Preventive Probe — IMDS Credential Harvest Block via Permission Boundary, Launch Template Enforcement, and Security Group Egress Restriction
+[36m[2026-04-10 12:55:39 DEBUG] [__init__:67] Initializing controls
+[32m[2026-04-10 12:55:39 INFO] [run:471] Steady-state strategy: after-method-only
+[32m[2026-04-10 12:55:39 INFO] [run:477] Rollbacks strategy: default
+[36m[2026-04-10 12:55:39 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[32m[2026-04-10 12:55:39 INFO] [run:778] Playing your experiment's method now...
+[36m[2026-04-10 12:55:39 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-10 12:55:39 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-10 12:55:39 INFO] [activity:232] Action: provision-experiment-stacks-iam-and-ec2-with-vpc-endpoints
+[36m[2026-04-10 12:55:39 DEBUG] [python:33] Activity 'provision-experiment-stacks-iam-and-ec2-with-vpc-endpoints' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py'
+[36m[2026-04-10 13:01:58 DEBUG] [activity:317] Activity failed
+    Traceback (most recent call last):
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py", line 832, in steady_state
+        ec2_cfn = _wait_for_stack(ec2_stack, "CREATE_COMPLETE", STACK_CREATE_TIMEOUT)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py", line 275, in _wait_for_stack
+        raise RuntimeError(
+            f"Stack {stack_name} reached terminal failure state: {status}"
+        )
+    RuntimeError: Stack sce-ec2-1775818539 reached terminal failure state: ROLLBACK_COMPLETE
+    
+    During handling of the above exception, another exception occurred:
+    
+    Traceback (most recent call last):
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/activity.py", line 310, in run_activity
+        result = run_python_activity(activity, configuration, secrets)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 58, in run_python_activity
+        raise ActivityFailed(
+            traceback.format_exception_only(type(x), x)[0].strip()
+        ).with_traceback(sys.exc_info()[2])
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py", line 832, in steady_state
+        ec2_cfn = _wait_for_stack(ec2_stack, "CREATE_COMPLETE", STACK_CREATE_TIMEOUT)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py", line 275, in _wait_for_stack
+        raise RuntimeError(
+            f"Stack {stack_name} reached terminal failure state: {status}"
+        )
+    chaoslib.exceptions.ActivityFailed: RuntimeError: Stack sce-ec2-1775818539 reached terminal failure state: ROLLBACK_COMPLETE
+[31m[2026-04-10 13:01:58 ERROR] [activity:268]   => failed: RuntimeError: Stack sce-ec2-1775818539 reached terminal failure state: ROLLBACK_COMPLETE
+[36m[2026-04-10 13:01:58 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-10 13:01:58 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-10 13:01:58 INFO] [activity:232] Action: attack-attempt-modify-instance-metadata-options-to-weaken-imds
+[36m[2026-04-10 13:01:58 DEBUG] [python:33] Activity 'attack-attempt-modify-instance-metadata-options-to-weaken-imds' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py'
+[36m[2026-04-10 13:01:58 DEBUG] [activity:317] Activity failed
+    Traceback (most recent call last):
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py", line 930, in attack
+        raise RuntimeError("steady_state() must be called before attack().")
+    RuntimeError: steady_state() must be called before attack().
+    
+    During handling of the above exception, another exception occurred:
+    
+    Traceback (most recent call last):
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/activity.py", line 310, in run_activity
+        result = run_python_activity(activity, configuration, secrets)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 58, in run_python_activity
+        raise ActivityFailed(
+            traceback.format_exception_only(type(x), x)[0].strip()
+        ).with_traceback(sys.exc_info()[2])
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py", line 930, in attack
+        raise RuntimeError("steady_state() must be called before attack().")
+    chaoslib.exceptions.ActivityFailed: RuntimeError: steady_state() must be called before attack().
+[31m[2026-04-10 13:01:58 ERROR] [activity:268]   => failed: RuntimeError: steady_state() must be called before attack().
+[36m[2026-04-10 13:01:58 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-10 13:01:58 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-10 13:01:58 DEBUG] [run:696] Running steady-state hypothesis after the method
+[32m[2026-04-10 13:01:58 INFO] [hypothesis:205] Steady state hypothesis: All IMDS preventive controls are active: permission boundary denies ModifyInstanceMetadataOptions, launch template enforces HttpTokens=required with HopLimit=1, security group blocks egress to 169.254.169.254/32, and SSM Run Command confirms unauthenticated IMDS access returns HTTP 401
+[36m[2026-04-10 13:01:58 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[36m[2026-04-10 13:01:58 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-10 13:01:58 INFO] [activity:232] Probe: verify-imds-preventive-controls
+[36m[2026-04-10 13:01:58 DEBUG] [python:33] Activity 'verify-imds-preventive-controls' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py'
+[36m[2026-04-10 13:01:58 DEBUG] [activity:317] Activity failed
+    Traceback (most recent call last):
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py", line 1019, in hypothesis_verification
+        raise RuntimeError(
+            "steady_state() must be called before hypothesis_verification()."
+        )
+    RuntimeError: steady_state() must be called before hypothesis_verification().
+    
+    During handling of the above exception, another exception occurred:
+    
+    Traceback (most recent call last):
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/activity.py", line 310, in run_activity
+        result = run_python_activity(activity, configuration, secrets)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 58, in run_python_activity
+        raise ActivityFailed(
+            traceback.format_exception_only(type(x), x)[0].strip()
+        ).with_traceback(sys.exc_info()[2])
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py", line 1019, in hypothesis_verification
+        raise RuntimeError(
+            "steady_state() must be called before hypothesis_verification()."
+        )
+    chaoslib.exceptions.ActivityFailed: RuntimeError: steady_state() must be called before hypothesis_verification().
+[31m[2026-04-10 13:01:58 ERROR] [activity:268]   => failed: RuntimeError: steady_state() must be called before hypothesis_verification().
+[36m[2026-04-10 13:01:58 DEBUG] [__init__:472] No controls to apply on 'activity'
+[33m[2026-04-10 13:01:58 WARNING] [hypothesis:232] Probe terminated unexpectedly, so its tolerance could not be validated
+[36m[2026-04-10 13:01:58 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[31m[2026-04-10 13:01:58 CRITICAL] [run:716] Steady state probe 'verify-imds-preventive-controls' is not in the given tolerance so failing this experiment
+[32m[2026-04-10 13:01:58 INFO] [run:598] Experiment ended with status: deviated
+[32m[2026-04-10 13:01:58 INFO] [run:600] The steady-state has deviated, a weakness may have been discovered
+[36m[2026-04-10 13:01:58 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[36m[2026-04-10 13:01:58 DEBUG] [__init__:106] Cleaning up controls
+[36m[2026-04-10 13:01:58 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-10 13:36:35 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-04-10 13:36:35 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-04-10 13:36:35 DEBUG] [__init__:106] Using settings file '/home/mmc/.chaostoolkit/settings.yaml'
+[36m[2026-04-10 13:36:35 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/mmc/.chaostoolkit/settings.yaml'.
+[36m[2026-04-10 13:36:35 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-10 13:36:35 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-10 13:36:35 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-10 13:36:35 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-04-10 13:36:35 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-04-10 13:36:35 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-10 13:36:35 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-10 13:36:35 DEBUG] [secret:104] Done loading secrets
+[32m[2026-04-10 13:36:35 INFO] [experiment:112] Experiment looks valid
+[36m[2026-04-10 13:36:35 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-10 13:36:35 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-04-10 13:36:35 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-10 13:36:35 DEBUG] [caching:35] Cached 3 activities
+[36m[2026-04-10 13:36:35 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-10 13:36:35 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-10 13:36:35 DEBUG] [secret:104] Done loading secrets
+[36m[2026-04-10 13:36:35 DEBUG] [configuration:161] Loading dynamic configuration...
+[32m[2026-04-10 13:36:35 INFO] [run:440] Running experiment: SCE 1.8 Preventive Probe - IMDS Credential Harvest Block via Permission Boundary, Launch Template Enforcement, and Security Group Egress Restriction
+[36m[2026-04-10 13:36:35 DEBUG] [__init__:67] Initializing controls
+[32m[2026-04-10 13:36:35 INFO] [run:471] Steady-state strategy: after-method-only
+[32m[2026-04-10 13:36:35 INFO] [run:477] Rollbacks strategy: default
+[36m[2026-04-10 13:36:35 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[32m[2026-04-10 13:36:35 INFO] [run:778] Playing your experiment's method now...
+[36m[2026-04-10 13:36:35 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-10 13:36:35 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-10 13:36:35 INFO] [activity:232] Action: provision-iam-and-ec2-stacks-with-vpc-endpoints-ascii-safe
+[36m[2026-04-10 13:36:35 DEBUG] [python:33] Activity 'provision-iam-and-ec2-stacks-with-vpc-endpoints-ascii-safe' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py'
+[36m[2026-04-10 13:48:21 DEBUG] [activity:317] Activity failed
+    Traceback (most recent call last):
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py", line 845, in steady_state
+        ec2_cfn = _wait_for_stack(ec2_stack, "CREATE_COMPLETE", STACK_CREATE_TIMEOUT)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py", line 287, in _wait_for_stack
+        raise RuntimeError(
+            f"Stack {stack_name} reached terminal failure state: {status}"
+        )
+    RuntimeError: Stack sce-ec2-1775820995 reached terminal failure state: ROLLBACK_COMPLETE
+    
+    During handling of the above exception, another exception occurred:
+    
+    Traceback (most recent call last):
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/activity.py", line 310, in run_activity
+        result = run_python_activity(activity, configuration, secrets)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 58, in run_python_activity
+        raise ActivityFailed(
+            traceback.format_exception_only(type(x), x)[0].strip()
+        ).with_traceback(sys.exc_info()[2])
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py", line 845, in steady_state
+        ec2_cfn = _wait_for_stack(ec2_stack, "CREATE_COMPLETE", STACK_CREATE_TIMEOUT)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py", line 287, in _wait_for_stack
+        raise RuntimeError(
+            f"Stack {stack_name} reached terminal failure state: {status}"
+        )
+    chaoslib.exceptions.ActivityFailed: RuntimeError: Stack sce-ec2-1775820995 reached terminal failure state: ROLLBACK_COMPLETE
+[31m[2026-04-10 13:48:21 ERROR] [activity:268]   => failed: RuntimeError: Stack sce-ec2-1775820995 reached terminal failure state: ROLLBACK_COMPLETE
+[36m[2026-04-10 13:48:21 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-10 13:48:21 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-10 13:48:21 INFO] [activity:232] Action: attack-attempt-modify-instance-metadata-options-to-weaken-imds
+[36m[2026-04-10 13:48:21 DEBUG] [python:33] Activity 'attack-attempt-modify-instance-metadata-options-to-weaken-imds' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py'
+[36m[2026-04-10 13:48:21 DEBUG] [activity:317] Activity failed
+    Traceback (most recent call last):
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py", line 944, in attack
+        raise RuntimeError("steady_state() must be called before attack().")
+    RuntimeError: steady_state() must be called before attack().
+    
+    During handling of the above exception, another exception occurred:
+    
+    Traceback (most recent call last):
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/activity.py", line 310, in run_activity
+        result = run_python_activity(activity, configuration, secrets)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 58, in run_python_activity
+        raise ActivityFailed(
+            traceback.format_exception_only(type(x), x)[0].strip()
+        ).with_traceback(sys.exc_info()[2])
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py", line 944, in attack
+        raise RuntimeError("steady_state() must be called before attack().")
+    chaoslib.exceptions.ActivityFailed: RuntimeError: steady_state() must be called before attack().
+[31m[2026-04-10 13:48:21 ERROR] [activity:268]   => failed: RuntimeError: steady_state() must be called before attack().
+[36m[2026-04-10 13:48:21 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-10 13:48:21 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-10 13:48:21 DEBUG] [run:696] Running steady-state hypothesis after the method
+[32m[2026-04-10 13:48:21 INFO] [hypothesis:205] Steady state hypothesis: All IMDS preventive controls are active: permission boundary denies ModifyInstanceMetadataOptions, launch template enforces HttpTokens=required with HopLimit=1, security group blocks egress to 169.254.169.254/32, and SSM Run Command confirms unauthenticated IMDS access returns HTTP 401
+[36m[2026-04-10 13:48:21 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[36m[2026-04-10 13:48:21 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-10 13:48:21 INFO] [activity:232] Probe: verify-imds-preventive-controls
+[36m[2026-04-10 13:48:21 DEBUG] [python:33] Activity 'verify-imds-preventive-controls' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py'
+[36m[2026-04-10 13:48:21 DEBUG] [activity:317] Activity failed
+    Traceback (most recent call last):
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py", line 1034, in hypothesis_verification
+        raise RuntimeError(
+            "steady_state() must be called before hypothesis_verification()."
+        )
+    RuntimeError: steady_state() must be called before hypothesis_verification().
+    
+    During handling of the above exception, another exception occurred:
+    
+    Traceback (most recent call last):
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/activity.py", line 310, in run_activity
+        result = run_python_activity(activity, configuration, secrets)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 58, in run_python_activity
+        raise ActivityFailed(
+            traceback.format_exception_only(type(x), x)[0].strip()
+        ).with_traceback(sys.exc_info()[2])
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py", line 1034, in hypothesis_verification
+        raise RuntimeError(
+            "steady_state() must be called before hypothesis_verification()."
+        )
+    chaoslib.exceptions.ActivityFailed: RuntimeError: steady_state() must be called before hypothesis_verification().
+[31m[2026-04-10 13:48:21 ERROR] [activity:268]   => failed: RuntimeError: steady_state() must be called before hypothesis_verification().
+[36m[2026-04-10 13:48:21 DEBUG] [__init__:472] No controls to apply on 'activity'
+[33m[2026-04-10 13:48:21 WARNING] [hypothesis:232] Probe terminated unexpectedly, so its tolerance could not be validated
+[36m[2026-04-10 13:48:21 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[31m[2026-04-10 13:48:21 CRITICAL] [run:716] Steady state probe 'verify-imds-preventive-controls' is not in the given tolerance so failing this experiment
+[32m[2026-04-10 13:48:21 INFO] [run:598] Experiment ended with status: deviated
+[32m[2026-04-10 13:48:21 INFO] [run:600] The steady-state has deviated, a weakness may have been discovered
+[36m[2026-04-10 13:48:21 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[36m[2026-04-10 13:48:21 DEBUG] [__init__:106] Cleaning up controls
+[36m[2026-04-10 13:48:21 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-10 14:01:11 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-04-10 14:01:11 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-04-10 14:01:11 DEBUG] [__init__:106] Using settings file '/home/mmc/.chaostoolkit/settings.yaml'
+[36m[2026-04-10 14:01:11 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/mmc/.chaostoolkit/settings.yaml'.
+[36m[2026-04-10 14:01:11 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-10 14:01:11 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-10 14:01:11 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-10 14:01:11 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-04-10 14:01:11 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-04-10 14:01:11 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-10 14:01:11 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-10 14:01:11 DEBUG] [secret:104] Done loading secrets
+[32m[2026-04-10 14:01:12 INFO] [experiment:112] Experiment looks valid
+[36m[2026-04-10 14:01:12 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-10 14:01:12 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-04-10 14:01:12 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-10 14:01:12 DEBUG] [caching:35] Cached 3 activities
+[36m[2026-04-10 14:01:12 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-10 14:01:12 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-10 14:01:12 DEBUG] [secret:104] Done loading secrets
+[36m[2026-04-10 14:01:12 DEBUG] [configuration:161] Loading dynamic configuration...
+[32m[2026-04-10 14:01:12 INFO] [run:440] Running experiment: SCE 1.8 Preventive Probe - IMDS Credential Harvest Block via Permission Boundary, Launch Template Enforcement, and Security Group Egress Restriction
+[36m[2026-04-10 14:01:12 DEBUG] [__init__:67] Initializing controls
+[32m[2026-04-10 14:01:12 INFO] [run:471] Steady-state strategy: after-method-only
+[32m[2026-04-10 14:01:12 INFO] [run:477] Rollbacks strategy: default
+[36m[2026-04-10 14:01:12 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[32m[2026-04-10 14:01:12 INFO] [run:778] Playing your experiment's method now...
+[36m[2026-04-10 14:01:12 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-10 14:01:12 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-10 14:01:12 INFO] [activity:232] Action: provision-iam-and-ec2-stacks-with-vpc-endpoints-lt-version-fix
+[36m[2026-04-10 14:01:12 DEBUG] [python:33] Activity 'provision-iam-and-ec2-stacks-with-vpc-endpoints-lt-version-fix' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py'
+[36m[2026-04-10 14:09:47 DEBUG] [activity:262]   => succeeded without any result value
+[36m[2026-04-10 14:09:47 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-10 14:09:47 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-10 14:09:47 INFO] [activity:232] Action: attack-attempt-modify-instance-metadata-options-to-weaken-imds
+[36m[2026-04-10 14:09:47 DEBUG] [python:33] Activity 'attack-attempt-modify-instance-metadata-options-to-weaken-imds' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py'
+[36m[2026-04-10 14:10:53 DEBUG] [activity:317] Activity failed
+    Traceback (most recent call last):
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py", line 137, in _retry
+        return fn()
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py", line 970, in <lambda>
+        lambda: sts.assume_role(
+                ~~~~~~~~~~~~~~~^
+            RoleArn=role_arn,
+            ^^^^^^^^^^^^^^^^^
+            RoleSessionName="sce-attack-simulation",
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            DurationSeconds=900,
+            ^^^^^^^^^^^^^^^^^^^^
+        ),
+        ^
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/client.py", line 569, in _api_call
+        return self._make_api_call(operation_name, kwargs)
+               ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/client.py", line 1023, in _make_api_call
+        raise error_class(parsed_response, operation_name)
+    botocore.exceptions.ClientError: An error occurred (AccessDenied) when calling the AssumeRole operation: User: arn:aws:iam::396608802942:user/ChaosXploit-Labs is not authorized to perform: sts:AssumeRole on resource: arn:aws:iam::396608802942:role/SCERole-1775822472
+    
+    The above exception was the direct cause of the following exception:
+    
+    Traceback (most recent call last):
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py", line 969, in attack
+        assumed = _retry(
+            lambda: sts.assume_role(
+        ...<4 lines>...
+            label="sts:AssumeRole (attack)",
+        )
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py", line 146, in _retry
+        raise RuntimeError(f"{label} failed after {retries} attempts") from last_exc
+    RuntimeError: sts:AssumeRole (attack) failed after 5 attempts
+    
+    During handling of the above exception, another exception occurred:
+    
+    Traceback (most recent call last):
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/activity.py", line 310, in run_activity
+        result = run_python_activity(activity, configuration, secrets)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 58, in run_python_activity
+        raise ActivityFailed(
+            traceback.format_exception_only(type(x), x)[0].strip()
+        ).with_traceback(sys.exc_info()[2])
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py", line 969, in attack
+        assumed = _retry(
+            lambda: sts.assume_role(
+        ...<4 lines>...
+            label="sts:AssumeRole (attack)",
+        )
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py", line 146, in _retry
+        raise RuntimeError(f"{label} failed after {retries} attempts") from last_exc
+    chaoslib.exceptions.ActivityFailed: RuntimeError: sts:AssumeRole (attack) failed after 5 attempts
+[31m[2026-04-10 14:10:53 ERROR] [activity:268]   => failed: RuntimeError: sts:AssumeRole (attack) failed after 5 attempts
+[36m[2026-04-10 14:10:53 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-10 14:10:53 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-10 14:10:53 DEBUG] [run:696] Running steady-state hypothesis after the method
+[32m[2026-04-10 14:10:53 INFO] [hypothesis:205] Steady state hypothesis: All IMDS preventive controls are active: permission boundary denies ModifyInstanceMetadataOptions, launch template enforces HttpTokens=required with HopLimit=1, security group blocks egress to 169.254.169.254/32, and SSM Run Command confirms unauthenticated IMDS access returns HTTP 401
+[36m[2026-04-10 14:10:53 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[36m[2026-04-10 14:10:53 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-10 14:10:53 INFO] [activity:232] Probe: verify-imds-preventive-controls
+[36m[2026-04-10 14:10:53 DEBUG] [python:33] Activity 'verify-imds-preventive-controls' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py'
+[36m[2026-04-10 14:12:00 DEBUG] [activity:317] Activity failed
+    Traceback (most recent call last):
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py", line 137, in _retry
+        return fn()
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py", line 1074, in <lambda>
+        lambda: sts.assume_role(
+                ~~~~~~~~~~~~~~~^
+            RoleArn=role_arn,
+            ^^^^^^^^^^^^^^^^^
+            RoleSessionName="sce-verify-boundary",
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            DurationSeconds=900,
+            ^^^^^^^^^^^^^^^^^^^^
+        ),
+        ^
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/client.py", line 569, in _api_call
+        return self._make_api_call(operation_name, kwargs)
+               ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/client.py", line 1023, in _make_api_call
+        raise error_class(parsed_response, operation_name)
+    botocore.exceptions.ClientError: An error occurred (AccessDenied) when calling the AssumeRole operation: User: arn:aws:iam::396608802942:user/ChaosXploit-Labs is not authorized to perform: sts:AssumeRole on resource: arn:aws:iam::396608802942:role/SCERole-1775822472
+    
+    The above exception was the direct cause of the following exception:
+    
+    Traceback (most recent call last):
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py", line 1073, in hypothesis_verification
+        assumed = _retry(
+            lambda: sts.assume_role(
+        ...<4 lines>...
+            label="sts:AssumeRole (verify-A)",
+        )
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py", line 146, in _retry
+        raise RuntimeError(f"{label} failed after {retries} attempts") from last_exc
+    RuntimeError: sts:AssumeRole (verify-A) failed after 5 attempts
+    
+    During handling of the above exception, another exception occurred:
+    
+    Traceback (most recent call last):
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/activity.py", line 310, in run_activity
+        result = run_python_activity(activity, configuration, secrets)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 58, in run_python_activity
+        raise ActivityFailed(
+            traceback.format_exception_only(type(x), x)[0].strip()
+        ).with_traceback(sys.exc_info()[2])
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py", line 1073, in hypothesis_verification
+        assumed = _retry(
+            lambda: sts.assume_role(
+        ...<4 lines>...
+            label="sts:AssumeRole (verify-A)",
+        )
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py", line 146, in _retry
+        raise RuntimeError(f"{label} failed after {retries} attempts") from last_exc
+    chaoslib.exceptions.ActivityFailed: RuntimeError: sts:AssumeRole (verify-A) failed after 5 attempts
+[31m[2026-04-10 14:12:00 ERROR] [activity:268]   => failed: RuntimeError: sts:AssumeRole (verify-A) failed after 5 attempts
+[36m[2026-04-10 14:12:00 DEBUG] [__init__:472] No controls to apply on 'activity'
+[33m[2026-04-10 14:12:00 WARNING] [hypothesis:232] Probe terminated unexpectedly, so its tolerance could not be validated
+[36m[2026-04-10 14:12:00 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[31m[2026-04-10 14:12:00 CRITICAL] [run:716] Steady state probe 'verify-imds-preventive-controls' is not in the given tolerance so failing this experiment
+[32m[2026-04-10 14:12:00 INFO] [run:598] Experiment ended with status: deviated
+[32m[2026-04-10 14:12:00 INFO] [run:600] The steady-state has deviated, a weakness may have been discovered
+[36m[2026-04-10 14:12:00 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[36m[2026-04-10 14:12:00 DEBUG] [__init__:106] Cleaning up controls
+[36m[2026-04-10 14:12:00 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-13 09:26:24 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-04-13 09:26:24 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-04-13 09:26:24 DEBUG] [__init__:106] Using settings file '/home/mmc/.chaostoolkit/settings.yaml'
+[36m[2026-04-13 09:26:24 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/mmc/.chaostoolkit/settings.yaml'.
+[36m[2026-04-13 09:26:24 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-13 09:26:24 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-13 09:26:24 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-13 09:26:24 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-04-13 09:26:24 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-04-13 09:26:24 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-13 09:26:24 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-13 09:26:24 DEBUG] [secret:104] Done loading secrets
+[32m[2026-04-13 09:26:24 INFO] [experiment:112] Experiment looks valid
+[36m[2026-04-13 09:26:24 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-13 09:26:24 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-04-13 09:26:24 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-13 09:26:24 DEBUG] [caching:35] Cached 3 activities
+[36m[2026-04-13 09:26:24 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-13 09:26:24 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-13 09:26:24 DEBUG] [secret:104] Done loading secrets
+[36m[2026-04-13 09:26:24 DEBUG] [configuration:161] Loading dynamic configuration...
+[32m[2026-04-13 09:26:24 INFO] [run:440] Running experiment: SCE 1.8 Preventive Probe - IMDS Credential Harvest Block via Permission Boundary, IMDSv2 Launch Template Enforcement, and Security Group Egress Restriction
+[36m[2026-04-13 09:26:24 DEBUG] [__init__:67] Initializing controls
+[32m[2026-04-13 09:26:24 INFO] [run:471] Steady-state strategy: after-method-only
+[32m[2026-04-13 09:26:24 INFO] [run:477] Rollbacks strategy: default
+[36m[2026-04-13 09:26:24 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[32m[2026-04-13 09:26:24 INFO] [run:778] Playing your experiment's method now...
+[36m[2026-04-13 09:26:24 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-13 09:26:24 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-13 09:26:24 INFO] [activity:232] Action: provision-iam-and-ec2-stacks-with-verifier-role-and-imdsv2-enforcement
+[36m[2026-04-13 09:26:24 DEBUG] [python:33] Activity 'provision-iam-and-ec2-stacks-with-verifier-role-and-imdsv2-enforcement' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py'
+[36m[2026-04-13 09:37:27 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-04-13 09:37:27 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-13 09:37:27 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-13 09:37:27 INFO] [activity:232] Action: attack-attempt-modify-instance-metadata-options-to-weaken-imds-via-simulation-and-direct-call
+[36m[2026-04-13 09:37:27 DEBUG] [python:33] Activity 'attack-attempt-modify-instance-metadata-options-to-weaken-imds-via-simulation-and-direct-call' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py'
+[36m[2026-04-13 09:37:29 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-04-13 09:37:29 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-13 09:37:29 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-13 09:37:29 DEBUG] [run:696] Running steady-state hypothesis after the method
+[32m[2026-04-13 09:37:29 INFO] [hypothesis:205] Steady state hypothesis: All IMDS preventive controls are active: permission boundary denies ModifyInstanceMetadataOptions on SCERole, launch template enforces HttpTokens=required with HopLimit=1, and security group blocks all egress to 169.254.0.0/16
+[36m[2026-04-13 09:37:29 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[36m[2026-04-13 09:37:29 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-13 09:37:29 INFO] [activity:232] Probe: verify-imds-preventive-controls
+[36m[2026-04-13 09:37:29 DEBUG] [python:33] Activity 'verify-imds-preventive-controls' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py'
+[36m[2026-04-13 10:07:37 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-04-13 10:07:37 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-13 10:07:37 DEBUG] [hypothesis:247] allowed tolerance is True
+[36m[2026-04-13 10:07:37 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[31m[2026-04-13 10:07:37 CRITICAL] [run:716] Steady state probe 'verify-imds-preventive-controls' is not in the given tolerance so failing this experiment
+[32m[2026-04-13 10:07:37 INFO] [run:1072] Let's rollback...
+[36m[2026-04-13 10:07:37 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-13 10:07:37 INFO] [rollback:36] Rollback: delete-sce-cloudformation-stacks-ec2-then-iam
+[36m[2026-04-13 10:07:37 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-13 10:07:37 INFO] [activity:232] Action: delete-sce-cloudformation-stacks-ec2-then-iam
+[36m[2026-04-13 10:07:37 DEBUG] [python:33] Activity 'delete-sce-cloudformation-stacks-ec2-then-iam' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_preventive.py'
+[36m[2026-04-13 10:11:48 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-04-13 10:11:48 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-13 10:11:48 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-13 10:11:48 INFO] [run:598] Experiment ended with status: deviated
+[32m[2026-04-13 10:11:48 INFO] [run:600] The steady-state has deviated, a weakness may have been discovered
+[36m[2026-04-13 10:11:48 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[36m[2026-04-13 10:11:48 DEBUG] [__init__:106] Cleaning up controls
+[36m[2026-04-13 10:11:48 DEBUG] [caching:42] Clearing activities cache

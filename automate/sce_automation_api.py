@@ -367,6 +367,7 @@ Produce exactly two files, in this order:
     - [SCE_NODE] with: {self._sanitize_name(sce_node)}
     - [PROBE_TYPE] with: {self._sanitize_name(probe_type)}
     - Keep "chaosaws.ec2" prefix fixed in all module paths
+    - The module path must follow exactly this structure: chaosaws.ec2.[SCE_NODE]_[PROBE_TYPE]
     - DO NOT include a "secrets" section - AWS credentials will be automatically discovered from the standard credential chain (~/.aws/credentials)
 
 Script structure (must follow this flow):
@@ -788,7 +789,7 @@ Q_post = XX.XX
                 full_prompt = prompt
 
             response = self.bedrock.converse(
-                modelId="global.anthropic.claude-sonnet-4-6",
+                modelId="global.anthropic.claude-opus-4-5-20251101-v1:0",
                 messages=[{
                     "role": "user",
                     "content": [{"text": full_prompt}]

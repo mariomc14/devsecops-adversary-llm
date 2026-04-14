@@ -1,0 +1,441 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-04-13 15:28:04 INFO] Validating the experiment's syntax
+[32m[2026-04-13 15:28:04 INFO] Experiment looks valid
+[32m[2026-04-13 15:28:04 INFO] Running experiment: SCE Experiment 3.5 - Reactive Probe: Stolen Credential Automated Incident Response Validation
+[32m[2026-04-13 15:28:04 INFO] Steady-state strategy: after-method-only
+[32m[2026-04-13 15:28:04 INFO] Rollbacks strategy: default
+[32m[2026-04-13 15:28:04 INFO] Playing your experiment's method now...
+[32m[2026-04-13 15:28:04 INFO] Action: Get-or-create GuardDuty detector; create IAM roles (CloudTrail CW delivery, instance-simulation, SSM Automation) via boto3 (no Description field); deploy CloudFormation stack with CloudTrail trail, S3 CT bucket, S3 Object Lock evidence bucket, CloudWatch Log Group, SSM pipeline gate parameter (initial OK), and SSM Automation document; wait for CloudTrail IsLogging=True; assert pipeline gate is OK and no revocation policy on instance role
+2026-04-13T15:28:04Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:28:05Z  INFO      ======================================================================
+2026-04-13T15:28:05Z  INFO      SCE Experiment 3.5 - Reactive Probe  |  steady_state()
+2026-04-13T15:28:05Z  INFO      Account=396608802942  Region=us-east-1  Stack=sce-react35-1776086885
+2026-04-13T15:28:05Z  INFO      CTBucket=sce-ct-1776086885  EvidBucket=sce-ev-1776086885
+2026-04-13T15:28:05Z  INFO      CWLogGroup=/sce/cloudtrail/sce-react35-1776086885
+2026-04-13T15:28:05Z  INFO      PipelineGate=/sce/reactive/pipeline-gate-1776086885  SSMDoc=sce-react35-doc-1776086885
+2026-04-13T15:28:05Z  INFO      ======================================================================
+2026-04-13T15:28:05Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:28:06Z  INFO      [GD] Reusing pre-existing detector: 4eca2fb0a65336b4c500a5ccaa3684ae
+2026-04-13T15:28:06Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:28:06Z  INFO      [IAM] ctcw_role_name = sce-ctcw-act35-1776086885
+2026-04-13T15:28:06Z  INFO      [IAM] inst_role_name = sce-inst-act35-1776086885
+2026-04-13T15:28:06Z  INFO      [IAM] ssm_role_name  = sce-ssm-act35-1776086885
+2026-04-13T15:28:06Z  INFO      [IAM] Creating CloudTrail CW delivery role ...
+2026-04-13T15:28:07Z  INFO      [IAM] CloudTrail CW role created: sce-ctcw-act35-1776086885
+2026-04-13T15:28:08Z  INFO      [IAM] ctcw_role_arn = arn:aws:iam::396608802942:role/sce-ctcw-act35-1776086885
+2026-04-13T15:28:08Z  INFO      [IAM] Creating instance simulation role ...
+2026-04-13T15:28:08Z  INFO      [IAM] Instance simulation role created: sce-inst-act35-1776086885
+2026-04-13T15:28:08Z  INFO      [IAM] Instance inline policy attached.
+2026-04-13T15:28:08Z  INFO      [IAM] inst_role_arn = arn:aws:iam::396608802942:role/sce-inst-act35-1776086885
+2026-04-13T15:28:08Z  INFO      [IAM] Creating SSM Automation execution role ...
+2026-04-13T15:28:08Z  INFO      [IAM] SSM Automation role created: sce-ssm-act35-1776086885
+2026-04-13T15:28:08Z  INFO      [IAM] SSM Automation inline policy attached.
+2026-04-13T15:28:09Z  INFO      [IAM] ssm_role_arn = arn:aws:iam::396608802942:role/sce-ssm-act35-1776086885
+2026-04-13T15:28:09Z  INFO      [IAM] Waiting 25s for IAM propagation ...
+2026-04-13T15:28:34Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:28:35Z  INFO      [STEADY] Stack creation initiated: sce-react35-1776086885
+2026-04-13T15:28:35Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:28:35Z  INFO      [CFN] Waiting for 'sce-react35-1776086885' -> CREATE_COMPLETE ...
+2026-04-13T15:28:35Z  INFO      [CFN] Stack status: CREATE_IN_PROGRESS
+2026-04-13T15:28:51Z  INFO      [CFN] Stack status: CREATE_IN_PROGRESS
+2026-04-13T15:29:06Z  INFO      [CFN] Stack status: CREATE_IN_PROGRESS
+2026-04-13T15:29:22Z  INFO      [CFN] Stack status: CREATE_COMPLETE
+2026-04-13T15:29:22Z  INFO      [CFN] Target status reached: CREATE_COMPLETE
+2026-04-13T15:29:22Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:29:22Z  INFO      [STEADY] Stack outputs:
+2026-04-13T15:29:22Z  INFO               EvidenceBucketName     = sce-ev-1776086885
+2026-04-13T15:29:22Z  INFO               CTBucketName           = sce-ct-1776086885
+2026-04-13T15:29:22Z  INFO               PipelineGateParam      = /sce/reactive/pipeline-gate-1776086885
+2026-04-13T15:29:22Z  INFO               CWLogGroupName         = /sce/cloudtrail/sce-react35-1776086885
+2026-04-13T15:29:22Z  INFO               TrailName              = sce-trail-t-1776086885
+2026-04-13T15:29:22Z  INFO               SSMDocumentName        = sce-react35-doc-1776086885
+2026-04-13T15:29:22Z  INFO               TrailArn               = arn:aws:cloudtrail:us-east-1:396608802942:trail/sce-trail-t-1776086885
+2026-04-13T15:29:22Z  INFO      [STEADY] Waiting for CloudTrail trail sce-trail-t-1776086885 to be logging ...
+2026-04-13T15:29:22Z  INFO      [POLL] CloudTrail-IsLogging - attempt 1  elapsed=0s / SLA=300s
+2026-04-13T15:29:22Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:29:23Z  INFO      [CT-STATUS] IsLogging=True
+2026-04-13T15:29:23Z  INFO      [POLL] CloudTrail-IsLogging - condition MET at attempt 1 (0s elapsed).
+2026-04-13T15:29:23Z  INFO      [STEADY] CloudTrail trail is actively logging.
+2026-04-13T15:29:23Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:29:24Z  INFO      [STEADY] Pipeline gate baseline confirmed: /sce/reactive/pipeline-gate-1776086885 = OK
+2026-04-13T15:29:24Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:29:24Z  INFO      [STEADY] Baseline confirmed: no revocation policy on sce-inst-act35-1776086885.
+2026-04-13T15:29:24Z  INFO      [STEADY] Waiting 15s for infrastructure settling ...
+2026-04-13T15:29:39Z  INFO      [STEADY] steady_state() complete.
+
+[32m[2026-04-13 15:29:39 INFO] Action: Node 1.2: sts:AssumeRole on instance-simulation role to obtain stolen credentials (T1562.008 proxy); Node 2.2: sts:GetCallerIdentity to verify credential validity (T1552.005); Node 3.2: iam:ListAttachedRolePolicies and s3:ListAllMyBuckets for lateral movement enumeration (T1078.004); trigger SSM Automation reactive playbook to revoke credentials and block deployment pipeline
+2026-04-13T15:29:39Z  INFO      ----------------------------------------------------------------------
+2026-04-13T15:29:39Z  INFO      [ATTACK] Node 1.2 - Obtaining instance role credentials ...
+2026-04-13T15:29:39Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:29:39Z  INFO      [STS] Assuming instance role: arn:aws:iam::396608802942:role/sce-inst-act35-1776086885
+2026-04-13T15:29:40Z  INFO      [STS] Assumed role. AccessKeyId=ASIAVYV52CB7NBCV72UI  Expiration=2026-04-13 13:44:40+00:00
+2026-04-13T15:29:40Z  INFO      [ATTACK] 1.2 - Credentials obtained. Timestamp=1776086980
+2026-04-13T15:29:45Z  INFO      [ATTACK] Node 2.2 - Verifying stolen credential identity ...
+2026-04-13T15:29:46Z  INFO      [ATTACK] 2.2 - Identity: arn:aws:sts::396608802942:assumed-role/sce-inst-act35-1776086885/SCEReactiveAttackSim  Timestamp=1776086986
+2026-04-13T15:29:46Z  INFO      [ATTACK] Node 3.2 - Executing lateral movement enumeration ...
+2026-04-13T15:29:46Z  INFO      [ATTACK] 3.2a - Policies enumerated: []
+2026-04-13T15:29:47Z  INFO      [ATTACK] 3.2b - Buckets enumerated: 18 bucket(s)
+2026-04-13T15:29:47Z  INFO      [ATTACK] Node 3.2 complete. Timestamp=1776086987
+2026-04-13T15:29:47Z  INFO      [ATTACK] Triggering SSM Automation reactive playbook ...
+2026-04-13T15:29:47Z  INFO      [ATTACK]   Document         : sce-react35-doc-1776086885
+2026-04-13T15:29:47Z  INFO      [ATTACK]   RoleNameToRevoke : sce-inst-act35-1776086885
+2026-04-13T15:29:47Z  INFO      [ATTACK]   PipelineGateParam: /sce/reactive/pipeline-gate-1776086885
+2026-04-13T15:29:47Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:29:48Z  INFO      [ATTACK] SSM Automation started: 2c382903-9704-4424-8dbc-efb78a4b25d0
+2026-04-13T15:29:48Z  INFO      [ATTACK] All attack nodes and reactive trigger completed.
+2026-04-13T15:29:48Z  INFO      ----------------------------------------------------------------------
+[32m[2026-04-13 15:29:48 INFO] Steady state hypothesis: All five reactive signals confirmed within 30-minute SLA: SSM Automation success, IAM Deny-all revocation, stolen credentials return AccessDenied, pipeline gate BLOCKED, and CloudTrail evidence in Object Lock bucket
+[32m[2026-04-13 15:29:48 INFO] Probe: Verify SSM Automation execution success, SCEDenyAllRevocation policy on instance role, stolen credentials returning AccessDenied, pipeline gate parameter set to BLOCKED, and CloudTrail log file present in Object Lock evidence bucket - all confirmed within 30-minute SLA after attack nodes 1.2, 2.2, and 3.2
+2026-04-13T15:29:48Z  INFO      ======================================================================
+2026-04-13T15:29:48Z  INFO      [VERIFY] Reactive Probe - starting validation
+2026-04-13T15:29:48Z  INFO      [VERIFY] SSMExecutionId  : 2c382903-9704-4424-8dbc-efb78a4b25d0
+2026-04-13T15:29:48Z  INFO      [VERIFY] InstRoleName    : sce-inst-act35-1776086885
+2026-04-13T15:29:48Z  INFO      [VERIFY] PipelineGate    : /sce/reactive/pipeline-gate-1776086885
+2026-04-13T15:29:48Z  INFO      [VERIFY] CTBucket        : sce-ct-1776086885
+2026-04-13T15:29:48Z  INFO      [VERIFY] EvidBucket      : sce-ev-1776086885
+2026-04-13T15:29:48Z  INFO      [VERIFY] TriggerEpoch    : 1776086988
+2026-04-13T15:29:48Z  INFO      [VERIFY] SLA window      : 1800s (30 min)
+2026-04-13T15:29:48Z  INFO      ======================================================================
+2026-04-13T15:29:48Z  INFO      
+[VERIFY] === Signal A: SSM Automation execution success ===
+2026-04-13T15:29:48Z  INFO      [POLL] SSM-Automation-Success - attempt 1  elapsed=0s / SLA=1800s
+2026-04-13T15:29:48Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:29:49Z  INFO      [SSM] Automation status: InProgress
+2026-04-13T15:30:09Z  INFO      [POLL] SSM-Automation-Success - attempt 2  elapsed=20s / SLA=1800s
+2026-04-13T15:30:09Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:30:10Z  INFO      [SSM] Automation status: Success
+2026-04-13T15:30:10Z  INFO      [SSM] PASS  Automation execution succeeded.
+2026-04-13T15:30:10Z  INFO      [POLL] SSM-Automation-Success - condition MET at attempt 2 (20s elapsed).
+2026-04-13T15:30:10Z  INFO      
+[VERIFY] === Signal B: IAM Deny-all revocation policy ===
+2026-04-13T15:30:10Z  INFO      [POLL] IAM-DenyAll-Revocation - attempt 1  elapsed=0s / SLA=1800s
+2026-04-13T15:30:10Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:30:11Z  INFO      [IAM] PASS  Deny-all revocation policy on sce-inst-act35-1776086885.
+2026-04-13T15:30:11Z  INFO      [POLL] IAM-DenyAll-Revocation - condition MET at attempt 1 (0s elapsed).
+2026-04-13T15:30:11Z  INFO      
+[VERIFY] === Signal C: Stolen credentials return AccessDenied ===
+2026-04-13T15:30:11Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 1  elapsed=0s / SLA=1800s
+2026-04-13T15:30:11Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:30:12Z  INFO      [REVOKE] Credentials still valid: arn:aws:sts::396608802942:assumed-role/sce-inst-act35-1776086885/SCEReactiveAttackSim - revocation policy not yet effective, retrying ...
+2026-04-13T15:30:32Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 2  elapsed=21s / SLA=1800s
+2026-04-13T15:30:32Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:30:33Z  INFO      [REVOKE] Credentials still valid: arn:aws:sts::396608802942:assumed-role/sce-inst-act35-1776086885/SCEReactiveAttackSim - revocation policy not yet effective, retrying ...
+2026-04-13T15:30:53Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 3  elapsed=42s / SLA=1800s
+2026-04-13T15:30:53Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:30:54Z  INFO      [REVOKE] Credentials still valid: arn:aws:sts::396608802942:assumed-role/sce-inst-act35-1776086885/SCEReactiveAttackSim - revocation policy not yet effective, retrying ...
+2026-04-13T15:31:14Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 4  elapsed=63s / SLA=1800s
+2026-04-13T15:31:14Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:31:15Z  INFO      [REVOKE] Credentials still valid: arn:aws:sts::396608802942:assumed-role/sce-inst-act35-1776086885/SCEReactiveAttackSim - revocation policy not yet effective, retrying ...
+2026-04-13T15:31:35Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 5  elapsed=84s / SLA=1800s
+2026-04-13T15:31:35Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:31:36Z  INFO      [REVOKE] Credentials still valid: arn:aws:sts::396608802942:assumed-role/sce-inst-act35-1776086885/SCEReactiveAttackSim - revocation policy not yet effective, retrying ...
+2026-04-13T15:31:56Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 6  elapsed=105s / SLA=1800s
+2026-04-13T15:31:56Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:31:58Z  INFO      [REVOKE] Credentials still valid: arn:aws:sts::396608802942:assumed-role/sce-inst-act35-1776086885/SCEReactiveAttackSim - revocation policy not yet effective, retrying ...
+2026-04-13T15:32:18Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 7  elapsed=126s / SLA=1800s
+2026-04-13T15:32:18Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:32:19Z  INFO      [REVOKE] Credentials still valid: arn:aws:sts::396608802942:assumed-role/sce-inst-act35-1776086885/SCEReactiveAttackSim - revocation policy not yet effective, retrying ...
+2026-04-13T15:32:39Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 8  elapsed=148s / SLA=1800s
+2026-04-13T15:32:39Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:32:40Z  INFO      [REVOKE] Credentials still valid: arn:aws:sts::396608802942:assumed-role/sce-inst-act35-1776086885/SCEReactiveAttackSim - revocation policy not yet effective, retrying ...
+2026-04-13T15:33:00Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 9  elapsed=169s / SLA=1800s
+2026-04-13T15:33:00Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:33:01Z  INFO      [REVOKE] Credentials still valid: arn:aws:sts::396608802942:assumed-role/sce-inst-act35-1776086885/SCEReactiveAttackSim - revocation policy not yet effective, retrying ...
+2026-04-13T15:33:21Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 10  elapsed=190s / SLA=1800s
+2026-04-13T15:33:21Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:33:22Z  INFO      [REVOKE] Credentials still valid: arn:aws:sts::396608802942:assumed-role/sce-inst-act35-1776086885/SCEReactiveAttackSim - revocation policy not yet effective, retrying ...
+2026-04-13T15:33:42Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 11  elapsed=211s / SLA=1800s
+2026-04-13T15:33:42Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:33:43Z  INFO      [REVOKE] Credentials still valid: arn:aws:sts::396608802942:assumed-role/sce-inst-act35-1776086885/SCEReactiveAttackSim - revocation policy not yet effective, retrying ...
+2026-04-13T15:34:03Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 12  elapsed=232s / SLA=1800s
+2026-04-13T15:34:03Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:34:04Z  INFO      [REVOKE] Credentials still valid: arn:aws:sts::396608802942:assumed-role/sce-inst-act35-1776086885/SCEReactiveAttackSim - revocation policy not yet effective, retrying ...
+2026-04-13T15:34:24Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 13  elapsed=253s / SLA=1800s
+2026-04-13T15:34:24Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:34:26Z  INFO      [REVOKE] Credentials still valid: arn:aws:sts::396608802942:assumed-role/sce-inst-act35-1776086885/SCEReactiveAttackSim - revocation policy not yet effective, retrying ...
+2026-04-13T15:34:46Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 14  elapsed=275s / SLA=1800s
+2026-04-13T15:34:46Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:34:47Z  INFO      [REVOKE] Credentials still valid: arn:aws:sts::396608802942:assumed-role/sce-inst-act35-1776086885/SCEReactiveAttackSim - revocation policy not yet effective, retrying ...
+2026-04-13T15:35:07Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 15  elapsed=296s / SLA=1800s
+2026-04-13T15:35:07Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:35:08Z  INFO      [REVOKE] Credentials still valid: arn:aws:sts::396608802942:assumed-role/sce-inst-act35-1776086885/SCEReactiveAttackSim - revocation policy not yet effective, retrying ...
+2026-04-13T15:35:28Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 16  elapsed=317s / SLA=1800s
+2026-04-13T15:35:28Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:35:29Z  INFO      [REVOKE] Credentials still valid: arn:aws:sts::396608802942:assumed-role/sce-inst-act35-1776086885/SCEReactiveAttackSim - revocation policy not yet effective, retrying ...
+2026-04-13T15:35:49Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 17  elapsed=338s / SLA=1800s
+2026-04-13T15:35:49Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:35:50Z  INFO      [REVOKE] Credentials still valid: arn:aws:sts::396608802942:assumed-role/sce-inst-act35-1776086885/SCEReactiveAttackSim - revocation policy not yet effective, retrying ...
+2026-04-13T15:36:10Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 18  elapsed=359s / SLA=1800s
+2026-04-13T15:36:10Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:36:11Z  INFO      [REVOKE] Credentials still valid: arn:aws:sts::396608802942:assumed-role/sce-inst-act35-1776086885/SCEReactiveAttackSim - revocation policy not yet effective, retrying ...
+2026-04-13T15:36:31Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 19  elapsed=380s / SLA=1800s
+2026-04-13T15:36:31Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:36:33Z  INFO      [REVOKE] Credentials still valid: arn:aws:sts::396608802942:assumed-role/sce-inst-act35-1776086885/SCEReactiveAttackSim - revocation policy not yet effective, retrying ...
+2026-04-13T15:36:53Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 20  elapsed=401s / SLA=1800s
+2026-04-13T15:36:53Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:36:54Z  INFO      [REVOKE] Credentials still valid: arn:aws:sts::396608802942:assumed-role/sce-inst-act35-1776086885/SCEReactiveAttackSim - revocation policy not yet effective, retrying ...
+2026-04-13T15:37:14Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 21  elapsed=423s / SLA=1800s
+2026-04-13T15:37:14Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:37:15Z  INFO      [REVOKE] Credentials still valid: arn:aws:sts::396608802942:assumed-role/sce-inst-act35-1776086885/SCEReactiveAttackSim - revocation policy not yet effective, retrying ...
+2026-04-13T15:37:35Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 22  elapsed=444s / SLA=1800s
+2026-04-13T15:37:35Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:37:36Z  INFO      [REVOKE] Credentials still valid: arn:aws:sts::396608802942:assumed-role/sce-inst-act35-1776086885/SCEReactiveAttackSim - revocation policy not yet effective, retrying ...
+2026-04-13T15:37:56Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 23  elapsed=465s / SLA=1800s
+2026-04-13T15:37:56Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:37:57Z  INFO      [REVOKE] Credentials still valid: arn:aws:sts::396608802942:assumed-role/sce-inst-act35-1776086885/SCEReactiveAttackSim - revocation policy not yet effective, retrying ...
+2026-04-13T15:38:17Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 24  elapsed=486s / SLA=1800s
+2026-04-13T15:38:17Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:38:18Z  INFO      [REVOKE] Credentials still valid: arn:aws:sts::396608802942:assumed-role/sce-inst-act35-1776086885/SCEReactiveAttackSim - revocation policy not yet effective, retrying ...
+2026-04-13T15:38:38Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 25  elapsed=507s / SLA=1800s
+2026-04-13T15:38:39Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:38:40Z  INFO      [REVOKE] Credentials still valid: arn:aws:sts::396608802942:assumed-role/sce-inst-act35-1776086885/SCEReactiveAttackSim - revocation policy not yet effective, retrying ...
+2026-04-13T15:39:00Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 26  elapsed=529s / SLA=1800s
+2026-04-13T15:39:00Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:39:01Z  INFO      [REVOKE] Credentials still valid: arn:aws:sts::396608802942:assumed-role/sce-inst-act35-1776086885/SCEReactiveAttackSim - revocation policy not yet effective, retrying ...
+2026-04-13T15:39:21Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 27  elapsed=550s / SLA=1800s
+2026-04-13T15:39:21Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:39:22Z  INFO      [REVOKE] Credentials still valid: arn:aws:sts::396608802942:assumed-role/sce-inst-act35-1776086885/SCEReactiveAttackSim - revocation policy not yet effective, retrying ...
+2026-04-13T15:39:42Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 28  elapsed=571s / SLA=1800s
+2026-04-13T15:39:42Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:39:43Z  INFO      [REVOKE] Credentials still valid: arn:aws:sts::396608802942:assumed-role/sce-inst-act35-1776086885/SCEReactiveAttackSim - revocation policy not yet effective, retrying ...
+2026-04-13T15:40:03Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 29  elapsed=592s / SLA=1800s
+2026-04-13T15:40:03Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:40:04Z  INFO      [REVOKE] Credentials still valid: arn:aws:sts::396608802942:assumed-role/sce-inst-act35-1776086885/SCEReactiveAttackSim - revocation policy not yet effective, retrying ...
+2026-04-13T15:40:24Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 30  elapsed=613s / SLA=1800s
+2026-04-13T15:40:24Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:40:26Z  INFO      [REVOKE] Credentials still valid: arn:aws:sts::396608802942:assumed-role/sce-inst-act35-1776086885/SCEReactiveAttackSim - revocation policy not yet effective, retrying ...
+2026-04-13T15:40:46Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 31  elapsed=635s / SLA=1800s
+2026-04-13T15:40:46Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:40:47Z  INFO      [REVOKE] Credentials still valid: arn:aws:sts::396608802942:assumed-role/sce-inst-act35-1776086885/SCEReactiveAttackSim - revocation policy not yet effective, retrying ...
+2026-04-13T15:41:07Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 32  elapsed=656s / SLA=1800s
+2026-04-13T15:41:07Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:41:08Z  INFO      [REVOKE] Credentials still valid: arn:aws:sts::396608802942:assumed-role/sce-inst-act35-1776086885/SCEReactiveAttackSim - revocation policy not yet effective, retrying ...
+2026-04-13T15:41:28Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 33  elapsed=677s / SLA=1800s
+2026-04-13T15:41:28Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:41:29Z  INFO      [REVOKE] Credentials still valid: arn:aws:sts::396608802942:assumed-role/sce-inst-act35-1776086885/SCEReactiveAttackSim - revocation policy not yet effective, retrying ...
+2026-04-13T15:41:49Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 34  elapsed=698s / SLA=1800s
+2026-04-13T15:41:49Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:41:50Z  INFO      [REVOKE] Credentials still valid: arn:aws:sts::396608802942:assumed-role/sce-inst-act35-1776086885/SCEReactiveAttackSim - revocation policy not yet effective, retrying ...
+2026-04-13T15:42:10Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 35  elapsed=719s / SLA=1800s
+2026-04-13T15:42:10Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:42:11Z  INFO      [REVOKE] Credentials still valid: arn:aws:sts::396608802942:assumed-role/sce-inst-act35-1776086885/SCEReactiveAttackSim - revocation policy not yet effective, retrying ...
+2026-04-13T15:42:31Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 36  elapsed=740s / SLA=1800s
+2026-04-13T15:42:31Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:42:33Z  INFO      [REVOKE] Credentials still valid: arn:aws:sts::396608802942:assumed-role/sce-inst-act35-1776086885/SCEReactiveAttackSim - revocation policy not yet effective, retrying ...
+2026-04-13T15:42:53Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 37  elapsed=762s / SLA=1800s
+2026-04-13T15:42:53Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:42:54Z  INFO      [REVOKE] Credentials still valid: arn:aws:sts::396608802942:assumed-role/sce-inst-act35-1776086885/SCEReactiveAttackSim - revocation policy not yet effective, retrying ...
+2026-04-13T15:43:14Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 38  elapsed=783s / SLA=1800s
+2026-04-13T15:43:14Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:43:15Z  INFO      [REVOKE] Credentials still valid: arn:aws:sts::396608802942:assumed-role/sce-inst-act35-1776086885/SCEReactiveAttackSim - revocation policy not yet effective, retrying ...
+2026-04-13T15:43:35Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 39  elapsed=804s / SLA=1800s
+2026-04-13T15:43:35Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:43:36Z  INFO      [REVOKE] Credentials still valid: arn:aws:sts::396608802942:assumed-role/sce-inst-act35-1776086885/SCEReactiveAttackSim - revocation policy not yet effective, retrying ...
+2026-04-13T15:43:56Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 40  elapsed=825s / SLA=1800s
+2026-04-13T15:43:56Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:43:57Z  INFO      [REVOKE] Credentials still valid: arn:aws:sts::396608802942:assumed-role/sce-inst-act35-1776086885/SCEReactiveAttackSim - revocation policy not yet effective, retrying ...
+2026-04-13T15:44:17Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 41  elapsed=846s / SLA=1800s
+2026-04-13T15:44:17Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:44:18Z  INFO      [REVOKE] Credentials still valid: arn:aws:sts::396608802942:assumed-role/sce-inst-act35-1776086885/SCEReactiveAttackSim - revocation policy not yet effective, retrying ...
+2026-04-13T15:44:38Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 42  elapsed=867s / SLA=1800s
+2026-04-13T15:44:38Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:44:40Z  INFO      [REVOKE] Credentials still valid: arn:aws:sts::396608802942:assumed-role/sce-inst-act35-1776086885/SCEReactiveAttackSim - revocation policy not yet effective, retrying ...
+2026-04-13T15:45:00Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 43  elapsed=889s / SLA=1800s
+2026-04-13T15:45:00Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:45:01Z  WARNING   [REVOKE] Unexpected error from stolen credential: ExpiredToken
+2026-04-13T15:45:21Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 44  elapsed=910s / SLA=1800s
+2026-04-13T15:45:21Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:45:22Z  WARNING   [REVOKE] Unexpected error from stolen credential: ExpiredToken
+2026-04-13T15:45:42Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 45  elapsed=931s / SLA=1800s
+2026-04-13T15:45:42Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:45:43Z  WARNING   [REVOKE] Unexpected error from stolen credential: ExpiredToken
+2026-04-13T15:46:03Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 46  elapsed=952s / SLA=1800s
+2026-04-13T15:46:03Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:46:04Z  WARNING   [REVOKE] Unexpected error from stolen credential: ExpiredToken
+2026-04-13T15:46:24Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 47  elapsed=973s / SLA=1800s
+2026-04-13T15:46:24Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:46:25Z  WARNING   [REVOKE] Unexpected error from stolen credential: ExpiredToken
+2026-04-13T15:46:45Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 48  elapsed=994s / SLA=1800s
+2026-04-13T15:46:46Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:46:47Z  WARNING   [REVOKE] Unexpected error from stolen credential: ExpiredToken
+2026-04-13T15:47:07Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 49  elapsed=1016s / SLA=1800s
+2026-04-13T15:47:07Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:47:08Z  WARNING   [REVOKE] Unexpected error from stolen credential: ExpiredToken
+2026-04-13T15:47:28Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 50  elapsed=1037s / SLA=1800s
+2026-04-13T15:47:28Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:47:30Z  WARNING   [REVOKE] Unexpected error from stolen credential: ExpiredToken
+2026-04-13T15:47:50Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 51  elapsed=1058s / SLA=1800s
+2026-04-13T15:47:50Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:47:51Z  WARNING   [REVOKE] Unexpected error from stolen credential: ExpiredToken
+2026-04-13T15:48:11Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 52  elapsed=1080s / SLA=1800s
+2026-04-13T15:48:11Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:48:12Z  WARNING   [REVOKE] Unexpected error from stolen credential: ExpiredToken
+2026-04-13T15:48:32Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 53  elapsed=1101s / SLA=1800s
+2026-04-13T15:48:32Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:48:33Z  WARNING   [REVOKE] Unexpected error from stolen credential: ExpiredToken
+2026-04-13T15:48:53Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 54  elapsed=1122s / SLA=1800s
+2026-04-13T15:48:53Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:48:54Z  WARNING   [REVOKE] Unexpected error from stolen credential: ExpiredToken
+2026-04-13T15:49:14Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 55  elapsed=1143s / SLA=1800s
+2026-04-13T15:49:14Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:49:16Z  WARNING   [REVOKE] Unexpected error from stolen credential: ExpiredToken
+2026-04-13T15:49:36Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 56  elapsed=1165s / SLA=1800s
+2026-04-13T15:49:36Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:49:37Z  WARNING   [REVOKE] Unexpected error from stolen credential: ExpiredToken
+2026-04-13T15:49:57Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 57  elapsed=1186s / SLA=1800s
+2026-04-13T15:49:57Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:49:58Z  WARNING   [REVOKE] Unexpected error from stolen credential: ExpiredToken
+2026-04-13T15:50:18Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 58  elapsed=1207s / SLA=1800s
+2026-04-13T15:50:18Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:50:19Z  WARNING   [REVOKE] Unexpected error from stolen credential: ExpiredToken
+2026-04-13T15:50:39Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 59  elapsed=1228s / SLA=1800s
+2026-04-13T15:50:39Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:50:41Z  WARNING   [REVOKE] Unexpected error from stolen credential: ExpiredToken
+2026-04-13T15:51:01Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 60  elapsed=1250s / SLA=1800s
+2026-04-13T15:51:01Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:51:02Z  WARNING   [REVOKE] Unexpected error from stolen credential: ExpiredToken
+2026-04-13T15:51:22Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 61  elapsed=1271s / SLA=1800s
+2026-04-13T15:51:22Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:51:23Z  WARNING   [REVOKE] Unexpected error from stolen credential: ExpiredToken
+2026-04-13T15:51:43Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 62  elapsed=1292s / SLA=1800s
+2026-04-13T15:51:43Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:51:44Z  WARNING   [REVOKE] Unexpected error from stolen credential: ExpiredToken
+2026-04-13T15:52:04Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 63  elapsed=1313s / SLA=1800s
+2026-04-13T15:52:04Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:52:05Z  WARNING   [REVOKE] Unexpected error from stolen credential: ExpiredToken
+2026-04-13T15:52:25Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 64  elapsed=1334s / SLA=1800s
+2026-04-13T15:52:25Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:52:27Z  WARNING   [REVOKE] Unexpected error from stolen credential: ExpiredToken
+2026-04-13T15:52:47Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 65  elapsed=1356s / SLA=1800s
+2026-04-13T15:52:47Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:52:48Z  WARNING   [REVOKE] Unexpected error from stolen credential: ExpiredToken
+2026-04-13T15:53:08Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 66  elapsed=1377s / SLA=1800s
+2026-04-13T15:53:08Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:53:09Z  WARNING   [REVOKE] Unexpected error from stolen credential: ExpiredToken
+2026-04-13T15:53:29Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 67  elapsed=1398s / SLA=1800s
+2026-04-13T15:53:29Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:53:31Z  WARNING   [REVOKE] Unexpected error from stolen credential: ExpiredToken
+2026-04-13T15:53:51Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 68  elapsed=1419s / SLA=1800s
+2026-04-13T15:53:51Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:53:52Z  WARNING   [REVOKE] Unexpected error from stolen credential: ExpiredToken
+2026-04-13T15:54:12Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 69  elapsed=1441s / SLA=1800s
+2026-04-13T15:54:12Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:54:13Z  WARNING   [REVOKE] Unexpected error from stolen credential: ExpiredToken
+2026-04-13T15:54:33Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 70  elapsed=1462s / SLA=1800s
+2026-04-13T15:54:33Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:54:34Z  WARNING   [REVOKE] Unexpected error from stolen credential: ExpiredToken
+2026-04-13T15:54:54Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 71  elapsed=1483s / SLA=1800s
+2026-04-13T15:54:54Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:54:55Z  WARNING   [REVOKE] Unexpected error from stolen credential: ExpiredToken
+2026-04-13T15:55:15Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 72  elapsed=1504s / SLA=1800s
+2026-04-13T15:55:15Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:55:17Z  WARNING   [REVOKE] Unexpected error from stolen credential: ExpiredToken
+2026-04-13T15:55:37Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 73  elapsed=1526s / SLA=1800s
+2026-04-13T15:55:37Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:55:38Z  WARNING   [REVOKE] Unexpected error from stolen credential: ExpiredToken
+2026-04-13T15:55:58Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 74  elapsed=1547s / SLA=1800s
+2026-04-13T15:55:58Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:55:59Z  WARNING   [REVOKE] Unexpected error from stolen credential: ExpiredToken
+2026-04-13T15:56:19Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 75  elapsed=1568s / SLA=1800s
+2026-04-13T15:56:19Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:56:20Z  WARNING   [REVOKE] Unexpected error from stolen credential: ExpiredToken
+2026-04-13T15:56:40Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 76  elapsed=1589s / SLA=1800s
+2026-04-13T15:56:41Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:56:42Z  WARNING   [REVOKE] Unexpected error from stolen credential: ExpiredToken
+2026-04-13T15:57:02Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 77  elapsed=1611s / SLA=1800s
+2026-04-13T15:57:02Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:57:03Z  WARNING   [REVOKE] Unexpected error from stolen credential: ExpiredToken
+2026-04-13T15:57:23Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 78  elapsed=1632s / SLA=1800s
+2026-04-13T15:57:23Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:57:24Z  WARNING   [REVOKE] Unexpected error from stolen credential: ExpiredToken
+2026-04-13T15:57:44Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 79  elapsed=1653s / SLA=1800s
+2026-04-13T15:57:44Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:57:46Z  WARNING   [REVOKE] Unexpected error from stolen credential: ExpiredToken
+2026-04-13T15:58:06Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 80  elapsed=1675s / SLA=1800s
+2026-04-13T15:58:06Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:58:07Z  WARNING   [REVOKE] Unexpected error from stolen credential: ExpiredToken
+2026-04-13T15:58:27Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 81  elapsed=1696s / SLA=1800s
+2026-04-13T15:58:27Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:58:28Z  WARNING   [REVOKE] Unexpected error from stolen credential: ExpiredToken
+2026-04-13T15:58:48Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 82  elapsed=1717s / SLA=1800s
+2026-04-13T15:58:48Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:58:50Z  WARNING   [REVOKE] Unexpected error from stolen credential: ExpiredToken
+2026-04-13T15:59:10Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 83  elapsed=1739s / SLA=1800s
+2026-04-13T15:59:10Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:59:11Z  WARNING   [REVOKE] Unexpected error from stolen credential: ExpiredToken
+2026-04-13T15:59:31Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 84  elapsed=1760s / SLA=1800s
+2026-04-13T15:59:31Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:59:33Z  WARNING   [REVOKE] Unexpected error from stolen credential: ExpiredToken
+2026-04-13T15:59:53Z  INFO      [POLL] Stolen-Credentials-Revoked - attempt 85  elapsed=1781s / SLA=1800s
+2026-04-13T15:59:53Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T15:59:54Z  WARNING   [REVOKE] Unexpected error from stolen credential: ExpiredToken
+2026-04-13T16:00:14Z  WARNING   [POLL] Stolen-Credentials-Revoked - SLA of 1800s exhausted without meeting condition.
+2026-04-13T16:00:14Z  INFO      
+[VERIFY] === Signal D: Deployment pipeline gate BLOCKED ===
+2026-04-13T16:00:14Z  INFO      [POLL] Pipeline-Gate-BLOCKED - attempt 1  elapsed=0s / SLA=1800s
+2026-04-13T16:00:14Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T16:00:15Z  INFO      [GATE] Pipeline gate value: BLOCKED
+2026-04-13T16:00:15Z  INFO      [GATE] PASS  Deployment pipeline is BLOCKED.
+2026-04-13T16:00:15Z  INFO      [POLL] Pipeline-Gate-BLOCKED - condition MET at attempt 1 (0s elapsed).
+2026-04-13T16:00:15Z  INFO      
+[VERIFY] === Signal E: CloudTrail evidence in Object Lock bucket ===
+2026-04-13T16:00:15Z  INFO      [POLL] CloudTrail-Evidence-Copy - attempt 1  elapsed=0s / SLA=1800s
+2026-04-13T16:00:15Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T16:00:16Z  INFO      [EVID] Copying CT log to evidence bucket: AWSLogs/396608802942/CloudTrail/us-east-1/2026/04/13/396608802942_CloudTrail_us-east-1_20260413T1400Z_RmGI9L8tHhNm3ojX.json.gz
+2026-04-13T16:00:16Z  INFO      [EVID] PASS  CloudTrail evidence copied to Object Lock bucket: s3://sce-ev-1776086885/evidence/AWSLogs/396608802942/CloudTrail/us-east-1/2026/04/13/396608802942_CloudTrail_us-east-1_20260413T1400Z_RmGI9L8tHhNm3ojX.json.gz
+2026-04-13T16:00:16Z  INFO      [POLL] CloudTrail-Evidence-Copy - condition MET at attempt 1 (0s elapsed).
+2026-04-13T16:00:16Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T16:00:17Z  INFO      [EVID] Evidence object verified in WORM bucket. ObjectLockMode=GOVERNANCE  Key=evidence/AWSLogs/396608802942/CloudTrail/us-east-1/2026/04/13/396608802942_CloudTrail_us-east-1_20260413T1400Z_RmGI9L8tHhNm3ojX.json.gz
+2026-04-13T16:00:17Z  INFO      
+[VERIFY] -- Signal Summary ------------------------------------------
+2026-04-13T16:00:17Z  INFO      [VERIFY]   ssm_automation_success         -> PASS
+2026-04-13T16:00:17Z  INFO      [VERIFY]   iam_deny_policy                -> PASS
+2026-04-13T16:00:17Z  INFO      [VERIFY]   credentials_revoked            -> FAIL
+2026-04-13T16:00:17Z  INFO      [VERIFY]   pipeline_gate_blocked          -> PASS
+2026-04-13T16:00:17Z  INFO      [VERIFY]   evidence_in_worm_bucket        -> PASS
+2026-04-13T16:00:17Z  INFO      [VERIFY] One or more reactive signals NOT confirmed within SLA - a gap exists in the automated incident response pipeline.
+2026-04-13T16:00:17Z  INFO      ======================================================================
+[31m[2026-04-13 16:00:17 CRITICAL] Steady state probe 'Verify SSM Automation execution success, SCEDenyAllRevocation policy on instance role, stolen credentials returning AccessDenied, pipeline gate parameter set to BLOCKED, and CloudTrail log file present in Object Lock evidence bucket - all confirmed within 30-minute SLA after attack nodes 1.2, 2.2, and 3.2' is not in the given tolerance so failing this experiment
+[32m[2026-04-13 16:00:17 INFO] Let's rollback...
+[32m[2026-04-13 16:00:17 INFO] Rollback: Restore pipeline gate to OK; remove Deny-all revocation policy from instance role; stop CloudTrail trail; empty CT and Object Lock evidence buckets (with BypassGovernanceRetention); delete CloudFormation stack; delete boto3-created IAM roles; delete GuardDuty detector only if experiment-owned; tolerant of missing resources
+[32m[2026-04-13 16:00:17 INFO] Action: Restore pipeline gate to OK; remove Deny-all revocation policy from instance role; stop CloudTrail trail; empty CT and Object Lock evidence buckets (with BypassGovernanceRetention); delete CloudFormation stack; delete boto3-created IAM roles; delete GuardDuty detector only if experiment-owned; tolerant of missing resources
+2026-04-13T16:00:17Z  INFO      [ROLLBACK] Restoring pipeline gate parameter to OK ...
+2026-04-13T16:00:17Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T16:00:18Z  INFO      [ROLLBACK] Pipeline gate restored to OK.
+2026-04-13T16:00:18Z  INFO      [ROLLBACK] Removing revocation policy from sce-inst-act35-1776086885 ...
+2026-04-13T16:00:18Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T16:00:18Z  INFO      [ROLLBACK] Revocation policy removed.
+2026-04-13T16:00:18Z  INFO      [ROLLBACK] Stopping CloudTrail trail: sce-trail-t-1776086885
+2026-04-13T16:00:18Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T16:00:19Z  INFO      [ROLLBACK] Trail logging stopped.
+2026-04-13T16:00:19Z  INFO      [ROLLBACK] Emptying CT S3 bucket: sce-ct-1776086885
+2026-04-13T16:00:19Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T16:00:20Z  INFO      [ROLLBACK] Deleted 17 objects from CT bucket.
+2026-04-13T16:00:20Z  INFO      [ROLLBACK] Emptying Evidence S3 bucket: sce-ev-1776086885
+2026-04-13T16:00:20Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T16:00:21Z  INFO      [ROLLBACK] Evidence bucket emptied.
+2026-04-13T16:00:21Z  INFO      [ROLLBACK] Deleting stack: sce-react35-1776086885
+2026-04-13T16:00:21Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T16:00:22Z  INFO      [ROLLBACK] delete_stack request accepted.
+2026-04-13T16:00:22Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T16:00:22Z  INFO      [CFN] Waiting for 'sce-react35-1776086885' -> DELETE_COMPLETE ...
+2026-04-13T16:00:22Z  INFO      [CFN] Stack status: DELETE_IN_PROGRESS
+2026-04-13T16:00:38Z  INFO      [CFN] Stack status: DELETE_IN_PROGRESS
+2026-04-13T16:00:54Z  INFO      [CFN] Stack status: DELETE_IN_PROGRESS
+2026-04-13T16:01:10Z  INFO      [CFN] Stack 'sce-react35-1776086885' deleted.
+2026-04-13T16:01:10Z  INFO      [ROLLBACK] Stack deleted successfully.
+2026-04-13T16:01:10Z  INFO      [ROLLBACK] Deleting IAM resources ...
+2026-04-13T16:01:10Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T16:01:11Z  INFO      [IAM-RB] Deleted role: sce-ctcw-act35-1776086885
+2026-04-13T16:01:11Z  INFO      [IAM-RB] Deleted role: sce-inst-act35-1776086885
+2026-04-13T16:01:12Z  INFO      [IAM-RB] Deleted role: sce-ssm-act35-1776086885
+2026-04-13T16:01:12Z  INFO      [ROLLBACK] GuardDuty detector is pre-existing - NOT deleted.
+2026-04-13T16:01:12Z  INFO      [ROLLBACK] Teardown complete.
+[32m[2026-04-13 16:01:12 INFO] Experiment ended with status: deviated
+[32m[2026-04-13 16:01:12 INFO] The steady-state has deviated, a weakness may have been discovered
+
+
+RETURN CODE: 1

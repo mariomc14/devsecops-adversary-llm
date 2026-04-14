@@ -1,0 +1,64 @@
+{
+    "title": "SCE 2.4 Detective Probe: Detection of IMDS Access from Container Processes",
+    "description": "Validates that detective controls (ADT Nodes 2.5 VPC Flow Logs and 2.6 Runtime Security Monitoring) successfully detect attempts to access the EC2 Instance Metadata Service (IMDS) endpoint at 169.254.169.254 from container processes. This experiment creates an EC2 instance with VPC Flow Logs, CloudWatch metric filters, and local IMDS access logging, executes both attack steps 1.3 (T1562.001 - weaken IMDS configuration) and 2.3 (T1552.005 - access IMDS from container), and verifies that the detective controls capture and alert on the malicious activity through multiple detection channels including CloudTrail, CloudWatch Logs, VPC Flow Logs, and CloudWatch Alarms.",
+    "tags": [
+        "sce-2-4",
+        "detective",
+        "vpc-flow-logs",
+        "cloudwatch",
+        "cloudtrail",
+        "imds",
+        "ec2",
+        "container-isolation",
+        "banking-platform",
+        "t1552-005",
+        "t1562-001",
+        "runtime-security"
+    ],
+    "steady-state-hypothesis": {
+        "title": "Detective controls detect IMDS access attempts from container processes via multiple channels",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "verify-imds-access-detected-via-cloudwatch-cloudtrail-flowlogs",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.2_4_detective",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "establish-steady-state-with-detective-controls-vpc-flow-logs-cloudwatch",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.2_4_detective",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "execute-attack-1-3-weaken-imds-and-attack-2-3-container-imds-access",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.2_4_detective",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "cleanup-cloudformation-stack-revert-imds-empty-s3",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.2_4_detective",
+                "func": "rollback"
+            }
+        }
+    ]
+}

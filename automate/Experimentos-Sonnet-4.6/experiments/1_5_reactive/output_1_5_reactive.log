@@ -1,0 +1,43 @@
+STDOUT:
+2026-04-09 15:20:30,704 [INFO] sce.1_5.reactive — === SCE 1.5 Reactive Probe — steady_state() ===
+2026-04-09 15:20:30,704 [INFO] sce.1_5.reactive — Experiment tag / stack name: sce-experiment-1775740830
+2026-04-09 15:20:30,709 [INFO] sce.1_5.reactive — AWS region: us-east-1
+2026-04-09 15:20:30,714 [INFO] botocore.credentials — Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-09 15:20:31,717 [INFO] sce.1_5.reactive — Resolved AMI ID: ami-0e10497160c48e829
+2026-04-09 15:20:31,742 [INFO] sce.1_5.reactive — Creating CloudFormation stack: sce-experiment-1775740830
+2026-04-09 15:20:32,978 [INFO] sce.1_5.reactive — Waiting for stack CREATE_COMPLETE (up to 900s)...
+2026-04-09 15:20:33,134 [INFO] sce.1_5.reactive — Stack sce-experiment-1775740830 status: CREATE_IN_PROGRESS
+2026-04-09 15:20:43,713 [INFO] sce.1_5.reactive — Stack sce-experiment-1775740830 status: CREATE_IN_PROGRESS
+2026-04-09 15:20:59,223 [INFO] sce.1_5.reactive — Stack sce-experiment-1775740830 status: CREATE_IN_PROGRESS
+2026-04-09 15:21:22,242 [INFO] sce.1_5.reactive — Stack sce-experiment-1775740830 status: CREATE_IN_PROGRESS
+2026-04-09 15:21:56,530 [INFO] sce.1_5.reactive — Stack sce-experiment-1775740830 status: CREATE_IN_PROGRESS
+2026-04-09 15:22:47,674 [INFO] sce.1_5.reactive — Stack sce-experiment-1775740830 status: CREATE_IN_PROGRESS
+2026-04-09 15:23:48,231 [INFO] sce.1_5.reactive — Stack sce-experiment-1775740830 status: ROLLBACK_IN_PROGRESS
+2026-04-09 15:23:48,489 [INFO] sce.1_5.reactive — === attack() — Downgrade IMDS to IMDSv1 ===
+2026-04-09 15:23:48,490 [INFO] sce.1_5.reactive — === hypothesis_verification() — Reactive Probe ===
+2026-04-09 15:23:48,490 [WARNING] sce.1_5.reactive — Attack did not succeed (possibly blocked by a preventive control). Reactive probe is vacuously satisfied — returning True to indicate the system is in a safe state.
+2026-04-09 15:23:48,490 [INFO] sce.1_5.reactive — === rollback() ===
+2026-04-09 15:23:48,490 [WARNING] sce.1_5.reactive — No stack name in state — nothing to roll back.
+
+
+STDERR:
+[32m[2026-04-09 15:20:30 INFO] Validating the experiment's syntax
+[32m[2026-04-09 15:20:30 INFO] Experiment looks valid
+[32m[2026-04-09 15:20:30 INFO] Running experiment: SCE 1.5 Reactive Probe — IMDS Downgrade Auto-Remediation Validation
+[32m[2026-04-09 15:20:30 INFO] Steady-state strategy: after-method-only
+[32m[2026-04-09 15:20:30 INFO] Rollbacks strategy: default
+[32m[2026-04-09 15:20:30 INFO] Playing your experiment's method now...
+[32m[2026-04-09 15:20:30 INFO] Action: Provision experiment infrastructure via CloudFormation: EC2 instance with IMDSv2 enforced, attacker IAM role, remediation Lambda, EventBridge rule, and SSM remediation flag parameter
+[31m[2026-04-09 15:23:48 ERROR]   => failed: RuntimeError: Stack sce-experiment-1775740830 reached terminal state ROLLBACK_IN_PROGRESS. Recent reasons: ['', '', '', '', '']
+[32m[2026-04-09 15:23:48 INFO] Action: Execute Attack Node 1.2: assume attacker role and call ModifyInstanceMetadataOptions to downgrade IMDS to IMDSv1 (HttpTokens=optional, HopLimit=2) on the target EC2 instance
+[31m[2026-04-09 15:23:48 ERROR]   => failed: KeyError: 'instance_id'
+[32m[2026-04-09 15:23:48 INFO] Steady state hypothesis: EC2 instance has IMDSv2 enforced (HttpTokens=required, HopLimit=1) and remediation infrastructure is deployed and operational
+[32m[2026-04-09 15:23:48 INFO] Probe: Verify reactive controls restore IMDS hardening and revoke attacker credentials after ModifyInstanceMetadataOptions downgrade
+[32m[2026-04-09 15:23:48 INFO] Steady state hypothesis is met!
+[32m[2026-04-09 15:23:48 INFO] Let's rollback...
+[32m[2026-04-09 15:23:48 INFO] Rollback: Delete CloudFormation stack and all experiment resources including EC2 instance, IAM roles, Lambda function, EventBridge rule, and SSM parameter
+[32m[2026-04-09 15:23:48 INFO] Action: Delete CloudFormation stack and all experiment resources including EC2 instance, IAM roles, Lambda function, EventBridge rule, and SSM parameter
+[32m[2026-04-09 15:23:48 INFO] Experiment ended with status: completed
+
+
+RETURN CODE: 0

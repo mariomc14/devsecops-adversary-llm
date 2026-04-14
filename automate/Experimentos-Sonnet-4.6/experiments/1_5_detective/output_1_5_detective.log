@@ -1,0 +1,328 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-04-08 13:00:15 INFO] Validating the experiment's syntax
+[32m[2026-04-08 13:00:15 INFO] Experiment looks valid
+[32m[2026-04-08 13:00:15 INFO] Running experiment: SCE 1.5 Detective Probe - IMDS Protection Weakening Detection via ModifyInstanceMetadataOptions
+[32m[2026-04-08 13:00:15 INFO] Steady-state strategy: after-method-only
+[32m[2026-04-08 13:00:15 INFO] Rollbacks strategy: default
+[32m[2026-04-08 13:00:15 INFO] Playing your experiment's method now...
+[32m[2026-04-08 13:00:15 INFO] Action: Provision experiment infrastructure: ASCII-validate and deploy minimal stable CloudFormation stack (EC2 with IMDSv2 enforced, EventBridge rule, SNS, SQS, CW Logs, metric filter, Alarm); create CloudTrail trail and Config Rule via boto3 as optional non-blocking components; narrow EventBridge rule to specific instance ID and httpTokens=optional
+2026-04-08T13:00:15Z [INFO] steady_state - === steady_state START - stack: sce-1775646015, tag: 4b8019a4, region: us-east-1 ===
+2026-04-08T13:00:15Z [INFO] load - Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-08T13:00:16Z [INFO] steady_state - AWS Account: 396608802942
+2026-04-08T13:00:16Z [INFO] steady_state - Running ASCII validation on CFN template ...
+2026-04-08T13:00:16Z [INFO] _assert_ascii - ASCII validation passed - template contains only ASCII characters.
+2026-04-08T13:00:16Z [INFO] steady_state - Creating CloudFormation stack sce-1775646015 ...
+2026-04-08T13:00:17Z [INFO] steady_state - Waiting for stack CREATE_COMPLETE (expected 3-5 min for EC2 instance) ...
+2026-04-08T13:03:22Z [INFO] steady_state - Stack outputs: {
+  "AlertQueueArn": "arn:aws:sqs:us-east-1:396608802942:sce-aq-4b8019a4",
+  "AlertQueueUrl": "https://sqs.us-east-1.amazonaws.com/396608802942/sce-aq-4b8019a4",
+  "AlarmName": "sce-cwa-4b8019a4",
+  "InstanceId": "i-085274053ee213571",
+  "AlertTopicArn": "arn:aws:sns:us-east-1:396608802942:sce-al-4b8019a4",
+  "ExperimentTag": "4b8019a4",
+  "EventBridgeRuleName": "sce-eb-4b8019a4",
+  "TrailLogGroupName": "/sce/4b8019a4"
+}
+2026-04-08T13:03:22Z [INFO] steady_state - Core stack ready - instance: i-085274053ee213571
+2026-04-08T13:03:22Z [INFO] steady_state - Waiting for EC2 instance i-085274053ee213571 to reach running state ...
+2026-04-08T13:03:23Z [INFO] _poll_until - OK [EC2 instance running] satisfied after 0.9 s (attempt 1)
+2026-04-08T13:03:23Z [INFO] _verify_baseline_imdsv2 - Baseline IMDS: instance=i-085274053ee213571 HttpTokens=required HopLimit=1
+2026-04-08T13:03:23Z [INFO] _verify_baseline_imdsv2 - Baseline confirmed: IMDSv2 enforced.
+2026-04-08T13:03:23Z [INFO] steady_state - Phase 2a: Creating CloudTrail trail (optional) ...
+2026-04-08T13:03:24Z [INFO] _create_cloudtrail_trail - Created trail S3 bucket: sce-ct-d693443f-396608802942
+2026-04-08T13:03:25Z [INFO] _create_cloudtrail_trail - Applied bucket policy to sce-ct-d693443f-396608802942.
+2026-04-08T13:03:26Z [INFO] _create_cloudtrail_trail - Created CloudTrail IAM role: sce-ctr-d693443f
+2026-04-08T13:03:26Z [INFO] _create_cloudtrail_trail - Attached CW Logs write policy to sce-ctr-d693443f.
+2026-04-08T13:03:26Z [INFO] _create_cloudtrail_trail - Waiting 15 s for IAM propagation before creating trail ...
+2026-04-08T13:03:42Z [INFO] _create_cloudtrail_trail - CloudTrail trail sce-tr-d693443f created and logging started.
+2026-04-08T13:03:42Z [INFO] steady_state - Phase 2b: Creating Config Rule (optional) ...
+2026-04-08T13:03:43Z [WARNING] _create_config_rule - AWS Config recorder not active in us-east-1 - Config Rule sub-check will be inconclusive.
+2026-04-08T13:03:44Z [INFO] _narrow_eventbridge_rule - EventBridge rule sce-eb-4b8019a4 narrowed to instance i-085274053ee213571 with httpTokens=optional filter.
+2026-04-08T13:03:44Z [INFO] _verify_controls_armed - Pre-flight: verifying detective controls are armed ...
+2026-04-08T13:03:44Z [INFO] _verify_controls_armed -   OK EventBridge rule ENABLED
+2026-04-08T13:03:45Z [INFO] _verify_controls_armed -   OK CloudWatch alarm exists
+2026-04-08T13:03:46Z [INFO] _verify_controls_armed -   OK SQS queue reachable
+2026-04-08T13:03:46Z [INFO] _verify_controls_armed - Pre-flight complete.
+2026-04-08T13:03:46Z [INFO] steady_state - === steady_state COMPLETE ===
+[32m[2026-04-08 13:03:46 INFO] Action: Execute Attack Node 1.2 - ModifyInstanceMetadataOptions with HttpTokens=optional and HttpPutResponseHopLimit=2 on the experiment EC2 instance to re-enable IMDSv1 and expand IMDS reachability to containers and SSRF-vulnerable workloads
+2026-04-08T13:03:46Z [INFO] attack - === attack START ===
+2026-04-08T13:03:46Z [INFO] attack - Calling ModifyInstanceMetadataOptions on i-085274053ee213571: HttpTokens=optional, HopLimit=2 ...
+2026-04-08T13:03:47Z [INFO] attack - Attack succeeded (attempt 1): HttpTokens=optional HopLimit=2
+2026-04-08T13:03:47Z [INFO] attack - === attack COMPLETE - IMDS weakened on i-085274053ee213571 at 2026-04-08T11:03:47Z ===
+[32m[2026-04-08 13:03:47 INFO] Steady state hypothesis: Primary detective control EventBridge to SQS responds to IMDS weakening within the 1800-second SLA
+[32m[2026-04-08 13:03:47 INFO] Probe: Verify EventBridge captures ModifyInstanceMetadataOptions event and delivers to SQS within 1800 s; Config Rule marks instance NON_COMPLIANT if Config recorder is active; CloudWatch Alarm enters ALARM state if CloudTrail trail was provisioned
+2026-04-08T13:03:47Z [INFO] hypothesis_verification - === hypothesis_verification START ===
+2026-04-08T13:03:47Z [INFO] hypothesis_verification - [A] Polling SQS for EventBridge-forwarded IMDS event ...
+2026-04-08T13:03:53Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 1, 1794 s remaining
+2026-04-08T13:04:18Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 2, 1769 s remaining
+2026-04-08T13:04:44Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 3, 1743 s remaining
+2026-04-08T13:05:10Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 4, 1717 s remaining
+2026-04-08T13:05:36Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 5, 1691 s remaining
+2026-04-08T13:06:02Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 6, 1665 s remaining
+2026-04-08T13:06:28Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 7, 1640 s remaining
+2026-04-08T13:06:54Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 8, 1614 s remaining
+2026-04-08T13:07:19Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 9, 1588 s remaining
+2026-04-08T13:07:45Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 10, 1562 s remaining
+2026-04-08T13:08:11Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 11, 1536 s remaining
+2026-04-08T13:08:37Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 12, 1510 s remaining
+2026-04-08T13:09:03Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 13, 1484 s remaining
+2026-04-08T13:09:28Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 14, 1459 s remaining
+2026-04-08T13:09:54Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 15, 1433 s remaining
+2026-04-08T13:10:20Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 16, 1407 s remaining
+2026-04-08T13:10:46Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 17, 1381 s remaining
+2026-04-08T13:11:12Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 18, 1356 s remaining
+2026-04-08T13:11:37Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 19, 1330 s remaining
+2026-04-08T13:12:03Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 20, 1304 s remaining
+2026-04-08T13:12:29Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 21, 1278 s remaining
+2026-04-08T13:12:55Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 22, 1252 s remaining
+2026-04-08T13:13:20Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 23, 1227 s remaining
+2026-04-08T13:13:46Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 24, 1201 s remaining
+2026-04-08T13:14:12Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 25, 1175 s remaining
+2026-04-08T13:14:38Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 26, 1149 s remaining
+2026-04-08T13:15:04Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 27, 1123 s remaining
+2026-04-08T13:15:29Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 28, 1098 s remaining
+2026-04-08T13:15:55Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 29, 1072 s remaining
+2026-04-08T13:16:21Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 30, 1046 s remaining
+2026-04-08T13:16:47Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 31, 1021 s remaining
+2026-04-08T13:17:12Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 32, 995 s remaining
+2026-04-08T13:17:38Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 33, 970 s remaining
+2026-04-08T13:18:04Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 34, 944 s remaining
+2026-04-08T13:18:29Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 35, 918 s remaining
+2026-04-08T13:18:55Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 36, 892 s remaining
+2026-04-08T13:19:21Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 37, 866 s remaining
+2026-04-08T13:19:47Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 38, 841 s remaining
+2026-04-08T13:20:13Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 39, 815 s remaining
+2026-04-08T13:20:39Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 40, 789 s remaining
+2026-04-08T13:21:04Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 41, 763 s remaining
+2026-04-08T13:21:30Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 42, 737 s remaining
+2026-04-08T13:21:56Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 43, 711 s remaining
+2026-04-08T13:22:22Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 44, 685 s remaining
+2026-04-08T13:22:48Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 45, 659 s remaining
+2026-04-08T13:23:14Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 46, 633 s remaining
+2026-04-08T13:23:40Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 47, 608 s remaining
+2026-04-08T13:24:06Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 48, 582 s remaining
+2026-04-08T13:24:32Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 49, 556 s remaining
+2026-04-08T13:24:57Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 50, 530 s remaining
+2026-04-08T13:25:23Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 51, 504 s remaining
+2026-04-08T13:25:49Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 52, 478 s remaining
+2026-04-08T13:26:15Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 53, 453 s remaining
+2026-04-08T13:26:41Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 54, 427 s remaining
+2026-04-08T13:27:07Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 55, 401 s remaining
+2026-04-08T13:27:32Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 56, 375 s remaining
+2026-04-08T13:27:58Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 57, 349 s remaining
+2026-04-08T13:28:24Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 58, 323 s remaining
+2026-04-08T13:28:50Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 59, 298 s remaining
+2026-04-08T13:29:15Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 60, 272 s remaining
+2026-04-08T13:29:41Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 61, 246 s remaining
+2026-04-08T13:30:07Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 62, 220 s remaining
+2026-04-08T13:30:33Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 63, 194 s remaining
+2026-04-08T13:30:59Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 64, 169 s remaining
+2026-04-08T13:31:25Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 65, 143 s remaining
+2026-04-08T13:31:50Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 66, 117 s remaining
+2026-04-08T13:32:16Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 67, 91 s remaining
+2026-04-08T13:32:42Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 68, 65 s remaining
+2026-04-08T13:33:07Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 69, 40 s remaining
+2026-04-08T13:33:33Z [INFO] _poll_until - ... [EventBridge IMDS event on SQS] pending - attempt 70, 14 s remaining
+2026-04-08T13:33:53Z [ERROR] _poll_until - FAIL [EventBridge IMDS event on SQS] NOT satisfied within the 1800-second SLA.
+2026-04-08T13:33:53Z [WARNING] hypothesis_verification - [B] Config Rule sub-check SKIPPED - Config recorder not active or rule not created.
+2026-04-08T13:33:53Z [INFO] hypothesis_verification - [C] Polling CloudWatch Alarm for ALARM state ...
+2026-04-08T13:33:54Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:33:54Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 1, 1799 s remaining
+2026-04-08T13:34:15Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:34:15Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 2, 1778 s remaining
+2026-04-08T13:34:36Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:34:36Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 3, 1757 s remaining
+2026-04-08T13:34:57Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:34:57Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 4, 1736 s remaining
+2026-04-08T13:35:18Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:35:18Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 5, 1716 s remaining
+2026-04-08T13:35:39Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:35:39Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 6, 1695 s remaining
+2026-04-08T13:35:59Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:35:59Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 7, 1674 s remaining
+2026-04-08T13:36:20Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:36:20Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 8, 1653 s remaining
+2026-04-08T13:36:41Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:36:41Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 9, 1632 s remaining
+2026-04-08T13:37:02Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:37:02Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 10, 1611 s remaining
+2026-04-08T13:37:23Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:37:23Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 11, 1590 s remaining
+2026-04-08T13:37:44Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:37:44Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 12, 1569 s remaining
+2026-04-08T13:38:05Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:38:05Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 13, 1548 s remaining
+2026-04-08T13:38:26Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:38:26Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 14, 1528 s remaining
+2026-04-08T13:38:47Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:38:47Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 15, 1507 s remaining
+2026-04-08T13:39:07Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:39:07Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 16, 1486 s remaining
+2026-04-08T13:39:28Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:39:28Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 17, 1465 s remaining
+2026-04-08T13:39:49Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:39:49Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 18, 1444 s remaining
+2026-04-08T13:40:10Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:40:10Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 19, 1423 s remaining
+2026-04-08T13:40:31Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:40:31Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 20, 1403 s remaining
+2026-04-08T13:40:52Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:40:52Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 21, 1382 s remaining
+2026-04-08T13:41:12Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:41:12Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 22, 1361 s remaining
+2026-04-08T13:41:33Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:41:33Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 23, 1340 s remaining
+2026-04-08T13:41:54Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:41:54Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 24, 1319 s remaining
+2026-04-08T13:42:15Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:42:15Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 25, 1299 s remaining
+2026-04-08T13:42:35Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:42:35Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 26, 1278 s remaining
+2026-04-08T13:42:56Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:42:56Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 27, 1257 s remaining
+2026-04-08T13:43:17Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:43:17Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 28, 1236 s remaining
+2026-04-08T13:43:38Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:43:38Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 29, 1215 s remaining
+2026-04-08T13:43:59Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:43:59Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 30, 1194 s remaining
+2026-04-08T13:44:20Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:44:20Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 31, 1174 s remaining
+2026-04-08T13:44:40Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:44:40Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 32, 1153 s remaining
+2026-04-08T13:45:01Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:45:01Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 33, 1132 s remaining
+2026-04-08T13:45:22Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:45:22Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 34, 1112 s remaining
+2026-04-08T13:45:43Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:45:43Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 35, 1091 s remaining
+2026-04-08T13:46:03Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:46:03Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 36, 1070 s remaining
+2026-04-08T13:46:24Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:46:24Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 37, 1050 s remaining
+2026-04-08T13:46:44Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:46:44Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 38, 1029 s remaining
+2026-04-08T13:47:05Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:47:05Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 39, 1008 s remaining
+2026-04-08T13:47:26Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:47:26Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 40, 988 s remaining
+2026-04-08T13:47:47Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:47:47Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 41, 967 s remaining
+2026-04-08T13:48:07Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:48:07Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 42, 946 s remaining
+2026-04-08T13:48:28Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:48:28Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 43, 925 s remaining
+2026-04-08T13:48:49Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:48:49Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 44, 904 s remaining
+2026-04-08T13:49:10Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:49:10Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 45, 883 s remaining
+2026-04-08T13:49:31Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:49:31Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 46, 863 s remaining
+2026-04-08T13:49:51Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:49:51Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 47, 842 s remaining
+2026-04-08T13:50:12Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:50:12Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 48, 821 s remaining
+2026-04-08T13:50:33Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:50:33Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 49, 800 s remaining
+2026-04-08T13:50:54Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:50:54Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 50, 779 s remaining
+2026-04-08T13:51:15Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:51:15Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 51, 758 s remaining
+2026-04-08T13:51:36Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:51:36Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 52, 738 s remaining
+2026-04-08T13:51:56Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:51:56Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 53, 717 s remaining
+2026-04-08T13:52:17Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:52:17Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 54, 696 s remaining
+2026-04-08T13:52:38Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:52:38Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 55, 676 s remaining
+2026-04-08T13:52:58Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:52:58Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 56, 655 s remaining
+2026-04-08T13:53:19Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:53:19Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 57, 634 s remaining
+2026-04-08T13:53:40Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:53:40Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 58, 614 s remaining
+2026-04-08T13:54:00Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:54:00Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 59, 593 s remaining
+2026-04-08T13:54:21Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:54:21Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 60, 572 s remaining
+2026-04-08T13:54:42Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:54:42Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 61, 551 s remaining
+2026-04-08T13:55:03Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:55:03Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 62, 530 s remaining
+2026-04-08T13:55:24Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:55:24Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 63, 509 s remaining
+2026-04-08T13:55:45Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:55:45Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 64, 488 s remaining
+2026-04-08T13:56:05Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:56:05Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 65, 468 s remaining
+2026-04-08T13:56:26Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:56:26Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 66, 447 s remaining
+2026-04-08T13:56:47Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:56:47Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 67, 426 s remaining
+2026-04-08T13:57:08Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:57:08Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 68, 405 s remaining
+2026-04-08T13:57:29Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:57:29Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 69, 385 s remaining
+2026-04-08T13:57:49Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:57:49Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 70, 364 s remaining
+2026-04-08T13:58:10Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:58:10Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 71, 343 s remaining
+2026-04-08T13:58:31Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:58:31Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 72, 322 s remaining
+2026-04-08T13:58:51Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:58:51Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 73, 302 s remaining
+2026-04-08T13:59:12Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:59:12Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 74, 281 s remaining
+2026-04-08T13:59:33Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:59:33Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 75, 260 s remaining
+2026-04-08T13:59:53Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T13:59:53Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 76, 240 s remaining
+2026-04-08T14:00:14Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T14:00:14Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 77, 219 s remaining
+2026-04-08T14:00:35Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T14:00:35Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 78, 198 s remaining
+2026-04-08T14:00:56Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T14:00:56Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 79, 177 s remaining
+2026-04-08T14:01:17Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T14:01:17Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 80, 156 s remaining
+2026-04-08T14:01:38Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T14:01:38Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 81, 135 s remaining
+2026-04-08T14:01:59Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T14:01:59Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 82, 114 s remaining
+2026-04-08T14:02:19Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T14:02:19Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 83, 94 s remaining
+2026-04-08T14:02:40Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T14:02:40Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 84, 73 s remaining
+2026-04-08T14:03:01Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T14:03:01Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 85, 52 s remaining
+2026-04-08T14:03:21Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T14:03:21Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 86, 32 s remaining
+2026-04-08T14:03:42Z [INFO] _check_cloudwatch_alarm - CloudWatch Alarm sce-cwa-4b8019a4 state: OK
+2026-04-08T14:03:42Z [INFO] _poll_until - ... [CloudWatch Alarm ALARM state] pending - attempt 87, 11 s remaining
+2026-04-08T14:04:02Z [ERROR] _poll_until - FAIL [CloudWatch Alarm ALARM state] NOT satisfied within the 1800-second SLA.
+2026-04-08T14:04:02Z [INFO] hypothesis_verification - Hypothesis results: {"A_eventbridge_sqs": "False", "B_config_noncompliant": "None", "C_cloudwatch_alarm": "False"}
+2026-04-08T14:04:02Z [ERROR] hypothesis_verification - FAIL PRIMARY detective control [A] FAILED - EventBridge did not deliver the IMDS event to SQS within the 1800-second SLA.
+[31m[2026-04-08 14:04:02 CRITICAL] Steady state probe 'Verify EventBridge captures ModifyInstanceMetadataOptions event and delivers to SQS within 1800 s; Config Rule marks instance NON_COMPLIANT if Config recorder is active; CloudWatch Alarm enters ALARM state if CloudTrail trail was provisioned' is not in the given tolerance so failing this experiment
+[32m[2026-04-08 14:04:02 INFO] Let's rollback...
+[32m[2026-04-08 14:04:02 INFO] Rollback: Teardown all experiment resources in dependency order: stop and delete CloudTrail trail, delete Config Rule, empty and delete S3 trail bucket via paginator, delete CloudTrail IAM role with inline policy removal, delete CloudFormation stack and wait for DELETE_COMPLETE
+[32m[2026-04-08 14:04:02 INFO] Action: Teardown all experiment resources in dependency order: stop and delete CloudTrail trail, delete Config Rule, empty and delete S3 trail bucket via paginator, delete CloudTrail IAM role with inline policy removal, delete CloudFormation stack and wait for DELETE_COMPLETE
+2026-04-08T14:04:02Z [INFO] rollback - === rollback START ===
+2026-04-08T14:04:03Z [INFO] rollback - Deleted CloudTrail trail sce-tr-d693443f.
+2026-04-08T14:04:05Z [INFO] rollback - Deleted S3 trail bucket sce-ct-d693443f-396608802942.
+2026-04-08T14:04:06Z [INFO] rollback - Deleted IAM role sce-ctr-d693443f.
+2026-04-08T14:04:07Z [INFO] rollback - Delete requested for stack sce-1775646015.
+2026-04-08T14:04:07Z [INFO] rollback - Stack sce-1775646015: DELETE_IN_PROGRESS
+2026-04-08T14:04:27Z [INFO] rollback - Stack sce-1775646015: DELETE_IN_PROGRESS
+2026-04-08T14:04:48Z [INFO] rollback - Stack sce-1775646015: DELETE_IN_PROGRESS
+2026-04-08T14:05:09Z [INFO] rollback - Stack sce-1775646015: DELETE_IN_PROGRESS
+2026-04-08T14:05:29Z [INFO] rollback - Stack sce-1775646015: DELETE_IN_PROGRESS
+2026-04-08T14:05:50Z [INFO] rollback - Stack sce-1775646015 confirmed gone.
+[32m[2026-04-08 14:05:50 INFO] Experiment ended with status: deviated
+[32m[2026-04-08 14:05:50 INFO] The steady-state has deviated, a weakness may have been discovered
+
+
+RETURN CODE: 1

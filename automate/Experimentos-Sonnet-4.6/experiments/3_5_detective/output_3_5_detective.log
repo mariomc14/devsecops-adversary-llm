@@ -1,0 +1,398 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-04-13 12:38:05 INFO] Validating the experiment's syntax
+[32m[2026-04-13 12:38:05 INFO] Experiment looks valid
+[32m[2026-04-13 12:38:05 INFO] Running experiment: SCE Experiment 3.5 - Detective Probe: Stolen Credential Attack-Chain Detection Validation
+[32m[2026-04-13 12:38:05 INFO] Steady-state strategy: after-method-only
+[32m[2026-04-13 12:38:05 INFO] Rollbacks strategy: default
+[32m[2026-04-13 12:38:05 INFO] Playing your experiment's method now...
+[32m[2026-04-13 12:38:05 INFO] Action: Get-or-create GuardDuty detector; create CloudTrail CW delivery role and instance-simulation role via boto3 (no Description field); deploy CloudFormation stack with CloudTrail trail (CW Logs delivery enabled), S3 trail bucket, and CloudWatch Log Group; wait for trail IsLogging=True; assert detective baseline
+2026-04-13T12:38:05Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:38:06Z  INFO      ======================================================================
+2026-04-13T12:38:06Z  INFO      SCE Experiment 3.5 - Detective Probe  |  steady_state()
+2026-04-13T12:38:06Z  INFO      Account=396608802942  Region=us-east-1  Stack=sce-det35-1776076686
+2026-04-13T12:38:06Z  INFO      TrailBucket=sce-ct-1776076686  CWLogGroup=/sce/cloudtrail/sce-det35-1776076686
+2026-04-13T12:38:06Z  INFO      ======================================================================
+2026-04-13T12:38:06Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:38:06Z  INFO      [GD] Reusing pre-existing detector: 4eca2fb0a65336b4c500a5ccaa3684ae
+2026-04-13T12:38:07Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:38:07Z  INFO      [IAM] ctcw_role_name = sce-ctcw-det35-1776076686
+2026-04-13T12:38:07Z  INFO      [IAM] inst_role_name = sce-inst-det35-1776076686
+2026-04-13T12:38:07Z  INFO      [IAM] Creating CloudTrail CW delivery role ...
+2026-04-13T12:38:07Z  INFO      [IAM] CloudTrail CW role created: sce-ctcw-det35-1776076686
+2026-04-13T12:38:08Z  INFO      [IAM] ctcw_role_arn = arn:aws:iam::396608802942:role/sce-ctcw-det35-1776076686
+2026-04-13T12:38:08Z  INFO      [IAM] Creating instance simulation role ...
+2026-04-13T12:38:08Z  INFO      [IAM] Instance simulation role created: sce-inst-det35-1776076686
+2026-04-13T12:38:08Z  INFO      [IAM] Instance inline policy attached.
+2026-04-13T12:38:08Z  INFO      [IAM] inst_role_arn = arn:aws:iam::396608802942:role/sce-inst-det35-1776076686
+2026-04-13T12:38:08Z  INFO      [IAM] Waiting 25s for IAM propagation ...
+2026-04-13T12:38:33Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:38:34Z  INFO      [STEADY] Stack creation initiated: sce-det35-1776076686
+2026-04-13T12:38:34Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:38:34Z  INFO      [CFN] Waiting for 'sce-det35-1776076686' -> CREATE_COMPLETE ...
+2026-04-13T12:38:35Z  INFO      [CFN] Stack status: CREATE_IN_PROGRESS
+2026-04-13T12:38:50Z  INFO      [CFN] Stack status: CREATE_IN_PROGRESS
+2026-04-13T12:39:06Z  INFO      [CFN] Stack status: CREATE_COMPLETE
+2026-04-13T12:39:06Z  INFO      [CFN] Target status reached: CREATE_COMPLETE
+2026-04-13T12:39:06Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:39:06Z  INFO      [STEADY] Stack outputs:
+2026-04-13T12:39:06Z  INFO               CWLogGroupName         = /sce/cloudtrail/sce-det35-1776076686
+2026-04-13T12:39:06Z  INFO               TrailName              = sce-trail-t-1776076686
+2026-04-13T12:39:06Z  INFO               TrailBucketName        = sce-ct-1776076686
+2026-04-13T12:39:06Z  INFO               TrailArn               = arn:aws:cloudtrail:us-east-1:396608802942:trail/sce-trail-t-1776076686
+2026-04-13T12:39:06Z  INFO      [STEADY] Waiting for CloudTrail trail sce-trail-t-1776076686 to be logging ...
+2026-04-13T12:39:06Z  INFO      [POLL] CloudTrail-IsLogging - attempt 1  elapsed=0s / SLA=300s
+2026-04-13T12:39:06Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:39:07Z  INFO      [CT-STATUS] IsLogging=True
+2026-04-13T12:39:07Z  INFO      [POLL] CloudTrail-IsLogging - condition MET at attempt 1 (0s elapsed).
+2026-04-13T12:39:07Z  INFO      [STEADY] CloudTrail trail is actively logging.
+2026-04-13T12:39:07Z  INFO      [STEADY] Waiting 15s for CW Logs delivery pipeline to initialise ...
+2026-04-13T12:39:22Z  INFO      [STEADY] steady_state() complete.
+
+[32m[2026-04-13 12:39:22 INFO] Action: Node 1.2: sts:AssumeRole on instance-simulation role to obtain stolen credentials (T1562.008 proxy); Node 2.2: sts:GetCallerIdentity with stolen credentials to verify identity (T1552.005); Node 3.2: iam:ListAttachedRolePolicies and s3:ListAllMyBuckets with stolen credentials for lateral movement enumeration (T1078.004)
+2026-04-13T12:39:22Z  INFO      ----------------------------------------------------------------------
+2026-04-13T12:39:22Z  INFO      [ATTACK] Node 1.2 - Obtaining instance role credentials ...
+2026-04-13T12:39:22Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:39:22Z  INFO      [STS] Assuming instance role: arn:aws:iam::396608802942:role/sce-inst-det35-1776076686
+2026-04-13T12:39:23Z  INFO      [STS] Assumed role. AccessKeyId=ASIAVYV52CB7FT7A34XC  Expiration=2026-04-13 10:54:23+00:00
+2026-04-13T12:39:23Z  INFO      [ATTACK] 1.2 - Credentials obtained. Timestamp=1776076763
+2026-04-13T12:39:28Z  INFO      [ATTACK] Node 2.2 - Verifying stolen credential identity ...
+2026-04-13T12:39:28Z  INFO      [ATTACK] 2.2 - Identity: arn:aws:sts::396608802942:assumed-role/sce-inst-det35-1776076686/SCEDetectiveAttackSim  Timestamp=1776076768
+2026-04-13T12:39:28Z  INFO      [ATTACK] Node 3.2 - Executing lateral movement enumeration ...
+2026-04-13T12:39:28Z  INFO      [ATTACK] 3.2a - iam:ListAttachedRolePolicies ...
+2026-04-13T12:39:29Z  INFO      [ATTACK] 3.2a - Policies enumerated: []
+2026-04-13T12:39:29Z  INFO      [ATTACK] 3.2b - s3:ListAllMyBuckets ...
+2026-04-13T12:39:30Z  INFO      [ATTACK] 3.2b - Buckets enumerated: 17 buckets
+2026-04-13T12:39:30Z  INFO      [ATTACK] Node 3.2 complete. Timestamp=1776076770
+2026-04-13T12:39:30Z  INFO      [ATTACK] All attack nodes executed.
+2026-04-13T12:39:30Z  INFO      ----------------------------------------------------------------------
+[32m[2026-04-13 12:39:30 INFO] Steady state hypothesis: All three detective signals confirmed within 30-minute SLA: GuardDuty credential-access finding, CloudTrail attack-chain events in CW Logs, and CloudTrail AssumeRole event for instance role
+[32m[2026-04-13 12:39:30 INFO] Probe: Verify GuardDuty CredentialAccess or Recon finding, at least two attack-chain event types in CloudTrail CW Logs delivery, and sts:AssumeRole event for instance role in CloudTrail lookup - all confirmed within 30-minute SLA after attack nodes 1.2, 2.2, and 3.2
+2026-04-13T12:39:30Z  INFO      ======================================================================
+2026-04-13T12:39:30Z  INFO      [VERIFY] Detective Probe - starting validation
+2026-04-13T12:39:30Z  INFO      [VERIFY] Detector     : 4eca2fb0a65336b4c500a5ccaa3684ae
+2026-04-13T12:39:30Z  INFO      [VERIFY] CWLogGroup   : /sce/cloudtrail/sce-det35-1776076686
+2026-04-13T12:39:30Z  INFO      [VERIFY] InstRoleArn  : arn:aws:iam::396608802942:role/sce-inst-det35-1776076686
+2026-04-13T12:39:30Z  INFO      [VERIFY] Attack epoch : 1776076763 (buffered: 1776076703)
+2026-04-13T12:39:30Z  INFO      [VERIFY] SLA window   : 1800s (30 min)
+2026-04-13T12:39:30Z  INFO      ======================================================================
+2026-04-13T12:39:30Z  INFO      
+[VERIFY] === Signal A: GuardDuty CredentialAccess/Recon finding ===
+2026-04-13T12:39:30Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 1  elapsed=0s / SLA=1800s
+2026-04-13T12:39:30Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:39:30Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:39:50Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 2  elapsed=20s / SLA=1800s
+2026-04-13T12:39:50Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:39:51Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:40:11Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 3  elapsed=41s / SLA=1800s
+2026-04-13T12:40:11Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:40:11Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:40:31Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 4  elapsed=61s / SLA=1800s
+2026-04-13T12:40:31Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:40:32Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:40:52Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 5  elapsed=82s / SLA=1800s
+2026-04-13T12:40:52Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:40:52Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:41:12Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 6  elapsed=102s / SLA=1800s
+2026-04-13T12:41:12Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:41:13Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:41:33Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 7  elapsed=123s / SLA=1800s
+2026-04-13T12:41:33Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:41:34Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:41:54Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 8  elapsed=144s / SLA=1800s
+2026-04-13T12:41:54Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:41:54Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:42:14Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 9  elapsed=164s / SLA=1800s
+2026-04-13T12:42:14Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:42:15Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:42:35Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 10  elapsed=185s / SLA=1800s
+2026-04-13T12:42:35Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:42:35Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:42:55Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 11  elapsed=205s / SLA=1800s
+2026-04-13T12:42:55Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:42:56Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:43:16Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 12  elapsed=226s / SLA=1800s
+2026-04-13T12:43:16Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:43:16Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:43:36Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 13  elapsed=246s / SLA=1800s
+2026-04-13T12:43:36Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:43:37Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:43:57Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 14  elapsed=267s / SLA=1800s
+2026-04-13T12:43:57Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:43:57Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:44:17Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 15  elapsed=287s / SLA=1800s
+2026-04-13T12:44:17Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:44:18Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:44:38Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 16  elapsed=308s / SLA=1800s
+2026-04-13T12:44:38Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:44:38Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:44:58Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 17  elapsed=328s / SLA=1800s
+2026-04-13T12:44:58Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:44:59Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:45:19Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 18  elapsed=349s / SLA=1800s
+2026-04-13T12:45:19Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:45:19Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:45:39Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 19  elapsed=369s / SLA=1800s
+2026-04-13T12:45:39Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:45:40Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:46:00Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 20  elapsed=390s / SLA=1800s
+2026-04-13T12:46:00Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:46:01Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:46:21Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 21  elapsed=410s / SLA=1800s
+2026-04-13T12:46:21Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:46:21Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:46:41Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 22  elapsed=431s / SLA=1800s
+2026-04-13T12:46:41Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:46:42Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:47:02Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 23  elapsed=452s / SLA=1800s
+2026-04-13T12:47:02Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:47:02Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:47:22Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 24  elapsed=472s / SLA=1800s
+2026-04-13T12:47:23Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:47:23Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:47:43Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 25  elapsed=493s / SLA=1800s
+2026-04-13T12:47:43Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:47:44Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:48:04Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 26  elapsed=514s / SLA=1800s
+2026-04-13T12:48:04Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:48:04Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:48:24Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 27  elapsed=534s / SLA=1800s
+2026-04-13T12:48:24Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:48:25Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:48:45Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 28  elapsed=555s / SLA=1800s
+2026-04-13T12:48:45Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:48:45Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:49:05Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 29  elapsed=575s / SLA=1800s
+2026-04-13T12:49:05Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:49:06Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:49:26Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 30  elapsed=596s / SLA=1800s
+2026-04-13T12:49:26Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:49:26Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:49:46Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 31  elapsed=616s / SLA=1800s
+2026-04-13T12:49:46Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:49:47Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:50:07Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 32  elapsed=637s / SLA=1800s
+2026-04-13T12:50:07Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:50:08Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:50:28Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 33  elapsed=658s / SLA=1800s
+2026-04-13T12:50:28Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:50:28Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:50:48Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 34  elapsed=678s / SLA=1800s
+2026-04-13T12:50:48Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:50:49Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:51:09Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 35  elapsed=699s / SLA=1800s
+2026-04-13T12:51:09Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:51:09Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:51:29Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 36  elapsed=719s / SLA=1800s
+2026-04-13T12:51:29Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:51:30Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:51:50Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 37  elapsed=740s / SLA=1800s
+2026-04-13T12:51:50Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:51:51Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:52:11Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 38  elapsed=761s / SLA=1800s
+2026-04-13T12:52:11Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:52:11Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:52:31Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 39  elapsed=781s / SLA=1800s
+2026-04-13T12:52:31Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:52:32Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:52:52Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 40  elapsed=802s / SLA=1800s
+2026-04-13T12:52:52Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:52:52Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:53:12Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 41  elapsed=822s / SLA=1800s
+2026-04-13T12:53:12Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:53:13Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:53:33Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 42  elapsed=843s / SLA=1800s
+2026-04-13T12:53:33Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:53:34Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:53:54Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 43  elapsed=864s / SLA=1800s
+2026-04-13T12:53:54Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:53:54Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:54:14Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 44  elapsed=884s / SLA=1800s
+2026-04-13T12:54:14Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:54:15Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:54:35Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 45  elapsed=905s / SLA=1800s
+2026-04-13T12:54:35Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:54:36Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:54:56Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 46  elapsed=926s / SLA=1800s
+2026-04-13T12:54:56Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:54:56Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:55:16Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 47  elapsed=946s / SLA=1800s
+2026-04-13T12:55:16Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:55:17Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:55:37Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 48  elapsed=967s / SLA=1800s
+2026-04-13T12:55:37Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:55:38Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:55:58Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 49  elapsed=988s / SLA=1800s
+2026-04-13T12:55:58Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:55:58Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:56:18Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 50  elapsed=1008s / SLA=1800s
+2026-04-13T12:56:18Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:56:19Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:56:39Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 51  elapsed=1029s / SLA=1800s
+2026-04-13T12:56:39Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:56:40Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:57:00Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 52  elapsed=1050s / SLA=1800s
+2026-04-13T12:57:00Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:57:00Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:57:20Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 53  elapsed=1070s / SLA=1800s
+2026-04-13T12:57:20Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:57:21Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:57:41Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 54  elapsed=1091s / SLA=1800s
+2026-04-13T12:57:41Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:57:41Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:58:01Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 55  elapsed=1111s / SLA=1800s
+2026-04-13T12:58:01Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:58:02Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:58:22Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 56  elapsed=1132s / SLA=1800s
+2026-04-13T12:58:22Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:58:23Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:58:43Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 57  elapsed=1152s / SLA=1800s
+2026-04-13T12:58:43Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:58:43Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:59:03Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 58  elapsed=1173s / SLA=1800s
+2026-04-13T12:59:03Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:59:04Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:59:24Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 59  elapsed=1194s / SLA=1800s
+2026-04-13T12:59:24Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:59:25Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T12:59:45Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 60  elapsed=1215s / SLA=1800s
+2026-04-13T12:59:45Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:59:45Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T13:00:05Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 61  elapsed=1235s / SLA=1800s
+2026-04-13T13:00:05Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T13:00:06Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T13:00:26Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 62  elapsed=1256s / SLA=1800s
+2026-04-13T13:00:26Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T13:00:26Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T13:00:46Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 63  elapsed=1276s / SLA=1800s
+2026-04-13T13:00:46Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T13:00:47Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T13:01:07Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 64  elapsed=1297s / SLA=1800s
+2026-04-13T13:01:07Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T13:01:07Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T13:01:27Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 65  elapsed=1317s / SLA=1800s
+2026-04-13T13:01:27Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T13:01:28Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T13:01:48Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 66  elapsed=1338s / SLA=1800s
+2026-04-13T13:01:48Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T13:01:49Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T13:02:09Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 67  elapsed=1359s / SLA=1800s
+2026-04-13T13:02:09Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T13:02:09Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T13:02:29Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 68  elapsed=1379s / SLA=1800s
+2026-04-13T13:02:29Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T13:02:30Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T13:02:50Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 69  elapsed=1400s / SLA=1800s
+2026-04-13T13:02:50Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T13:02:51Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T13:03:11Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 70  elapsed=1421s / SLA=1800s
+2026-04-13T13:03:11Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T13:03:11Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T13:03:31Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 71  elapsed=1441s / SLA=1800s
+2026-04-13T13:03:31Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T13:03:32Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T13:03:52Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 72  elapsed=1462s / SLA=1800s
+2026-04-13T13:03:52Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T13:03:53Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T13:04:13Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 73  elapsed=1483s / SLA=1800s
+2026-04-13T13:04:13Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T13:04:14Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T13:04:34Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 74  elapsed=1504s / SLA=1800s
+2026-04-13T13:04:34Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T13:04:35Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T13:04:55Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 75  elapsed=1525s / SLA=1800s
+2026-04-13T13:04:55Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T13:04:55Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T13:05:15Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 76  elapsed=1545s / SLA=1800s
+2026-04-13T13:05:15Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T13:05:16Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T13:05:36Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 77  elapsed=1566s / SLA=1800s
+2026-04-13T13:05:36Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T13:05:37Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T13:05:57Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 78  elapsed=1587s / SLA=1800s
+2026-04-13T13:05:57Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T13:05:57Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T13:06:17Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 79  elapsed=1607s / SLA=1800s
+2026-04-13T13:06:17Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T13:06:19Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T13:06:39Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 80  elapsed=1629s / SLA=1800s
+2026-04-13T13:06:39Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T13:06:40Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T13:07:00Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 81  elapsed=1650s / SLA=1800s
+2026-04-13T13:07:00Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T13:07:01Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T13:07:21Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 82  elapsed=1671s / SLA=1800s
+2026-04-13T13:07:21Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T13:07:22Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T13:07:42Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 83  elapsed=1692s / SLA=1800s
+2026-04-13T13:07:42Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T13:07:43Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T13:08:03Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 84  elapsed=1713s / SLA=1800s
+2026-04-13T13:08:03Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T13:08:03Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T13:08:23Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 85  elapsed=1733s / SLA=1800s
+2026-04-13T13:08:23Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T13:08:24Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T13:08:44Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 86  elapsed=1754s / SLA=1800s
+2026-04-13T13:08:44Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T13:08:45Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T13:09:05Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 87  elapsed=1775s / SLA=1800s
+2026-04-13T13:09:05Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T13:09:06Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T13:09:26Z  INFO      [POLL] GuardDuty-CredentialAccess-Recon - attempt 88  elapsed=1796s / SLA=1800s
+2026-04-13T13:09:26Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T13:09:27Z  INFO      [GD] Findings since buffered attack timestamp: 0
+2026-04-13T13:09:47Z  WARNING   [POLL] GuardDuty-CredentialAccess-Recon - SLA of 1800s exhausted without meeting condition.
+2026-04-13T13:09:47Z  INFO      
+[VERIFY] === Signal B: CloudTrail attack-chain events in CW Logs ===
+2026-04-13T13:09:47Z  INFO      [POLL] CloudTrail-CW-Logs-Attack-Chain - attempt 1  elapsed=0s / SLA=1800s
+2026-04-13T13:09:47Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T13:09:48Z  INFO      [CW] Log streams in group: 4
+2026-04-13T13:09:50Z  INFO      [CW] Attack-chain events found in CW Logs: {'ListAttachedRolePolicies', 'AssumeRole'}
+2026-04-13T13:09:50Z  INFO      [CW] PASS  2 attack-chain event types confirmed in CloudTrail CW Logs delivery.
+2026-04-13T13:09:50Z  INFO      [POLL] CloudTrail-CW-Logs-Attack-Chain - condition MET at attempt 1 (0s elapsed).
+2026-04-13T13:09:50Z  INFO      
+[VERIFY] === Signal C: CloudTrail AssumeRole event for instance role ===
+2026-04-13T13:09:50Z  INFO      [POLL] CloudTrail-AssumeRole-Event - attempt 1  elapsed=0s / SLA=1800s
+2026-04-13T13:09:50Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T13:09:52Z  INFO      [CT-LOOKUP] AssumeRole events after attack timestamp: 9
+2026-04-13T13:09:52Z  INFO      [CT-LOOKUP] PASS  AssumeRole event for instance role found. EventTime=2026-04-13 12:39:23+02:00
+2026-04-13T13:09:52Z  INFO      [POLL] CloudTrail-AssumeRole-Event - condition MET at attempt 1 (0s elapsed).
+2026-04-13T13:09:52Z  INFO      
+[VERIFY] -- Signal Summary ------------------------------------------
+2026-04-13T13:09:52Z  INFO      [VERIFY]   guardduty_finding                   -> FAIL
+2026-04-13T13:09:52Z  INFO      [VERIFY]   cloudtrail_cw_events                -> PASS
+2026-04-13T13:09:52Z  INFO      [VERIFY]   cloudtrail_assume_role              -> PASS
+2026-04-13T13:09:52Z  INFO      [VERIFY] One or more detective signals NOT confirmed within SLA - a detection gap exists in the monitoring chain.
+2026-04-13T13:09:52Z  INFO      ======================================================================
+[31m[2026-04-13 13:09:52 CRITICAL] Steady state probe 'Verify GuardDuty CredentialAccess or Recon finding, at least two attack-chain event types in CloudTrail CW Logs delivery, and sts:AssumeRole event for instance role in CloudTrail lookup - all confirmed within 30-minute SLA after attack nodes 1.2, 2.2, and 3.2' is not in the given tolerance so failing this experiment
+[32m[2026-04-13 13:09:52 INFO] Let's rollback...
+[32m[2026-04-13 13:09:52 INFO] Rollback: Stop CloudTrail trail; empty S3 trail bucket; delete CloudFormation stack (trail, CW log group, S3 bucket); delete boto3-created IAM roles; delete GuardDuty detector only if created by this experiment; tolerant of missing resources
+[32m[2026-04-13 13:09:52 INFO] Action: Stop CloudTrail trail; empty S3 trail bucket; delete CloudFormation stack (trail, CW log group, S3 bucket); delete boto3-created IAM roles; delete GuardDuty detector only if created by this experiment; tolerant of missing resources
+2026-04-13T13:09:52Z  INFO      [ROLLBACK] Stopping CloudTrail trail: sce-trail-t-1776076686
+2026-04-13T13:09:52Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T13:09:53Z  INFO      [ROLLBACK] Trail logging stopped.
+2026-04-13T13:09:53Z  INFO      [ROLLBACK] Emptying trail S3 bucket: sce-ct-1776076686
+2026-04-13T13:09:53Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T13:09:54Z  INFO      [ROLLBACK] Deleted 18 objects.
+2026-04-13T13:09:54Z  INFO      [ROLLBACK] Deleting stack: sce-det35-1776076686
+2026-04-13T13:09:54Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T13:09:55Z  INFO      [ROLLBACK] delete_stack request accepted.
+2026-04-13T13:09:55Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T13:09:55Z  INFO      [CFN] Waiting for 'sce-det35-1776076686' -> DELETE_COMPLETE ...
+2026-04-13T13:09:56Z  INFO      [CFN] Stack status: DELETE_IN_PROGRESS
+2026-04-13T13:10:12Z  INFO      [CFN] Stack 'sce-det35-1776076686' deleted.
+2026-04-13T13:10:12Z  INFO      [ROLLBACK] Stack deleted successfully.
+2026-04-13T13:10:12Z  INFO      [ROLLBACK] Deleting IAM resources ...
+2026-04-13T13:10:12Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T13:10:13Z  INFO      [IAM-RB] Deleted role: sce-ctcw-det35-1776076686
+2026-04-13T13:10:13Z  INFO      [IAM-RB] Deleted role: sce-inst-det35-1776076686
+2026-04-13T13:10:13Z  INFO      [ROLLBACK] GuardDuty detector is pre-existing - NOT deleted.
+2026-04-13T13:10:13Z  INFO      [ROLLBACK] Teardown complete.
+[32m[2026-04-13 13:10:13 INFO] Experiment ended with status: deviated
+[32m[2026-04-13 13:10:13 INFO] The steady-state has deviated, a weakness may have been discovered
+
+
+RETURN CODE: 1

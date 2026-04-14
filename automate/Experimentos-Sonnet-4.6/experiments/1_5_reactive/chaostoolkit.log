@@ -1,0 +1,119 @@
+[36m[2026-04-09 15:20:30 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-04-09 15:20:30 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-04-09 15:20:30 DEBUG] [__init__:106] Using settings file '/home/mmc/.chaostoolkit/settings.yaml'
+[36m[2026-04-09 15:20:30 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/mmc/.chaostoolkit/settings.yaml'.
+[36m[2026-04-09 15:20:30 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-09 15:20:30 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-09 15:20:30 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-09 15:20:30 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-04-09 15:20:30 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-04-09 15:20:30 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-09 15:20:30 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-09 15:20:30 DEBUG] [secret:104] Done loading secrets
+[32m[2026-04-09 15:20:30 INFO] [experiment:112] Experiment looks valid
+[36m[2026-04-09 15:20:30 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-09 15:20:30 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-04-09 15:20:30 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-09 15:20:30 DEBUG] [caching:35] Cached 3 activities
+[36m[2026-04-09 15:20:30 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-09 15:20:30 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-09 15:20:30 DEBUG] [secret:104] Done loading secrets
+[36m[2026-04-09 15:20:30 DEBUG] [configuration:161] Loading dynamic configuration...
+[32m[2026-04-09 15:20:30 INFO] [run:440] Running experiment: SCE 1.5 Reactive Probe — IMDS Downgrade Auto-Remediation Validation
+[36m[2026-04-09 15:20:30 DEBUG] [__init__:67] Initializing controls
+[32m[2026-04-09 15:20:30 INFO] [run:471] Steady-state strategy: after-method-only
+[32m[2026-04-09 15:20:30 INFO] [run:477] Rollbacks strategy: default
+[36m[2026-04-09 15:20:30 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[32m[2026-04-09 15:20:30 INFO] [run:778] Playing your experiment's method now...
+[36m[2026-04-09 15:20:30 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-09 15:20:30 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-09 15:20:30 INFO] [activity:232] Action: Provision experiment infrastructure via CloudFormation: EC2 instance with IMDSv2 enforced, attacker IAM role, remediation Lambda, EventBridge rule, and SSM remediation flag parameter
+[36m[2026-04-09 15:20:30 DEBUG] [python:33] Activity 'Provision experiment infrastructure via CloudFormation: EC2 instance with IMDSv2 enforced, attacker IAM role, remediation Lambda, EventBridge rule, and SSM remediation flag parameter' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_5_reactive.py'
+[36m[2026-04-09 15:23:48 DEBUG] [activity:317] Activity failed
+    Traceback (most recent call last):
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_5_reactive.py", line 594, in steady_state
+        _wait_stack(cf, stack_name, "CREATE_COMPLETE", timeout=900)
+        ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_5_reactive.py", line 450, in _wait_stack
+        raise RuntimeError(
+        ...<2 lines>...
+        )
+    RuntimeError: Stack sce-experiment-1775740830 reached terminal state ROLLBACK_IN_PROGRESS. Recent reasons: ['', '', '', '', '']
+    
+    During handling of the above exception, another exception occurred:
+    
+    Traceback (most recent call last):
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/activity.py", line 310, in run_activity
+        result = run_python_activity(activity, configuration, secrets)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 58, in run_python_activity
+        raise ActivityFailed(
+            traceback.format_exception_only(type(x), x)[0].strip()
+        ).with_traceback(sys.exc_info()[2])
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_5_reactive.py", line 594, in steady_state
+        _wait_stack(cf, stack_name, "CREATE_COMPLETE", timeout=900)
+        ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_5_reactive.py", line 450, in _wait_stack
+        raise RuntimeError(
+        ...<2 lines>...
+        )
+    chaoslib.exceptions.ActivityFailed: RuntimeError: Stack sce-experiment-1775740830 reached terminal state ROLLBACK_IN_PROGRESS. Recent reasons: ['', '', '', '', '']
+[31m[2026-04-09 15:23:48 ERROR] [activity:268]   => failed: RuntimeError: Stack sce-experiment-1775740830 reached terminal state ROLLBACK_IN_PROGRESS. Recent reasons: ['', '', '', '', '']
+[36m[2026-04-09 15:23:48 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-09 15:23:48 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-09 15:23:48 INFO] [activity:232] Action: Execute Attack Node 1.2: assume attacker role and call ModifyInstanceMetadataOptions to downgrade IMDS to IMDSv1 (HttpTokens=optional, HopLimit=2) on the target EC2 instance
+[36m[2026-04-09 15:23:48 DEBUG] [python:33] Activity 'Execute Attack Node 1.2: assume attacker role and call ModifyInstanceMetadataOptions to downgrade IMDS to IMDSv1 (HttpTokens=optional, HopLimit=2) on the target EC2 instance' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_5_reactive.py'
+[36m[2026-04-09 15:23:48 DEBUG] [activity:317] Activity failed
+    Traceback (most recent call last):
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_5_reactive.py", line 666, in attack
+        instance_id = _STATE["instance_id"]
+                      ~~~~~~^^^^^^^^^^^^^^^
+    KeyError: 'instance_id'
+    
+    During handling of the above exception, another exception occurred:
+    
+    Traceback (most recent call last):
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/activity.py", line 310, in run_activity
+        result = run_python_activity(activity, configuration, secrets)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 58, in run_python_activity
+        raise ActivityFailed(
+            traceback.format_exception_only(type(x), x)[0].strip()
+        ).with_traceback(sys.exc_info()[2])
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_5_reactive.py", line 666, in attack
+        instance_id = _STATE["instance_id"]
+                      ~~~~~~^^^^^^^^^^^^^^^
+    chaoslib.exceptions.ActivityFailed: KeyError: 'instance_id'
+[31m[2026-04-09 15:23:48 ERROR] [activity:268]   => failed: KeyError: 'instance_id'
+[36m[2026-04-09 15:23:48 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-09 15:23:48 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-09 15:23:48 DEBUG] [run:696] Running steady-state hypothesis after the method
+[32m[2026-04-09 15:23:48 INFO] [hypothesis:205] Steady state hypothesis: EC2 instance has IMDSv2 enforced (HttpTokens=required, HopLimit=1) and remediation infrastructure is deployed and operational
+[36m[2026-04-09 15:23:48 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[36m[2026-04-09 15:23:48 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-09 15:23:48 INFO] [activity:232] Probe: Verify reactive controls restore IMDS hardening and revoke attacker credentials after ModifyInstanceMetadataOptions downgrade
+[36m[2026-04-09 15:23:48 DEBUG] [python:33] Activity 'Verify reactive controls restore IMDS hardening and revoke attacker credentials after ModifyInstanceMetadataOptions downgrade' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_5_reactive.py'
+[36m[2026-04-09 15:23:48 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-04-09 15:23:48 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-09 15:23:48 DEBUG] [hypothesis:247] allowed tolerance is True
+[32m[2026-04-09 15:23:48 INFO] [hypothesis:260] Steady state hypothesis is met!
+[36m[2026-04-09 15:23:48 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[32m[2026-04-09 15:23:48 INFO] [run:1072] Let's rollback...
+[36m[2026-04-09 15:23:48 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-09 15:23:48 INFO] [rollback:36] Rollback: Delete CloudFormation stack and all experiment resources including EC2 instance, IAM roles, Lambda function, EventBridge rule, and SSM parameter
+[36m[2026-04-09 15:23:48 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-09 15:23:48 INFO] [activity:232] Action: Delete CloudFormation stack and all experiment resources including EC2 instance, IAM roles, Lambda function, EventBridge rule, and SSM parameter
+[36m[2026-04-09 15:23:48 DEBUG] [python:33] Activity 'Delete CloudFormation stack and all experiment resources including EC2 instance, IAM roles, Lambda function, EventBridge rule, and SSM parameter' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_5_reactive.py'
+[36m[2026-04-09 15:23:48 DEBUG] [activity:262]   => succeeded without any result value
+[36m[2026-04-09 15:23:48 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-09 15:23:48 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-09 15:23:48 INFO] [run:598] Experiment ended with status: completed
+[36m[2026-04-09 15:23:48 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[36m[2026-04-09 15:23:48 DEBUG] [__init__:106] Cleaning up controls
+[36m[2026-04-09 15:23:48 DEBUG] [caching:42] Clearing activities cache

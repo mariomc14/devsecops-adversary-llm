@@ -1,0 +1,51 @@
+{
+    "title": "SCE 2.3 Preventive Probe: IMDS Credential Exfiltration Prevention Validation",
+    "description": "Validates that preventive controls block all three stages of an IMDS credential exfiltration attack on a banking EC2 instance: (1) Step 1.2 T1580 enumerates the target instance IMDS configuration confirming IMDSv2 is enforced with hop limit 1, (2) Step 1.7 T1562.001 attempts to downgrade IMDS from v2 to v1 and increase hop limit but is blocked by an explicit IAM Deny on ec2:ModifyInstanceMetadataOptions simulating an organization SCP, (3) Step 2.2 T1552.005 attempts unauthenticated IMDSv1-style credential retrieval via curl from the instance but is blocked because IMDSv2 enforcement and hop limit 1 remain intact. The preventive probe passes only if both the IMDS downgrade and the credential exfiltration are blocked.",
+    "tags": ["sce", "preventive", "imds", "ec2", "credential-exfiltration", "node-2-3"],
+    "steady-state-hypothesis": {
+        "title": "Preventive controls block IMDS downgrade and credential exfiltration on banking EC2 instances",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "Verify IMDS modification denied and credential exfiltration blocked by IMDSv2 enforcement and hop limit 1",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.2_3_preventive",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "Provision VPC, EC2 instance with IMDSv2 enforced and hop limit 1, attacker IAM role with Deny on ModifyInstanceMetadataOptions, and SSM endpoints",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.2_3_preventive",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "Execute attack steps 1.2 (T1580 enumerate IMDS config), 1.7 (T1562.001 attempt IMDS downgrade), and 2.2 (T1552.005 attempt credential exfiltration via IMDS)",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.2_3_preventive",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "Delete CloudFormation stack and all experiment resources (VPC, EC2, IAM roles, VPC endpoints, security groups)",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.2_3_preventive",
+                "func": "rollback"
+            }
+        }
+    ]
+}

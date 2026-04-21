@@ -1,0 +1,51 @@
+{
+    "title": "SCE 3.4 Reactive: EC2 IMDS Protection Weakening Auto-Remediation",
+    "description": "Validates reactive controls against EC2 IMDS protection weakening. Tests attack chain: (1) Identify Target EC2 Instance (T1580), (2) Weaken IMDS via ModifyInstanceMetadataOptions (T1562.001), (3) Verify credential exfiltration prerequisite (T1552.005). Confirms Lambda auto-remediation restores IMDSv2 enforcement (HttpTokens=required, HopLimit=1) after attack modifies the configuration.",
+    "tags": ["sce-3.4", "reactive", "imds", "ec2", "t1580", "t1562-001", "t1552-005", "auto-remediation", "lambda", "eventbridge"],
+    "steady-state-hypothesis": {
+        "title": "Reactive Controls Auto-Remediate IMDS Protection Weakening",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "verify-reactive-controls",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.sce_3_4_reactive",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "deploy-ec2-with-reactive-controls",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.sce_3_4_reactive",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "execute-imds-weakening-attack",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.sce_3_4_reactive",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "delete-cloudformation-stack",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.sce_3_4_reactive",
+                "func": "rollback"
+            }
+        }
+    ]
+}

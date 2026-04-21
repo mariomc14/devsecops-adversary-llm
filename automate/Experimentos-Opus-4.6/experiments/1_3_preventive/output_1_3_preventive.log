@@ -1,0 +1,84 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-04-17 12:09:55 INFO] Validating the experiment's syntax
+[32m[2026-04-17 12:09:55 INFO] Experiment looks valid
+[32m[2026-04-17 12:09:55 INFO] Running experiment: SCE 1.3 Preventive Probe: Validate IAM Permission Boundary Blocks EC2 Reconnaissance
+[32m[2026-04-17 12:09:55 INFO] Steady-state strategy: after-method-only
+[32m[2026-04-17 12:09:55 INFO] Rollbacks strategy: default
+[32m[2026-04-17 12:09:55 INFO] Playing your experiment's method now...
+[32m[2026-04-17 12:09:55 INFO] Action: deploy-preventive-control-infrastructure
+[INFO] 2026-04-17 12:09:55 - ============================================================
+[INFO] 2026-04-17 12:09:55 - SCE Experiment 1.3 Preventive - Steady State Setup
+[INFO] 2026-04-17 12:09:55 - ============================================================
+[INFO] 2026-04-17 12:09:55 - Timestamp: 1776420595
+[INFO] 2026-04-17 12:09:55 - Stack name: sce-1-3-prev-1776420595
+[INFO] 2026-04-17 12:09:55 - Found credentials in shared credentials file: ~/.aws/credentials
+[INFO] 2026-04-17 12:09:56 - Account: 396608802942, Region: us-east-1
+[INFO] 2026-04-17 12:09:56 - Creating CloudFormation stack (attempt 1)...
+[INFO] 2026-04-17 12:09:57 - Stack creation initiated
+[INFO] 2026-04-17 12:09:57 - Waiting up to 1200s for stack creation...
+[INFO] 2026-04-17 12:09:57 - Stack status: CREATE_IN_PROGRESS (attempt 1, 0s elapsed)
+[INFO] 2026-04-17 12:10:12 - Stack status: CREATE_IN_PROGRESS (attempt 2, 15s elapsed)
+[INFO] 2026-04-17 12:10:28 - Stack status: CREATE_IN_PROGRESS (attempt 3, 31s elapsed)
+[INFO] 2026-04-17 12:10:43 - Stack status: CREATE_COMPLETE (attempt 4, 46s elapsed)
+[INFO] 2026-04-17 12:10:43 - Stack reached CREATE_COMPLETE after 4 attempts
+[INFO] 2026-04-17 12:10:43 - Role ARN: arn:aws:iam::396608802942:role/sce-role-sce-1-3-prev-1776420595
+[INFO] 2026-04-17 12:10:43 - Waiting 20s for IAM propagation...
+[INFO] 2026-04-17 12:11:03 - Verifying role assumability...
+[INFO] 2026-04-17 12:11:04 - Role verification completed after 1 attempts
+[INFO] 2026-04-17 12:11:04 - ============================================================
+[INFO] 2026-04-17 12:11:04 - Steady state setup COMPLETED
+[INFO] 2026-04-17 12:11:04 - ============================================================
+[32m[2026-04-17 12:11:04 INFO] Action: execute-ec2-reconnaissance-attack
+[INFO] 2026-04-17 12:11:04 - ============================================================
+[INFO] 2026-04-17 12:11:04 - SCE 1.3 - Attack Node 1.2: EC2 Reconnaissance
+[INFO] 2026-04-17 12:11:04 - TTP: T1580 - Cloud Infrastructure Discovery
+[INFO] 2026-04-17 12:11:04 - ============================================================
+[INFO] 2026-04-17 12:11:04 - Assuming role: arn:aws:iam::396608802942:role/sce-role-sce-1-3-prev-1776420595
+[INFO] 2026-04-17 12:11:04 - Role assumed successfully
+[INFO] 2026-04-17 12:11:04 - Executing: aws ec2 describe-instances
+[INFO] 2026-04-17 12:11:04 - Expected: AccessDenied (permission boundary should block)
+[INFO] 2026-04-17 12:11:05 - ATTACK BLOCKED - Preventive control WORKED
+[INFO] 2026-04-17 12:11:05 - Error: UnauthorizedOperation
+[INFO] 2026-04-17 12:11:05 - Duration: 0.55s
+[INFO] 2026-04-17 12:11:05 - Attempting additional reconnaissance: ec2:DescribeSecurityGroups
+[INFO] 2026-04-17 12:11:05 - DescribeSecurityGroups also BLOCKED: UnauthorizedOperation
+[INFO] 2026-04-17 12:11:05 - ============================================================
+[INFO] 2026-04-17 12:11:05 - Attack execution completed
+[INFO] 2026-04-17 12:11:05 - ============================================================
+[32m[2026-04-17 12:11:05 INFO] Steady state hypothesis: Least-privilege IAM permission boundary blocks EC2 reconnaissance
+[32m[2026-04-17 12:11:05 INFO] Probe: verify-preventive-control-blocks-reconnaissance
+[INFO] 2026-04-17 12:11:05 - ============================================================
+[INFO] 2026-04-17 12:11:05 - SCE 1.3 - Hypothesis Verification
+[INFO] 2026-04-17 12:11:05 - ============================================================
+[INFO] 2026-04-17 12:11:05 - Attack Result: BLOCKED
+[INFO] 2026-04-17 12:11:05 - Error Code: UnauthorizedOperation
+[INFO] 2026-04-17 12:11:05 - Instances: None
+[INFO] 2026-04-17 12:11:05 - ============================================================
+[INFO] 2026-04-17 12:11:05 - HYPOTHESIS VERIFIED: Control effective
+[INFO] 2026-04-17 12:11:05 - ============================================================
+[INFO] 2026-04-17 12:11:05 - Evidence:
+[INFO] 2026-04-17 12:11:05 -   - Attack blocked with: UnauthorizedOperation
+[INFO] 2026-04-17 12:11:05 -   - No instances disclosed
+[INFO] 2026-04-17 12:11:05 -   - Permission boundary working
+[32m[2026-04-17 12:11:05 INFO] Steady state hypothesis is met!
+[32m[2026-04-17 12:11:05 INFO] Let's rollback...
+[32m[2026-04-17 12:11:05 INFO] Rollback: cleanup-experiment-resources
+[32m[2026-04-17 12:11:05 INFO] Action: cleanup-experiment-resources
+[INFO] 2026-04-17 12:11:05 - ============================================================
+[INFO] 2026-04-17 12:11:05 - SCE 1.3 - Rollback / Cleanup
+[INFO] 2026-04-17 12:11:05 - ============================================================
+[INFO] 2026-04-17 12:11:05 - Deleting stack: sce-1-3-prev-1776420595
+[INFO] 2026-04-17 12:11:06 - Deletion initiated
+[INFO] 2026-04-17 12:11:06 - Waiting for deletion...
+[INFO] 2026-04-17 12:11:06 - Stack status: DELETE_IN_PROGRESS (attempt 1, 0s elapsed)
+[INFO] 2026-04-17 12:11:22 - Stack deleted (no longer exists)
+[INFO] 2026-04-17 12:11:22 - ============================================================
+[INFO] 2026-04-17 12:11:22 - Cleanup completed
+[INFO] 2026-04-17 12:11:22 - ============================================================
+[32m[2026-04-17 12:11:22 INFO] Experiment ended with status: completed
+
+
+RETURN CODE: 0

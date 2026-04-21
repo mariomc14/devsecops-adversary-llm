@@ -1,0 +1,51 @@
+{
+    "title": "SCE 1.8 Detective Probe: Validate Detection of IMDS Enumeration and Downgrade Attacks",
+    "description": "Security Chaos Engineering experiment that validates detective controls detect attack steps 1.2 (ec2:DescribeInstances for IMDS enumeration - T1580) and 1.7 (ec2:ModifyInstanceMetadataOptions to downgrade IMDSv2 to IMDSv1 and increase hop limit - T1562.001). The experiment provisions a banking-tier EC2 instance, CloudTrail trail, EventBridge rule with SNS-to-SQS notification pipeline, and AWS Config managed rule ec2-imdsv2-check. Both attack steps are executed successfully via an attacker IAM role, then the experiment verifies within a 30-minute SLA that: (1) CloudTrail recorded both API calls, (2) EventBridge fired a notification for ModifyInstanceMetadataOptions that arrived in SQS, and (3) AWS Config evaluates the modified instance as NON_COMPLIANT.",
+    "tags": ["sce-1-8", "detective", "imds", "ec2", "cloudtrail", "eventbridge", "config", "T1580", "T1562.001", "credential-theft", "defense-evasion"],
+    "steady-state-hypothesis": {
+        "title": "Detective controls detect IMDS enumeration and downgrade within 30-minute SLA",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "Verify CloudTrail records both API calls, EventBridge delivers ModifyInstanceMetadataOptions notification to SQS, and AWS Config rule flags instance as NON_COMPLIANT",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.1_8_detective",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "Provision EC2 instance, CloudTrail trail, EventBridge rule with SNS-SQS pipeline, AWS Config recorder and ec2-imdsv2-check rule via CloudFormation",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_8_detective",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "Execute attack steps 1.2 (DescribeInstances IMDS enumeration) and 1.7 (ModifyInstanceMetadataOptions IMDS downgrade) using attacker role",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_8_detective",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "Revert IMDS settings, empty S3 buckets, stop Config recorder, and delete CloudFormation stack with all experiment resources",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_8_detective",
+                "func": "rollback"
+            }
+        }
+    ]
+}

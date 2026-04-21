@@ -1,0 +1,113 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-04-17 11:25:12 INFO] Validating the experiment's syntax
+[32m[2026-04-17 11:25:12 INFO] Experiment looks valid
+[32m[2026-04-17 11:25:12 INFO] Running experiment: SCE 3.4 Detective: EC2 IMDS Protection Weakening Detection
+[32m[2026-04-17 11:25:12 INFO] Steady-state strategy: after-method-only
+[32m[2026-04-17 11:25:12 INFO] Rollbacks strategy: default
+[32m[2026-04-17 11:25:12 INFO] Playing your experiment's method now...
+[32m[2026-04-17 11:25:12 INFO] Action: deploy-ec2-with-detective-controls
+2026-04-17 11:25:12,412 [INFO] steady_state: ============================================================
+2026-04-17 11:25:12,413 [INFO] steady_state: STEADY STATE: SCE 3.4 Detective Probe
+2026-04-17 11:25:12,413 [INFO] steady_state: ============================================================
+2026-04-17 11:25:12,419 [INFO] steady_state: Stack: sce-imds-det-1776417912 | Region: us-east-1 | Tag: sce-3-4-detective-1776417912
+2026-04-17 11:25:12,425 [INFO] load: Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-17 11:25:13,459 [INFO] steady_state: Stack creation started
+2026-04-17 11:25:13,620 [INFO] _wait: Waiting: stack creation [0s/1200s] remaining: 1200s
+2026-04-17 11:25:38,184 [INFO] _wait: Waiting: stack creation [25s/1200s] remaining: 1175s
+2026-04-17 11:26:07,510 [INFO] _wait: Waiting: stack creation [54s/1200s] remaining: 1146s
+2026-04-17 11:26:42,671 [INFO] _wait: Waiting: stack creation [89s/1200s] remaining: 1111s
+2026-04-17 11:27:24,703 [INFO] _wait: Waiting: stack creation [131s/1200s] remaining: 1069s
+2026-04-17 11:28:15,051 [INFO] _wait: ✓ stack creation (181.6s)
+2026-04-17 11:28:15,203 [INFO] steady_state: Instance: i-05c7cbacd558c078e
+2026-04-17 11:28:15,204 [INFO] steady_state: Config Rule: sce-3-4-detective-1776417912-imdsv2-check
+2026-04-17 11:28:15,204 [INFO] steady_state: CloudTrail: sce-3-4-detective-1776417912-trail
+2026-04-17 11:28:15,204 [INFO] steady_state: EventBridge Rule: sce-3-4-detective-1776417912-imds-rule
+2026-04-17 11:28:16,332 [INFO] _wait: ✓ instance running (1.0s)
+2026-04-17 11:28:17,284 [INFO] _wait: ✓ Config recorder active (0.9s)
+2026-04-17 11:28:17,965 [INFO] _wait: ✓ CloudTrail logging (0.7s)
+2026-04-17 11:28:17,965 [INFO] steady_state: Waiting for services to stabilize (60s)...
+2026-04-17 11:29:17,965 [INFO] steady_state: ============================================================
+2026-04-17 11:29:17,965 [INFO] steady_state: STEADY STATE COMPLETE
+2026-04-17 11:29:17,965 [INFO] steady_state: ============================================================
+[32m[2026-04-17 11:29:17 INFO] Action: execute-imds-weakening-attack
+2026-04-17 11:29:17,970 [INFO] attack: ============================================================
+2026-04-17 11:29:17,970 [INFO] attack: ATTACK: SCE 3.4 Detective Probe
+2026-04-17 11:29:17,970 [INFO] attack: ============================================================
+2026-04-17 11:29:17,983 [INFO] attack: Attack start time: 2026-04-17T09:29:17Z
+2026-04-17 11:29:17,983 [INFO] attack: ----------------------------------------
+2026-04-17 11:29:17,983 [INFO] attack: Step 1.3: Discovery (T1580)
+2026-04-17 11:29:17,983 [INFO] attack: ----------------------------------------
+2026-04-17 11:29:18,586 [INFO] attack: Discovery: HttpTokens=required, HopLimit=1
+2026-04-17 11:29:18,586 [INFO] attack: ----------------------------------------
+2026-04-17 11:29:18,586 [INFO] attack: Step 2.3: Modify IMDS (T1562.001) - TO BE DETECTED
+2026-04-17 11:29:18,586 [INFO] attack: ----------------------------------------
+2026-04-17 11:29:19,149 [INFO] attack: IMDS MODIFIED - Waiting for detection...
+2026-04-17 11:29:19,150 [INFO] attack: ----------------------------------------
+2026-04-17 11:29:19,150 [INFO] attack: Step 3.3: Verify IMDS Change (T1552.005)
+2026-04-17 11:29:19,150 [INFO] attack: ----------------------------------------
+2026-04-17 11:29:19,391 [INFO] attack: IMDS state: HttpTokens=optional, HopLimit=2
+2026-04-17 11:29:19,391 [INFO] attack: IMDS weakened: True
+2026-04-17 11:29:19,391 [INFO] attack: ============================================================
+2026-04-17 11:29:19,391 [INFO] attack: ATTACK COMPLETE - Now verifying detection...
+2026-04-17 11:29:19,391 [INFO] attack: ============================================================
+[32m[2026-04-17 11:29:19 INFO] Steady state hypothesis: Detective Controls Detect IMDS Protection Weakening
+[32m[2026-04-17 11:29:19 INFO] Probe: verify-detective-controls
+2026-04-17 11:29:19,393 [INFO] hypothesis_verification: ============================================================
+2026-04-17 11:29:19,393 [INFO] hypothesis_verification: VERIFICATION: SCE 3.4 Detective Probe
+2026-04-17 11:29:19,393 [INFO] hypothesis_verification: ============================================================
+2026-04-17 11:29:19,393 [INFO] hypothesis_verification: ----------------------------------------
+2026-04-17 11:29:19,393 [INFO] hypothesis_verification: Check 1: CloudTrail Detection
+2026-04-17 11:29:19,393 [INFO] hypothesis_verification: ----------------------------------------
+2026-04-17 11:29:19,990 [INFO] _wait: Waiting: CloudTrail event detection [1s/1800s] remaining: 1799s
+2026-04-17 11:29:56,612 [INFO] check_cloudtrail: CloudTrail event found: 39615449038343465909234283552871559403819273964644728834
+2026-04-17 11:29:56,613 [INFO] _wait: ✓ CloudTrail event detection (37.2s)
+2026-04-17 11:29:56,613 [INFO] hypothesis_verification: ✓ CloudTrail: ModifyInstanceMetadataOptions DETECTED
+2026-04-17 11:29:56,613 [INFO] hypothesis_verification: ----------------------------------------
+2026-04-17 11:29:56,613 [INFO] hypothesis_verification: Check 2: AWS Config Rule Detection
+2026-04-17 11:29:56,613 [INFO] hypothesis_verification: ----------------------------------------
+2026-04-17 11:29:57,463 [INFO] check_config_compliance: Found 1 non-compliant resources
+2026-04-17 11:29:57,463 [INFO] _wait: ✓ Config rule non-compliance detection (0.8s)
+2026-04-17 11:29:57,463 [INFO] hypothesis_verification: ✓ AWS Config: Instance marked NON_COMPLIANT
+2026-04-17 11:29:57,463 [INFO] hypothesis_verification: ----------------------------------------
+2026-04-17 11:29:57,463 [INFO] hypothesis_verification: Check 3: EventBridge Rule Trigger
+2026-04-17 11:29:57,463 [INFO] hypothesis_verification: ----------------------------------------
+2026-04-17 11:29:58,462 [INFO] _wait: Waiting: EventBridge rule trigger detection [1s/1800s] remaining: 1799s
+2026-04-17 11:31:10,980 [INFO] check_eventbridge: EventBridge rule triggered: 1.0 times
+2026-04-17 11:31:10,980 [INFO] _wait: ✓ EventBridge rule trigger detection (73.5s)
+2026-04-17 11:31:10,981 [INFO] hypothesis_verification: ✓ EventBridge: Rule TRIGGERED
+2026-04-17 11:31:10,981 [INFO] hypothesis_verification: ============================================================
+2026-04-17 11:31:10,981 [INFO] hypothesis_verification: DETECTION SUMMARY
+2026-04-17 11:31:10,981 [INFO] hypothesis_verification: ============================================================
+2026-04-17 11:31:10,981 [INFO] hypothesis_verification:   ✓ PASS: cloudtrail_logged
+2026-04-17 11:31:10,981 [INFO] hypothesis_verification:   ✓ PASS: config_non_compliant
+2026-04-17 11:31:10,981 [INFO] hypothesis_verification:   ✓ PASS: eventbridge_triggered
+2026-04-17 11:31:10,981 [INFO] hypothesis_verification: ============================================================
+2026-04-17 11:31:10,981 [INFO] hypothesis_verification: HYPOTHESIS VERIFIED: Attack DETECTED by CloudTrail
+2026-04-17 11:31:10,981 [INFO] hypothesis_verification:   + AWS Config also detected non-compliance
+2026-04-17 11:31:10,981 [INFO] hypothesis_verification:   + EventBridge rule also triggered
+2026-04-17 11:31:10,981 [INFO] hypothesis_verification: ============================================================
+[32m[2026-04-17 11:31:10 INFO] Steady state hypothesis is met!
+[32m[2026-04-17 11:31:10 INFO] Let's rollback...
+[32m[2026-04-17 11:31:10 INFO] Rollback: delete-cloudformation-stack
+[32m[2026-04-17 11:31:10 INFO] Action: delete-cloudformation-stack
+2026-04-17 11:31:10,984 [INFO] rollback: ============================================================
+2026-04-17 11:31:10,985 [INFO] rollback: ROLLBACK: SCE 3.4 Detective Probe
+2026-04-17 11:31:10,985 [INFO] rollback: ============================================================
+2026-04-17 11:31:12,210 [INFO] rollback: Stopped Config recorder: sce-3-4-detective-1776417912-recorder
+2026-04-17 11:31:12,935 [INFO] rollback: Deleting stack: sce-imds-det-1776417912
+2026-04-17 11:31:13,079 [INFO] _wait: Waiting: stack deletion [0s/900s] remaining: 900s
+2026-04-17 11:31:37,615 [INFO] _wait: Waiting: stack deletion [25s/900s] remaining: 875s
+2026-04-17 11:32:06,953 [INFO] _wait: Waiting: stack deletion [54s/900s] remaining: 846s
+2026-04-17 11:32:42,064 [INFO] _wait: Waiting: stack deletion [89s/900s] remaining: 811s
+2026-04-17 11:33:24,117 [WARNING] deleted: Stack deletion failed - may need manual cleanup
+2026-04-17 11:33:24,117 [INFO] _wait: ✓ stack deletion (131.2s)
+2026-04-17 11:33:24,117 [INFO] rollback: ============================================================
+2026-04-17 11:33:24,117 [INFO] rollback: ROLLBACK COMPLETE
+2026-04-17 11:33:24,117 [INFO] rollback: ============================================================
+[32m[2026-04-17 11:33:24 INFO] Experiment ended with status: completed
+
+
+RETURN CODE: 0

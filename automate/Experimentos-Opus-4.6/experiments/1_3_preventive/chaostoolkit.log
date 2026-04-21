@@ -1,0 +1,205 @@
+[36m[2026-04-13 16:40:21 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-04-13 16:40:21 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-04-13 16:40:21 DEBUG] [__init__:106] Using settings file '/home/mmc/.chaostoolkit/settings.yaml'
+[36m[2026-04-13 16:40:21 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/mmc/.chaostoolkit/settings.yaml'.
+[36m[2026-04-13 16:40:21 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-13 16:40:21 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-13 16:40:21 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-13 16:40:21 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-04-13 16:40:21 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-04-13 16:40:21 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-13 16:40:21 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-13 16:40:21 DEBUG] [secret:104] Done loading secrets
+[36m[2026-04-13 16:40:21 DEBUG] [caching:42] Clearing activities cache
+[31m[2026-04-13 16:40:21 ERROR] [run:188] could not find Python module 'chaosaws.ec2.sce_1_3_preventive' in activity 'verify-preventive-control-blocks-reconnaissance'
+[36m[2026-04-13 16:40:21 DEBUG] [run:189] could not find Python module 'chaosaws.ec2.sce_1_3_preventive' in activity 'verify-preventive-control-blocks-reconnaissance'
+[36m[2026-04-13 17:05:13 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-04-13 17:05:13 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-04-13 17:05:13 DEBUG] [__init__:106] Using settings file '/home/mmc/.chaostoolkit/settings.yaml'
+[36m[2026-04-13 17:05:13 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/mmc/.chaostoolkit/settings.yaml'.
+[36m[2026-04-13 17:05:13 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-13 17:05:13 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-13 17:05:13 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-13 17:05:13 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-04-13 17:05:13 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-04-13 17:05:13 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-13 17:05:13 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-13 17:05:13 DEBUG] [secret:104] Done loading secrets
+[32m[2026-04-13 17:05:14 INFO] [experiment:112] Experiment looks valid
+[36m[2026-04-13 17:05:14 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-13 17:05:14 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-04-13 17:05:14 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-13 17:05:14 DEBUG] [caching:35] Cached 3 activities
+[36m[2026-04-13 17:05:14 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-13 17:05:14 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-13 17:05:14 DEBUG] [secret:104] Done loading secrets
+[36m[2026-04-13 17:05:14 DEBUG] [configuration:161] Loading dynamic configuration...
+[32m[2026-04-13 17:05:14 INFO] [run:440] Running experiment: SCE Experiment 1.3: Preventive Probe - EC2 Reconnaissance Prevention
+[36m[2026-04-13 17:05:14 DEBUG] [__init__:67] Initializing controls
+[32m[2026-04-13 17:05:14 INFO] [run:471] Steady-state strategy: after-method-only
+[32m[2026-04-13 17:05:14 INFO] [run:477] Rollbacks strategy: default
+[36m[2026-04-13 17:05:14 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[32m[2026-04-13 17:05:14 INFO] [run:778] Playing your experiment's method now...
+[36m[2026-04-13 17:05:14 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-13 17:05:14 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-13 17:05:14 INFO] [activity:232] Action: deploy-preventive-control-infrastructure
+[36m[2026-04-13 17:05:14 DEBUG] [python:33] Activity 'deploy-preventive-control-infrastructure' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py'
+[36m[2026-04-13 17:15:15 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-04-13 17:15:15 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-13 17:15:15 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-13 17:15:15 INFO] [activity:232] Action: execute-ec2-reconnaissance-attack
+[36m[2026-04-13 17:15:15 DEBUG] [python:33] Activity 'execute-ec2-reconnaissance-attack' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py'
+[36m[2026-04-13 17:15:15 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-04-13 17:15:15 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-13 17:15:15 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-13 17:15:15 DEBUG] [run:696] Running steady-state hypothesis after the method
+[32m[2026-04-13 17:15:15 INFO] [hypothesis:205] Steady state hypothesis: Least-privilege IAM permission boundary blocks EC2 reconnaissance
+[36m[2026-04-13 17:15:15 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[36m[2026-04-13 17:15:15 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-13 17:15:15 INFO] [activity:232] Probe: verify-preventive-control-blocks-reconnaissance
+[36m[2026-04-13 17:15:16 DEBUG] [python:33] Activity 'verify-preventive-control-blocks-reconnaissance' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py'
+[36m[2026-04-13 17:15:16 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-04-13 17:15:16 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-13 17:15:16 DEBUG] [hypothesis:247] allowed tolerance is True
+[36m[2026-04-13 17:15:16 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[31m[2026-04-13 17:15:16 CRITICAL] [run:716] Steady state probe 'verify-preventive-control-blocks-reconnaissance' is not in the given tolerance so failing this experiment
+[32m[2026-04-13 17:15:16 INFO] [run:1072] Let's rollback...
+[36m[2026-04-13 17:15:16 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-13 17:15:16 INFO] [rollback:36] Rollback: cleanup-experiment-resources
+[36m[2026-04-13 17:15:16 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-13 17:15:16 INFO] [activity:232] Action: cleanup-experiment-resources
+[36m[2026-04-13 17:15:16 DEBUG] [python:33] Activity 'cleanup-experiment-resources' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py'
+[36m[2026-04-13 17:15:16 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-04-13 17:15:16 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-13 17:15:16 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-13 17:15:16 INFO] [run:598] Experiment ended with status: deviated
+[32m[2026-04-13 17:15:16 INFO] [run:600] The steady-state has deviated, a weakness may have been discovered
+[36m[2026-04-13 17:15:16 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[36m[2026-04-13 17:15:16 DEBUG] [__init__:106] Cleaning up controls
+[36m[2026-04-13 17:15:16 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-13 17:20:48 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-04-13 17:20:48 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-04-13 17:20:48 DEBUG] [__init__:106] Using settings file '/home/mmc/.chaostoolkit/settings.yaml'
+[36m[2026-04-13 17:20:49 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/mmc/.chaostoolkit/settings.yaml'.
+[36m[2026-04-13 17:20:49 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-13 17:20:49 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-13 17:20:49 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-13 17:20:49 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-04-13 17:20:49 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-04-13 17:20:49 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-13 17:20:49 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-13 17:20:49 DEBUG] [secret:104] Done loading secrets
+[32m[2026-04-13 17:20:49 INFO] [experiment:112] Experiment looks valid
+[36m[2026-04-13 17:20:49 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-13 17:20:49 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-04-13 17:20:49 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-13 17:20:49 DEBUG] [caching:35] Cached 3 activities
+[36m[2026-04-13 17:20:49 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-13 17:20:49 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-13 17:20:49 DEBUG] [secret:104] Done loading secrets
+[36m[2026-04-13 17:20:49 DEBUG] [configuration:161] Loading dynamic configuration...
+[32m[2026-04-13 17:20:49 INFO] [run:440] Running experiment: SCE Experiment 1.3: Preventive Probe - EC2 Reconnaissance Prevention
+[36m[2026-04-13 17:20:49 DEBUG] [__init__:67] Initializing controls
+[32m[2026-04-13 17:20:49 INFO] [run:471] Steady-state strategy: after-method-only
+[32m[2026-04-13 17:20:49 INFO] [run:477] Rollbacks strategy: default
+[36m[2026-04-13 17:20:49 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[32m[2026-04-13 17:20:49 INFO] [run:778] Playing your experiment's method now...
+[36m[2026-04-13 17:20:49 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-13 17:20:49 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-13 17:20:49 INFO] [activity:232] Action: deploy-preventive-control-infrastructure
+[36m[2026-04-13 17:20:49 DEBUG] [python:33] Activity 'deploy-preventive-control-infrastructure' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py'
+[36m[2026-04-13 17:22:08 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-04-13 17:22:08 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-13 17:22:08 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-13 17:22:08 INFO] [activity:232] Action: execute-ec2-reconnaissance-attack
+[36m[2026-04-13 17:22:08 DEBUG] [python:33] Activity 'execute-ec2-reconnaissance-attack' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py'
+[36m[2026-04-13 17:22:09 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-04-13 17:22:09 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-13 17:22:09 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-13 17:22:09 DEBUG] [run:696] Running steady-state hypothesis after the method
+[32m[2026-04-13 17:22:09 INFO] [hypothesis:205] Steady state hypothesis: Least-privilege IAM permission boundary blocks EC2 reconnaissance
+[36m[2026-04-13 17:22:09 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[36m[2026-04-13 17:22:09 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-13 17:22:09 INFO] [activity:232] Probe: verify-preventive-control-blocks-reconnaissance
+[36m[2026-04-13 17:22:09 DEBUG] [python:33] Activity 'verify-preventive-control-blocks-reconnaissance' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py'
+[36m[2026-04-13 17:22:09 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-04-13 17:22:09 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-13 17:22:09 DEBUG] [hypothesis:247] allowed tolerance is True
+[32m[2026-04-13 17:22:09 INFO] [hypothesis:260] Steady state hypothesis is met!
+[36m[2026-04-13 17:22:09 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[32m[2026-04-13 17:22:09 INFO] [run:1072] Let's rollback...
+[36m[2026-04-13 17:22:09 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-13 17:22:09 INFO] [rollback:36] Rollback: cleanup-experiment-resources
+[36m[2026-04-13 17:22:09 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-13 17:22:09 INFO] [activity:232] Action: cleanup-experiment-resources
+[36m[2026-04-13 17:22:09 DEBUG] [python:33] Activity 'cleanup-experiment-resources' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py'
+[36m[2026-04-13 17:22:33 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-04-13 17:22:33 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-13 17:22:33 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-13 17:22:33 INFO] [run:598] Experiment ended with status: completed
+[36m[2026-04-13 17:22:33 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[36m[2026-04-13 17:22:33 DEBUG] [__init__:106] Cleaning up controls
+[36m[2026-04-13 17:22:33 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-17 12:09:55 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-04-17 12:09:55 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-04-17 12:09:55 DEBUG] [__init__:106] Using settings file '/home/mmc/.chaostoolkit/settings.yaml'
+[36m[2026-04-17 12:09:55 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/mmc/.chaostoolkit/settings.yaml'.
+[36m[2026-04-17 12:09:55 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-17 12:09:55 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-17 12:09:55 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-17 12:09:55 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-04-17 12:09:55 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-04-17 12:09:55 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-17 12:09:55 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-17 12:09:55 DEBUG] [secret:104] Done loading secrets
+[32m[2026-04-17 12:09:55 INFO] [experiment:112] Experiment looks valid
+[36m[2026-04-17 12:09:55 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-17 12:09:55 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-04-17 12:09:55 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-17 12:09:55 DEBUG] [caching:35] Cached 3 activities
+[36m[2026-04-17 12:09:55 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-17 12:09:55 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-17 12:09:55 DEBUG] [secret:104] Done loading secrets
+[36m[2026-04-17 12:09:55 DEBUG] [configuration:161] Loading dynamic configuration...
+[32m[2026-04-17 12:09:55 INFO] [run:440] Running experiment: SCE 1.3 Preventive Probe: Validate IAM Permission Boundary Blocks EC2 Reconnaissance
+[36m[2026-04-17 12:09:55 DEBUG] [__init__:67] Initializing controls
+[32m[2026-04-17 12:09:55 INFO] [run:471] Steady-state strategy: after-method-only
+[32m[2026-04-17 12:09:55 INFO] [run:477] Rollbacks strategy: default
+[36m[2026-04-17 12:09:55 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[32m[2026-04-17 12:09:55 INFO] [run:778] Playing your experiment's method now...
+[36m[2026-04-17 12:09:55 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-17 12:09:55 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-17 12:09:55 INFO] [activity:232] Action: deploy-preventive-control-infrastructure
+[36m[2026-04-17 12:09:55 DEBUG] [python:33] Activity 'deploy-preventive-control-infrastructure' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py'
+[36m[2026-04-17 12:11:04 DEBUG] [activity:262]   => succeeded without any result value
+[36m[2026-04-17 12:11:04 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-17 12:11:04 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-17 12:11:04 INFO] [activity:232] Action: execute-ec2-reconnaissance-attack
+[36m[2026-04-17 12:11:04 DEBUG] [python:33] Activity 'execute-ec2-reconnaissance-attack' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py'
+[36m[2026-04-17 12:11:05 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-04-17 12:11:05 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-17 12:11:05 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-17 12:11:05 DEBUG] [run:696] Running steady-state hypothesis after the method
+[32m[2026-04-17 12:11:05 INFO] [hypothesis:205] Steady state hypothesis: Least-privilege IAM permission boundary blocks EC2 reconnaissance
+[36m[2026-04-17 12:11:05 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[36m[2026-04-17 12:11:05 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-17 12:11:05 INFO] [activity:232] Probe: verify-preventive-control-blocks-reconnaissance
+[36m[2026-04-17 12:11:05 DEBUG] [python:33] Activity 'verify-preventive-control-blocks-reconnaissance' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py'
+[36m[2026-04-17 12:11:05 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-04-17 12:11:05 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-17 12:11:05 DEBUG] [hypothesis:247] allowed tolerance is True
+[32m[2026-04-17 12:11:05 INFO] [hypothesis:260] Steady state hypothesis is met!
+[36m[2026-04-17 12:11:05 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[32m[2026-04-17 12:11:05 INFO] [run:1072] Let's rollback...
+[36m[2026-04-17 12:11:05 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-17 12:11:05 INFO] [rollback:36] Rollback: cleanup-experiment-resources
+[36m[2026-04-17 12:11:05 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-17 12:11:05 INFO] [activity:232] Action: cleanup-experiment-resources
+[36m[2026-04-17 12:11:05 DEBUG] [python:33] Activity 'cleanup-experiment-resources' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_preventive.py'
+[36m[2026-04-17 12:11:22 DEBUG] [activity:262]   => succeeded without any result value
+[36m[2026-04-17 12:11:22 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-17 12:11:22 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-17 12:11:22 INFO] [run:598] Experiment ended with status: completed
+[36m[2026-04-17 12:11:22 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[36m[2026-04-17 12:11:22 DEBUG] [__init__:106] Cleaning up controls
+[36m[2026-04-17 12:11:22 DEBUG] [caching:42] Clearing activities cache

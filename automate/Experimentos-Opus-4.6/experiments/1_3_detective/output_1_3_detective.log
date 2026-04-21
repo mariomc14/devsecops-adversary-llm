@@ -1,0 +1,271 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-04-17 12:53:30 INFO] Validating the experiment's syntax
+[32m[2026-04-17 12:53:31 INFO] Experiment looks valid
+[32m[2026-04-17 12:53:31 INFO] Running experiment: SCE 1.3 Detective Probe: Validate CloudTrail and CloudWatch Detect EC2 Reconnaissance
+[32m[2026-04-17 12:53:31 INFO] Steady-state strategy: after-method-only
+[32m[2026-04-17 12:53:31 INFO] Rollbacks strategy: default
+[32m[2026-04-17 12:53:31 INFO] Playing your experiment's method now...
+[32m[2026-04-17 12:53:31 INFO] Action: deploy-detective-control-infrastructure
+[INFO] 2026-04-17 12:53:31 - ============================================================
+[INFO] 2026-04-17 12:53:31 - SCE Experiment 1.3 Detective - Steady State Setup
+[INFO] 2026-04-17 12:53:31 - ============================================================
+[INFO] 2026-04-17 12:53:31 - Timestamp: 1776423211
+[INFO] 2026-04-17 12:53:31 - Stack name: sce-1-3-det-1776423211
+[INFO] 2026-04-17 12:53:31 - Found credentials in shared credentials file: ~/.aws/credentials
+[INFO] 2026-04-17 12:53:31 - Account: 396608802942, Region: us-east-1
+[INFO] 2026-04-17 12:53:31 - Creating CloudFormation stack (attempt 1)...
+[INFO] 2026-04-17 12:53:32 - Stack creation initiated
+[INFO] 2026-04-17 12:53:32 - Waiting up to 1200s for stack creation...
+[INFO] 2026-04-17 12:53:32 - Stack status: CREATE_IN_PROGRESS (attempt 1, 0s elapsed)
+[INFO] 2026-04-17 12:53:48 - Stack status: CREATE_IN_PROGRESS (attempt 2, 15s elapsed)
+[INFO] 2026-04-17 12:54:03 - Stack status: CREATE_IN_PROGRESS (attempt 3, 31s elapsed)
+[INFO] 2026-04-17 12:54:19 - Stack status: CREATE_COMPLETE (attempt 4, 46s elapsed)
+[INFO] 2026-04-17 12:54:19 - Stack reached CREATE_COMPLETE after 4 attempts
+[INFO] 2026-04-17 12:54:19 - Attacker Role ARN: arn:aws:iam::396608802942:role/sce-attacker-1776423211
+[INFO] 2026-04-17 12:54:19 - Trail name: sce-trail-1776423211
+[INFO] 2026-04-17 12:54:19 - Log Group: /sce/cloudtrail/1776423211
+[INFO] 2026-04-17 12:54:19 - Alarm: sce-recon-alarm-1776423211
+[INFO] 2026-04-17 12:54:19 - SNS Topic: arn:aws:sns:us-east-1:396608802942:sce-recon-alert-1776423211
+[INFO] 2026-04-17 12:54:19 - Waiting 25s for IAM propagation...
+[INFO] 2026-04-17 12:54:44 - Verifying attacker role assumability...
+[INFO] 2026-04-17 12:54:44 - Role verification completed after 1 attempts
+[INFO] 2026-04-17 12:54:45 - CloudTrail trail is actively logging
+[INFO] 2026-04-17 12:54:46 - Alarm 'sce-recon-alarm-1776423211' state: INSUFFICIENT_DATA
+[INFO] 2026-04-17 12:54:46 - ============================================================
+[INFO] 2026-04-17 12:54:46 - Steady state setup COMPLETED
+[INFO] 2026-04-17 12:54:46 - ============================================================
+[32m[2026-04-17 12:54:46 INFO] Action: execute-ec2-reconnaissance-attack
+[INFO] 2026-04-17 12:54:46 - ============================================================
+[INFO] 2026-04-17 12:54:46 - SCE 1.3 Detective - Attack Node 1.2: EC2 Reconnaissance
+[INFO] 2026-04-17 12:54:46 - TTP: T1580 - Cloud Infrastructure Discovery
+[INFO] 2026-04-17 12:54:46 - ============================================================
+[INFO] 2026-04-17 12:54:46 - Assuming attacker role: arn:aws:iam::396608802942:role/sce-attacker-1776423211
+[INFO] 2026-04-17 12:54:46 - Role assumed successfully
+[INFO] 2026-04-17 12:54:46 - Attack principal ARN: arn:aws:sts::396608802942:assumed-role/sce-attacker-1776423211/sce-detective-attack
+[INFO] 2026-04-17 12:54:47 - Attack timestamp (UTC): 2026-04-17T10:54:47.130630
+[INFO] 2026-04-17 12:54:47 - Executing: aws ec2 describe-instances (expecting SUCCESS for detective trail)
+[INFO] 2026-04-17 12:54:47 - DescribeInstances SUCCEEDED (as expected for detective probe)
+[INFO] 2026-04-17 12:54:47 - Instances returned: 2
+[INFO] 2026-04-17 12:54:47 - Duration: 0.82s
+[INFO] 2026-04-17 12:54:47 - Executing second DescribeInstances call for detection confidence
+[INFO] 2026-04-17 12:54:48 - Second DescribeInstances call completed
+[INFO] 2026-04-17 12:54:48 - ============================================================
+[INFO] 2026-04-17 12:54:48 - Attack execution completed
+[INFO] 2026-04-17 12:54:48 - ============================================================
+[32m[2026-04-17 12:54:48 INFO] Steady state hypothesis: CloudTrail and CloudWatch detective controls detect EC2 reconnaissance API calls
+[32m[2026-04-17 12:54:48 INFO] Probe: verify-detective-controls-detect-reconnaissance
+[INFO] 2026-04-17 12:54:48 - ============================================================
+[INFO] 2026-04-17 12:54:48 - SCE 1.3 Detective - Hypothesis Verification
+[INFO] 2026-04-17 12:54:48 - ============================================================
+[INFO] 2026-04-17 12:54:48 - Starting detection verification (SLA: 1800s)
+[INFO] 2026-04-17 12:54:48 - Looking for event: DescribeInstances from principal: arn:aws:sts::396608802942:assumed-role/sce-attacker-1776423211/sce-detective-attack
+[INFO] 2026-04-17 12:54:48 - Verification attempt 1 (0s / 1800s elapsed)
+[INFO] 2026-04-17 12:54:49 - CloudWatch Logs filter returned 0 matching events
+[INFO] 2026-04-17 12:54:50 - Alarm 'sce-recon-alarm-1776423211' state: INSUFFICIENT_DATA
+[INFO] 2026-04-17 12:55:20 - Verification attempt 2 (32s / 1800s elapsed)
+[INFO] 2026-04-17 12:55:20 - CloudWatch Logs filter returned 0 matching events
+[INFO] 2026-04-17 12:55:21 - Alarm 'sce-recon-alarm-1776423211' state: OK
+[INFO] 2026-04-17 12:55:51 - Verification attempt 3 (63s / 1800s elapsed)
+[INFO] 2026-04-17 12:55:52 - CloudWatch Logs filter returned 0 matching events
+[INFO] 2026-04-17 12:55:53 - Alarm 'sce-recon-alarm-1776423211' state: OK
+[INFO] 2026-04-17 12:56:23 - Verification attempt 4 (95s / 1800s elapsed)
+[INFO] 2026-04-17 12:56:24 - CloudWatch Logs filter returned 0 matching events
+[INFO] 2026-04-17 12:56:25 - Alarm 'sce-recon-alarm-1776423211' state: OK
+[INFO] 2026-04-17 12:56:55 - Verification attempt 5 (127s / 1800s elapsed)
+[INFO] 2026-04-17 12:56:56 - CloudWatch Logs filter returned 0 matching events
+[INFO] 2026-04-17 12:56:57 - Alarm 'sce-recon-alarm-1776423211' state: OK
+[INFO] 2026-04-17 12:57:27 - Verification attempt 6 (159s / 1800s elapsed)
+[INFO] 2026-04-17 12:57:28 - CloudWatch Logs filter returned 0 matching events
+[INFO] 2026-04-17 12:57:28 - Alarm 'sce-recon-alarm-1776423211' state: OK
+[INFO] 2026-04-17 12:57:58 - Verification attempt 7 (191s / 1800s elapsed)
+[INFO] 2026-04-17 12:57:59 - CloudWatch Logs filter returned 0 matching events
+[INFO] 2026-04-17 12:58:00 - Alarm 'sce-recon-alarm-1776423211' state: OK
+[INFO] 2026-04-17 12:58:30 - Verification attempt 8 (222s / 1800s elapsed)
+[INFO] 2026-04-17 12:58:31 - CloudWatch Logs filter returned 0 matching events
+[INFO] 2026-04-17 12:58:31 - Alarm 'sce-recon-alarm-1776423211' state: OK
+[INFO] 2026-04-17 12:59:01 - Verification attempt 9 (254s / 1800s elapsed)
+[INFO] 2026-04-17 12:59:02 - CloudWatch Logs filter returned 0 matching events
+[INFO] 2026-04-17 12:59:03 - Alarm 'sce-recon-alarm-1776423211' state: OK
+[INFO] 2026-04-17 12:59:33 - Verification attempt 10 (286s / 1800s elapsed)
+[INFO] 2026-04-17 12:59:34 - CloudWatch Logs filter returned 0 matching events
+[INFO] 2026-04-17 12:59:35 - Alarm 'sce-recon-alarm-1776423211' state: OK
+[INFO] 2026-04-17 13:00:05 - Verification attempt 11 (318s / 1800s elapsed)
+[INFO] 2026-04-17 13:00:06 - CloudWatch Logs filter returned 0 matching events
+[INFO] 2026-04-17 13:00:07 - Alarm 'sce-recon-alarm-1776423211' state: OK
+[INFO] 2026-04-17 13:00:37 - Verification attempt 12 (349s / 1800s elapsed)
+[INFO] 2026-04-17 13:00:38 - CloudWatch Logs filter returned 0 matching events
+[INFO] 2026-04-17 13:00:39 - Alarm 'sce-recon-alarm-1776423211' state: OK
+[INFO] 2026-04-17 13:01:09 - Verification attempt 13 (381s / 1800s elapsed)
+[INFO] 2026-04-17 13:01:09 - CloudWatch Logs filter returned 0 matching events
+[INFO] 2026-04-17 13:01:10 - Alarm 'sce-recon-alarm-1776423211' state: OK
+[INFO] 2026-04-17 13:01:40 - Verification attempt 14 (413s / 1800s elapsed)
+[INFO] 2026-04-17 13:01:41 - CloudWatch Logs filter returned 0 matching events
+[INFO] 2026-04-17 13:01:42 - Alarm 'sce-recon-alarm-1776423211' state: OK
+[INFO] 2026-04-17 13:02:12 - Verification attempt 15 (444s / 1800s elapsed)
+[INFO] 2026-04-17 13:02:13 - CloudWatch Logs filter returned 0 matching events
+[INFO] 2026-04-17 13:02:14 - Alarm 'sce-recon-alarm-1776423211' state: OK
+[INFO] 2026-04-17 13:02:44 - Verification attempt 16 (476s / 1800s elapsed)
+[INFO] 2026-04-17 13:02:45 - CloudWatch Logs filter returned 0 matching events
+[INFO] 2026-04-17 13:02:46 - Alarm 'sce-recon-alarm-1776423211' state: OK
+[INFO] 2026-04-17 13:03:16 - Verification attempt 17 (508s / 1800s elapsed)
+[INFO] 2026-04-17 13:03:16 - CloudWatch Logs filter returned 0 matching events
+[INFO] 2026-04-17 13:03:17 - Alarm 'sce-recon-alarm-1776423211' state: OK
+[INFO] 2026-04-17 13:03:47 - Verification attempt 18 (539s / 1800s elapsed)
+[INFO] 2026-04-17 13:03:48 - CloudWatch Logs filter returned 0 matching events
+[INFO] 2026-04-17 13:03:49 - Alarm 'sce-recon-alarm-1776423211' state: OK
+[INFO] 2026-04-17 13:04:19 - Verification attempt 19 (571s / 1800s elapsed)
+[INFO] 2026-04-17 13:04:19 - CloudWatch Logs filter returned 0 matching events
+[INFO] 2026-04-17 13:04:20 - Alarm 'sce-recon-alarm-1776423211' state: OK
+[INFO] 2026-04-17 13:04:50 - Verification attempt 20 (602s / 1800s elapsed)
+[INFO] 2026-04-17 13:04:51 - CloudWatch Logs filter returned 0 matching events
+[INFO] 2026-04-17 13:04:52 - Alarm 'sce-recon-alarm-1776423211' state: OK
+[INFO] 2026-04-17 13:05:22 - Verification attempt 21 (634s / 1800s elapsed)
+[INFO] 2026-04-17 13:05:22 - CloudWatch Logs filter returned 0 matching events
+[INFO] 2026-04-17 13:05:23 - Alarm 'sce-recon-alarm-1776423211' state: OK
+[INFO] 2026-04-17 13:05:53 - Verification attempt 22 (665s / 1800s elapsed)
+[INFO] 2026-04-17 13:05:54 - CloudWatch Logs filter returned 0 matching events
+[INFO] 2026-04-17 13:05:55 - Alarm 'sce-recon-alarm-1776423211' state: OK
+[INFO] 2026-04-17 13:06:25 - Verification attempt 23 (697s / 1800s elapsed)
+[INFO] 2026-04-17 13:06:26 - CloudWatch Logs filter returned 0 matching events
+[INFO] 2026-04-17 13:06:27 - Alarm 'sce-recon-alarm-1776423211' state: OK
+[INFO] 2026-04-17 13:06:57 - Verification attempt 24 (729s / 1800s elapsed)
+[INFO] 2026-04-17 13:06:58 - CloudWatch Logs filter returned 0 matching events
+[INFO] 2026-04-17 13:06:58 - Alarm 'sce-recon-alarm-1776423211' state: OK
+[INFO] 2026-04-17 13:07:28 - Verification attempt 25 (761s / 1800s elapsed)
+[INFO] 2026-04-17 13:07:29 - CloudWatch Logs filter returned 0 matching events
+[INFO] 2026-04-17 13:07:30 - Alarm 'sce-recon-alarm-1776423211' state: OK
+[INFO] 2026-04-17 13:08:00 - Verification attempt 26 (792s / 1800s elapsed)
+[INFO] 2026-04-17 13:08:01 - CloudWatch Logs filter returned 0 matching events
+[INFO] 2026-04-17 13:08:02 - Alarm 'sce-recon-alarm-1776423211' state: OK
+[INFO] 2026-04-17 13:08:32 - Verification attempt 27 (824s / 1800s elapsed)
+[INFO] 2026-04-17 13:08:33 - CloudWatch Logs filter returned 0 matching events
+[INFO] 2026-04-17 13:08:33 - Alarm 'sce-recon-alarm-1776423211' state: OK
+[INFO] 2026-04-17 13:09:03 - Verification attempt 28 (855s / 1800s elapsed)
+[INFO] 2026-04-17 13:09:04 - CloudWatch Logs filter returned 0 matching events
+[INFO] 2026-04-17 13:09:05 - Alarm 'sce-recon-alarm-1776423211' state: OK
+[INFO] 2026-04-17 13:09:35 - Verification attempt 29 (887s / 1800s elapsed)
+[INFO] 2026-04-17 13:09:35 - CloudWatch Logs filter returned 0 matching events
+[INFO] 2026-04-17 13:09:36 - Alarm 'sce-recon-alarm-1776423211' state: OK
+[INFO] 2026-04-17 13:10:06 - Verification attempt 30 (918s / 1800s elapsed)
+[INFO] 2026-04-17 13:10:07 - CloudWatch Logs filter returned 0 matching events
+[INFO] 2026-04-17 13:10:08 - Alarm 'sce-recon-alarm-1776423211' state: OK
+[INFO] 2026-04-17 13:10:38 - Verification attempt 31 (950s / 1800s elapsed)
+[INFO] 2026-04-17 13:10:39 - CloudWatch Logs filter returned 0 matching events
+[INFO] 2026-04-17 13:10:39 - Alarm 'sce-recon-alarm-1776423211' state: OK
+[INFO] 2026-04-17 13:11:09 - Verification attempt 32 (982s / 1800s elapsed)
+[INFO] 2026-04-17 13:11:10 - CloudWatch Logs filter returned 0 matching events
+[INFO] 2026-04-17 13:11:11 - Alarm 'sce-recon-alarm-1776423211' state: OK
+[INFO] 2026-04-17 13:11:41 - Verification attempt 33 (1014s / 1800s elapsed)
+[INFO] 2026-04-17 13:11:42 - CloudWatch Logs filter returned 0 matching events
+[INFO] 2026-04-17 13:11:43 - Alarm 'sce-recon-alarm-1776423211' state: OK
+[INFO] 2026-04-17 13:12:13 - Verification attempt 34 (1045s / 1800s elapsed)
+[INFO] 2026-04-17 13:12:14 - CloudWatch Logs filter returned 0 matching events
+[INFO] 2026-04-17 13:12:14 - Alarm 'sce-recon-alarm-1776423211' state: OK
+[INFO] 2026-04-17 13:12:44 - Verification attempt 35 (1076s / 1800s elapsed)
+[INFO] 2026-04-17 13:12:45 - CloudWatch Logs filter returned 0 matching events
+[INFO] 2026-04-17 13:12:46 - Alarm 'sce-recon-alarm-1776423211' state: OK
+[INFO] 2026-04-17 13:13:16 - Verification attempt 36 (1108s / 1800s elapsed)
+[INFO] 2026-04-17 13:13:16 - CloudWatch Logs filter returned 0 matching events
+[INFO] 2026-04-17 13:13:17 - Alarm 'sce-recon-alarm-1776423211' state: OK
+[INFO] 2026-04-17 13:13:47 - Verification attempt 37 (1139s / 1800s elapsed)
+[INFO] 2026-04-17 13:13:48 - CloudWatch Logs filter returned 0 matching events
+[INFO] 2026-04-17 13:13:49 - Alarm 'sce-recon-alarm-1776423211' state: OK
+[INFO] 2026-04-17 13:14:19 - Verification attempt 38 (1171s / 1800s elapsed)
+[INFO] 2026-04-17 13:14:19 - CloudWatch Logs filter returned 0 matching events
+[INFO] 2026-04-17 13:14:20 - Alarm 'sce-recon-alarm-1776423211' state: OK
+[INFO] 2026-04-17 13:14:50 - Verification attempt 39 (1202s / 1800s elapsed)
+[INFO] 2026-04-17 13:14:50 - CloudWatch Logs filter returned 0 matching events
+[INFO] 2026-04-17 13:14:51 - Alarm 'sce-recon-alarm-1776423211' state: OK
+[INFO] 2026-04-17 13:15:21 - Verification attempt 40 (1234s / 1800s elapsed)
+[INFO] 2026-04-17 13:15:22 - CloudWatch Logs filter returned 0 matching events
+[INFO] 2026-04-17 13:15:23 - Alarm 'sce-recon-alarm-1776423211' state: OK
+[INFO] 2026-04-17 13:15:53 - Verification attempt 41 (1265s / 1800s elapsed)
+[INFO] 2026-04-17 13:15:54 - CloudWatch Logs filter returned 0 matching events
+[INFO] 2026-04-17 13:15:54 - Alarm 'sce-recon-alarm-1776423211' state: OK
+[INFO] 2026-04-17 13:16:24 - Verification attempt 42 (1297s / 1800s elapsed)
+[INFO] 2026-04-17 13:16:25 - CloudWatch Logs filter returned 0 matching events
+[INFO] 2026-04-17 13:16:26 - Alarm 'sce-recon-alarm-1776423211' state: OK
+[INFO] 2026-04-17 13:16:56 - Verification attempt 43 (1328s / 1800s elapsed)
+[INFO] 2026-04-17 13:16:57 - CloudWatch Logs filter returned 0 matching events
+[INFO] 2026-04-17 13:16:58 - Alarm 'sce-recon-alarm-1776423211' state: OK
+[INFO] 2026-04-17 13:17:28 - Verification attempt 44 (1360s / 1800s elapsed)
+[INFO] 2026-04-17 13:17:29 - CloudWatch Logs filter returned 0 matching events
+[INFO] 2026-04-17 13:17:29 - Alarm 'sce-recon-alarm-1776423211' state: OK
+[INFO] 2026-04-17 13:17:59 - Verification attempt 45 (1391s / 1800s elapsed)
+[INFO] 2026-04-17 13:18:00 - CloudWatch Logs filter returned 0 matching events
+[INFO] 2026-04-17 13:18:01 - Alarm 'sce-recon-alarm-1776423211' state: OK
+[INFO] 2026-04-17 13:18:31 - Verification attempt 46 (1423s / 1800s elapsed)
+[INFO] 2026-04-17 13:18:32 - CloudWatch Logs filter returned 0 matching events
+[INFO] 2026-04-17 13:18:32 - Alarm 'sce-recon-alarm-1776423211' state: OK
+[INFO] 2026-04-17 13:19:02 - Verification attempt 47 (1454s / 1800s elapsed)
+[INFO] 2026-04-17 13:19:03 - CloudWatch Logs filter returned 0 matching events
+[INFO] 2026-04-17 13:19:04 - Alarm 'sce-recon-alarm-1776423211' state: OK
+[INFO] 2026-04-17 13:19:34 - Verification attempt 48 (1486s / 1800s elapsed)
+[INFO] 2026-04-17 13:19:34 - CloudWatch Logs filter returned 0 matching events
+[INFO] 2026-04-17 13:19:35 - Alarm 'sce-recon-alarm-1776423211' state: OK
+[INFO] 2026-04-17 13:20:05 - Verification attempt 49 (1517s / 1800s elapsed)
+[INFO] 2026-04-17 13:20:06 - CloudWatch Logs filter returned 0 matching events
+[INFO] 2026-04-17 13:20:07 - Alarm 'sce-recon-alarm-1776423211' state: OK
+[INFO] 2026-04-17 13:20:37 - Verification attempt 50 (1549s / 1800s elapsed)
+[INFO] 2026-04-17 13:20:38 - CloudWatch Logs filter returned 0 matching events
+[INFO] 2026-04-17 13:20:39 - Alarm 'sce-recon-alarm-1776423211' state: OK
+[INFO] 2026-04-17 13:21:09 - Verification attempt 51 (1581s / 1800s elapsed)
+[INFO] 2026-04-17 13:21:10 - CloudWatch Logs filter returned 0 matching events
+[INFO] 2026-04-17 13:21:11 - Alarm 'sce-recon-alarm-1776423211' state: OK
+[INFO] 2026-04-17 13:21:41 - Verification attempt 52 (1613s / 1800s elapsed)
+[INFO] 2026-04-17 13:21:41 - CloudWatch Logs filter returned 0 matching events
+[INFO] 2026-04-17 13:21:42 - Alarm 'sce-recon-alarm-1776423211' state: OK
+[INFO] 2026-04-17 13:22:12 - Verification attempt 53 (1644s / 1800s elapsed)
+[INFO] 2026-04-17 13:22:13 - CloudWatch Logs filter returned 0 matching events
+[INFO] 2026-04-17 13:22:14 - Alarm 'sce-recon-alarm-1776423211' state: OK
+[INFO] 2026-04-17 13:22:44 - Verification attempt 54 (1676s / 1800s elapsed)
+[INFO] 2026-04-17 13:22:44 - CloudWatch Logs filter returned 0 matching events
+[INFO] 2026-04-17 13:22:45 - Alarm 'sce-recon-alarm-1776423211' state: OK
+[INFO] 2026-04-17 13:23:15 - Verification attempt 55 (1707s / 1800s elapsed)
+[INFO] 2026-04-17 13:23:16 - CloudWatch Logs filter returned 0 matching events
+[INFO] 2026-04-17 13:23:17 - Alarm 'sce-recon-alarm-1776423211' state: OK
+[INFO] 2026-04-17 13:23:47 - Verification attempt 56 (1739s / 1800s elapsed)
+[INFO] 2026-04-17 13:23:47 - CloudWatch Logs filter returned 0 matching events
+[INFO] 2026-04-17 13:23:48 - Alarm 'sce-recon-alarm-1776423211' state: OK
+[INFO] 2026-04-17 13:24:18 - Verification attempt 57 (1770s / 1800s elapsed)
+[INFO] 2026-04-17 13:24:19 - CloudWatch Logs filter returned 0 matching events
+[INFO] 2026-04-17 13:24:19 - Alarm 'sce-recon-alarm-1776423211' state: OK
+[INFO] 2026-04-17 13:24:49 - ============================================================
+[INFO] 2026-04-17 13:24:49 - SCE 1.3 Detective - Verification Results
+[INFO] 2026-04-17 13:24:49 - ============================================================
+[INFO] 2026-04-17 13:24:49 - CloudTrail event detected: False
+[INFO] 2026-04-17 13:24:49 - CloudWatch Alarm triggered: False
+[INFO] 2026-04-17 13:24:50 - CloudTrail lookup_events returned 2 events
+[INFO] 2026-04-17 13:24:50 - CloudTrail direct lookup confirmed: False
+[ERROR] 2026-04-17 13:24:50 - ============================================================
+[ERROR] 2026-04-17 13:24:50 - HYPOTHESIS FAILED: Detective controls did not detect the attack
+[ERROR] 2026-04-17 13:24:50 - ============================================================
+[ERROR] 2026-04-17 13:24:50 - No detection evidence found within 1800s SLA
+[31m[2026-04-17 13:24:50 CRITICAL] Steady state probe 'verify-detective-controls-detect-reconnaissance' is not in the given tolerance so failing this experiment
+[32m[2026-04-17 13:24:50 INFO] Let's rollback...
+[32m[2026-04-17 13:24:50 INFO] Rollback: cleanup-experiment-resources
+[32m[2026-04-17 13:24:50 INFO] Action: cleanup-experiment-resources
+[INFO] 2026-04-17 13:24:50 - ============================================================
+[INFO] 2026-04-17 13:24:50 - SCE 1.3 Detective - Rollback / Cleanup
+[INFO] 2026-04-17 13:24:50 - ============================================================
+[INFO] 2026-04-17 13:24:50 - Emptying S3 bucket: sce-trail-bucket-1776423211
+[INFO] 2026-04-17 13:24:51 - All object versions deleted from bucket
+[INFO] 2026-04-17 13:24:51 - Deleting stack: sce-1-3-det-1776423211
+[INFO] 2026-04-17 13:24:52 - Deletion initiated
+[INFO] 2026-04-17 13:24:52 - Waiting for deletion...
+[INFO] 2026-04-17 13:24:52 - Stack status: DELETE_IN_PROGRESS (attempt 1, 0s elapsed)
+[INFO] 2026-04-17 13:25:07 - Stack status: DELETE_IN_PROGRESS (attempt 2, 15s elapsed)
+[INFO] 2026-04-17 13:25:23 - Stack status: DELETE_IN_PROGRESS (attempt 3, 31s elapsed)
+[INFO] 2026-04-17 13:25:38 - Stack status: DELETE_IN_PROGRESS (attempt 4, 46s elapsed)
+[INFO] 2026-04-17 13:25:54 - Stack deleted (no longer exists)
+[INFO] 2026-04-17 13:25:54 - ============================================================
+[INFO] 2026-04-17 13:25:54 - Cleanup completed
+[INFO] 2026-04-17 13:25:54 - ============================================================
+[32m[2026-04-17 13:25:54 INFO] Experiment ended with status: deviated
+[32m[2026-04-17 13:25:54 INFO] The steady-state has deviated, a weakness may have been discovered
+
+
+RETURN CODE: 1

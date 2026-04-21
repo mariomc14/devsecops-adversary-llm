@@ -1,0 +1,150 @@
+{
+  "chaoslib-version": "1.44.0",
+  "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.41",
+  "node": "PC-INF-MAMA",
+  "experiment": {
+    "title": "SCE 2.3 Reactive Probe: IMDS Credential Exfiltration Auto-Response Validation",
+    "description": "Validates that reactive controls respond to a simulated IMDS credential exfiltration attack on a banking EC2 instance. Attack steps: (1) Step 1.2 T1580 enumerates the target instance IMDS configuration, (2) Step 1.7 T1562.001 downgrades IMDSv2 to IMDSv1 and increases hop limit (allowed to succeed to trigger reactive chain), (3) Step 2.2 T1552.005 simulates credential exfiltration via IMDS using SSM Run Command. After the attack, a custom EventBridge event simulating GuardDuty/Falco detection triggers a reactive Lambda that: attaches an inline deny-all policy to the instance role (revoking all active sessions), moves the instance to a quarantine security group (no ingress/egress), and sends a SOC alert via SNS. The probe passes when the deny-all policy is confirmed on the role AND the instance security group is changed to the quarantine SG. Target response time: less than 3 minutes.",
+    "tags": [
+      "sce",
+      "reactive",
+      "imds",
+      "ec2",
+      "credential-exfiltration",
+      "quarantine",
+      "session-revocation",
+      "node-2-3"
+    ],
+    "steady-state-hypothesis": {
+      "title": "Reactive controls revoke instance role sessions and quarantine EC2 instance after IMDS credential exfiltration detection",
+      "probes": [
+        {
+          "type": "probe",
+          "name": "Verify deny-all inline policy attached to instance role and instance moved to quarantine security group",
+          "tolerance": true,
+          "provider": {
+            "type": "python",
+            "module": "chaosaws.ec2.2_3_reactive",
+            "func": "hypothesis_verification"
+          }
+        }
+      ]
+    },
+    "method": [
+      {
+        "type": "action",
+        "name": "Provision VPC, EC2 instance with IMDSv2, normal and quarantine security groups, reactive Lambda with EventBridge trigger, and SNS topic",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.2_3_reactive",
+          "func": "steady_state"
+        }
+      },
+      {
+        "type": "action",
+        "name": "Execute attack steps 1.2 (T1580 enumerate IMDS), 1.7 (T1562.001 downgrade IMDS), 2.2 (T1552.005 exfiltrate credentials), then emit detection event",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.2_3_reactive",
+          "func": "attack"
+        }
+      }
+    ],
+    "rollbacks": [
+      {
+        "type": "action",
+        "name": "Remove inline policy from role, restore instance to normal SG, revert IMDS settings, and delete CloudFormation stack",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.2_3_reactive",
+          "func": "rollback"
+        }
+      }
+    ],
+    "dry": null
+  },
+  "start": "2026-04-21T09:35:31.976858+00:00",
+  "status": "completed",
+  "deviated": false,
+  "steady_states": {
+    "before": null,
+    "after": {
+      "steady_state_met": true,
+      "probes": [
+        {
+          "activity": {
+            "type": "probe",
+            "name": "Verify deny-all inline policy attached to instance role and instance moved to quarantine security group",
+            "tolerance": true,
+            "provider": {
+              "type": "python",
+              "module": "chaosaws.ec2.2_3_reactive",
+              "func": "hypothesis_verification"
+            }
+          },
+          "output": true,
+          "start": "2026-04-21T09:40:05.480136+00:00",
+          "status": "succeeded",
+          "end": "2026-04-21T09:40:23.442722+00:00",
+          "duration": 17.962586,
+          "tolerance_met": true
+        }
+      ]
+    },
+    "during": []
+  },
+  "run": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "Provision VPC, EC2 instance with IMDSv2, normal and quarantine security groups, reactive Lambda with EventBridge trigger, and SNS topic",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.2_3_reactive",
+          "func": "steady_state"
+        }
+      },
+      "output": true,
+      "start": "2026-04-21T09:35:31.977234+00:00",
+      "status": "succeeded",
+      "end": "2026-04-21T09:39:57.436485+00:00",
+      "duration": 265.459251
+    },
+    {
+      "activity": {
+        "type": "action",
+        "name": "Execute attack steps 1.2 (T1580 enumerate IMDS), 1.7 (T1562.001 downgrade IMDS), 2.2 (T1552.005 exfiltrate credentials), then emit detection event",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.2_3_reactive",
+          "func": "attack"
+        }
+      },
+      "output": true,
+      "start": "2026-04-21T09:39:57.436662+00:00",
+      "status": "succeeded",
+      "end": "2026-04-21T09:40:05.479295+00:00",
+      "duration": 8.042633
+    }
+  ],
+  "rollbacks": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "Remove inline policy from role, restore instance to normal SG, revert IMDS settings, and delete CloudFormation stack",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.2_3_reactive",
+          "func": "rollback"
+        }
+      },
+      "output": true,
+      "start": "2026-04-21T09:40:23.443388+00:00",
+      "status": "succeeded",
+      "end": "2026-04-21T09:43:17.946949+00:00",
+      "duration": 174.503561
+    }
+  ],
+  "end": "2026-04-21T09:43:17.947105+00:00",
+  "duration": 465.97685146331787
+}

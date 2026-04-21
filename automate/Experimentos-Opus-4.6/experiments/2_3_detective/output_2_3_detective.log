@@ -1,0 +1,98 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-04-21 11:10:07 INFO] Validating the experiment's syntax
+[32m[2026-04-21 11:10:08 INFO] Experiment looks valid
+[32m[2026-04-21 11:10:08 INFO] Running experiment: SCE 2.3 Detective Probe: IMDS Attack Detection via CloudTrail and VPC Flow Logs
+[32m[2026-04-21 11:10:08 INFO] Steady-state strategy: after-method-only
+[32m[2026-04-21 11:10:08 INFO] Rollbacks strategy: default
+[32m[2026-04-21 11:10:08 INFO] Playing your experiment's method now...
+[32m[2026-04-21 11:10:08 INFO] Action: Provision VPC with Flow Logs, CloudTrail trail, EC2 instance with IMDSv2 enforced, attacker IAM role, and SSM endpoints
+2026-04-21 11:10:08,024 [INFO] ============================================================
+2026-04-21 11:10:08,024 [INFO] steady_state()  stack=sce-23d-1776762608  ts=1776762608
+2026-04-21 11:10:08,024 [INFO] ============================================================
+2026-04-21 11:10:08,034 [INFO] Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-21 11:10:09,159 [INFO] Creating CFN stack…
+2026-04-21 11:10:09,783 [INFO] Stack sce-23d-1776762608 → CREATE_IN_PROGRESS
+2026-04-21 11:10:25,294 [INFO] Stack sce-23d-1776762608 → CREATE_IN_PROGRESS
+2026-04-21 11:10:40,857 [INFO] Stack sce-23d-1776762608 → CREATE_IN_PROGRESS
+2026-04-21 11:10:56,395 [INFO] Stack sce-23d-1776762608 → CREATE_IN_PROGRESS
+2026-04-21 11:11:11,944 [INFO] Stack sce-23d-1776762608 → CREATE_IN_PROGRESS
+2026-04-21 11:11:27,536 [INFO] Stack sce-23d-1776762608 → CREATE_IN_PROGRESS
+2026-04-21 11:11:43,086 [INFO] Stack sce-23d-1776762608 → CREATE_IN_PROGRESS
+2026-04-21 11:11:58,658 [INFO] Stack sce-23d-1776762608 → CREATE_IN_PROGRESS
+2026-04-21 11:12:14,306 [INFO] Stack sce-23d-1776762608 → CREATE_IN_PROGRESS
+2026-04-21 11:12:29,837 [INFO] Stack sce-23d-1776762608 → CREATE_IN_PROGRESS
+2026-04-21 11:12:45,396 [INFO] Stack sce-23d-1776762608 → CREATE_IN_PROGRESS
+2026-04-21 11:13:00,952 [INFO] Stack sce-23d-1776762608 → CREATE_COMPLETE
+2026-04-21 11:13:01,103 [INFO] Instance=i-01913163402eedc6c  AtkRole=arn:aws:iam::396608802942:role/sce-atk-1776762608
+2026-04-21 11:13:01,886 [INFO] Instance running: tokens=required hop=1
+2026-04-21 11:13:02,499 [INFO] Attacker role assumable.
+2026-04-21 11:15:49,525 [INFO] Instance i-01913163402eedc6c SSM Online.
+2026-04-21 11:15:49,525 [INFO] steady_state() done.
+[32m[2026-04-21 11:15:49 INFO] Action: Execute attack steps 1.2 (T1580 enumerate IMDS config), 1.7 (T1562.001 attempt IMDS downgrade), and 2.2 (T1552.005 attempt IMDS credential exfiltration via SSM)
+2026-04-21 11:15:49,528 [INFO] ============================================================
+2026-04-21 11:15:49,528 [INFO] attack()
+2026-04-21 11:15:49,528 [INFO] ============================================================
+2026-04-21 11:15:49,528 [INFO] — Step 1.2  T1580  Cloud Infrastructure Discovery —
+2026-04-21 11:15:50,859 [INFO]   HttpTokens=required  HopLimit=1  Endpoint=enabled
+2026-04-21 11:15:50,859 [INFO] — Step 1.7  T1562.001  Impair Defenses —
+2026-04-21 11:15:52,056 [INFO]   Step 1.7 DENIED (UnauthorizedOperation)
+2026-04-21 11:15:52,056 [INFO] — Step 2.2  T1552.005  IMDS credential exfiltration —
+2026-04-21 11:15:53,016 [INFO]   SSM command: 9e3bf41c-7385-4fb2-89ad-a2a660269a28
+2026-04-21 11:15:58,332 [INFO]   SSM status=Success stdout=TOKEN_HTTP=200 V1_HTTP=401
+2026-04-21 11:15:58,332 [INFO] attack() done.
+[32m[2026-04-21 11:15:58 INFO] Steady state hypothesis: Detective controls capture CloudTrail events for IMDS enumeration and modification attempts and VPC Flow Logs record instance network activity
+[32m[2026-04-21 11:15:58 INFO] Probe: Verify CloudTrail logged DescribeInstances and ModifyInstanceMetadataOptions from attacker role and VPC Flow Logs contain traffic entries
+2026-04-21 11:15:58,335 [INFO] ============================================================
+2026-04-21 11:15:58,335 [INFO] hypothesis_verification()
+2026-04-21 11:15:58,335 [INFO] ============================================================
+2026-04-21 11:15:58,351 [INFO] Polling detective evidence (SLA 1800s)…
+2026-04-21 11:16:00,334 [INFO]   [0s] ✓ VPC Flow Logs: entries present (sample: 2 396608802942 eni-002a9bcf03441e2c2 - - - - - - - 1776762812 1776762891 - NODATA…)
+2026-04-21 11:16:00,334 [INFO]   [0s] Waiting… describe=False modify=False flow=True
+2026-04-21 11:17:02,788 [INFO]   [63s] ✓ CloudTrail: ModifyInstanceMetadataOptions DENIED for i-01913163402eedc6c
+2026-04-21 11:17:02,788 [INFO]   [63s] Waiting… describe=False modify=True flow=True
+2026-04-21 11:17:18,291 [INFO]   [79s] ✓ CloudTrail: ModifyInstanceMetadataOptions DENIED for i-01913163402eedc6c
+2026-04-21 11:17:33,764 [INFO]   [94s] ✓ CloudTrail: ModifyInstanceMetadataOptions DENIED for i-01913163402eedc6c
+2026-04-21 11:17:49,252 [INFO]   [110s] ✓ CloudTrail: ModifyInstanceMetadataOptions DENIED for i-01913163402eedc6c
+2026-04-21 11:18:04,717 [INFO]   [125s] ✓ CloudTrail: ModifyInstanceMetadataOptions DENIED for i-01913163402eedc6c
+2026-04-21 11:18:04,717 [INFO]   [125s] ✓ CloudTrail: DescribeInstances by attacker for i-01913163402eedc6c
+2026-04-21 11:18:04,717 [INFO] ============================================================
+2026-04-21 11:18:04,717 [INFO] PASSED – all detective checks confirmed
+2026-04-21 11:18:04,717 [INFO]   ✓ CloudTrail: DescribeInstances logged
+2026-04-21 11:18:04,717 [INFO]   ✓ CloudTrail: ModifyInstanceMetadataOptions logged
+2026-04-21 11:18:04,717 [INFO]   ✓ VPC Flow Logs: traffic entries present
+2026-04-21 11:18:04,717 [INFO]   Detection time: 125s
+2026-04-21 11:18:04,717 [INFO] ============================================================
+[32m[2026-04-21 11:18:04 INFO] Steady state hypothesis is met!
+[32m[2026-04-21 11:18:04 INFO] Let's rollback...
+[32m[2026-04-21 11:18:04 INFO] Rollback: Delete CloudFormation stack and clean up trail S3 bucket with all experiment resources
+[32m[2026-04-21 11:18:04 INFO] Action: Delete CloudFormation stack and clean up trail S3 bucket with all experiment resources
+2026-04-21 11:18:04,720 [INFO] ============================================================
+2026-04-21 11:18:04,720 [INFO] rollback()
+2026-04-21 11:18:04,720 [INFO] ============================================================
+2026-04-21 11:18:05,315 [INFO] Stopped trail sce-trail-1776762608
+2026-04-21 11:18:06,162 [INFO] Stack deletion initiated: sce-23d-1776762608
+2026-04-21 11:18:06,317 [INFO] Stack sce-23d-1776762608 → DELETE_IN_PROGRESS
+2026-04-21 11:18:21,841 [INFO] Stack sce-23d-1776762608 → DELETE_IN_PROGRESS
+2026-04-21 11:18:37,375 [INFO] Stack sce-23d-1776762608 → DELETE_IN_PROGRESS
+2026-04-21 11:18:52,908 [INFO] Stack sce-23d-1776762608 → DELETE_IN_PROGRESS
+2026-04-21 11:19:08,482 [INFO] Stack sce-23d-1776762608 → DELETE_IN_PROGRESS
+2026-04-21 11:19:24,124 [INFO] Stack sce-23d-1776762608 → DELETE_IN_PROGRESS
+2026-04-21 11:19:39,682 [INFO] Stack sce-23d-1776762608 → DELETE_IN_PROGRESS
+2026-04-21 11:19:55,224 [INFO] Stack sce-23d-1776762608 → DELETE_IN_PROGRESS
+2026-04-21 11:20:10,861 [INFO] Stack sce-23d-1776762608 → DELETE_IN_PROGRESS
+2026-04-21 11:20:26,465 [INFO] Stack sce-23d-1776762608 → DELETE_IN_PROGRESS
+2026-04-21 11:20:42,045 [INFO] Stack sce-23d-1776762608 → DELETE_IN_PROGRESS
+2026-04-21 11:20:57,557 [INFO] Stack sce-23d-1776762608 → DELETE_IN_PROGRESS
+2026-04-21 11:21:13,122 [INFO] Stack sce-23d-1776762608 → DELETE_IN_PROGRESS
+2026-04-21 11:21:28,705 [INFO] Stack sce-23d-1776762608 → DELETE_IN_PROGRESS
+2026-04-21 11:21:44,223 [INFO] Stack sce-23d-1776762608 → DELETE_FAILED
+2026-04-21 11:21:45,860 [ERROR]   CFN sce-23d-1776762608             DELETE_FAILED             The following resource(s) failed to delete: [TrailBucket]. 
+2026-04-21 11:21:48,559 [INFO] Deleted bucket sce-trail-1776762608-396608802942
+2026-04-21 11:21:48,560 [INFO] rollback() done.
+[32m[2026-04-21 11:21:48 INFO] Experiment ended with status: completed
+
+
+RETURN CODE: 0

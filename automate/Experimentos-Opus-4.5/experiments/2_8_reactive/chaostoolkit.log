@@ -1,0 +1,158 @@
+[36m[2026-04-16 17:11:04 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-04-16 17:11:04 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-04-16 17:11:04 DEBUG] [__init__:106] Using settings file '/home/mmc/.chaostoolkit/settings.yaml'
+[36m[2026-04-16 17:11:04 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/mmc/.chaostoolkit/settings.yaml'.
+[36m[2026-04-16 17:11:04 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-16 17:11:04 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-16 17:11:04 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-16 17:11:04 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-04-16 17:11:04 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-04-16 17:11:04 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-16 17:11:04 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-16 17:11:04 DEBUG] [secret:104] Done loading secrets
+[36m[2026-04-16 17:11:04 DEBUG] [caching:42] Clearing activities cache
+[31m[2026-04-16 17:11:04 ERROR] [run:188] could not find Python module 'chaosaws.ec2.sce_2_8_reactive' in activity 'Verify reactive controls executed within 30-minute SLA'
+[36m[2026-04-16 17:11:04 DEBUG] [run:189] could not find Python module 'chaosaws.ec2.sce_2_8_reactive' in activity 'Verify reactive controls executed within 30-minute SLA'
+[36m[2026-04-16 17:22:51 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-04-16 17:22:51 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-04-16 17:22:51 DEBUG] [__init__:106] Using settings file '/home/mmc/.chaostoolkit/settings.yaml'
+[36m[2026-04-16 17:22:51 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/mmc/.chaostoolkit/settings.yaml'.
+[36m[2026-04-16 17:22:51 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-16 17:22:51 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-16 17:22:51 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-16 17:22:51 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-04-16 17:22:51 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-04-16 17:22:51 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-16 17:22:51 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-16 17:22:51 DEBUG] [secret:104] Done loading secrets
+[32m[2026-04-16 17:22:51 INFO] [experiment:112] Experiment looks valid
+[36m[2026-04-16 17:22:51 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-16 17:22:51 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-04-16 17:22:51 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-16 17:22:51 DEBUG] [caching:35] Cached 3 activities
+[36m[2026-04-16 17:22:51 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-16 17:22:51 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-16 17:22:51 DEBUG] [secret:104] Done loading secrets
+[36m[2026-04-16 17:22:51 DEBUG] [configuration:161] Loading dynamic configuration...
+[32m[2026-04-16 17:22:51 INFO] [run:440] Running experiment: SCE 2.8 Reactive Probe - IMDS Protection Weakening Detection and Response
+[36m[2026-04-16 17:22:51 DEBUG] [__init__:67] Initializing controls
+[32m[2026-04-16 17:22:51 INFO] [run:471] Steady-state strategy: after-method-only
+[32m[2026-04-16 17:22:51 INFO] [run:477] Rollbacks strategy: default
+[36m[2026-04-16 17:22:51 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[32m[2026-04-16 17:22:51 INFO] [run:778] Playing your experiment's method now...
+[36m[2026-04-16 17:22:51 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-16 17:22:51 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-16 17:22:51 INFO] [activity:232] Action: Deploy experiment infrastructure with secure IMDS baseline
+[36m[2026-04-16 17:22:51 DEBUG] [python:33] Activity 'Deploy experiment infrastructure with secure IMDS baseline' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_8_reactive.py'
+[36m[2026-04-16 17:26:14 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-04-16 17:26:14 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-16 17:26:14 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-16 17:26:14 INFO] [activity:232] Action: Execute IMDS weakening attack (1.3 and 2.3)
+[36m[2026-04-16 17:26:14 DEBUG] [python:33] Activity 'Execute IMDS weakening attack (1.3 and 2.3)' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_8_reactive.py'
+[36m[2026-04-16 17:26:15 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-04-16 17:26:15 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-16 17:26:15 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-16 17:26:15 DEBUG] [run:696] Running steady-state hypothesis after the method
+[32m[2026-04-16 17:26:15 INFO] [hypothesis:205] Steady state hypothesis: Reactive controls automatically mitigate IMDS configuration weakening attack
+[36m[2026-04-16 17:26:15 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[36m[2026-04-16 17:26:15 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-16 17:26:15 INFO] [activity:232] Probe: Verify reactive controls executed within 30-minute SLA
+[36m[2026-04-16 17:26:15 DEBUG] [python:33] Activity 'Verify reactive controls executed within 30-minute SLA' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_8_reactive.py'
+[36m[2026-04-16 17:26:15 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-04-16 17:26:15 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-16 17:26:15 DEBUG] [hypothesis:247] allowed tolerance is True
+[36m[2026-04-16 17:26:15 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[31m[2026-04-16 17:26:15 CRITICAL] [run:716] Steady state probe 'Verify reactive controls executed within 30-minute SLA' is not in the given tolerance so failing this experiment
+[32m[2026-04-16 17:26:15 INFO] [run:1072] Let's rollback...
+[36m[2026-04-16 17:26:15 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-16 17:26:15 INFO] [rollback:36] Rollback: Cleanup experiment resources via CloudFormation deletion
+[36m[2026-04-16 17:26:15 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-16 17:26:15 INFO] [activity:232] Action: Cleanup experiment resources via CloudFormation deletion
+[36m[2026-04-16 17:26:15 DEBUG] [python:33] Activity 'Cleanup experiment resources via CloudFormation deletion' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_8_reactive.py'
+[36m[2026-04-16 17:28:01 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-04-16 17:28:01 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-16 17:28:01 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-16 17:28:01 INFO] [run:598] Experiment ended with status: deviated
+[32m[2026-04-16 17:28:01 INFO] [run:600] The steady-state has deviated, a weakness may have been discovered
+[36m[2026-04-16 17:28:01 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[36m[2026-04-16 17:28:01 DEBUG] [__init__:106] Cleaning up controls
+[36m[2026-04-16 17:28:01 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-16 17:41:08 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-04-16 17:41:08 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-04-16 17:41:08 DEBUG] [__init__:106] Using settings file '/home/mmc/.chaostoolkit/settings.yaml'
+[36m[2026-04-16 17:41:09 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/mmc/.chaostoolkit/settings.yaml'.
+[36m[2026-04-16 17:41:09 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-16 17:41:09 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-16 17:41:09 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-16 17:41:09 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-04-16 17:41:09 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-04-16 17:41:09 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-16 17:41:09 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-16 17:41:09 DEBUG] [secret:104] Done loading secrets
+[36m[2026-04-16 17:41:09 DEBUG] [caching:42] Clearing activities cache
+[31m[2026-04-16 17:41:09 ERROR] [run:188] could not find Python module 'chaosaws.ec2.sce_2_8_reactive' in activity 'Verify reactive controls executed within 30-minute SLA'
+[36m[2026-04-16 17:41:09 DEBUG] [run:189] could not find Python module 'chaosaws.ec2.sce_2_8_reactive' in activity 'Verify reactive controls executed within 30-minute SLA'
+[36m[2026-04-16 17:46:25 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-04-16 17:46:25 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-04-16 17:46:25 DEBUG] [__init__:106] Using settings file '/home/mmc/.chaostoolkit/settings.yaml'
+[36m[2026-04-16 17:46:26 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/mmc/.chaostoolkit/settings.yaml'.
+[36m[2026-04-16 17:46:26 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-16 17:46:26 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-16 17:46:26 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-16 17:46:26 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-04-16 17:46:26 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-04-16 17:46:26 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-16 17:46:26 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-16 17:46:26 DEBUG] [secret:104] Done loading secrets
+[32m[2026-04-16 17:46:26 INFO] [experiment:112] Experiment looks valid
+[36m[2026-04-16 17:46:26 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-16 17:46:26 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-04-16 17:46:26 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-16 17:46:26 DEBUG] [caching:35] Cached 3 activities
+[36m[2026-04-16 17:46:26 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-16 17:46:26 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-16 17:46:26 DEBUG] [secret:104] Done loading secrets
+[36m[2026-04-16 17:46:26 DEBUG] [configuration:161] Loading dynamic configuration...
+[32m[2026-04-16 17:46:26 INFO] [run:440] Running experiment: SCE 2.8 Reactive Probe - IMDS Protection Weakening Detection and Response
+[36m[2026-04-16 17:46:26 DEBUG] [__init__:67] Initializing controls
+[32m[2026-04-16 17:46:26 INFO] [run:471] Steady-state strategy: after-method-only
+[32m[2026-04-16 17:46:26 INFO] [run:477] Rollbacks strategy: default
+[36m[2026-04-16 17:46:26 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[32m[2026-04-16 17:46:26 INFO] [run:778] Playing your experiment's method now...
+[36m[2026-04-16 17:46:26 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-16 17:46:26 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-16 17:46:26 INFO] [activity:232] Action: Deploy experiment infrastructure with secure IMDS baseline
+[36m[2026-04-16 17:46:26 DEBUG] [python:33] Activity 'Deploy experiment infrastructure with secure IMDS baseline' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_8_reactive.py'
+[36m[2026-04-16 17:50:03 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-04-16 17:50:03 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-16 17:50:03 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-16 17:50:03 INFO] [activity:232] Action: Execute IMDS weakening attack (1.3 and 2.3)
+[36m[2026-04-16 17:50:03 DEBUG] [python:33] Activity 'Execute IMDS weakening attack (1.3 and 2.3)' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_8_reactive.py'
+[36m[2026-04-16 17:50:04 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-04-16 17:50:04 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-16 17:50:04 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-16 17:50:04 DEBUG] [run:696] Running steady-state hypothesis after the method
+[32m[2026-04-16 17:50:04 INFO] [hypothesis:205] Steady state hypothesis: Reactive controls automatically mitigate IMDS configuration weakening
+[36m[2026-04-16 17:50:04 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[36m[2026-04-16 17:50:04 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-16 17:50:04 INFO] [activity:232] Probe: Verify reactive controls executed within 30-minute SLA
+[36m[2026-04-16 17:50:04 DEBUG] [python:33] Activity 'Verify reactive controls executed within 30-minute SLA' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_8_reactive.py'
+[36m[2026-04-16 18:20:14 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-04-16 18:20:14 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-16 18:20:14 DEBUG] [hypothesis:247] allowed tolerance is True
+[36m[2026-04-16 18:20:14 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[31m[2026-04-16 18:20:14 CRITICAL] [run:716] Steady state probe 'Verify reactive controls executed within 30-minute SLA' is not in the given tolerance so failing this experiment
+[32m[2026-04-16 18:20:14 INFO] [run:1072] Let's rollback...
+[36m[2026-04-16 18:20:14 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-16 18:20:14 INFO] [rollback:36] Rollback: Cleanup experiment resources via CloudFormation deletion
+[36m[2026-04-16 18:20:14 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-16 18:20:14 INFO] [activity:232] Action: Cleanup experiment resources via CloudFormation deletion
+[36m[2026-04-16 18:20:14 DEBUG] [python:33] Activity 'Cleanup experiment resources via CloudFormation deletion' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_8_reactive.py'
+[36m[2026-04-16 18:22:00 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-04-16 18:22:00 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-16 18:22:00 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-16 18:22:00 INFO] [run:598] Experiment ended with status: deviated
+[32m[2026-04-16 18:22:00 INFO] [run:600] The steady-state has deviated, a weakness may have been discovered
+[36m[2026-04-16 18:22:00 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[36m[2026-04-16 18:22:00 DEBUG] [__init__:106] Cleaning up controls
+[36m[2026-04-16 18:22:00 DEBUG] [caching:42] Clearing activities cache

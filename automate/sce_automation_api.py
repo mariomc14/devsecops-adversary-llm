@@ -789,7 +789,7 @@ Q_post = XX.XX
                 full_prompt = prompt
 
             response = self.bedrock.converse(
-                modelId="global.anthropic.claude-opus-4-5-20251101-v1:0",
+                modelId="global.anthropic.claude-opus-4-6-v1",
                 messages=[{
                     "role": "user",
                     "content": [{"text": full_prompt}]

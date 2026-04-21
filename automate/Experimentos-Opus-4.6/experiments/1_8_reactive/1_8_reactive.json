@@ -1,0 +1,51 @@
+{
+    "title": "SCE 1.8 Reactive Probe: Validate Automated Remediation of IMDS Downgrade Attack (v2)",
+    "description": "Security Chaos Engineering experiment validating that reactive controls automatically respond to attack steps 1.2 (ec2:DescribeInstances for IMDS enumeration - T1580) and 1.7 (ec2:ModifyInstanceMetadataOptions to downgrade IMDSv2 to IMDSv1 and increase hop limit - T1562.001). Provisions a banking-tier EC2 instance with IMDSv2, CloudTrail, EventBridge rule, Lambda remediation function, and SNS-to-SQS pipeline. Both attacks succeed via attacker role; the experiment verifies within a 30-minute SLA that Lambda: (1) re-enforces IMDSv2 with hop-limit=1, (2) attaches deny-all policy to attacker role, (3) publishes remediation confirmation. v2 fixes: robust retry/backoff on transient network errors, pre-flight Lambda and EventBridge validation, extended stabilisation window, diagnostic Lambda log and EventBridge metric inspection during polling.",
+    "tags": ["sce-1-8", "reactive", "imds", "ec2", "lambda", "eventbridge", "auto-remediation", "T1580", "T1562.001", "credential-theft", "defense-evasion", "incident-response"],
+    "steady-state-hypothesis": {
+        "title": "Reactive Lambda automatically remediates IMDS downgrade and revokes attacker permissions within SLA",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "Verify IMDS restored to required and hop-limit 1, attacker role denied, and remediation notification received on SQS",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.1_8_reactive",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "Provision EC2 instance with IMDSv2, CloudTrail, EventBridge rule, Lambda remediation function, SNS-SQS pipeline, and attacker IAM role via CloudFormation",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_8_reactive",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "Execute attack steps 1.2 (DescribeInstances IMDS enumeration) and 1.7 (ModifyInstanceMetadataOptions IMDS downgrade to IMDSv1 with hop-limit 2) using attacker role",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_8_reactive",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "Remove reactive inline policy from attacker role, revert IMDS, empty S3 buckets, terminate instance, and delete CloudFormation stack with all experiment resources",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_8_reactive",
+                "func": "rollback"
+            }
+        }
+    ]
+}

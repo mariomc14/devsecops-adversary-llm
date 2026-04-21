@@ -1,0 +1,85 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-04-21 10:36:58 INFO] Validating the experiment's syntax
+[32m[2026-04-21 10:36:58 INFO] Experiment looks valid
+[32m[2026-04-21 10:36:58 INFO] Running experiment: SCE 2.5 Reactive Probe: IMDS Downgrade Auto-Remediation Validation
+[32m[2026-04-21 10:36:58 INFO] Steady-state strategy: after-method-only
+[32m[2026-04-21 10:36:58 INFO] Rollbacks strategy: default
+[32m[2026-04-21 10:36:58 INFO] Playing your experiment's method now...
+[32m[2026-04-21 10:36:58 INFO] Action: Provision Config recorder imperatively then deploy CFN stack with EC2 IMDSv2 instance, Config rule, EventBridge rule, remediation Lambda, and SNS topic
+2026-04-21 10:36:58,517 [INFO] ============================================================
+2026-04-21 10:36:58,517 [INFO] steady_state()  stack=sce-25r-1776760618  ts=1776760618
+2026-04-21 10:36:58,517 [INFO] ============================================================
+2026-04-21 10:36:58,530 [INFO] Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-21 10:37:11,745 [INFO] Created Config recorder: sce-rec-1776760618
+2026-04-21 10:37:13,392 [INFO] Created delivery channel + bucket sce-cfgbkt-1776760618-396608802942
+2026-04-21 10:37:13,866 [INFO] Started recorder sce-rec-1776760618
+2026-04-21 10:37:14,422 [INFO] Creating CFN stack…
+2026-04-21 10:37:14,959 [INFO] Stack sce-25r-1776760618 → CREATE_IN_PROGRESS
+2026-04-21 10:37:30,494 [INFO] Stack sce-25r-1776760618 → CREATE_IN_PROGRESS
+2026-04-21 10:37:46,290 [INFO] Stack sce-25r-1776760618 → CREATE_IN_PROGRESS
+2026-04-21 10:38:01,993 [INFO] Stack sce-25r-1776760618 → CREATE_IN_PROGRESS
+2026-04-21 10:38:17,543 [INFO] Stack sce-25r-1776760618 → CREATE_IN_PROGRESS
+2026-04-21 10:38:33,095 [INFO] Stack sce-25r-1776760618 → CREATE_IN_PROGRESS
+2026-04-21 10:38:48,602 [INFO] Stack sce-25r-1776760618 → CREATE_IN_PROGRESS
+2026-04-21 10:39:04,114 [INFO] Stack sce-25r-1776760618 → CREATE_IN_PROGRESS
+2026-04-21 10:39:19,678 [INFO] Stack sce-25r-1776760618 → CREATE_IN_PROGRESS
+2026-04-21 10:39:35,224 [INFO] Stack sce-25r-1776760618 → CREATE_IN_PROGRESS
+2026-04-21 10:39:50,799 [INFO] Stack sce-25r-1776760618 → CREATE_IN_PROGRESS
+2026-04-21 10:40:06,338 [INFO] Stack sce-25r-1776760618 → CREATE_COMPLETE
+2026-04-21 10:40:06,487 [INFO] Instance i-01f733fc02c28385e  Rule sce-imdsv2-1776760618
+2026-04-21 10:40:07,170 [INFO] Instance running, IMDSv2 enforced.
+2026-04-21 10:42:52,099 [INFO] Baseline COMPLIANT confirmed.
+2026-04-21 10:42:52,099 [INFO] steady_state() done.
+[32m[2026-04-21 10:42:52 INFO] Action: Execute attack steps 1.3 (T1580 enumerate EC2 IMDS config) and 2.4 (T1562.001 downgrade IMDS to optional with hop limit 2)
+2026-04-21 10:42:52,105 [INFO] ============================================================
+2026-04-21 10:42:52,105 [INFO] attack()
+2026-04-21 10:42:52,105 [INFO] ============================================================
+2026-04-21 10:42:52,113 [INFO] — Step 1.3  T1580  Cloud Infrastructure Discovery —
+2026-04-21 10:42:52,759 [INFO]   HttpTokens=required  HopLimit=1  Endpoint=enabled  State=applied
+2026-04-21 10:42:52,759 [INFO] — Step 2.4  T1562.001  Impair Defenses —
+2026-04-21 10:42:53,302 [INFO]   Modified → HttpTokens=optional  HopLimit=2
+2026-04-21 10:42:56,496 [INFO]   CONFIRMED: IMDS downgraded.
+2026-04-21 10:42:56,496 [INFO] attack() done – waiting for reactive controls.
+[32m[2026-04-21 10:42:56 INFO] Steady state hypothesis: Reactive controls revert IMDS downgrade and restore enforcement within SLA
+[32m[2026-04-21 10:42:56 INFO] Probe: Verify IMDS reverted to required and hop limit restored to 1 by auto-remediation Lambda
+2026-04-21 10:42:56,498 [INFO] ============================================================
+2026-04-21 10:42:56,498 [INFO] hypothesis_verification()
+2026-04-21 10:42:56,498 [INFO] ============================================================
+2026-04-21 10:42:56,522 [INFO] Polling (SLA 1800s)…
+2026-04-21 10:42:57,185 [INFO]   [0s] Triggered Config re-eval
+2026-04-21 10:42:57,912 [INFO]   [0s] tokens=optional hop=2
+2026-04-21 10:44:01,776 [INFO]   [64s] Triggered Config re-eval
+2026-04-21 10:44:02,165 [INFO]   [64s] tokens=optional hop=2
+2026-04-21 10:44:17,699 [INFO]   [80s] ✓ NON_COMPLIANT detected
+2026-04-21 10:44:33,114 [INFO]   [96s] ✓ IMDS reverted
+2026-04-21 10:44:33,826 [INFO]   [96s] ✓ Lambda log confirmed
+2026-04-21 10:44:33,826 [INFO] ============================================================
+2026-04-21 10:44:33,826 [INFO] PASSED  nc=True reverted=True lambda_log=True  t=96s
+2026-04-21 10:44:33,826 [INFO] ★ Meets <5 min target (96s)
+[32m[2026-04-21 10:44:33 INFO] Steady state hypothesis is met!
+[32m[2026-04-21 10:44:33 INFO] Let's rollback...
+[32m[2026-04-21 10:44:33 INFO] Rollback: Delete CFN stack and imperatively created Config recorder, delivery channel, S3 bucket, and IAM role
+[32m[2026-04-21 10:44:33 INFO] Action: Delete CFN stack and imperatively created Config recorder, delivery channel, S3 bucket, and IAM role
+2026-04-21 10:44:33,830 [INFO] ============================================================
+2026-04-21 10:44:33,830 [INFO] rollback()
+2026-04-21 10:44:33,830 [INFO] ============================================================
+2026-04-21 10:44:34,571 [INFO] Stack deletion initiated: sce-25r-1776760618
+2026-04-21 10:44:34,721 [INFO] Stack sce-25r-1776760618 → DELETE_IN_PROGRESS
+2026-04-21 10:44:50,285 [INFO] Stack sce-25r-1776760618 → DELETE_IN_PROGRESS
+2026-04-21 10:45:05,994 [INFO] Stack sce-25r-1776760618 → DELETE_IN_PROGRESS
+2026-04-21 10:45:21,542 [INFO] Stack sce-25r-1776760618 → DELETE_IN_PROGRESS
+2026-04-21 10:45:37,674 [INFO] Stack sce-25r-1776760618 → DELETE_IN_PROGRESS
+2026-04-21 10:45:53,205 [INFO] Stack sce-25r-1776760618 → DELETE_IN_PROGRESS
+2026-04-21 10:46:08,791 [INFO] Stack sce-25r-1776760618 → DELETE_IN_PROGRESS
+2026-04-21 10:46:24,987 [WARNING] del channel: An error occurred (LastDeliveryChannelDeleteFailedException) when calling the DeleteDeliveryChannel operation: Failed to delete last specified delivery channel with name 'sce-ch-1776760618', because there is a running configuration recorder.
+2026-04-21 10:46:27,164 [INFO] Deleted recorder sce-rec-1776760618
+2026-04-21 10:46:27,911 [INFO] Deleted Config role sce-cfgrole-1776760618
+2026-04-21 10:46:29,572 [INFO] Deleted bucket sce-cfgbkt-1776760618-396608802942
+2026-04-21 10:46:29,572 [INFO] rollback() done.
+[32m[2026-04-21 10:46:29 INFO] Experiment ended with status: completed
+
+
+RETURN CODE: 0

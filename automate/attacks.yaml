@@ -1,11 +1,35 @@
 attack:
-  id: 'aws-ec2-modify-imds-options-001'
-  name: 'EC2 Instance Metadata Service Protection Weakening'
-  overview: |
-    An attacker with the ec2:ModifyInstanceMetadataOptions permission can weaken Instance Metadata Service (IMDS) security controls on EC2 instances. By modifying IMDS configuration, the attacker can force the use of IMDSv1 (by setting HttpTokens to optional), which lacks session-based authentication, or increase the HttpPutResponseHopLimit value. Raising the hop limit is particularly dangerous as it allows the metadata endpoint (169.254.169.254) to be accessed beyond the VM's immediate network namespace, enabling containers, proxies, or other processes to reach IMDS and exfiltrate temporary IAM role credentials attached to the instance.
+  id: 'ec2-modify-imds-options-001'
+  name: 'Weakening EC2 Instance Metadata Service (IMDS) Protections via ModifyInstanceMetadataOptions'
+  overview: >
+    An attacker who has obtained the ec2:ModifyInstanceMetadataOptions permission can modify the Instance Metadata
+    Service (IMDS) configuration on a target EC2 instance to weaken its security posture. Specifically, the attacker
+    can downgrade the instance from IMDSv2 (which requires session tokens) to IMDSv1 (which accepts unauthenticated
+    GET requests) by setting --http-tokens to "optional". Additionally, the attacker can increase the
+    --http-put-response-hop-limit value, which raises the TTL on responses from the metadata endpoint
+    (169.254.169.254). By default, the hop limit of 1 restricts metadata access to processes running directly on
+    the host. Increasing this value allows containers, sidecar processes, or other workloads sharing the instance's
+    network stack to reach the IMDS endpoint and exfiltrate temporary IAM role credentials attached to the instance.
+    This combination of changes creates a pathway for credential theft, lateral movement, and privilege escalation.
   steps:
-    - title: 'Weaken IMDS Security Configuration'
-      command: |
+    - title: 'Enumerate Target EC2 Instance and Current IMDS Configuration'
+      command: >
+        aws ec2 describe-instances \
+          --instance-ids <INSTANCE_ID> \
+          --query "Reservations[*].Instances[*].{InstanceId:InstanceId,HttpTokens:MetadataOptions.HttpTokens,HttpEndpoint:MetadataOptions.HttpEndpoint,HopLimit:MetadataOptions.HttpPutResponseHopLimit,State:MetadataOptions.State}" \
+          --output table
+      dependencies:
+        - 'ec2:DescribeInstances permission'
+        - 'Valid AWS credentials (access key / session token)'
+        - 'Knowledge of the target instance ID or ability to enumerate instances'
+      result: >
+        The attacker retrieves the current IMDS configuration of the target instance, confirming whether IMDSv2 is
+        enforced (HttpTokens: required) and what the current HttpPutResponseHopLimit is set to. This informs the
+        attacker which modifications are needed to weaken protections.
+      ttp: 'T1580 - Cloud Infrastructure Discovery'
+
+    - title: 'Modify IMDS Options to Weaken Protections'
+      command: >
         aws ec2 modify-instance-metadata-options \
           --instance-id <INSTANCE_ID> \
           --http-tokens optional \
@@ -13,35 +37,28 @@ attack:
           --http-put-response-hop-limit 2
       dependencies:
         - 'ec2:ModifyInstanceMetadataOptions permission'
-        - 'Valid AWS credentials with access to target account'
-        - 'Knowledge of target EC2 instance ID'
-        - 'Target instance must be in running or stopped state'
-      result: |
-        IMDS protection is weakened: IMDSv1 is now allowed (HttpTokens set to optional), and the hop limit is increased to 2, allowing metadata requests to traverse an additional network hop beyond the instance itself.
+        - 'Valid AWS credentials with the above permission'
+        - 'Target EC2 instance must be in a running or stopped state'
+      result: >
+        The instance IMDS configuration is modified: HttpTokens is set to "optional" (downgrading from IMDSv2 to
+        allow IMDSv1 unauthenticated requests), and HttpPutResponseHopLimit is increased to 2 (or higher), allowing
+        the metadata endpoint to be reachable from containers or processes beyond the host's immediate network
+        namespace. The IMDS endpoint is confirmed enabled.
       ttp: 'T1562.001 - Impair Defenses: Disable or Modify Tools'
-    - title: 'Access IMDS from Container or Proxy Process'
-      command: |
+
+    - title: 'Exfiltrate IAM Role Credentials via Weakened IMDS Endpoint'
+      command: >
         curl http://169.254.169.254/latest/meta-data/iam/security-credentials/<ROLE_NAME>
       dependencies:
-        - 'Access to a container, proxy, or process running on or adjacent to the target instance'
-        - 'Network path to the metadata endpoint with increased hop limit'
-        - 'Knowledge of IAM role name attached to instance (can be enumerated)'
-      result: |
-        Temporary IAM credentials (AccessKeyId, SecretAccessKey, and SessionToken) are retrieved from the instance metadata service, which can be used to assume the instance's IAM role permissions.
+        - 'Network access to the IMDS endpoint from a container, sidecar, or compromised process on the instance'
+        - 'IMDS modifications from Step 2 must be active (HttpTokens optional, increased hop limit)'
+        - 'An IAM instance profile/role must be attached to the target EC2 instance'
+      result: >
+        The attacker retrieves temporary IAM credentials (AccessKeyId, SecretAccessKey, and SessionToken) associated
+        with the EC2 instance's IAM role. These credentials can be used for lateral movement, data exfiltration,
+        or privilege escalation within the AWS environment, depending on the permissions of the attached role.
       ttp: 'T1552.005 - Unsecured Credentials: Cloud Instance Metadata API'
-    - title: 'Utilize Stolen Credentials for Lateral Movement'
-      command: |
-        export AWS_ACCESS_KEY_ID=<stolen-access-key>
-        export AWS_SECRET_ACCESS_KEY=<stolen-secret-key>
-        export AWS_SESSION_TOKEN=<stolen-session-token>
-        aws sts get-caller-identity
-      dependencies:
-        - 'Successfully exfiltrated temporary credentials from previous step'
-        - 'AWS CLI or SDK installed on attacker system'
-        - 'Network access to AWS APIs'
-      result: |
-        Attacker confirms valid credential theft and can now operate with the IAM role permissions assigned to the compromised EC2 instance, potentially accessing S3 buckets, databases, secrets, or other AWS resources.
-      ttp: 'T1078.004 - Valid Accounts: Cloud Accounts'
+
   stride_goal:
     - 'Tampering'
     - 'Information Disclosure'

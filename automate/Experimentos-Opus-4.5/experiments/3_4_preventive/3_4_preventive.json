@@ -1,0 +1,51 @@
+{
+    "title": "SCE 3.4 Preventive: EC2 IMDS Protection Weakening Prevention",
+    "description": "Validates preventive controls against EC2 IMDS protection weakening. Tests: (1) Cloud Infrastructure Discovery (T1580), (2) Attempt to weaken IMDS via ModifyInstanceMetadataOptions (T1562.001) - expected BLOCKED, (3) Verify credential exfiltration prevention (T1552.005). Confirms IAM Deny blocks IMDS modification, IMDSv2 remains enforced, hop limit stays at 1.",
+    "tags": ["sce-3.4", "preventive", "imds", "ec2", "t1580", "t1562-001", "t1552-005"],
+    "steady-state-hypothesis": {
+        "title": "Preventive Controls Block IMDS Protection Weakening",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "verify-preventive-controls",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.3_4_preventive",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "deploy-ec2-with-imdsv2-enforcement",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.3_4_preventive",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "execute-imds-weakening-attack",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.3_4_preventive",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "delete-cloudformation-stack",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.3_4_preventive",
+                "func": "rollback"
+            }
+        }
+    ]
+}

@@ -1,0 +1,58 @@
+{
+    "title": "SCE 2.8 Reactive Probe - IMDS Protection Weakening Detection and Response",
+    "description": "Security Chaos Engineering experiment validating reactive controls for EC2 IMDS protection weakening. Simulates Attack 1.3 (Weaken IMDS Configuration - TTP T1562.001) and Attack 2.3 (IMDS Access - TTP T1552.005). Validates reactive controls automatically revert IMDS to secure baseline, attach session revocation policy, and publish alerts. Corresponds to ADT nodes 2.6 and 2.7.",
+    "tags": [
+        "sce-2.8",
+        "reactive",
+        "imds",
+        "ec2",
+        "T1562.001",
+        "T1552.005"
+    ],
+    "steady-state-hypothesis": {
+        "title": "Reactive controls automatically mitigate IMDS configuration weakening",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "Verify reactive controls executed within 30-minute SLA",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.2_8_reactive",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "Deploy experiment infrastructure with secure IMDS baseline",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.2_8_reactive",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "Execute IMDS weakening attack (1.3 and 2.3)",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.2_8_reactive",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "Cleanup experiment resources via CloudFormation deletion",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.2_8_reactive",
+                "func": "rollback"
+            }
+        }
+    ]
+}

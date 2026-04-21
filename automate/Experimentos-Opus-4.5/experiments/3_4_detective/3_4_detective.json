@@ -1,0 +1,51 @@
+{
+    "title": "SCE 3.4 Detective: EC2 IMDS Protection Weakening Detection",
+    "description": "Validates detective controls against EC2 IMDS protection weakening. Tests attack chain: (1) Cloud Infrastructure Discovery (T1580), (2) Weaken IMDS via ModifyInstanceMetadataOptions (T1562.001), (3) Verify credential exfiltration prerequisite (T1552.005). Confirms CloudTrail logs API calls, AWS Config detects non-compliance, and EventBridge triggers alerts.",
+    "tags": ["sce-3.4", "detective", "imds", "ec2", "t1580", "t1562-001", "t1552-005", "cloudtrail", "config", "eventbridge"],
+    "steady-state-hypothesis": {
+        "title": "Detective Controls Detect IMDS Protection Weakening",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "verify-detective-controls",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.3_4_detective",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "deploy-ec2-with-detective-controls",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.3_4_detective",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "execute-imds-weakening-attack",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.3_4_detective",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "delete-cloudformation-stack",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.3_4_detective",
+                "func": "rollback"
+            }
+        }
+    ]
+}

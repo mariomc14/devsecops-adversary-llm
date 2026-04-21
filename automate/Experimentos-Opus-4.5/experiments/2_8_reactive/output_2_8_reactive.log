@@ -1,0 +1,281 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-04-16 17:46:26 INFO] Validating the experiment's syntax
+[32m[2026-04-16 17:46:26 INFO] Experiment looks valid
+[32m[2026-04-16 17:46:26 INFO] Running experiment: SCE 2.8 Reactive Probe - IMDS Protection Weakening Detection and Response
+[32m[2026-04-16 17:46:26 INFO] Steady-state strategy: after-method-only
+[32m[2026-04-16 17:46:26 INFO] Rollbacks strategy: default
+[32m[2026-04-16 17:46:26 INFO] Playing your experiment's method now...
+[32m[2026-04-16 17:46:26 INFO] Action: Deploy experiment infrastructure with secure IMDS baseline
+2026-04-16T17:46:26Z - INFO - [steady_state] - ============================================================
+2026-04-16T17:46:26Z - INFO - [steady_state] - STEADY STATE: Deploying experiment infrastructure
+2026-04-16T17:46:26Z - INFO - [steady_state] - ============================================================
+2026-04-16T17:46:26Z - INFO - [load] - Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-16T17:46:26Z - INFO - [steady_state] - Stack: sce-2-8-reactive-1776354386, Region: us-east-1
+2026-04-16T17:46:26Z - INFO - [steady_state] - Creating CloudFormation stack...
+2026-04-16T17:46:27Z - INFO - [steady_state] - Waiting for stack creation...
+2026-04-16T17:49:32Z - INFO - [steady_state] - Stack created
+2026-04-16T17:49:32Z - INFO - [steady_state] - Instance: i-03f6b643a8114be8a
+2026-04-16T17:49:32Z - INFO - [steady_state] - Role: sce-2-8-reactive-role-1776354386
+2026-04-16T17:49:33Z - INFO - [steady_state] - Waiting for IAM propagation (30s)...
+2026-04-16T17:50:03Z - INFO - [steady_state] - STEADY STATE ESTABLISHED
+[32m[2026-04-16 17:50:03 INFO] Action: Execute IMDS weakening attack (1.3 and 2.3)
+2026-04-16T17:50:03Z - INFO - [attack] - ============================================================
+2026-04-16T17:50:03Z - INFO - [attack] - ATTACK: Executing IMDS weakening (T1562.001)
+2026-04-16T17:50:03Z - INFO - [attack] - ============================================================
+2026-04-16T17:50:03Z - INFO - [attack] - Target: i-03f6b643a8114be8a
+2026-04-16T17:50:03Z - INFO - [attack] - Executing: modify-instance-metadata-options
+2026-04-16T17:50:03Z - INFO - [attack] -   --http-tokens optional
+2026-04-16T17:50:03Z - INFO - [attack] -   --http-put-response-hop-limit 2
+2026-04-16T17:50:04Z - INFO - [attack] - Response: HttpTokens=optional
+2026-04-16T17:50:04Z - INFO - [attack] - ATTACK EXECUTED
+[32m[2026-04-16 17:50:04 INFO] Steady state hypothesis: Reactive controls automatically mitigate IMDS configuration weakening
+[32m[2026-04-16 17:50:04 INFO] Probe: Verify reactive controls executed within 30-minute SLA
+2026-04-16T17:50:04Z - INFO - [hypothesis_verification] - ============================================================
+2026-04-16T17:50:04Z - INFO - [hypothesis_verification] - VERIFICATION: Checking reactive controls
+2026-04-16T17:50:04Z - INFO - [hypothesis_verification] - ============================================================
+2026-04-16T17:50:04Z - INFO - [hypothesis_verification] - SLA: 1800s, Poll: 15s
+2026-04-16T17:50:04Z - INFO - [hypothesis_verification] - --- Iteration 1 | Elapsed: 0s | Remaining: 1799s ---
+2026-04-16T17:50:06Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T17:50:21Z - INFO - [hypothesis_verification] - --- Iteration 2 | Elapsed: 16s | Remaining: 1783s ---
+2026-04-16T17:50:22Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T17:50:37Z - INFO - [hypothesis_verification] - --- Iteration 3 | Elapsed: 33s | Remaining: 1766s ---
+2026-04-16T17:50:38Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T17:50:53Z - INFO - [hypothesis_verification] - --- Iteration 4 | Elapsed: 49s | Remaining: 1750s ---
+2026-04-16T17:50:55Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T17:51:10Z - INFO - [hypothesis_verification] - --- Iteration 5 | Elapsed: 65s | Remaining: 1734s ---
+2026-04-16T17:51:11Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T17:51:26Z - INFO - [hypothesis_verification] - --- Iteration 6 | Elapsed: 82s | Remaining: 1717s ---
+2026-04-16T17:51:27Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T17:51:42Z - INFO - [hypothesis_verification] - --- Iteration 7 | Elapsed: 98s | Remaining: 1701s ---
+2026-04-16T17:51:43Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T17:51:58Z - INFO - [hypothesis_verification] - --- Iteration 8 | Elapsed: 114s | Remaining: 1685s ---
+2026-04-16T17:51:59Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T17:52:14Z - INFO - [hypothesis_verification] - --- Iteration 9 | Elapsed: 130s | Remaining: 1669s ---
+2026-04-16T17:52:16Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T17:52:31Z - INFO - [hypothesis_verification] - --- Iteration 10 | Elapsed: 146s | Remaining: 1653s ---
+2026-04-16T17:52:32Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T17:52:47Z - INFO - [hypothesis_verification] - --- Iteration 11 | Elapsed: 163s | Remaining: 1636s ---
+2026-04-16T17:52:49Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T17:53:04Z - INFO - [hypothesis_verification] - --- Iteration 12 | Elapsed: 179s | Remaining: 1620s ---
+2026-04-16T17:53:05Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T17:53:20Z - INFO - [hypothesis_verification] - --- Iteration 13 | Elapsed: 196s | Remaining: 1603s ---
+2026-04-16T17:53:21Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T17:53:36Z - INFO - [hypothesis_verification] - --- Iteration 14 | Elapsed: 212s | Remaining: 1587s ---
+2026-04-16T17:53:38Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T17:53:53Z - INFO - [hypothesis_verification] - --- Iteration 15 | Elapsed: 228s | Remaining: 1571s ---
+2026-04-16T17:53:54Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T17:54:09Z - INFO - [hypothesis_verification] - --- Iteration 16 | Elapsed: 245s | Remaining: 1554s ---
+2026-04-16T17:54:11Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T17:54:26Z - INFO - [hypothesis_verification] - --- Iteration 17 | Elapsed: 261s | Remaining: 1538s ---
+2026-04-16T17:54:27Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T17:54:42Z - INFO - [hypothesis_verification] - --- Iteration 18 | Elapsed: 278s | Remaining: 1521s ---
+2026-04-16T17:54:44Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T17:54:59Z - INFO - [hypothesis_verification] - --- Iteration 19 | Elapsed: 294s | Remaining: 1505s ---
+2026-04-16T17:55:00Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T17:55:15Z - INFO - [hypothesis_verification] - --- Iteration 20 | Elapsed: 311s | Remaining: 1488s ---
+2026-04-16T17:55:16Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T17:55:31Z - INFO - [hypothesis_verification] - --- Iteration 21 | Elapsed: 327s | Remaining: 1472s ---
+2026-04-16T17:55:33Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T17:55:48Z - INFO - [hypothesis_verification] - --- Iteration 22 | Elapsed: 343s | Remaining: 1456s ---
+2026-04-16T17:55:49Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T17:56:04Z - INFO - [hypothesis_verification] - --- Iteration 23 | Elapsed: 360s | Remaining: 1439s ---
+2026-04-16T17:56:05Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T17:56:20Z - INFO - [hypothesis_verification] - --- Iteration 24 | Elapsed: 376s | Remaining: 1423s ---
+2026-04-16T17:56:22Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T17:56:37Z - INFO - [hypothesis_verification] - --- Iteration 25 | Elapsed: 392s | Remaining: 1407s ---
+2026-04-16T17:56:38Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T17:56:53Z - INFO - [hypothesis_verification] - --- Iteration 26 | Elapsed: 409s | Remaining: 1390s ---
+2026-04-16T17:56:54Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T17:57:09Z - INFO - [hypothesis_verification] - --- Iteration 27 | Elapsed: 425s | Remaining: 1374s ---
+2026-04-16T17:57:10Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T17:57:25Z - INFO - [hypothesis_verification] - --- Iteration 28 | Elapsed: 441s | Remaining: 1358s ---
+2026-04-16T17:57:26Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T17:57:41Z - INFO - [hypothesis_verification] - --- Iteration 29 | Elapsed: 457s | Remaining: 1342s ---
+2026-04-16T17:57:43Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T17:57:58Z - INFO - [hypothesis_verification] - --- Iteration 30 | Elapsed: 474s | Remaining: 1325s ---
+2026-04-16T17:57:59Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T17:58:14Z - INFO - [hypothesis_verification] - --- Iteration 31 | Elapsed: 490s | Remaining: 1309s ---
+2026-04-16T17:58:17Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T17:58:32Z - INFO - [hypothesis_verification] - --- Iteration 32 | Elapsed: 507s | Remaining: 1292s ---
+2026-04-16T17:58:33Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T17:58:48Z - INFO - [hypothesis_verification] - --- Iteration 33 | Elapsed: 523s | Remaining: 1276s ---
+2026-04-16T17:58:49Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T17:59:04Z - INFO - [hypothesis_verification] - --- Iteration 34 | Elapsed: 540s | Remaining: 1259s ---
+2026-04-16T17:59:06Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T17:59:21Z - INFO - [hypothesis_verification] - --- Iteration 35 | Elapsed: 556s | Remaining: 1243s ---
+2026-04-16T17:59:22Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T17:59:37Z - INFO - [hypothesis_verification] - --- Iteration 36 | Elapsed: 573s | Remaining: 1226s ---
+2026-04-16T17:59:38Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T17:59:53Z - INFO - [hypothesis_verification] - --- Iteration 37 | Elapsed: 589s | Remaining: 1210s ---
+2026-04-16T17:59:56Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:00:11Z - INFO - [hypothesis_verification] - --- Iteration 38 | Elapsed: 606s | Remaining: 1193s ---
+2026-04-16T18:00:12Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:00:27Z - INFO - [hypothesis_verification] - --- Iteration 39 | Elapsed: 622s | Remaining: 1177s ---
+2026-04-16T18:00:28Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:00:43Z - INFO - [hypothesis_verification] - --- Iteration 40 | Elapsed: 638s | Remaining: 1161s ---
+2026-04-16T18:00:44Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:00:59Z - INFO - [hypothesis_verification] - --- Iteration 41 | Elapsed: 655s | Remaining: 1144s ---
+2026-04-16T18:01:00Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:01:15Z - INFO - [hypothesis_verification] - --- Iteration 42 | Elapsed: 671s | Remaining: 1128s ---
+2026-04-16T18:01:16Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:01:31Z - INFO - [hypothesis_verification] - --- Iteration 43 | Elapsed: 687s | Remaining: 1112s ---
+2026-04-16T18:01:32Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:01:47Z - INFO - [hypothesis_verification] - --- Iteration 44 | Elapsed: 703s | Remaining: 1096s ---
+2026-04-16T18:01:49Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:02:04Z - INFO - [hypothesis_verification] - --- Iteration 45 | Elapsed: 720s | Remaining: 1079s ---
+2026-04-16T18:02:05Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:02:20Z - INFO - [hypothesis_verification] - --- Iteration 46 | Elapsed: 736s | Remaining: 1063s ---
+2026-04-16T18:02:21Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:02:36Z - INFO - [hypothesis_verification] - --- Iteration 47 | Elapsed: 752s | Remaining: 1047s ---
+2026-04-16T18:02:37Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:02:52Z - INFO - [hypothesis_verification] - --- Iteration 48 | Elapsed: 768s | Remaining: 1031s ---
+2026-04-16T18:02:53Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:03:08Z - INFO - [hypothesis_verification] - --- Iteration 49 | Elapsed: 784s | Remaining: 1015s ---
+2026-04-16T18:03:10Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:03:25Z - INFO - [hypothesis_verification] - --- Iteration 50 | Elapsed: 801s | Remaining: 998s ---
+2026-04-16T18:03:27Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:03:42Z - INFO - [hypothesis_verification] - --- Iteration 51 | Elapsed: 817s | Remaining: 982s ---
+2026-04-16T18:03:43Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:03:58Z - INFO - [hypothesis_verification] - --- Iteration 52 | Elapsed: 833s | Remaining: 966s ---
+2026-04-16T18:03:59Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:04:14Z - INFO - [hypothesis_verification] - --- Iteration 53 | Elapsed: 849s | Remaining: 950s ---
+2026-04-16T18:04:15Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:04:30Z - INFO - [hypothesis_verification] - --- Iteration 54 | Elapsed: 865s | Remaining: 934s ---
+2026-04-16T18:04:31Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:04:46Z - INFO - [hypothesis_verification] - --- Iteration 55 | Elapsed: 882s | Remaining: 917s ---
+2026-04-16T18:04:47Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:05:02Z - INFO - [hypothesis_verification] - --- Iteration 56 | Elapsed: 898s | Remaining: 901s ---
+2026-04-16T18:05:03Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:05:18Z - INFO - [hypothesis_verification] - --- Iteration 57 | Elapsed: 914s | Remaining: 885s ---
+2026-04-16T18:05:20Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:05:35Z - INFO - [hypothesis_verification] - --- Iteration 58 | Elapsed: 930s | Remaining: 869s ---
+2026-04-16T18:05:37Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:05:52Z - INFO - [hypothesis_verification] - --- Iteration 59 | Elapsed: 947s | Remaining: 852s ---
+2026-04-16T18:05:53Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:06:08Z - INFO - [hypothesis_verification] - --- Iteration 60 | Elapsed: 963s | Remaining: 836s ---
+2026-04-16T18:06:09Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:06:24Z - INFO - [hypothesis_verification] - --- Iteration 61 | Elapsed: 980s | Remaining: 819s ---
+2026-04-16T18:06:26Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:06:41Z - INFO - [hypothesis_verification] - --- Iteration 62 | Elapsed: 997s | Remaining: 802s ---
+2026-04-16T18:06:43Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:06:58Z - INFO - [hypothesis_verification] - --- Iteration 63 | Elapsed: 1013s | Remaining: 786s ---
+2026-04-16T18:06:59Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:07:14Z - INFO - [hypothesis_verification] - --- Iteration 64 | Elapsed: 1029s | Remaining: 770s ---
+2026-04-16T18:07:15Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:07:30Z - INFO - [hypothesis_verification] - --- Iteration 65 | Elapsed: 1046s | Remaining: 753s ---
+2026-04-16T18:07:32Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:07:47Z - INFO - [hypothesis_verification] - --- Iteration 66 | Elapsed: 1062s | Remaining: 737s ---
+2026-04-16T18:07:48Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:08:03Z - INFO - [hypothesis_verification] - --- Iteration 67 | Elapsed: 1079s | Remaining: 720s ---
+2026-04-16T18:08:05Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:08:20Z - INFO - [hypothesis_verification] - --- Iteration 68 | Elapsed: 1095s | Remaining: 704s ---
+2026-04-16T18:08:21Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:08:36Z - INFO - [hypothesis_verification] - --- Iteration 69 | Elapsed: 1111s | Remaining: 688s ---
+2026-04-16T18:08:37Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:08:52Z - INFO - [hypothesis_verification] - --- Iteration 70 | Elapsed: 1128s | Remaining: 671s ---
+2026-04-16T18:08:53Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:09:08Z - INFO - [hypothesis_verification] - --- Iteration 71 | Elapsed: 1144s | Remaining: 655s ---
+2026-04-16T18:09:10Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:09:25Z - INFO - [hypothesis_verification] - --- Iteration 72 | Elapsed: 1160s | Remaining: 639s ---
+2026-04-16T18:09:26Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:09:41Z - INFO - [hypothesis_verification] - --- Iteration 73 | Elapsed: 1177s | Remaining: 622s ---
+2026-04-16T18:09:42Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:09:57Z - INFO - [hypothesis_verification] - --- Iteration 74 | Elapsed: 1193s | Remaining: 606s ---
+2026-04-16T18:09:59Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:10:14Z - INFO - [hypothesis_verification] - --- Iteration 75 | Elapsed: 1209s | Remaining: 590s ---
+2026-04-16T18:10:15Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:10:30Z - INFO - [hypothesis_verification] - --- Iteration 76 | Elapsed: 1226s | Remaining: 573s ---
+2026-04-16T18:10:31Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:10:46Z - INFO - [hypothesis_verification] - --- Iteration 77 | Elapsed: 1242s | Remaining: 557s ---
+2026-04-16T18:10:48Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:11:03Z - INFO - [hypothesis_verification] - --- Iteration 78 | Elapsed: 1258s | Remaining: 541s ---
+2026-04-16T18:11:04Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:11:19Z - INFO - [hypothesis_verification] - --- Iteration 79 | Elapsed: 1275s | Remaining: 524s ---
+2026-04-16T18:11:20Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:11:35Z - INFO - [hypothesis_verification] - --- Iteration 80 | Elapsed: 1291s | Remaining: 508s ---
+2026-04-16T18:11:37Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:11:52Z - INFO - [hypothesis_verification] - --- Iteration 81 | Elapsed: 1307s | Remaining: 492s ---
+2026-04-16T18:11:53Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:12:08Z - INFO - [hypothesis_verification] - --- Iteration 82 | Elapsed: 1324s | Remaining: 475s ---
+2026-04-16T18:12:10Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:12:25Z - INFO - [hypothesis_verification] - --- Iteration 83 | Elapsed: 1340s | Remaining: 459s ---
+2026-04-16T18:12:26Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:12:41Z - INFO - [hypothesis_verification] - --- Iteration 84 | Elapsed: 1356s | Remaining: 443s ---
+2026-04-16T18:12:42Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:12:57Z - INFO - [hypothesis_verification] - --- Iteration 85 | Elapsed: 1372s | Remaining: 427s ---
+2026-04-16T18:12:58Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:13:13Z - INFO - [hypothesis_verification] - --- Iteration 86 | Elapsed: 1388s | Remaining: 411s ---
+2026-04-16T18:13:14Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:13:29Z - INFO - [hypothesis_verification] - --- Iteration 87 | Elapsed: 1405s | Remaining: 394s ---
+2026-04-16T18:13:30Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:13:45Z - INFO - [hypothesis_verification] - --- Iteration 88 | Elapsed: 1421s | Remaining: 378s ---
+2026-04-16T18:13:47Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:14:02Z - INFO - [hypothesis_verification] - --- Iteration 89 | Elapsed: 1437s | Remaining: 362s ---
+2026-04-16T18:14:03Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:14:18Z - INFO - [hypothesis_verification] - --- Iteration 90 | Elapsed: 1453s | Remaining: 346s ---
+2026-04-16T18:14:19Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:14:34Z - INFO - [hypothesis_verification] - --- Iteration 91 | Elapsed: 1470s | Remaining: 329s ---
+2026-04-16T18:14:35Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:14:50Z - INFO - [hypothesis_verification] - --- Iteration 92 | Elapsed: 1486s | Remaining: 313s ---
+2026-04-16T18:14:51Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:15:06Z - INFO - [hypothesis_verification] - --- Iteration 93 | Elapsed: 1502s | Remaining: 297s ---
+2026-04-16T18:15:08Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:15:23Z - INFO - [hypothesis_verification] - --- Iteration 94 | Elapsed: 1518s | Remaining: 281s ---
+2026-04-16T18:15:24Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:15:39Z - INFO - [hypothesis_verification] - --- Iteration 95 | Elapsed: 1535s | Remaining: 264s ---
+2026-04-16T18:15:41Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:15:56Z - INFO - [hypothesis_verification] - --- Iteration 96 | Elapsed: 1551s | Remaining: 248s ---
+2026-04-16T18:15:57Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:16:12Z - INFO - [hypothesis_verification] - --- Iteration 97 | Elapsed: 1567s | Remaining: 232s ---
+2026-04-16T18:16:13Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:16:28Z - INFO - [hypothesis_verification] - --- Iteration 98 | Elapsed: 1584s | Remaining: 215s ---
+2026-04-16T18:16:29Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:16:44Z - INFO - [hypothesis_verification] - --- Iteration 99 | Elapsed: 1600s | Remaining: 199s ---
+2026-04-16T18:16:45Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:17:00Z - INFO - [hypothesis_verification] - --- Iteration 100 | Elapsed: 1616s | Remaining: 183s ---
+2026-04-16T18:17:01Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:17:16Z - INFO - [hypothesis_verification] - --- Iteration 101 | Elapsed: 1632s | Remaining: 167s ---
+2026-04-16T18:17:18Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:17:33Z - INFO - [hypothesis_verification] - --- Iteration 102 | Elapsed: 1648s | Remaining: 151s ---
+2026-04-16T18:17:34Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:17:49Z - INFO - [hypothesis_verification] - --- Iteration 103 | Elapsed: 1664s | Remaining: 135s ---
+2026-04-16T18:17:50Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:18:05Z - INFO - [hypothesis_verification] - --- Iteration 104 | Elapsed: 1681s | Remaining: 118s ---
+2026-04-16T18:18:07Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:18:22Z - INFO - [hypothesis_verification] - --- Iteration 105 | Elapsed: 1697s | Remaining: 102s ---
+2026-04-16T18:18:23Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:18:38Z - INFO - [hypothesis_verification] - --- Iteration 106 | Elapsed: 1713s | Remaining: 86s ---
+2026-04-16T18:18:39Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:18:54Z - INFO - [hypothesis_verification] - --- Iteration 107 | Elapsed: 1729s | Remaining: 70s ---
+2026-04-16T18:18:55Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:19:10Z - INFO - [hypothesis_verification] - --- Iteration 108 | Elapsed: 1746s | Remaining: 53s ---
+2026-04-16T18:19:11Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:19:26Z - INFO - [hypothesis_verification] - --- Iteration 109 | Elapsed: 1762s | Remaining: 37s ---
+2026-04-16T18:19:27Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:19:42Z - INFO - [hypothesis_verification] - --- Iteration 110 | Elapsed: 1778s | Remaining: 21s ---
+2026-04-16T18:19:43Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:19:58Z - INFO - [hypothesis_verification] - --- Iteration 111 | Elapsed: 1794s | Remaining: 5s ---
+2026-04-16T18:19:59Z - INFO - [hypothesis_verification] -   Status: 0/3 passed
+2026-04-16T18:20:14Z - ERROR - [hypothesis_verification] - VERIFICATION TIMEOUT
+2026-04-16T18:20:14Z - ERROR - [hypothesis_verification] -   imds_reverted: FAILED
+2026-04-16T18:20:14Z - ERROR - [hypothesis_verification] -   policy_attached: FAILED
+2026-04-16T18:20:14Z - ERROR - [hypothesis_verification] -   lambda_ran: FAILED
+[31m[2026-04-16 18:20:14 CRITICAL] Steady state probe 'Verify reactive controls executed within 30-minute SLA' is not in the given tolerance so failing this experiment
+[32m[2026-04-16 18:20:14 INFO] Let's rollback...
+[32m[2026-04-16 18:20:14 INFO] Rollback: Cleanup experiment resources via CloudFormation deletion
+[32m[2026-04-16 18:20:14 INFO] Action: Cleanup experiment resources via CloudFormation deletion
+2026-04-16T18:20:14Z - INFO - [rollback] - ============================================================
+2026-04-16T18:20:14Z - INFO - [rollback] - ROLLBACK: Cleaning up
+2026-04-16T18:20:14Z - INFO - [rollback] - ============================================================
+2026-04-16T18:20:17Z - INFO - [rollback] - Emptied S3 bucket
+2026-04-16T18:20:17Z - INFO - [rollback] - Deleting stack: sce-2-8-reactive-1776354386
+2026-04-16T18:22:00Z - INFO - [rollback] - Stack deleted
+2026-04-16T18:22:00Z - INFO - [rollback] - ROLLBACK COMPLETE
+[32m[2026-04-16 18:22:00 INFO] Experiment ended with status: deviated
+[32m[2026-04-16 18:22:00 INFO] The steady-state has deviated, a weakness may have been discovered
+
+
+RETURN CODE: 1

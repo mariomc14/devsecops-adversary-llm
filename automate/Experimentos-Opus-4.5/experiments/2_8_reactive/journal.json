@@ -1,0 +1,148 @@
+{
+  "chaoslib-version": "1.44.0",
+  "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.41",
+  "node": "PC-INF-MAMA",
+  "experiment": {
+    "title": "SCE 2.8 Reactive Probe - IMDS Protection Weakening Detection and Response",
+    "description": "Security Chaos Engineering experiment validating reactive controls for EC2 IMDS protection weakening. Simulates Attack 1.3 (Weaken IMDS Configuration - TTP T1562.001) and Attack 2.3 (IMDS Access - TTP T1552.005). Validates reactive controls automatically revert IMDS to secure baseline, attach session revocation policy, and publish alerts. Corresponds to ADT nodes 2.6 and 2.7.",
+    "tags": [
+      "sce-2.8",
+      "reactive",
+      "imds",
+      "ec2",
+      "T1562.001",
+      "T1552.005"
+    ],
+    "steady-state-hypothesis": {
+      "title": "Reactive controls automatically mitigate IMDS configuration weakening",
+      "probes": [
+        {
+          "type": "probe",
+          "name": "Verify reactive controls executed within 30-minute SLA",
+          "tolerance": true,
+          "provider": {
+            "type": "python",
+            "module": "chaosaws.ec2.2_8_reactive",
+            "func": "hypothesis_verification"
+          }
+        }
+      ]
+    },
+    "method": [
+      {
+        "type": "action",
+        "name": "Deploy experiment infrastructure with secure IMDS baseline",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.2_8_reactive",
+          "func": "steady_state"
+        }
+      },
+      {
+        "type": "action",
+        "name": "Execute IMDS weakening attack (1.3 and 2.3)",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.2_8_reactive",
+          "func": "attack"
+        }
+      }
+    ],
+    "rollbacks": [
+      {
+        "type": "action",
+        "name": "Cleanup experiment resources via CloudFormation deletion",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.2_8_reactive",
+          "func": "rollback"
+        }
+      }
+    ],
+    "dry": null
+  },
+  "start": "2026-04-16T15:46:26.203691+00:00",
+  "status": "completed",
+  "deviated": true,
+  "steady_states": {
+    "before": null,
+    "after": {
+      "steady_state_met": false,
+      "probes": [
+        {
+          "activity": {
+            "type": "probe",
+            "name": "Verify reactive controls executed within 30-minute SLA",
+            "tolerance": true,
+            "provider": {
+              "type": "python",
+              "module": "chaosaws.ec2.2_8_reactive",
+              "func": "hypothesis_verification"
+            }
+          },
+          "output": false,
+          "start": "2026-04-16T15:50:04.322332+00:00",
+          "status": "succeeded",
+          "end": "2026-04-16T16:20:14.991148+00:00",
+          "duration": 1810.668816,
+          "tolerance_met": false
+        }
+      ]
+    },
+    "during": []
+  },
+  "run": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "Deploy experiment infrastructure with secure IMDS baseline",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.2_8_reactive",
+          "func": "steady_state"
+        }
+      },
+      "output": true,
+      "start": "2026-04-16T15:46:26.204112+00:00",
+      "status": "succeeded",
+      "end": "2026-04-16T15:50:03.340255+00:00",
+      "duration": 217.136143
+    },
+    {
+      "activity": {
+        "type": "action",
+        "name": "Execute IMDS weakening attack (1.3 and 2.3)",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.2_8_reactive",
+          "func": "attack"
+        }
+      },
+      "output": true,
+      "start": "2026-04-16T15:50:03.340467+00:00",
+      "status": "succeeded",
+      "end": "2026-04-16T15:50:04.322128+00:00",
+      "duration": 0.981661
+    }
+  ],
+  "rollbacks": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "Cleanup experiment resources via CloudFormation deletion",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.2_8_reactive",
+          "func": "rollback"
+        }
+      },
+      "output": true,
+      "start": "2026-04-16T16:20:14.991422+00:00",
+      "status": "succeeded",
+      "end": "2026-04-16T16:22:00.619678+00:00",
+      "duration": 105.628256
+    }
+  ],
+  "end": "2026-04-16T16:22:00.619779+00:00",
+  "duration": 2134.4183173179626
+}

@@ -1,0 +1,149 @@
+{
+  "chaoslib-version": "1.44.0",
+  "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.41",
+  "node": "PC-INF-MAMA",
+  "experiment": {
+    "title": "SCE 3.4 Preventive: EC2 IMDS Protection Weakening Prevention",
+    "description": "Validates preventive controls against EC2 IMDS protection weakening. Tests: (1) Cloud Infrastructure Discovery (T1580), (2) Attempt to weaken IMDS via ModifyInstanceMetadataOptions (T1562.001) - expected BLOCKED, (3) Verify credential exfiltration prevention (T1552.005). Confirms IAM Deny blocks IMDS modification, IMDSv2 remains enforced, hop limit stays at 1.",
+    "tags": [
+      "sce-3.4",
+      "preventive",
+      "imds",
+      "ec2",
+      "t1580",
+      "t1562-001",
+      "t1552-005"
+    ],
+    "steady-state-hypothesis": {
+      "title": "Preventive Controls Block IMDS Protection Weakening",
+      "probes": [
+        {
+          "type": "probe",
+          "name": "verify-preventive-controls",
+          "tolerance": true,
+          "provider": {
+            "type": "python",
+            "module": "chaosaws.ec2.3_4_preventive",
+            "func": "hypothesis_verification"
+          }
+        }
+      ]
+    },
+    "method": [
+      {
+        "type": "action",
+        "name": "deploy-ec2-with-imdsv2-enforcement",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.3_4_preventive",
+          "func": "steady_state"
+        }
+      },
+      {
+        "type": "action",
+        "name": "execute-imds-weakening-attack",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.3_4_preventive",
+          "func": "attack"
+        }
+      }
+    ],
+    "rollbacks": [
+      {
+        "type": "action",
+        "name": "delete-cloudformation-stack",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.3_4_preventive",
+          "func": "rollback"
+        }
+      }
+    ],
+    "dry": null
+  },
+  "start": "2026-04-17T09:10:03.660083+00:00",
+  "status": "completed",
+  "deviated": false,
+  "steady_states": {
+    "before": null,
+    "after": {
+      "steady_state_met": true,
+      "probes": [
+        {
+          "activity": {
+            "type": "probe",
+            "name": "verify-preventive-controls",
+            "tolerance": true,
+            "provider": {
+              "type": "python",
+              "module": "chaosaws.ec2.3_4_preventive",
+              "func": "hypothesis_verification"
+            }
+          },
+          "output": true,
+          "start": "2026-04-17T09:13:32.453008+00:00",
+          "status": "succeeded",
+          "end": "2026-04-17T09:13:32.467542+00:00",
+          "duration": 0.014534,
+          "tolerance_met": true
+        }
+      ]
+    },
+    "during": []
+  },
+  "run": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "deploy-ec2-with-imdsv2-enforcement",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.3_4_preventive",
+          "func": "steady_state"
+        }
+      },
+      "output": true,
+      "start": "2026-04-17T09:10:03.661331+00:00",
+      "status": "succeeded",
+      "end": "2026-04-17T09:13:30.332401+00:00",
+      "duration": 206.67107
+    },
+    {
+      "activity": {
+        "type": "action",
+        "name": "execute-imds-weakening-attack",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.3_4_preventive",
+          "func": "attack"
+        }
+      },
+      "output": true,
+      "start": "2026-04-17T09:13:30.332794+00:00",
+      "status": "succeeded",
+      "end": "2026-04-17T09:13:32.447812+00:00",
+      "duration": 2.115018
+    }
+  ],
+  "rollbacks": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "delete-cloudformation-stack",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.3_4_preventive",
+          "func": "rollback"
+        }
+      },
+      "output": true,
+      "start": "2026-04-17T09:13:32.477691+00:00",
+      "status": "succeeded",
+      "end": "2026-04-17T09:14:40.575709+00:00",
+      "duration": 68.098018
+    }
+  ],
+  "end": "2026-04-17T09:14:40.575828+00:00",
+  "duration": 276.91874170303345
+}

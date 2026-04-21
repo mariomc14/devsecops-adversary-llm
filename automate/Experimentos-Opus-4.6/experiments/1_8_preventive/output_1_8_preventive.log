@@ -1,0 +1,90 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-04-20 12:09:25 INFO] Validating the experiment's syntax
+[32m[2026-04-20 12:09:25 INFO] Experiment looks valid
+[32m[2026-04-20 12:09:25 INFO] Running experiment: SCE 1.8 Preventive Probe: Validate IAM Deny Policy Blocks IMDS Enumeration and Downgrade
+[32m[2026-04-20 12:09:25 INFO] Steady-state strategy: after-method-only
+[32m[2026-04-20 12:09:25 INFO] Rollbacks strategy: default
+[32m[2026-04-20 12:09:25 INFO] Playing your experiment's method now...
+[32m[2026-04-20 12:09:25 INFO] Action: Provision EC2 instance with IMDSv2 enforced and IAM restricted role with deny policy via CloudFormation
+2026-04-20 12:09:25,479 [INFO] ======================================================================
+2026-04-20 12:09:25,479 [INFO] STEADY STATE: Provisioning resources for SCE 1.8 Preventive Probe
+2026-04-20 12:09:25,479 [INFO] Stack name: sce-experiment-1-8-1776679765
+2026-04-20 12:09:25,479 [INFO] ======================================================================
+2026-04-20 12:09:25,484 [INFO] Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-20 12:09:26,037 [INFO] Account ID: 396608802942
+2026-04-20 12:09:27,118 [INFO] Using subnet: subnet-0c49eab7705b0418e
+2026-04-20 12:09:28,117 [INFO] Using AMI: ami-03a4de20979bca479
+2026-04-20 12:09:29,320 [INFO] Creating CloudFormation stack...
+2026-04-20 12:09:30,188 [INFO] Stack sce-experiment-1-8-1776679765 status: CREATE_IN_PROGRESS
+2026-04-20 12:09:45,698 [INFO] Stack sce-experiment-1-8-1776679765 status: CREATE_IN_PROGRESS
+2026-04-20 12:10:01,257 [INFO] Stack sce-experiment-1-8-1776679765 status: CREATE_IN_PROGRESS
+2026-04-20 12:10:16,801 [INFO] Stack sce-experiment-1-8-1776679765 status: CREATE_COMPLETE
+2026-04-20 12:10:17,347 [INFO] Stack outputs: {'DenyPolicyArn': 'arn:aws:iam::396608802942:policy/sce-1-8-deny-imds-1776679765', 'InstanceId': 'i-0c29fb694ab0777ef', 'RestrictedRoleArn': 'arn:aws:iam::396608802942:role/sce-1-8-restricted-1776679765'}
+2026-04-20 12:10:17,868 [INFO] IAM role arn:aws:iam::396608802942:role/sce-1-8-restricted-1776679765 is assumable.
+2026-04-20 12:10:17,872 [INFO] Waiting for instance i-0c29fb694ab0777ef to reach running state...
+2026-04-20 12:10:18,517 [INFO] Instance i-0c29fb694ab0777ef is running.
+2026-04-20 12:10:18,517 [INFO] STEADY STATE: Complete.
+[32m[2026-04-20 12:10:18 INFO] Action: Execute attack steps 1.2 (DescribeInstances enumeration) and 1.7 (ModifyInstanceMetadataOptions downgrade) using restricted role
+2026-04-20 12:10:18,520 [INFO] ======================================================================
+2026-04-20 12:10:18,520 [INFO] ATTACK: Executing steps 1.2 and 1.7 as restricted role
+2026-04-20 12:10:18,520 [INFO] ======================================================================
+2026-04-20 12:10:19,039 [INFO] Successfully assumed restricted role.
+2026-04-20 12:10:19,042 [INFO] --------------------------------------------------
+2026-04-20 12:10:19,043 [INFO] ATTACK STEP 1.2: ec2:DescribeInstances (T1580)
+2026-04-20 12:10:19,563 [INFO] STEP 1.2: DescribeInstances DENIED as expected. Code: UnauthorizedOperation
+2026-04-20 12:10:19,563 [INFO] --------------------------------------------------
+2026-04-20 12:10:19,563 [INFO] ATTACK STEP 1.7: ec2:ModifyInstanceMetadataOptions (T1562.001)
+2026-04-20 12:10:19,776 [INFO] STEP 1.7: ModifyInstanceMetadataOptions DENIED as expected. Code: UnauthorizedOperation
+2026-04-20 12:10:19,776 [INFO] ======================================================================
+2026-04-20 12:10:19,776 [INFO] ATTACK: Complete. Results: {
+  "step_1_2": {
+    "executed": true,
+    "denied": true,
+    "error": "UnauthorizedOperation: You are not authorized to perform this operation. User: arn:aws:sts::396608802942:assumed-role/sce-1-8-restricted-1776679765/sce-attack-1776679765 is not authorized to perform: ec2:DescribeInstances with an explicit deny in an identity-based policy: arn:aws:iam::396608802942:policy/sce-1-8-deny-imds-1776679765",
+    "data": null
+  },
+  "step_1_7": {
+    "executed": true,
+    "denied": true,
+    "error": "UnauthorizedOperation: You are not authorized to perform this operation. User: arn:aws:sts::396608802942:assumed-role/sce-1-8-restricted-1776679765/sce-attack-1776679765 is not authorized to perform: ec2:ModifyInstanceMetadataOptions on resource: arn:aws:ec2:us-east-1:396608802942:instance/i-0c29fb694ab0777ef with an explicit deny in an identity-based policy: arn:aws:iam::396608802942:policy/sce-1-8-deny-imds-1776679765. Encoded authorization failure message: ylF_s2svAMrv_CTLaMRO2ku_Fjhy635hYPvOJ5wq79kvV_7ON0mPwk0GEoH1BGTSU-e8tcOrJUfLk6u8ai_sqZbBOPIASrhlCg4hC33FYUCf4IDVvsWZyidgt0jguQzKUog8hSBWcGKQbt_HIBgws8jffW4XcsbtZjIVGFvujOzLSdINZyAq_7Jo4eDsFPa36BKIZRViKImdPenoa76m_FiYKnWftCag3fpylMut8LyPxdMu5WsqLO49ssKSzDO0zVYbUUN5WDPr0xrQiECrx7P874mL4r9Q9le6UtbcCtNMm0InUmUnXHMiol-i0hSKftXGIBHbGI1fihsD_moBFdj48PWRGfp732hjhwaSQrZhha0FnNY1_xevTBGHt6jVQ2x_KekYiKaiL3qCSTfNeSKws7-_CliG_oYtTAdosZQxKz_awcTbYb0MBKiHne7DnqUciQBTb7qqP6Ihu15ajXauqkxyiH4RtwuXRLDwkSIfNYHlts6Nbb62rE9tefjR8pwJMEEwsAAl3kavZ0glr_ejiBp-aJ5QUyrcksEOy-9Yfdl9MyhKFY6vzBrbi6IHzPWODTjbEbtszYodeSPVV-gQx8vi0SMQADlANVX5eV7W7sLWXT9fHzPDdW5wp8O39hBxKPtIYsK5UlK8keRlTANH2FWWs51wGajx-Sl-uw549nXtw_WzB-tTR0SeZGPs93-UMZTmPoTIsuuOFErGtvEP7Ie3aQoZtK532FdauhlHEeKMKYKfqFOJRQumf2aqpujH1d3qbLtIeFPoOAZWkAC7mq78qyqJMUYWXmfvyA1gnBNd8DcfqRH2e5F_4rVQNRWJUYy3OMMkEfp6ezzg-MfR-rIXiUa1uQbYpzSnYB_iBPrANTgG30Hr7Qj-Rj0ACPeKpAMdRozacQHyKc5r1VfXGqV1IpVDDjcCnD1EfeYY8rCRLYsPcjgxV0Fala-ZMSZ-XRR4OUWLZNHl-UxVTW3QQoz-DZn7kf0QDB8h9fKzEyuyZO8nqAbQJMQ0yhIo0eP7dyuUaHvRguhny1my16tXwEAKgrFjw8XWmprwzD79lTEEueruvpaifkOtNLUt1v7eL7Oyppocub5LK-E6eFmcJx3EbRIGN4H2--QXDlh16EnIMClh22_Syk0bZ7Ze4jsJD4w6cR7wbZRmwn5btT6fdLxYAqZpZ90vhUOQkpn2UH5MCRis9fCd9C63ODLmVghMhWagrJw1qsMQjQS3eANZlUzG1_EQ6BEc6nIHMM39X05v5KR7XUvnlQw_qBgGApU",
+    "data": null
+  }
+}
+2026-04-20 12:10:19,776 [INFO] ======================================================================
+[32m[2026-04-20 12:10:19 INFO] Steady state hypothesis: Preventive IAM deny policy blocks IMDS reconnaissance and downgrade attempts
+[32m[2026-04-20 12:10:19 INFO] Probe: Verify both ec2:DescribeInstances and ec2:ModifyInstanceMetadataOptions are denied and IMDS remains IMDSv2-enforced with hop-limit 1
+2026-04-20 12:10:19,779 [INFO] ======================================================================
+2026-04-20 12:10:19,779 [INFO] HYPOTHESIS VERIFICATION: Preventive Probe SCE 1.8
+2026-04-20 12:10:19,779 [INFO] ======================================================================
+2026-04-20 12:10:19,779 [INFO] CHECK 1 PASS: Step 1.2 (DescribeInstances) was DENIED by preventive control.
+2026-04-20 12:10:19,779 [INFO] CHECK 2 PASS: Step 1.7 (ModifyInstanceMetadataOptions) was DENIED by preventive control.
+2026-04-20 12:10:19,779 [INFO] CHECK 3: Verifying EC2 instance IMDS configuration is unchanged...
+2026-04-20 12:10:20,522 [INFO]   Current IMDS: HttpTokens=required, HopLimit=1, HttpEndpoint=enabled
+2026-04-20 12:10:20,522 [INFO] CHECK 3 PASS: IMDS configuration intact. IMDSv2 enforced (HttpTokens=required), HopLimit=1.
+2026-04-20 12:10:20,522 [INFO] ======================================================================
+2026-04-20 12:10:20,522 [INFO] HYPOTHESIS VERIFICATION RESULTS:
+2026-04-20 12:10:20,522 [INFO]   step_1_2_denied: PASS
+2026-04-20 12:10:20,522 [INFO]   step_1_7_denied: PASS
+2026-04-20 12:10:20,522 [INFO]   imds_intact: PASS
+2026-04-20 12:10:20,522 [INFO] OVERALL: PASS
+2026-04-20 12:10:20,522 [INFO] ======================================================================
+[32m[2026-04-20 12:10:20 INFO] Steady state hypothesis is met!
+[32m[2026-04-20 12:10:20 INFO] Let's rollback...
+[32m[2026-04-20 12:10:20 INFO] Rollback: Delete CloudFormation stack and all experiment resources (EC2 instance, IAM role, policies, security group)
+[32m[2026-04-20 12:10:20 INFO] Action: Delete CloudFormation stack and all experiment resources (EC2 instance, IAM role, policies, security group)
+2026-04-20 12:10:20,523 [INFO] ======================================================================
+2026-04-20 12:10:20,523 [INFO] ROLLBACK: Deleting stack sce-experiment-1-8-1776679765
+2026-04-20 12:10:20,523 [INFO] ======================================================================
+2026-04-20 12:10:21,526 [INFO] Reverted IMDS settings on i-0c29fb694ab0777ef as safety measure.
+2026-04-20 12:10:22,452 [INFO] Initiated instance termination for i-0c29fb694ab0777ef.
+2026-04-20 12:10:23,195 [INFO] Stack deletion initiated for sce-experiment-1-8-1776679765.
+2026-04-20 12:10:23,771 [INFO] Stack sce-experiment-1-8-1776679765 status: DELETE_IN_PROGRESS
+2026-04-20 12:10:39,362 [INFO] Stack sce-experiment-1-8-1776679765 status: DELETE_IN_PROGRESS
+2026-04-20 12:10:54,916 [INFO] ROLLBACK: Stack sce-experiment-1-8-1776679765 successfully deleted.
+[32m[2026-04-20 12:10:54 INFO] Experiment ended with status: completed
+
+
+RETURN CODE: 0

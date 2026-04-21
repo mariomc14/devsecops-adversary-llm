@@ -1,0 +1,90 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-04-21 10:54:28 INFO] Validating the experiment's syntax
+[32m[2026-04-21 10:54:28 INFO] Experiment looks valid
+[32m[2026-04-21 10:54:28 INFO] Running experiment: SCE 2.3 Preventive Probe: IMDS Credential Exfiltration Prevention Validation
+[32m[2026-04-21 10:54:28 INFO] Steady-state strategy: after-method-only
+[32m[2026-04-21 10:54:28 INFO] Rollbacks strategy: default
+[32m[2026-04-21 10:54:28 INFO] Playing your experiment's method now...
+[32m[2026-04-21 10:54:28 INFO] Action: Provision VPC, EC2 instance with IMDSv2 enforced and hop limit 1, attacker IAM role with Deny on ModifyInstanceMetadataOptions, and SSM endpoints
+2026-04-21 10:54:28,628 [INFO] ============================================================
+2026-04-21 10:54:28,628 [INFO] steady_state()  stack=sce-23p-1776761668  ts=1776761668
+2026-04-21 10:54:28,628 [INFO] ============================================================
+2026-04-21 10:54:28,637 [INFO] Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-21 10:54:29,326 [INFO] Creating CFN stack…
+2026-04-21 10:54:29,814 [INFO] Stack sce-23p-1776761668 → CREATE_IN_PROGRESS
+2026-04-21 10:54:45,381 [INFO] Stack sce-23p-1776761668 → CREATE_IN_PROGRESS
+2026-04-21 10:55:00,912 [INFO] Stack sce-23p-1776761668 → CREATE_IN_PROGRESS
+2026-04-21 10:55:16,444 [INFO] Stack sce-23p-1776761668 → CREATE_IN_PROGRESS
+2026-04-21 10:55:32,037 [INFO] Stack sce-23p-1776761668 → CREATE_IN_PROGRESS
+2026-04-21 10:55:47,569 [INFO] Stack sce-23p-1776761668 → CREATE_IN_PROGRESS
+2026-04-21 10:56:03,095 [INFO] Stack sce-23p-1776761668 → CREATE_IN_PROGRESS
+2026-04-21 10:56:18,628 [INFO] Stack sce-23p-1776761668 → CREATE_IN_PROGRESS
+2026-04-21 10:56:34,171 [INFO] Stack sce-23p-1776761668 → CREATE_IN_PROGRESS
+2026-04-21 10:56:49,703 [INFO] Stack sce-23p-1776761668 → CREATE_IN_PROGRESS
+2026-04-21 10:57:05,220 [INFO] Stack sce-23p-1776761668 → CREATE_IN_PROGRESS
+2026-04-21 10:57:20,762 [INFO] Stack sce-23p-1776761668 → CREATE_COMPLETE
+2026-04-21 10:57:20,903 [INFO] Instance=i-06582534cebe19088  AttackerRole=arn:aws:iam::396608802942:role/sce-atk-1776761668
+2026-04-21 10:57:21,566 [INFO] Instance running: HttpTokens=required HopLimit=1
+2026-04-21 10:57:21,566 [INFO] Waiting for IAM role propagation…
+2026-04-21 10:57:22,118 [INFO] Attacker role assumable.
+2026-04-21 10:59:08,679 [INFO] Instance i-06582534cebe19088 is SSM-managed (Online).
+2026-04-21 10:59:08,680 [INFO] steady_state() done.
+[32m[2026-04-21 10:59:08 INFO] Action: Execute attack steps 1.2 (T1580 enumerate IMDS config), 1.7 (T1562.001 attempt IMDS downgrade), and 2.2 (T1552.005 attempt credential exfiltration via IMDS)
+2026-04-21 10:59:08,683 [INFO] ============================================================
+2026-04-21 10:59:08,683 [INFO] attack()
+2026-04-21 10:59:08,683 [INFO] ============================================================
+2026-04-21 10:59:08,683 [INFO] — Step 1.2  T1580  Cloud Infrastructure Discovery —
+2026-04-21 10:59:09,927 [INFO]   HttpTokens=required  HopLimit=1  Endpoint=enabled  State=applied
+2026-04-21 10:59:09,927 [INFO] — Step 1.7  T1562.001  Impair Defenses —
+2026-04-21 10:59:11,066 [INFO]   Step 1.7 DENIED (UnauthorizedOperation) – preventive control held.
+2026-04-21 10:59:11,067 [INFO] — Step 2.2  T1552.005  Unsecured Credentials: IMDS —
+2026-04-21 10:59:11,666 [INFO]   SSM command sent: 774a121d-7b1b-45ed-ab19-83e19fcb41b0
+2026-04-21 10:59:17,032 [INFO]   SSM status=Success stdout=TOKEN_HTTP=200 V1_HTTP=401
+2026-04-21 10:59:17,033 [INFO]   IMDSv1 GET returned 401 – blocked by IMDSv2.
+2026-04-21 10:59:17,035 [INFO] attack() done.
+2026-04-21 10:59:17,036 [INFO]   Step 1.2: {'success': True, 'tokens': 'required', 'hop': 1}
+2026-04-21 10:59:17,036 [INFO]   Step 1.7: {'success': False, 'blocked': True, 'code': 'UnauthorizedOperation'}
+2026-04-21 10:59:17,037 [INFO]   Step 2.2: {'success': False, 'blocked': True, 'detail': 'imdsv2_401', 'stdout': 'TOKEN_HTTP=200 V1_HTTP=401'}
+[32m[2026-04-21 10:59:17 INFO] Steady state hypothesis: Preventive controls block IMDS downgrade and credential exfiltration on banking EC2 instances
+[32m[2026-04-21 10:59:17 INFO] Probe: Verify IMDS modification denied and credential exfiltration blocked by IMDSv2 enforcement and hop limit 1
+2026-04-21 10:59:17,055 [INFO] ============================================================
+2026-04-21 10:59:17,055 [INFO] hypothesis_verification()
+2026-04-21 10:59:17,055 [INFO] ============================================================
+2026-04-21 10:59:17,055 [INFO] Check 1 – Enumeration (1.2): success=True
+2026-04-21 10:59:17,057 [INFO]   ✓ IMDS config confirmed: tokens=required, hop=1
+2026-04-21 10:59:17,058 [INFO] Check 2 – IMDS Modify (1.7): blocked=True
+2026-04-21 10:59:17,059 [INFO]   ✓ Preventive control blocked IMDS downgrade (code=UnauthorizedOperation)
+2026-04-21 10:59:17,060 [INFO] Check 3 – Credential Exfiltration (2.2): blocked=True detail=imdsv2_401
+2026-04-21 10:59:17,061 [INFO]   ✓ Credential exfiltration prevented
+2026-04-21 10:59:17,062 [INFO] Final check – confirming IMDS config unchanged…
+2026-04-21 10:59:17,740 [INFO]   ✓ IMDS still enforced: tokens=required hop=1
+2026-04-21 10:59:17,740 [INFO] ============================================================
+2026-04-21 10:59:17,740 [INFO] RESULT: PASSED  (4/4 checks passed)
+2026-04-21 10:59:17,740 [INFO] ============================================================
+[32m[2026-04-21 10:59:17 INFO] Steady state hypothesis is met!
+[32m[2026-04-21 10:59:17 INFO] Let's rollback...
+[32m[2026-04-21 10:59:17 INFO] Rollback: Delete CloudFormation stack and all experiment resources (VPC, EC2, IAM roles, VPC endpoints, security groups)
+[32m[2026-04-21 10:59:17 INFO] Action: Delete CloudFormation stack and all experiment resources (VPC, EC2, IAM roles, VPC endpoints, security groups)
+2026-04-21 10:59:17,741 [INFO] ============================================================
+2026-04-21 10:59:17,741 [INFO] rollback()
+2026-04-21 10:59:17,741 [INFO] ============================================================
+2026-04-21 10:59:18,467 [INFO] Stack deletion initiated: sce-23p-1776761668
+2026-04-21 10:59:18,631 [INFO] Stack sce-23p-1776761668 → DELETE_IN_PROGRESS
+2026-04-21 10:59:34,213 [INFO] Stack sce-23p-1776761668 → DELETE_IN_PROGRESS
+2026-04-21 10:59:49,794 [INFO] Stack sce-23p-1776761668 → DELETE_IN_PROGRESS
+2026-04-21 11:00:05,326 [INFO] Stack sce-23p-1776761668 → DELETE_IN_PROGRESS
+2026-04-21 11:00:21,098 [INFO] Stack sce-23p-1776761668 → DELETE_IN_PROGRESS
+2026-04-21 11:00:36,637 [INFO] Stack sce-23p-1776761668 → DELETE_IN_PROGRESS
+2026-04-21 11:00:52,276 [INFO] Stack sce-23p-1776761668 → DELETE_IN_PROGRESS
+2026-04-21 11:01:07,811 [INFO] Stack sce-23p-1776761668 → DELETE_IN_PROGRESS
+2026-04-21 11:01:23,366 [INFO] Stack sce-23p-1776761668 → DELETE_IN_PROGRESS
+2026-04-21 11:01:38,923 [INFO] Stack sce-23p-1776761668 → DELETE_IN_PROGRESS
+2026-04-21 11:01:54,488 [INFO] Stack sce-23p-1776761668 → DELETE_IN_PROGRESS
+2026-04-21 11:02:10,034 [INFO] rollback() done.
+[32m[2026-04-21 11:02:10 INFO] Experiment ended with status: completed
+
+
+RETURN CODE: 0

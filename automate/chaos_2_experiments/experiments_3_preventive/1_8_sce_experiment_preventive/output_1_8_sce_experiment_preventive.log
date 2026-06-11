@@ -1,0 +1,60 @@
+STDOUT:
+2026-04-11 21:35:09,746 [INFO] Using AWS region: us-east-1
+2026-04-11 21:35:09,759 [INFO] Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-11 21:35:10,320 [INFO] AWS Account ID: 941377112071
+2026-04-11 21:35:10,322 [INFO] Creating CloudFormation stack: sce-experiment-1775961309
+2026-04-11 21:35:11,312 [INFO] Stack creation initiated: arn:aws:cloudformation:us-east-1:941377112071:stack/sce-experiment-1775961309/b5971b10-3618-11f1-bdeb-1201013652f7
+2026-04-11 21:35:11,437 [INFO] Stack sce-experiment-1775961309 status: CREATE_IN_PROGRESS
+2026-04-11 21:35:21,868 [INFO] Stack sce-experiment-1775961309 status: CREATE_IN_PROGRESS
+2026-04-11 21:35:32,383 [INFO] Stack sce-experiment-1775961309 status: CREATE_IN_PROGRESS
+2026-04-11 21:35:42,850 [INFO] Stack sce-experiment-1775961309 status: CREATE_IN_PROGRESS
+2026-04-11 21:35:53,294 [INFO] Stack sce-experiment-1775961309 status: CREATE_IN_PROGRESS
+2026-04-11 21:36:03,721 [INFO] Stack sce-experiment-1775961309 status: CREATE_IN_PROGRESS
+2026-04-11 21:36:14,251 [INFO] Stack sce-experiment-1775961309 status: CREATE_IN_PROGRESS
+2026-04-11 21:36:24,690 [INFO] Stack sce-experiment-1775961309 status: CREATE_IN_PROGRESS
+2026-04-11 21:36:35,190 [INFO] Stack sce-experiment-1775961309 status: CREATE_IN_PROGRESS
+2026-04-11 21:36:45,641 [INFO] Stack sce-experiment-1775961309 status: CREATE_IN_PROGRESS
+2026-04-11 21:36:56,165 [INFO] Stack sce-experiment-1775961309 status: CREATE_COMPLETE
+2026-04-11 21:36:56,166 [INFO] Stack sce-experiment-1775961309 created successfully
+2026-04-11 21:36:56,283 [INFO] CodeBuild project: sce-build-project-1775961309
+2026-04-11 21:36:56,286 [INFO] Executing attack: Starting malicious build
+2026-04-11 21:36:56,944 [INFO] Malicious build started: sce-build-project-1775961309:b21d48ce-3927-463e-b964-eee6c69e555d, status: IN_PROGRESS
+2026-04-11 21:37:02,066 [INFO] Build status (attempt 1): STOPPED
+2026-04-11 21:37:02,067 [INFO] Build was stopped by preventive control: STOPPED
+2026-04-11 21:37:02,070 [INFO] Verifying hypothesis: Preventive control blocked malicious build
+2026-04-11 21:37:02,543 [INFO] Final build status: STOPPED
+2026-04-11 21:37:02,543 [INFO] ✓ Build was successfully stopped by preventive control
+2026-04-11 21:37:08,106 [INFO] Found 1 log streams for Lambda function
+2026-04-11 21:37:08,277 [INFO] ✓ Lambda preventive control was invoked: Suspicious build detected: arn:aws:codebuild:us-east-1:941377112071:build/sce-build-project-17759613
+2026-04-11 21:37:08,801 [INFO] EventBridge rule state: ENABLED
+2026-04-11 21:37:08,801 [INFO] ✓ EventBridge rule is enabled
+2026-04-11 21:37:08,801 [INFO] ✓ HYPOTHESIS VERIFIED: Preventive control successfully blocked malicious build
+2026-04-11 21:37:08,810 [INFO] Rolling back: Deleting stack sce-experiment-1775961309
+2026-04-11 21:37:09,542 [INFO] Stack deletion initiated: sce-experiment-1775961309
+2026-04-11 21:37:09,664 [INFO] Stack sce-experiment-1775961309 status: DELETE_IN_PROGRESS
+2026-04-11 21:37:20,175 [INFO] Stack sce-experiment-1775961309 status: DELETE_IN_PROGRESS
+2026-04-11 21:37:30,619 [INFO] Stack sce-experiment-1775961309 status: DELETE_IN_PROGRESS
+2026-04-11 21:37:41,076 [INFO] Stack sce-experiment-1775961309 status: DELETE_IN_PROGRESS
+2026-04-11 21:37:51,517 [INFO] Stack sce-experiment-1775961309 status: DELETE_IN_PROGRESS
+2026-04-11 21:38:01,979 [INFO] Stack sce-experiment-1775961309 deleted successfully
+
+
+STDERR:
+[32m[2026-04-11 21:35:09 INFO] Validating the experiment's syntax
+[32m[2026-04-11 21:35:09 INFO] Experiment looks valid
+[32m[2026-04-11 21:35:09 INFO] Running experiment: SCE Experiment 1.8 - Preventive Control Against Malicious Builds
+[32m[2026-04-11 21:35:09 INFO] Steady-state strategy: after-method-only
+[32m[2026-04-11 21:35:09 INFO] Rollbacks strategy: default
+[32m[2026-04-11 21:35:09 INFO] Playing your experiment's method now...
+[32m[2026-04-11 21:35:09 INFO] Action: deploy-codebuild-with-preventive-controls
+[32m[2026-04-11 21:36:56 INFO] Action: start-malicious-build
+[32m[2026-04-11 21:37:02 INFO] Steady state hypothesis: Preventive control blocks malicious builds before execution
+[32m[2026-04-11 21:37:02 INFO] Probe: verify-preventive-control-blocked-build
+[32m[2026-04-11 21:37:08 INFO] Steady state hypothesis is met!
+[32m[2026-04-11 21:37:08 INFO] Let's rollback...
+[32m[2026-04-11 21:37:08 INFO] Rollback: cleanup-experiment-resources
+[32m[2026-04-11 21:37:08 INFO] Action: cleanup-experiment-resources
+[32m[2026-04-11 21:38:01 INFO] Experiment ended with status: completed
+
+
+RETURN CODE: 0

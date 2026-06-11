@@ -1,0 +1,58 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-04-11 21:46:19 INFO] Validating the experiment's syntax
+[32m[2026-04-11 21:46:19 INFO] Experiment looks valid
+[32m[2026-04-11 21:46:19 INFO] Running experiment: SCE 1.8 — Prevent Malicious CodeBuild Execution (Node 1.7: Start Malicious Build)
+[32m[2026-04-11 21:46:19 INFO] Steady-state strategy: after-method-only
+[32m[2026-04-11 21:46:19 INFO] Rollbacks strategy: default
+[32m[2026-04-11 21:46:19 INFO] Playing your experiment's method now...
+[32m[2026-04-11 21:46:19 INFO] Action: deploy-malicious-build-experiment-stack
+2026-04-11 21:46:19,428 [INFO] sce.1_8.preventive — === steady_state() — deploying stack: sce-experiment-1775961979 in us-east-1 ===
+2026-04-11 21:46:19,431 [INFO] botocore.credentials — Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-11 21:46:20,055 [INFO] sce.1_8.preventive — Creating stack sce-experiment-1775961979 …
+2026-04-11 21:46:20,547 [INFO] sce.1_8.preventive — Stack sce-experiment-1775961979 status: CREATE_IN_PROGRESS
+2026-04-11 21:46:35,992 [INFO] sce.1_8.preventive — Stack sce-experiment-1775961979 status: CREATE_IN_PROGRESS
+2026-04-11 21:46:51,526 [INFO] sce.1_8.preventive — Stack sce-experiment-1775961979 status: CREATE_COMPLETE
+2026-04-11 21:46:51,757 [INFO] sce.1_8.preventive — CodeBuild project : sce-18-malicious-1775961979
+2026-04-11 21:46:51,757 [INFO] sce.1_8.preventive — Attack role ARN   : arn:aws:iam::941377112071:role/sce-18-attack-1775961979
+2026-04-11 21:46:51,758 [INFO] sce.1_8.preventive — === steady_state() complete ===
+[32m[2026-04-11 21:46:51 INFO] Action: attempt-start-malicious-build-via-restricted-role
+2026-04-11 21:46:51,762 [INFO] sce.1_8.preventive — === attack() — attempting StartBuild via restricted role ===
+2026-04-11 21:46:51,780 [INFO] botocore.credentials — Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-11 21:46:51,858 [INFO] sce.1_8.preventive — Assuming attack role: arn:aws:iam::941377112071:role/sce-18-attack-1775961979
+2026-04-11 21:46:52,372 [INFO] sce.1_8.preventive — Assumed role successfully. Session: arn:aws:sts::941377112071:assumed-role/sce-18-attack-1775961979/sce18-attack-session
+2026-04-11 21:46:52,481 [INFO] sce.1_8.preventive — Calling codebuild:StartBuild on project: sce-18-malicious-1775961979
+2026-04-11 21:46:52,991 [INFO] sce.1_8.preventive — StartBuild returned AccessDeniedException (HTTP 400) — RequestId: 796ee94e-c5b0-4a09-98e4-88ebc913c720
+[32m[2026-04-11 21:46:52 INFO] Steady state hypothesis: An explicit IAM Deny policy blocks codebuild:StartBuild for the attack-simulation role
+[32m[2026-04-11 21:46:52 INFO] Probe: verify-startbuild-is-denied-by-iam-policy
+2026-04-11 21:46:52,997 [INFO] sce.1_8.preventive — === hypothesis_verification() ===
+2026-04-11 21:46:53,008 [INFO] botocore.credentials — Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-11 21:46:53,188 [INFO] sce.1_8.preventive — Check 1: Inspecting inline policies on role sce-18-attack-1775961979
+2026-04-11 21:46:53,715 [INFO] sce.1_8.preventive — Inline policies found: ['deny-startbuild']
+2026-04-11 21:46:53,828 [INFO] sce.1_8.preventive — ✓ Explicit Deny on codebuild:StartBuild found in policy 'deny-startbuild'
+2026-04-11 21:46:53,828 [INFO] sce.1_8.preventive — Check 2: Running IAM policy simulation for codebuild:StartBuild
+2026-04-11 21:46:54,128 [INFO] sce.1_8.preventive — IAM simulator decision for codebuild:StartBuild: explicitDeny
+2026-04-11 21:46:54,128 [INFO] sce.1_8.preventive — ✓ Simulator confirms Deny for codebuild:StartBuild.
+2026-04-11 21:46:54,128 [INFO] sce.1_8.preventive — Check 3: Verifying no builds were started on sce-18-malicious-1775961979
+2026-04-11 21:46:54,570 [INFO] sce.1_8.preventive — Build IDs on project: []
+2026-04-11 21:46:54,570 [INFO] sce.1_8.preventive — ✓ No builds found — StartBuild was never executed.
+2026-04-11 21:46:54,570 [INFO] sce.1_8.preventive — === hypothesis_verification() → ALL checks PASSED → True ===
+[32m[2026-04-11 21:46:54 INFO] Steady state hypothesis is met!
+[32m[2026-04-11 21:46:54 INFO] Let's rollback...
+[32m[2026-04-11 21:46:54 INFO] Rollback: teardown-malicious-build-experiment-stack
+[32m[2026-04-11 21:46:54 INFO] Action: teardown-malicious-build-experiment-stack
+2026-04-11 21:46:54,575 [INFO] sce.1_8.preventive — === rollback() — deleting stack: sce-experiment-1775961979 ===
+2026-04-11 21:46:54,585 [INFO] botocore.credentials — Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-11 21:46:54,986 [INFO] sce.1_8.preventive — Emptying S3 bucket: sce-18-src-1775961979
+2026-04-11 21:46:55,637 [INFO] sce.1_8.preventive — Bucket sce-18-src-1775961979 emptied.
+2026-04-11 21:46:56,225 [INFO] sce.1_8.preventive — delete_stack called for sce-experiment-1775961979
+2026-04-11 21:46:56,346 [INFO] sce.1_8.preventive — Stack sce-experiment-1775961979 status: DELETE_IN_PROGRESS
+2026-04-11 21:47:11,829 [INFO] sce.1_8.preventive — Stack sce-experiment-1775961979 no longer exists — DELETE_COMPLETE confirmed.
+2026-04-11 21:47:11,829 [INFO] sce.1_8.preventive — Stack sce-experiment-1775961979 deleted successfully.
+2026-04-11 21:47:11,829 [INFO] sce.1_8.preventive — === rollback() complete ===
+[32m[2026-04-11 21:47:11 INFO] Experiment ended with status: completed
+
+
+RETURN CODE: 0

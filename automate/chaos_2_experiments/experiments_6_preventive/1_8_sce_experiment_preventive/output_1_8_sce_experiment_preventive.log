@@ -1,0 +1,41 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-04-11 22:01:36 INFO] Validating the experiment's syntax
+[32m[2026-04-11 22:01:36 INFO] Experiment looks valid
+[32m[2026-04-11 22:01:36 INFO] Running experiment: SCE 1.8 - Preventive Control: Block Malicious CodeBuild Start
+[32m[2026-04-11 22:01:36 INFO] Steady-state strategy: after-method-only
+[32m[2026-04-11 22:01:36 INFO] Rollbacks strategy: default
+[32m[2026-04-11 22:01:36 INFO] Playing your experiment's method now...
+[32m[2026-04-11 22:01:36 INFO] Action: deploy-codebuild-project-and-preventive-iam-policy
+2026-04-11 22:01:36,393 [INFO] Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-11 22:01:36,952 [INFO] Account: 941377112071 | Region: us-east-1
+2026-04-11 22:01:37,450 [INFO] Creating stack sce-experiment-1775962896…
+2026-04-11 22:01:38,031 [INFO] Waiter not ready yet, retrying in 20s (attempt 1)…
+2026-04-11 22:01:58,489 [INFO] Waiter not ready yet, retrying in 40s (attempt 2)…
+2026-04-11 22:02:39,015 [INFO] Stack CREATE_COMPLETE.
+2026-04-11 22:02:39,151 [INFO] Project: sce-build-1775962896 | Attacker role: arn:aws:iam::941377112071:role/sce-attacker-1775962896
+2026-04-11 22:02:39,152 [INFO] Waiting for IAM role propagation…
+2026-04-11 22:02:39,662 [INFO] Attacker role is assumable.
+[32m[2026-04-11 22:02:39 INFO] Action: attempt-start-malicious-build-with-source-override
+2026-04-11 22:02:40,122 [INFO] Attempting malicious StartBuild on project 'sce-build-1775962896' with source override…
+2026-04-11 22:02:40,880 [WARNING] Malicious build was ALLOWED — build ID: sce-build-1775962896:9dc6002b-a00e-44ae-b74c-056e3639f858
+[32m[2026-04-11 22:02:40 INFO] Steady state hypothesis: Malicious build start is blocked by preventive IAM policy
+[32m[2026-04-11 22:02:40 INFO] Probe: verify-malicious-build-was-prevented
+2026-04-11 22:02:40,996 [ERROR] ✗ Preventive control FAILED: malicious build was allowed to start.
+2026-04-11 22:02:41,475 [INFO] Builds found for project 'sce-build-1775962896': 1
+2026-04-11 22:02:41,609 [ERROR] ✗ Found malicious build: sce-build-1775962896:9dc6002b-a00e-44ae-b74c-056e3639f858 with source https://github.com/malicious-actor/evil-repo.git
+[31m[2026-04-11 22:02:41 CRITICAL] Steady state probe 'verify-malicious-build-was-prevented' is not in the given tolerance so failing this experiment
+[32m[2026-04-11 22:02:41 INFO] Let's rollback...
+[32m[2026-04-11 22:02:41 INFO] Rollback: delete-cloudformation-stack-and-all-resources
+[32m[2026-04-11 22:02:41 INFO] Action: delete-cloudformation-stack-and-all-resources
+2026-04-11 22:02:41,620 [INFO] Rolling back — deleting stack sce-experiment-1775962896…
+2026-04-11 22:02:43,031 [INFO] Stopped build sce-build-1775962896:9dc6002b-a00e-44ae-b74c-056e3639f858
+2026-04-11 22:02:43,458 [INFO] Waiter not ready yet, retrying in 20s (attempt 1)…
+2026-04-11 22:03:03,935 [INFO] Stack DELETE_COMPLETE.
+[32m[2026-04-11 22:03:03 INFO] Experiment ended with status: deviated
+[32m[2026-04-11 22:03:03 INFO] The steady-state has deviated, a weakness may have been discovered
+
+
+RETURN CODE: 1

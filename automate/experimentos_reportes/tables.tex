@@ -1,0 +1,813 @@
+
+\usepackage{xcolor} % añadir al preámbulo
+
+\begin{table*}[]
+\begin{tabular}{cll|ll|ll|ll|}
+\cline{4-9}
+\textbf{}                                           &                                                  &      & \multicolumn{2}{c|}{\textbf{Haiku}}                   & \multicolumn{2}{c|}{\textbf{Sonnet}}                 & \multicolumn{2}{c|}{\textbf{Opus}}                   \\ \cline{4-9} 
+\multicolumn{1}{l}{}                                &                                                  &      & \multicolumn{1}{c|}{3.5}   & \multicolumn{1}{c|}{4.5} & \multicolumn{1}{c|}{4.5}  & \multicolumn{1}{c|}{4.6} & \multicolumn{1}{c|}{4.5}  & \multicolumn{1}{c|}{4.6} \\ \hline
+\multicolumn{1}{|c|}{\multirow{6}{*}{Chaos Node 1}} & \multicolumn{1}{l|}{\multirow{2}{*}{Preventive}} & Pre  & \multicolumn{1}{l|}{100/1} & 100/1                    & \multicolumn{1}{l|}{100/1}& 100/1                    & \multicolumn{1}{l|}{100/1}& 100/1                    \\ \cline{3-9} 
+\multicolumn{1}{|c|}{}                              & \multicolumn{1}{l|}{}                            & Post & \multicolumn{1}{l|}{\textcolor{red}{0/10}}  & 100/9       & \multicolumn{1}{l|}{100/1}& 100/1                    & \multicolumn{1}{l|}{100/1}& 100/1                    \\ \cline{2-9} 
+\multicolumn{1}{|c|}{}                              & \multicolumn{1}{l|}{\multirow{2}{*}{Detective}}  & Pre  & \multicolumn{1}{l|}{100/1} & 100/1                    & \multicolumn{1}{l|}{100/1}& 100/2                    & \multicolumn{1}{l|}{100/1}& 100/1                    \\ \cline{3-9} 
+\multicolumn{1}{|c|}{}                              & \multicolumn{1}{l|}{}                            & Post & \multicolumn{1}{l|}{\textcolor{red}{50/6}} & 100/1        & \multicolumn{1}{l|}{100/1}& 100/2                    & \multicolumn{1}{l|}{100/2}& 100/1                    \\ \cline{2-9} 
+\multicolumn{1}{|c|}{}                              & \multicolumn{1}{l|}{\multirow{2}{*}{Reactive}}   & Pre  & \multicolumn{1}{l|}{100/2} & 100/1                    & \multicolumn{1}{l|}{100/1}& 100/1                    & \multicolumn{1}{l|}{100/1}& 100/1                    \\ \cline{3-9} 
+\multicolumn{1}{|c|}{}                              & \multicolumn{1}{l|}{}                            & Post & \multicolumn{1}{l|}{100/5} & \textcolor{red}{50/3}    & \multicolumn{1}{l|}{100/1}& 100/1                    & \multicolumn{1}{l|}{100/1}& 100/1                    \\ \hline
+\multicolumn{1}{|c|}{\multirow{6}{*}{Chaos Node 2}} & \multicolumn{1}{l|}{\multirow{2}{*}{Preventive}} & Pre  & \multicolumn{1}{l|}{100/1} & 80/1                     & \multicolumn{1}{l|}{100/1}& 100/1                    & \multicolumn{1}{l|}{100/1}& 85/1                     \\ \cline{3-9} 
+\multicolumn{1}{|c|}{}                              & \multicolumn{1}{l|}{}                            & Post & \multicolumn{1}{l|}{\textcolor{red}{0/10}}  & 100/6       & \multicolumn{1}{l|}{100/1}& 100/1                    & \multicolumn{1}{l|}{100/1}& 100/1                    \\ \cline{2-9} 
+\multicolumn{1}{|c|}{}                              & \multicolumn{1}{l|}{\multirow{2}{*}{Detective}}  & Pre  & \multicolumn{1}{l|}{100/1} & 100/1                    & \multicolumn{1}{l|}{100/1}& 80/1 (100/1)                     & \multicolumn{1}{l|}{100/1}& 100/1                    \\ \cline{3-9} 
+\multicolumn{1}{|c|}{}                              & \multicolumn{1}{l|}{}                            & Post & \multicolumn{1}{l|}{\textcolor{red}{0/10}}  & 100/6       & \multicolumn{1}{l|}{100/6}& 100/1                    & \multicolumn{1}{l|}{100/1}& 100/1                    \\ \cline{2-9} 
+\multicolumn{1}{|c|}{}                              & \multicolumn{1}{l|}{\multirow{2}{*}{Reactive}}   & Pre  & \multicolumn{1}{l|}{100/2} & 100/1                    & \multicolumn{1}{l|}{100/1}& 100/1                    & \multicolumn{1}{l|}{100/2}& 100/1                    \\ \cline{3-9} 
+\multicolumn{1}{|c|}{}                              & \multicolumn{1}{l|}{}                            & Post & \multicolumn{1}{l|}{\textcolor{red}{0/10}}  & 100/9      & \multicolumn{1}{l|}{100/1}& 100/1                    & \multicolumn{1}{l|}{100/2}& 100/1                    \\ \hline
+\end{tabular}
+\caption{Best result obtained for branch 1 with each LLM and number of attempts required. Threshold for Pre-execution metrics was fixed in 80. Threshold for Post-execution metrics was fixed in 80. Maximum 10 attempts per SCE experiment.}
+\label{tab:ConsolidatedResults}
+\end{table*}
+
+
+\documentclass[a4paper]{article}
+\usepackage{xcolor}
+\usepackage{multirow}
+\usepackage{booktabs}
+\usepackage{geometry}
+\usepackage{caption}
+\geometry{landscape, margin=1.5cm}
+
+% Command for red cells
+\newcommand{\red}[1]{\textcolor{red}{#1}}
+
+\begin{document}
+
+% ============================================================
+% CHAOS NODE 1
+% ============================================================
+
+% ------------------------------------------------------------
+% Chaos Node 1 - Preventive - Haiku 3.5
+% ------------------------------------------------------------
+\begin{table}[h]
+\centering
+\begin{tabular}{l|cccc|ccc|}
+\cline{2-8}
+& \multicolumn{4}{c|}{\textbf{Pre execution}} & \multicolumn{3}{c|}{\textbf{Post execution}} \\
+\cline{2-8}
+& \textbf{Total} & \textbf{F1} & \textbf{F2} & \textbf{F3} & \textbf{Total} & \textbf{F1} & \textbf{F2} \\
+\hline
+\textbf{Attempt 1}  & 100 & 100 & 100 & 100 & \red{0} & \red{0} & \red{0} \\
+\textbf{Attempt 2}  & 100 & 100 & 100 & 100 & \red{0} & \red{0} & \red{0} \\
+\textbf{Attempt 3}  & 100 & 100 & 100 & 100 & \red{0} & \red{0} & \red{0} \\
+\textbf{Attempt 4}  & 100 & 100 & 100 & 100 & \red{0} & \red{0} & \red{0} \\
+\textbf{Attempt 5}  & 100 & 100 & 100 & 100 & \red{0} & \red{0} & \red{0} \\
+\textbf{Attempt 6}  & 100 & 100 & 100 & 100 & \red{0} & \red{0} & \red{0} \\
+\textbf{Attempt 7}  & 100 & 100 & 100 & 100 & \red{0} & \red{0} & \red{0} \\
+\textbf{Attempt 8}  & 100 & 100 & 100 & 100 & \red{0} & \red{0} & \red{0} \\
+\textbf{Attempt 9}  & 100 & 100 & 100 & 100 & \red{0} & \red{0} & \red{0} \\
+\textbf{Attempt 10} & 100 & 100 & 100 & 100 & \red{0} & \red{0} & \red{0} \\
+\hline
+\end{tabular}
+\caption{Chaos Node 1 -- Preventive -- Haiku 3.5. Q\_pre threshold: 80. Q\_post threshold: 80.}
+\label{tab:cn1_preventive_haiku35}
+\end{table}
+
+\clearpage
+ 
+% ------------------------------------------------------------
+% Chaos Node 1 - Detective - Haiku 3.5
+% ------------------------------------------------------------
+\begin{table}[h]
+\centering
+\begin{tabular}{l|cccc|ccc|}
+\cline{2-8}
+& \multicolumn{4}{c|}{\textbf{Pre execution}} & \multicolumn{3}{c|}{\textbf{Post execution}} \\
+\cline{2-8}
+& \textbf{Total} & \textbf{F1} & \textbf{F2} & \textbf{F3} & \textbf{Total} & \textbf{F1} & \textbf{F2} \\
+\hline
+\textbf{Attempt 1}  & 100 & 100 & 100 & 100 & \red{0}   & \red{0}   & \red{0}   \\
+\textbf{Attempt 2}  & 100 & 100 & 100 & 100 & \red{0}   & \red{0}   & \red{0}   \\
+\textbf{Attempt 3}  & 100 & 100 & 100 & 100 & \red{0}   & \red{0}   & \red{0}   \\
+\textbf{Attempt 4}  & 100 & 100 & 100 & 100 & \red{0}   & \red{0}   & \red{0}   \\
+\textbf{Attempt 5}  & 100 & 100 & 100 & 100 & ---       & ---       & ---       \\
+\textbf{Attempt 6}  & 100 & 100 & 100 & 100 & \red{50}  & \red{100}  & \red{0}  \\
+\textbf{Attempt 7}  & 100 & 100 & 100 & 100 & \red{0}   & \red{0}   & \red{0}   \\
+\textbf{Attempt 8}  & 100 & 100 & 100 & 100 & \red{0}   & \red{0}   & \red{0}   \\
+\textbf{Attempt 9}  & 100 & 100 & 100 & 100 & \red{0}   & \red{0}   & \red{0}   \\
+\textbf{Attempt 10} & 100 & 100 & 100 & 100 & \red{0}   & \red{0}   & \red{0}   \\
+\hline
+\end{tabular}
+\caption{Chaos Node 1 -- Detective -- Haiku 3.5. Q\_pre threshold: 80. Q\_post threshold: 80.}
+\label{tab:cn1_detective_haiku35}
+\end{table}
+
+% ------------------------------------------------------------
+% Chaos Node 1 - Reactive - Haiku 3.5
+% ------------------------------------------------------------
+\begin{table}[h]
+\centering
+\begin{tabular}{l|cccc|ccc|}
+\cline{2-8}
+& \multicolumn{4}{c|}{\textbf{Pre execution}} & \multicolumn{3}{c|}{\textbf{Post execution}} \\
+\cline{2-8}
+& \textbf{Total} & \textbf{F1} & \textbf{F2} & \textbf{F3} & \textbf{Total} & \textbf{F1} & \textbf{F2} \\
+\hline
+\textbf{Attempt 1} & 100 & 100 & 100 & 100 & \red{50}  & \red{100}  & \red{0}  \\
+\textbf{Attempt 2} & 100 & 100 & 100 & 100 & \red{50}  & \red{100}  & \red{0}  \\
+\textbf{Attempt 3} & 100 & 100 & 100 & 100 & \red{75}  & \red{100}  & \red{50}  \\
+\textbf{Attempt 4} & 100 & 100 & 100 & 100 & \red{75}  & \red{100}  & \red{50}  \\
+\textbf{Attempt 5} & 100 & 100 & 100 & 100 & 100       & 100       & 100       \\
+\hline
+\end{tabular}
+\caption{Chaos Node 1 -- Reactive -- Haiku 3.5. Q\_pre threshold: 80. Q\_post threshold: 80.}
+\label{tab:cn1_reactive_haiku35}
+\end{table}
+
+% ------------------------------------------------------------
+% Chaos Node 1 - Preventive - Haiku 4.5
+% ------------------------------------------------------------
+\begin{table}[h]
+\centering
+\begin{tabular}{l|cccc|ccc|}
+\cline{2-8}
+& \multicolumn{4}{c|}{\textbf{Pre execution}} & \multicolumn{3}{c|}{\textbf{Post execution}} \\
+\cline{2-8}
+& \textbf{Total} & \textbf{F1} & \textbf{F2} & \textbf{F3} & \textbf{Total} & \textbf{F1} & \textbf{F2} \\
+\hline
+\textbf{Attempt 1} & 85   & 100 & 50  & 100 & \red{0}   & \red{0}   & \red{0}   \\
+\textbf{Attempt 2} & \red{40}  & 100 & \red{0} & \red{0} & ---  & ---       & ---       \\
+\textbf{Attempt 3} & 100  & 100 & 100 & 100 & \red{50}  & \red{50 (100)}  & \red{50 (0)}  \\
+\textbf{Attempt 4} & 100  & 100 & 100 & 100 & \red{50}  & \red{50 (100)}  & \red{50 (0)}  \\
+\textbf{Attempt 5} & \red{40}  & 100 & \red{0} & \red{0} & ---  & ---       & ---       \\
+\textbf{Attempt 6} & \red{40}  & 100 & \red{0} & \red{0} & ---  & ---       & ---       \\
+\textbf{Attempt 7} & 98.5 (100) & 100 & 100 & 95 (100) & \red{50} & \red{100} & \red{0} \\
+\textbf{Attempt 8} & \red{40}  & 100 & \red{0} & \red{0} & ---  & ---       & ---       \\
+\textbf{Attempt 9} & 100  & 100 & 100 & 100 & 100       & 100       & 100       \\
+\hline
+\end{tabular}
+\caption{Chaos Node 1 -- Preventive -- Haiku 4.5. Q\_pre threshold: 80. Q\_post threshold: 80.}
+\label{tab:cn1_preventive_haiku45}
+\end{table}
+
+% ------------------------------------------------------------
+% Chaos Node 1 - Detective - Haiku 4.5
+% ------------------------------------------------------------
+\begin{table}[h]
+\centering
+\begin{tabular}{l|cccc|ccc|}
+\cline{2-8}
+& \multicolumn{4}{c|}{\textbf{Pre execution}} & \multicolumn{3}{c|}{\textbf{Post execution}} \\
+\cline{2-8}
+& \textbf{Total} & \textbf{F1} & \textbf{F2} & \textbf{F3} & \textbf{Total} & \textbf{F1} & \textbf{F2} \\
+\hline
+\textbf{Attempt 1} & 100 & 100 & 100 & 100 & 100 & 100 & 100 \\
+\hline
+\end{tabular}
+\caption{Chaos Node 1 -- Detective -- Haiku 4.5. Q\_pre threshold: 80. Q\_post threshold: 80.}
+\label{tab:cn1_detective_haiku45}
+\end{table}
+
+\clearpage
+
+% ------------------------------------------------------------
+% Chaos Node 1 - Reactive - Haiku 4.5
+% ------------------------------------------------------------
+\begin{table}[h]
+\centering
+\begin{tabular}{l|cccc|ccc|}
+\cline{2-8}
+& \multicolumn{4}{c|}{\textbf{Pre execution}} & \multicolumn{3}{c|}{\textbf{Post execution}} \\
+\cline{2-8}
+& \textbf{Total} & \textbf{F1} & \textbf{F2} & \textbf{F3} & \textbf{Total} & \textbf{F1} & \textbf{F2} \\
+\hline
+\textbf{Attempt 1}  & 100      & 100 & 100     & 100     & \red{0}  & \red{0}  & \red{0}  \\
+\textbf{Attempt 2}  & 100      & 100 & 100     & 100     & \red{0}  & \red{0}  & \red{0}  \\
+\textbf{Attempt 3}  & 100      & 100 & 100     & 100     & \red{50} & \red{100} & \red{0} \\
+\textbf{Attempt 4}  & 100      & 100 & 100     & 100     & \red{0}  & \red{0}  & \red{0}  \\
+\textbf{Attempt 5}  & 100      & 100 & 100     & 100     & \red{0}  & \red{0}  & \red{0}  \\
+\textbf{Attempt 6}  & 100      & 100 & 100     & 100     & \red{50} & \red{100} & \red{0} \\
+\textbf{Attempt 7}  & \red{40} & 100 & \red{0} & \red{0} & ---      & ---      & ---      \\
+\textbf{Attempt 8}  & 100      & 100 & 100     & 100     & \red{50} & \red{100} & \red{0} \\
+\textbf{Attempt 9}  & 100      & 100 & 100     & 100     & \red{50} & \red{100} & \red{0} \\
+\textbf{Attempt 10} & 100      & 100 & 100     & 100     & \red{50} & \red{100} & \red{0} \\
+\hline
+\end{tabular}
+\caption{Chaos Node 1 -- Reactive -- Haiku 4.5. Q\_pre threshold: 80. Q\_post threshold: 80.}
+\label{tab:cn1_reactive_haiku45}
+\end{table}
+
+
+% ------------------------------------------------------------
+% Chaos Node 1 - Preventive - Sonnet 4.5
+% ------------------------------------------------------------
+\begin{table}[h]
+\centering
+\begin{tabular}{l|cccc|ccc|}
+\cline{2-8}
+& \multicolumn{4}{c|}{\textbf{Pre execution}} & \multicolumn{3}{c|}{\textbf{Post execution}} \\
+\cline{2-8}
+& \textbf{Total} & \textbf{F1} & \textbf{F2} & \textbf{F3} & \textbf{Total} & \textbf{F1} & \textbf{F2} \\
+\hline
+\textbf{Attempt 1} & 100 & 100 & 100 & 100 & 100 & 100 & 100 \\
+\hline
+\end{tabular}
+\caption{Chaos Node 1 -- Preventive -- Sonnet 4.5. Q\_pre threshold: 80. Q\_post threshold: 80.}
+\label{tab:cn1_preventive_sonnet45}
+\end{table}
+
+% ------------------------------------------------------------
+% Chaos Node 1 - Detective - Sonnet 4.5
+% ------------------------------------------------------------
+\begin{table}[h]
+\centering
+\begin{tabular}{l|cccc|ccc|}
+\cline{2-8}
+& \multicolumn{4}{c|}{\textbf{Pre execution}} & \multicolumn{3}{c|}{\textbf{Post execution}} \\
+\cline{2-8}
+& \textbf{Total} & \textbf{F1} & \textbf{F2} & \textbf{F3} & \textbf{Total} & \textbf{F1} & \textbf{F2} \\
+\hline
+\textbf{Attempt 1} & 100 & 100 & 100 & 100 & 100 & 100 & 100 \\
+\hline
+\end{tabular}
+\caption{Chaos Node 1 -- Detective -- Sonnet 4.5. Q\_pre threshold: 80. Q\_post threshold: 80.}
+\label{tab:cn1_detective_sonnet45}
+\end{table}
+
+% ------------------------------------------------------------
+% Chaos Node 1 - Reactive - Sonnet 4.5
+% ------------------------------------------------------------
+\begin{table}[h]
+\centering
+\begin{tabular}{l|cccc|ccc|}
+\cline{2-8}
+& \multicolumn{4}{c|}{\textbf{Pre execution}} & \multicolumn{3}{c|}{\textbf{Post execution}} \\
+\cline{2-8}
+& \textbf{Total} & \textbf{F1} & \textbf{F2} & \textbf{F3} & \textbf{Total} & \textbf{F1} & \textbf{F2} \\
+\hline
+\textbf{Attempt 1} & 100 & 100 & 100 & 100 & 100 & 100 & 100 \\
+\hline
+\end{tabular}
+\caption{Chaos Node 1 -- Reactive -- Sonnet 4.5. Q\_pre threshold: 80. Q\_post threshold: 80.}
+\label{tab:cn1_reactive_sonnet45}
+\end{table}
+
+\clearpage
+
+% ------------------------------------------------------------
+% Chaos Node 1 - Preventive - Sonnet 4.6
+% ------------------------------------------------------------
+\begin{table}[h]
+\centering
+\begin{tabular}{l|cccc|ccc|}
+\cline{2-8}
+& \multicolumn{4}{c|}{\textbf{Pre execution}} & \multicolumn{3}{c|}{\textbf{Post execution}} \\
+\cline{2-8}
+& \textbf{Total} & \textbf{F1} & \textbf{F2} & \textbf{F3} & \textbf{Total} & \textbf{F1} & \textbf{F2} \\
+\hline
+\textbf{Attempt 1} & 100 & 100 & 100 & 100 & 100 & 100 & 100 \\
+\hline
+\end{tabular}
+\caption{Chaos Node 1 -- Preventive -- Sonnet 4.6. Q\_pre threshold: 80. Q\_post threshold: 80.}
+\label{tab:cn1_preventive_sonnet46}
+\end{table}
+
+% ------------------------------------------------------------
+% Chaos Node 1 - Detective - Sonnet 4.6
+% ------------------------------------------------------------
+\begin{table}[h]
+\centering
+\begin{tabular}{l|cccc|ccc|}
+\cline{2-8}
+& \multicolumn{4}{c|}{\textbf{Pre execution}} & \multicolumn{3}{c|}{\textbf{Post execution}} \\
+\cline{2-8}
+& \textbf{Total} & \textbf{F1} & \textbf{F2} & \textbf{F3} & \textbf{Total} & \textbf{F1} & \textbf{F2} \\
+\hline
+\textbf{Attempt 1}  & \red{40} & 100 & \red{0} & \red{0} & ---      & ---      & ---      \\
+\textbf{Attempt 2} & 100 & 100 & 100 & 100 & 100 & 100 & 100 \\
+\hline
+\end{tabular}
+\caption{Chaos Node 1 -- Detective -- Sonnet 4.6. Q\_pre threshold: 80. Q\_post threshold: 80.}
+\label{tab:cn1_detective_sonnet46}
+\end{table}
+
+% ------------------------------------------------------------
+% Chaos Node 1 - Reactive - Sonnet 4.6
+% ------------------------------------------------------------
+\begin{table}[h]
+\centering
+\begin{tabular}{l|cccc|ccc|}
+\cline{2-8}
+& \multicolumn{4}{c|}{\textbf{Pre execution}} & \multicolumn{3}{c|}{\textbf{Post execution}} \\
+\cline{2-8}
+& \textbf{Total} & \textbf{F1} & \textbf{F2} & \textbf{F3} & \textbf{Total} & \textbf{F1} & \textbf{F2} \\
+\hline
+\textbf{Attempt 1} & 100 & 100 & 100 & 100 & 100 & 100 & 100 \\
+\hline
+\end{tabular}
+\caption{Chaos Node 1 -- Reactive -- Sonnet 4.6. Q\_pre threshold: 80. Q\_post threshold: 80.}
+\label{tab:cn1_reactive_sonnet46}
+\end{table}
+
+% ------------------------------------------------------------
+% Chaos Node 1 - Preventive - Opus 4.5
+% ------------------------------------------------------------
+\begin{table}[h]
+\centering
+\begin{tabular}{l|cccc|ccc|}
+\cline{2-8}
+& \multicolumn{4}{c|}{\textbf{Pre execution}} & \multicolumn{3}{c|}{\textbf{Post execution}} \\
+\cline{2-8}
+& \textbf{Total} & \textbf{F1} & \textbf{F2} & \textbf{F3} & \textbf{Total} & \textbf{F1} & \textbf{F2} \\
+\hline
+\textbf{Attempt 1} & 100 & 100 & 100 & 100 & 100 & 100 & 100 \\
+\hline
+\end{tabular}
+\caption{Chaos Node 1 -- Preventive -- Opus 4.5. Q\_pre threshold: 80. Q\_post threshold: 80.}
+\label{tab:cn1_preventive_opus45}
+\end{table}
+
+\clearpage
+
+% ------------------------------------------------------------
+% Chaos Node 1 - Detective - Opus 4.5
+% ------------------------------------------------------------
+\begin{table}[h]
+\centering
+\begin{tabular}{l|cccc|ccc|}
+\cline{2-8}
+& \multicolumn{4}{c|}{\textbf{Pre execution}} & \multicolumn{3}{c|}{\textbf{Post execution}} \\
+\cline{2-8}
+& \textbf{Total} & \textbf{F1} & \textbf{F2} & \textbf{F3} & \textbf{Total} & \textbf{F1} & \textbf{F2} \\
+\hline
+\textbf{Attempt 1} & 100 & 100 & 100 & 100 & \red{0} & \red{0} & \red{0} \\
+\textbf{Attempt 2} & 100 & 100 & 100 & 100 & 100 & 100 & 100 \\
+\hline
+\end{tabular}
+\caption{Chaos Node 1 -- Detective -- Opus 4.5. Q\_pre threshold: 80. Q\_post threshold: 80.}
+\label{tab:cn1_detective_opus45}
+\end{table}
+
+% ------------------------------------------------------------
+% Chaos Node 1 - Reactive - Opus 4.5
+% ------------------------------------------------------------
+\begin{table}[h]
+\centering
+\begin{tabular}{l|cccc|ccc|}
+\cline{2-8}
+& \multicolumn{4}{c|}{\textbf{Pre execution}} & \multicolumn{3}{c|}{\textbf{Post execution}} \\
+\cline{2-8}
+& \textbf{Total} & \textbf{F1} & \textbf{F2} & \textbf{F3} & \textbf{Total} & \textbf{F1} & \textbf{F2} \\
+\hline
+\textbf{Attempt 1} & 100 & 100 & 100 & 100 & 100 & 100 & 100 \\
+\hline
+\end{tabular}
+\caption{Chaos Node 1 -- Reactive -- Opus 4.5. Q\_pre threshold: 80. Q\_post threshold: 80.}
+\label{tab:cn1_reactive_opus45}
+\end{table}
+
+% ------------------------------------------------------------
+% Chaos Node 1 - Preventive - Opus 4.6
+% ------------------------------------------------------------
+\begin{table}[h]
+\centering
+\begin{tabular}{l|cccc|ccc|}
+\cline{2-8}
+& \multicolumn{4}{c|}{\textbf{Pre execution}} & \multicolumn{3}{c|}{\textbf{Post execution}} \\
+\cline{2-8}
+& \textbf{Total} & \textbf{F1} & \textbf{F2} & \textbf{F3} & \textbf{Total} & \textbf{F1} & \textbf{F2} \\
+\hline
+\textbf{Attempt 1} & 100 & 100 & 100 & 100 & 100 & 100 & 100 \\
+\hline
+\end{tabular}
+\caption{Chaos Node 1 -- Preventive -- Opus 4.6. Q\_pre threshold: 80. Q\_post threshold: 80.}
+\label{tab:cn1_preventive_opus46}
+\end{table}
+
+% ------------------------------------------------------------
+% Chaos Node 1 - Detective - Opus 4.6
+% ------------------------------------------------------------
+\begin{table}[h]
+\centering
+\begin{tabular}{l|cccc|ccc|}
+\cline{2-8}
+& \multicolumn{4}{c|}{\textbf{Pre execution}} & \multicolumn{3}{c|}{\textbf{Post execution}} \\
+\cline{2-8}
+& \textbf{Total} & \textbf{F1} & \textbf{F2} & \textbf{F3} & \textbf{Total} & \textbf{F1} & \textbf{F2} \\
+\hline
+\textbf{Attempt 1} & 100 & 100 & 100 & 100 & 100 & 100 & 100 \\
+\hline
+\end{tabular}
+\caption{Chaos Node 1 -- Detective -- Opus 4.6. Q\_pre threshold: 80. Q\_post threshold: 80.}
+\label{tab:cn1_detective_opus46}
+\end{table}
+
+\clearpage
+
+% ------------------------------------------------------------
+% Chaos Node 1 - Reactive - Opus 4.6
+% ------------------------------------------------------------
+\begin{table}[h]
+\centering
+\begin{tabular}{l|cccc|ccc|}
+\cline{2-8}
+& \multicolumn{4}{c|}{\textbf{Pre execution}} & \multicolumn{3}{c|}{\textbf{Post execution}} \\
+\cline{2-8}
+& \textbf{Total} & \textbf{F1} & \textbf{F2} & \textbf{F3} & \textbf{Total} & \textbf{F1} & \textbf{F2} \\
+\hline
+\textbf{Attempt 1} & 100 & 100 & 100 & 100 & 100 & 100 & 100 \\
+\hline
+\end{tabular}
+\caption{Chaos Node 1 -- Reactive -- Opus 4.6. Q\_pre threshold: 80. Q\_post threshold: 80.}
+\label{tab:cn1_reactive_opus46}
+\end{table}
+
+
+% ------------------------------------------------------------
+% Chaos Node 2 - Preventive - Haiku 3.5
+% ------------------------------------------------------------
+\begin{table}[h]
+\centering
+\begin{tabular}{l|cccc|ccc|}
+\cline{2-8}
+& \multicolumn{4}{c|}{\textbf{Pre execution}} & \multicolumn{3}{c|}{\textbf{Post execution}} \\
+\cline{2-8}
+& \textbf{Total} & \textbf{F1} & \textbf{F2} & \textbf{F3} & \textbf{Total} & \textbf{F1} & \textbf{F2} \\
+\hline
+\textbf{Attempt 1} & 100 & 100 & 100 & 100 & \red{0} & \red{0} & \red{0} \\
+\textbf{Attempt 2} & 100 & 100 & 100 & 100 & \red{50} & \red{100} & \red{0} \\
+\textbf{Attempt 3} & 100 & 100 & 100 & 100 & \red{0} & \red{0} & \red{0} \\
+\textbf{Attempt 4} & 100 & 100 & 100 & 100 & \red{0} & \red{0} & \red{0} \\
+\textbf{Attempt 5} & 100 & 100 & 100 & 100 & \red{0} & \red{0} & \red{0} \\
+\textbf{Attempt 6} & 100 & 100 & 100 & 100 & \red{0} & \red{0} & \red{0} \\
+\textbf{Attempt 7} & \red{40} & 100 & \red{0} & \red{0} & --- & --- & --- \\
+\textbf{Attempt 8} & 100 & 100 & 100 & 100 & \red{0} & \red{0} & \red{0} \\
+\textbf{Attempt 9} & 83 (70) & 100 & 100 & 50 (0) & \red{0} & \red{0} & \red{0} \\
+\textbf{Attempt 10} & 100 & 100 & 100 & 100 & \red{0} & \red{0} & \red{0} \\
+\hline
+\end{tabular}
+\caption{Chaos Node 2 -- Preventive -- Haiku 3.5. Q\_pre threshold: 80. Q\_post threshold: 80.}
+\label{tab:cn2_preventive_haiku35}
+\end{table}
+
+
+% ------------------------------------------------------------
+% Chaos Node 2 - Detective - Haiku 3.5
+% ------------------------------------------------------------
+\begin{table}[h]
+\centering
+\begin{tabular}{l|cccc|ccc|}
+\cline{2-8}
+& \multicolumn{4}{c|}{\textbf{Pre execution}} & \multicolumn{3}{c|}{\textbf{Post execution}} \\
+\cline{2-8}
+& \textbf{Total} & \textbf{F1} & \textbf{F2} & \textbf{F3} & \textbf{Total} & \textbf{F1} & \textbf{F2} \\
+\hline
+\textbf{Attempt 1} & 100 & 100 & 100 & 100 & \red{0} & \red{0} & \red{0} \\
+\textbf{Attempt 2} & \red{40} & 100 & \red{0} & \red{0} & --- & --- & --- \\
+\textbf{Attempt 3} & 100 & 100 & 100 & 100 & \red{0} & \red{0} & \red{0} \\
+\textbf{Attempt 4} & 83 (70) & 100 & 100 & 50 (0) & \red{0} & \red{0} & \red{0} \\
+\textbf{Attempt 5} & 100 & 100 & 100 & 100 & \red{0} & \red{0} & \red{0} \\
+\textbf{Attempt 6} & 100 & 100 & 100 & 100 & \red{0} & \red{0} & \red{0} \\
+\textbf{Attempt 7} & 100 & 100 & 100 & 100 & \red{0} & \red{0} & \red{0} \\
+\textbf{Attempt 8} & 100 & 100 & 100 & 100 & \red{0} & \red{0} & \red{0} \\
+\textbf{Attempt 9} & 100 & 100 & 100 & 100 & \red{0} & \red{0} & \red{0} \\
+\textbf{Attempt 10} & 63 (55) & 100 & 50 & 0 & \red{0} & \red{0} & \red{0} \\
+\hline
+\end{tabular}
+\caption{Chaos Node 2 -- Detective -- Haiku 3.5. Q\_pre threshold: 80. Q\_post threshold: 80.}
+\label{tab:cn2_detective_haiku35}
+\end{table}
+
+
+\clearpage
+
+% ------------------------------------------------------------
+% Chaos Node 2 - Reactive - Haiku 3.5
+% ------------------------------------------------------------
+\begin{table}[h]
+\centering
+\begin{tabular}{l|cccc|ccc|}
+\cline{2-8}
+& \multicolumn{4}{c|}{\textbf{Pre execution}} & \multicolumn{3}{c|}{\textbf{Post execution}} \\
+\cline{2-8}
+& \textbf{Total} & \textbf{F1} & \textbf{F2} & \textbf{F3} & \textbf{Total} & \textbf{F1} & \textbf{F2} \\
+\hline
+\textbf{Attempt 1} & 62 (55) & 100 & 50 & 0 & \red{0} & \red{0} & \red{0} \\
+\textbf{Attempt 2} & 100 & 100 & 100 & 100 & \red{0} & \red{0} & \red{0} \\
+\textbf{Attempt 3} & 100 & 100 & 100 & 100 & \red{0} & \red{0} & \red{0} \\
+\textbf{Attempt 4} & 100 & 100 & 100 & 100 & \red{0} & \red{0} & \red{0} \\
+\textbf{Attempt 5} & 100 & 100 & 100 & 100 & \red{0} & \red{0} & \red{0} \\
+\textbf{Attempt 6} & 100 & 100 & 100 & 100 & \red{0} & \red{0} & \red{0} \\
+\textbf{Attempt 7} & 100 & 100 & 100 & 100 & --- & --- & --- \\
+\textbf{Attempt 8} & 100 & 100 & 100 & 100 & \red{0} & \red{0} & \red{0} \\
+\textbf{Attempt 9} & 100 & 100 & 100 & 100 & \red{0} & \red{0} & \red{0} \\
+\textbf{Attempt 10} & 100 & 100 & 100 & 100 & \red{0} & \red{0} & \red{0} \\
+\hline
+\end{tabular}
+\caption{Chaos Node 2 -- Reactive -- Haiku 3.5. Q\_pre threshold: 80. Q\_post threshold: 80.}
+\label{tab:cn2_reactive_haiku35}
+\end{table}
+
+
+% ------------------------------------------------------------
+% Chaos Node 2 - Preventive - Haiku 4.5
+% ------------------------------------------------------------
+\begin{table}[h]
+\centering
+\begin{tabular}{l|cccc|ccc|}
+\cline{2-8}
+& \multicolumn{4}{c|}{\textbf{Pre execution}} & \multicolumn{3}{c|}{\textbf{Post execution}} \\
+\cline{2-8}
+& \textbf{Total} & \textbf{F1} & \textbf{F2} & \textbf{F3} & \textbf{Total} & \textbf{F1} & \textbf{F2} \\
+\hline
+\textbf{Attempt 1} & 80 (70) & 100 & 100 & 0 & \red{0} & \red{0} & \red{0} \\
+\textbf{Attempt 2} & 20 & 50 & 0 & 0 & \red{0} & \red{0} & \red{0} \\
+\textbf{Attempt 3} & 20 & 50 & 0 & 0 & \red{0} & \red{0} & \red{0} \\
+\textbf{Attempt 4} & 20 & 50 & 0 & 0 & \red{0} & \red{0} & \red{0} \\
+\textbf{Attempt 5} & 100 & 100 & 100 & 100 & \red{50} & 100 & \red{0} \\
+\textbf{Attempt 6} & 100 & 100 & 100 & 100 & 100 & 100 & 100 \\
+\hline
+\end{tabular}
+\caption{Chaos Node 2 -- Preventive -- Haiku 4.5. Q\_pre threshold: 80. Q\_post threshold: 80.}
+\label{tab:cn2_preventive_haiku45}
+\end{table}
+
+
+% ------------------------------------------------------------
+% Chaos Node 2 - Detective - Haiku 4.5
+% ------------------------------------------------------------
+\begin{table}[h]
+\centering
+\begin{tabular}{l|cccc|ccc|}
+\cline{2-8}
+& \multicolumn{4}{c|}{\textbf{Pre execution}} & \multicolumn{3}{c|}{\textbf{Post execution}} \\
+\cline{2-8}
+& \textbf{Total} & \textbf{F1} & \textbf{F2} & \textbf{F3} & \textbf{Total} & \textbf{F1} & \textbf{F2} \\
+\hline
+\textbf{Attempt 1} & 100 & 100 & 100 & 100 & \red{0} & \red{0} & \red{0} \\
+\textbf{Attempt 2} & 100 & 100 & 100 & 100 & \red{0} & \red{0} & \red{0} \\
+\textbf{Attempt 3} & 100 & 100 & 100 & 100 & \red{0} & \red{0} & \red{0} \\
+\textbf{Attempt 4} & 100 & 100 & 100 & 100 & 87.5 (50) & \red{50} & \red{0} \\
+\textbf{Attempt 5} & 100 & 100 & 100 & 100 & \red{0} & \red{0} & \red{0} \\
+\textbf{Attempt 6} & 100 & 100 & 100 & 100 & 100 & 100 & 100 \\
+\hline
+\end{tabular}
+\caption{Chaos Node 2 -- Detective -- Haiku 4.5. Q\_pre threshold: 80. Q\_post threshold: 80.}
+\label{tab:cn2_detective_haiku45}
+\end{table}
+
+
+\clearpage
+
+% ------------------------------------------------------------
+% Chaos Node 2 - Reactive - Haiku 4.5
+% ------------------------------------------------------------
+\begin{table}[h]
+\centering
+\begin{tabular}{l|cccc|ccc|}
+\cline{2-8}
+& \multicolumn{4}{c|}{\textbf{Pre execution}} & \multicolumn{3}{c|}{\textbf{Post execution}} \\
+\cline{2-8}
+& \textbf{Total} & \textbf{F1} & \textbf{F2} & \textbf{F3} & \textbf{Total} & \textbf{F1} & \textbf{F2} \\
+\hline
+\textbf{Attempt 1} & 100          & 100 & 100     & 100     & \red{0}  & \red{0} & \red{0} \\
+\textbf{Attempt 2} & \red{40}     & 100 & \red{0} & \red{0} & ---      & ---     & ---     \\
+\textbf{Attempt 3} & 100          & 100 & 100     & 100     & \red{0}  & \red{0} & \red{0} \\
+\textbf{Attempt 4} & \red{40}     & 100 & \red{0} & \red{0} & ---      & ---     & ---     \\
+\textbf{Attempt 5} & 100          & 100 & 100     & 100     & \red{0}  & \red{0} & \red{0} \\
+\textbf{Attempt 6} & \red{80 (70)}& 100 & 100     & \red{0} & \red{0}  & \red{0} & \red{0} \\
+\textbf{Attempt 7} & \red{50 (40)}& 100 & \red{0} & \red{0} & ---      & ---     & ---     \\
+\textbf{Attempt 8} & \red{40}     & 100 & \red{0} & \red{0} & ---      & ---     & ---     \\
+\textbf{Attempt 9} & 100          & 100 & 100     & 100     & 100      & 100     & 100     \\
+\hline
+\end{tabular}
+\caption{Chaos Node 2 -- Reactive -- Haiku 4.5. Q\_pre threshold: 80. Q\_post threshold: 80.}
+\label{tab:cn2_reactive_haiku45}
+\end{table}
+
+
+% ------------------------------------------------------------
+% Chaos Node 2 - Preventive - Sonnet 4.5
+% ------------------------------------------------------------
+\begin{table}[h]
+\centering
+\begin{tabular}{l|cccc|ccc|}
+\cline{2-8}
+& \multicolumn{4}{c|}{\textbf{Pre execution}} & \multicolumn{3}{c|}{\textbf{Post execution}} \\
+\cline{2-8}
+& \textbf{Total} & \textbf{F1} & \textbf{F2} & \textbf{F3} & \textbf{Total} & \textbf{F1} & \textbf{F2} \\
+\hline
+\textbf{Attempt 1} & 100 & 100 & 100 & 100 & 100 & 100 & 100 \\
+\hline
+\end{tabular}
+\caption{Chaos Node 2 -- Preventive -- Sonnet 4.5. Q\_pre threshold: 80. Q\_post threshold: 80.}
+\label{tab:cn2_preventive_sonnet45}
+\end{table}
+
+% ------------------------------------------------------------
+% Chaos Node 2 - Detective - Sonnet 4.5
+% ------------------------------------------------------------
+\begin{table}[h]
+\centering
+\begin{tabular}{l|cccc|ccc|}
+\cline{2-8}
+& \multicolumn{4}{c|}{\textbf{Pre execution}} & \multicolumn{3}{c|}{\textbf{Post execution}} \\
+\cline{2-8}
+& \textbf{Total} & \textbf{F1} & \textbf{F2} & \textbf{F3} & \textbf{Total} & \textbf{F1} & \textbf{F2} \\
+\hline
+\textbf{Attempt 1}  & 100 & 100 & 100 & 100 & \red{0} & \red{0} & \red{0} \\
+\textbf{Attempt 2}  & 100 & 100 & 100 & 100 & \red{0} & \red{0} & \red{0} \\
+\textbf{Attempt 3}  & 100 & 100 & 100 & 100 & \red{0} & \red{0} & \red{0} \\
+\textbf{Attempt 4}  & 100 & 100 & 100 & 100 & \red{0} & \red{0} & \red{0} \\
+\textbf{Attempt 5}  & 100 & 100 & 100 & 100 & \red{0} & \red{0} & \red{0} \\
+\textbf{Attempt 6}  & 100 & 100 & 100 & 100 & 100 & 100 & 100 \\
+\hline
+\end{tabular}
+\caption{Chaos Node 2 -- Detective -- Sonnet 4.5. Q\_pre threshold: 80. Q\_post threshold: 80.}
+\label{tab:cn2_detective_sonnet45}
+\end{table}
+
+\clearpage
+
+
+% ------------------------------------------------------------
+% Chaos Node 2 - Reactive - Sonnet 4.5
+% ------------------------------------------------------------
+\begin{table}[h]
+\centering
+\begin{tabular}{l|cccc|ccc|}
+\cline{2-8}
+& \multicolumn{4}{c|}{\textbf{Pre execution}} & \multicolumn{3}{c|}{\textbf{Post execution}} \\
+\cline{2-8}
+& \textbf{Total} & \textbf{F1} & \textbf{F2} & \textbf{F3} & \textbf{Total} & \textbf{F1} & \textbf{F2} \\
+\hline
+\textbf{Attempt 1} & 100 & 100 & 100 & 100 & 100 & 100 & 100 \\
+\hline
+\end{tabular}
+\caption{Chaos Node 2 -- Reactive -- Sonnet 4.5. Q\_pre threshold: 80. Q\_post threshold: 80.}
+\label{tab:cn2_reactive_sonnet45}
+\end{table}
+
+% ------------------------------------------------------------
+% Chaos Node 2 - Preventive - Sonnet 4.6
+% ------------------------------------------------------------
+\begin{table}[h]
+\centering
+\begin{tabular}{l|cccc|ccc|}
+\cline{2-8}
+& \multicolumn{4}{c|}{\textbf{Pre execution}} & \multicolumn{3}{c|}{\textbf{Post execution}} \\
+\cline{2-8}
+& \textbf{Total} & \textbf{F1} & \textbf{F2} & \textbf{F3} & \textbf{Total} & \textbf{F1} & \textbf{F2} \\
+\hline
+\textbf{Attempt 1} & 100 & 100 & 100 & 100 & 100 & 100 & 100 \\
+\hline
+\end{tabular}
+\caption{Chaos Node 2 -- Preventive -- Sonnet 4.6. Q\_pre threshold: 80. Q\_post threshold: 80.}
+\label{tab:cn2_preventive_sonnet46}
+\end{table}
+
+% ------------------------------------------------------------
+% Chaos Node 2 - Detective - Sonnet 4.6
+% ------------------------------------------------------------
+\begin{table}[h]
+\centering
+\begin{tabular}{l|cccc|ccc|}
+\cline{2-8}
+& \multicolumn{4}{c|}{\textbf{Pre execution}} & \multicolumn{3}{c|}{\textbf{Post execution}} \\
+\cline{2-8}
+& \textbf{Total} & \textbf{F1} & \textbf{F2} & \textbf{F3} & \textbf{Total} & \textbf{F1} & \textbf{F2} \\
+\hline
+\textbf{Attempt 1} & 80 (100) & 100 & 100 & 100 & 100 & 100 & 100 \\
+\hline
+\end{tabular}
+\caption{Chaos Node 2 -- Detective -- Sonnet 4.6. Q\_pre threshold: 80. Q\_post threshold: 80.}
+\label{tab:cn2_detective_sonnet46}
+\end{table}
+
+
+% ------------------------------------------------------------
+% Chaos Node 2 - Reactive - Sonnet 4.6
+% ------------------------------------------------------------
+\begin{table}[h]
+\centering
+\begin{tabular}{l|cccc|ccc|}
+\cline{2-8}
+& \multicolumn{4}{c|}{\textbf{Pre execution}} & \multicolumn{3}{c|}{\textbf{Post execution}} \\
+\cline{2-8}
+& \textbf{Total} & \textbf{F1} & \textbf{F2} & \textbf{F3} & \textbf{Total} & \textbf{F1} & \textbf{F2} \\
+\hline
+\textbf{Attempt 1} & 100 & 100 & 100 & 100 & 100 & 100 & 100 \\
+\hline
+\end{tabular}
+\caption{Chaos Node 2 -- Reactive -- Sonnet 4.6. Q\_pre threshold: 80. Q\_post threshold: 80.}
+\label{tab:cn2_reactive_sonnet46}
+\end{table}
+
+\clearpage
+
+% ------------------------------------------------------------
+% Chaos Node 2 - Preventive - Opus 4.5
+% ------------------------------------------------------------
+\begin{table}[h]
+\centering
+\begin{tabular}{l|cccc|ccc|}
+\cline{2-8}
+& \multicolumn{4}{c|}{\textbf{Pre execution}} & \multicolumn{3}{c|}{\textbf{Post execution}} \\
+\cline{2-8}
+& \textbf{Total} & \textbf{F1} & \textbf{F2} & \textbf{F3} & \textbf{Total} & \textbf{F1} & \textbf{F2} \\
+\hline
+\textbf{Attempt 1} & 100 & 100 & 100 & 100 & 100 & 100 & 100 \\
+\hline
+\end{tabular}
+\caption{Chaos Node 2 -- Preventive -- Opus 4.5. Q\_pre threshold: 80. Q\_post threshold: 80.}
+\label{tab:cn2_preventive_opus45}
+\end{table}
+
+% ------------------------------------------------------------
+% Chaos Node 2 - Detective - Opus 4.5
+% ------------------------------------------------------------
+\begin{table}[h]
+\centering
+\begin{tabular}{l|cccc|ccc|}
+\cline{2-8}
+& \multicolumn{4}{c|}{\textbf{Pre execution}} & \multicolumn{3}{c|}{\textbf{Post execution}} \\
+\cline{2-8}
+& \textbf{Total} & \textbf{F1} & \textbf{F2} & \textbf{F3} & \textbf{Total} & \textbf{F1} & \textbf{F2} \\
+\hline
+\textbf{Attempt 1} & 100 & 100 & 100 & 100 & 100 & 100 & 100 \\
+\hline
+\end{tabular}
+\caption{Chaos Node 2 -- Detective -- Opus 4.5. Q\_pre threshold: 80. Q\_post threshold: 80.}
+\label{tab:cn2_detective_opus45}
+\end{table}
+
+% ------------------------------------------------------------
+% Chaos Node 2 - Reactive - Opus 4.5
+% ------------------------------------------------------------
+\begin{table}[h]
+\centering
+\begin{tabular}{l|cccc|ccc|}
+\cline{2-8}
+& \multicolumn{4}{c|}{\textbf{Pre execution}} & \multicolumn{3}{c|}{\textbf{Post execution}} \\
+\cline{2-8}
+& \textbf{Total} & \textbf{F1} & \textbf{F2} & \textbf{F3} & \textbf{Total} & \textbf{F1} & \textbf{F2} \\
+\hline
+\textbf{Attempt 1}  & \red{40} & 100 & \red{0} & \red{0} & ---      & ---      & ---      \\
+\textbf{Attempt 2} & 100 & 100 & 100 & 100 & 100 & 100 & 100 \\
+\hline
+\end{tabular}
+\caption{Chaos Node 2 -- Reactive -- Opus 4.5. Q\_pre threshold: 80. Q\_post threshold: 80.}
+\label{tab:cn2_reactive_opus45}
+\end{table}
+
+% ------------------------------------------------------------
+% Chaos Node 2 - Preventive - Opus 4.6
+% ------------------------------------------------------------
+\begin{table}[h]
+\centering
+\begin{tabular}{l|cccc|ccc|}
+\cline{2-8}
+& \multicolumn{4}{c|}{\textbf{Pre execution}} & \multicolumn{3}{c|}{\textbf{Post execution}} \\
+\cline{2-8}
+& \textbf{Total} & \textbf{F1} & \textbf{F2} & \textbf{F3} & \textbf{Total} & \textbf{F1} & \textbf{F2} \\
+\hline
+\textbf{Attempt 1} & 85 & 100 & 50 & 100 & 100 & 100 & 100 \\
+\hline
+\end{tabular}
+\caption{Chaos Node 2 -- Preventive -- Opus 4.6. Q\_pre threshold: 80. Q\_post threshold: 80.}
+\label{tab:cn2_preventive_opus46}
+\end{table}
+
+\clearpage
+
+% ------------------------------------------------------------
+% Chaos Node 2 - Detective - Opus 4.6
+% ------------------------------------------------------------
+\begin{table}[h]
+\centering
+\begin{tabular}{l|cccc|ccc|}
+\cline{2-8}
+& \multicolumn{4}{c|}{\textbf{Pre execution}} & \multicolumn{3}{c|}{\textbf{Post execution}} \\
+\cline{2-8}
+& \textbf{Total} & \textbf{F1} & \textbf{F2} & \textbf{F3} & \textbf{Total} & \textbf{F1} & \textbf{F2} \\
+\hline
+\textbf{Attempt 1} & 100 & 100 & 100 & 100 & 100 & 100 & 100 \\
+\hline
+\end{tabular}
+\caption{Chaos Node 2 -- Detective -- Opus 4.6. Q\_pre threshold: 80. Q\_post threshold: 80.}
+\label{tab:cn2_detective_opus46}
+\end{table}
+
+% ------------------------------------------------------------
+% Chaos Node 2 - Reactive - Opus 4.6
+% ------------------------------------------------------------
+\begin{table}[h]
+\centering
+\begin{tabular}{l|cccc|ccc|}
+\cline{2-8}
+& \multicolumn{4}{c|}{\textbf{Pre execution}} & \multicolumn{3}{c|}{\textbf{Post execution}} \\
+\cline{2-8}
+& \textbf{Total} & \textbf{F1} & \textbf{F2} & \textbf{F3} & \textbf{Total} & \textbf{F1} & \textbf{F2} \\
+\hline
+\textbf{Attempt 1} & 100 & 100 & 100 & 100 & 100 & 100 & 100 \\
+\hline
+\end{tabular}
+\caption{Chaos Node 2 -- Reactive -- Opus 4.6. Q\_pre threshold: 80. Q\_post threshold: 80.}
+\label{tab:cn2_reactive_opus46}
+\end{table}
+

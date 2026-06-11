@@ -1,0 +1,975 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-04-05 00:16:45 INFO] Validating the experiment's syntax
+[32m[2026-04-05 00:16:45 INFO] Experiment looks valid
+[32m[2026-04-05 00:16:45 INFO] Running experiment: SCE 1.3: Detective Control for Malicious CodeBuild Project Creation
+[32m[2026-04-05 00:16:45 INFO] Steady-state strategy: after-method-only
+[32m[2026-04-05 00:16:45 INFO] Rollbacks strategy: default
+[32m[2026-04-05 00:16:45 INFO] Playing your experiment's method now...
+[32m[2026-04-05 00:16:45 INFO] Action: Create malicious CodeBuild project and supporting resources
+2026-04-05 00:16:45,158 - botocore.hooks - DEBUG - Changing event name from creating-client-class.iot-data to creating-client-class.iot-data-plane
+2026-04-05 00:16:45,159 - botocore.hooks - DEBUG - Changing event name from before-call.apigateway to before-call.api-gateway
+2026-04-05 00:16:45,160 - botocore.hooks - DEBUG - Changing event name from request-created.machinelearning.Predict to request-created.machine-learning.Predict
+2026-04-05 00:16:45,160 - botocore.hooks - DEBUG - Changing event name from before-parameter-build.autoscaling.CreateLaunchConfiguration to before-parameter-build.auto-scaling.CreateLaunchConfiguration
+2026-04-05 00:16:45,161 - botocore.hooks - DEBUG - Changing event name from before-parameter-build.route53 to before-parameter-build.route-53
+2026-04-05 00:16:45,161 - botocore.hooks - DEBUG - Changing event name from request-created.cloudsearchdomain.Search to request-created.cloudsearch-domain.Search
+2026-04-05 00:16:45,162 - botocore.hooks - DEBUG - Changing event name from docs.*.autoscaling.CreateLaunchConfiguration.complete-section to docs.*.auto-scaling.CreateLaunchConfiguration.complete-section
+2026-04-05 00:16:45,163 - botocore.hooks - DEBUG - Changing event name from before-parameter-build.logs.CreateExportTask to before-parameter-build.cloudwatch-logs.CreateExportTask
+2026-04-05 00:16:45,163 - botocore.hooks - DEBUG - Changing event name from docs.*.logs.CreateExportTask.complete-section to docs.*.cloudwatch-logs.CreateExportTask.complete-section
+2026-04-05 00:16:45,164 - botocore.hooks - DEBUG - Changing event name from before-parameter-build.cloudsearchdomain.Search to before-parameter-build.cloudsearch-domain.Search
+2026-04-05 00:16:45,164 - botocore.hooks - DEBUG - Changing event name from docs.*.cloudsearchdomain.Search.complete-section to docs.*.cloudsearch-domain.Search.complete-section
+2026-04-05 00:16:45,165 - botocore.utils - DEBUG - IMDS ENDPOINT: http://169.254.169.254/
+2026-04-05 00:16:45,167 - botocore.credentials - DEBUG - Looking for credentials via: env
+2026-04-05 00:16:45,167 - botocore.credentials - DEBUG - Looking for credentials via: assume-role
+2026-04-05 00:16:45,167 - botocore.credentials - DEBUG - Looking for credentials via: assume-role-with-web-identity
+2026-04-05 00:16:45,167 - botocore.credentials - DEBUG - Looking for credentials via: sso
+2026-04-05 00:16:45,167 - botocore.credentials - DEBUG - Looking for credentials via: shared-credentials-file
+2026-04-05 00:16:45,168 - botocore.credentials - INFO - Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-05 00:16:45,169 - botocore.loaders - DEBUG - Loading JSON file: /home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/data/endpoints.json
+2026-04-05 00:16:45,179 - botocore.loaders - DEBUG - Loading JSON file: /home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/data/sdk-default-configuration.json
+2026-04-05 00:16:45,180 - botocore.hooks - DEBUG - Event choose-service-name: calling handler <function handle_service_name_alias at 0x78a29648b4c0>
+2026-04-05 00:16:45,189 - botocore.loaders - DEBUG - Loading JSON file: /home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/data/sts/2011-06-15/service-2.json.gz
+2026-04-05 00:16:45,196 - botocore.loaders - DEBUG - Loading JSON file: /home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/data/sts/2011-06-15/endpoint-rule-set-1.json.gz
+2026-04-05 00:16:45,196 - botocore.loaders - DEBUG - Loading JSON file: /home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/data/partitions.json
+2026-04-05 00:16:45,197 - botocore.hooks - DEBUG - Event creating-client-class.sts: calling handler <function add_generate_presigned_url at 0x78a2963cbc40>
+2026-04-05 00:16:45,197 - botocore.configprovider - DEBUG - Looking for endpoint for sts via: environment_service
+2026-04-05 00:16:45,197 - botocore.configprovider - DEBUG - Looking for endpoint for sts via: environment_global
+2026-04-05 00:16:45,197 - botocore.configprovider - DEBUG - Looking for endpoint for sts via: config_service
+2026-04-05 00:16:45,197 - botocore.configprovider - DEBUG - Looking for endpoint for sts via: config_global
+2026-04-05 00:16:45,197 - botocore.configprovider - DEBUG - No configured endpoint found.
+2026-04-05 00:16:45,198 - botocore.endpoint - DEBUG - Setting sts timeout as (60, 60)
+2026-04-05 00:16:45,199 - botocore.loaders - DEBUG - Loading JSON file: /home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/data/_retry.json
+2026-04-05 00:16:45,200 - botocore.client - DEBUG - Registering retry handlers for service: sts
+2026-04-05 00:16:45,200 - botocore.hooks - DEBUG - Event before-parameter-build.sts.GetCallerIdentity: calling handler <function generate_idempotent_uuid at 0x78a2964a4fe0>
+2026-04-05 00:16:45,200 - botocore.regions - DEBUG - Calling endpoint provider with parameters: {'Region': 'us-east-1', 'UseDualStack': False, 'UseFIPS': False, 'UseGlobalEndpoint': True}
+2026-04-05 00:16:45,200 - botocore.regions - DEBUG - Endpoint provider result: https://sts.amazonaws.com
+2026-04-05 00:16:45,201 - botocore.regions - DEBUG - Selecting from endpoint provider's list of auth schemes: "sigv4". User selected auth scheme is: "None"
+2026-04-05 00:16:45,201 - botocore.regions - DEBUG - Selected auth type "v4" as "v4" with signing context params: {'region': 'us-east-1', 'signing_name': 'sts'}
+2026-04-05 00:16:45,201 - botocore.hooks - DEBUG - Event before-call.sts.GetCallerIdentity: calling handler <function add_recursion_detection_header at 0x78a2964a4400>
+2026-04-05 00:16:45,201 - botocore.hooks - DEBUG - Event before-call.sts.GetCallerIdentity: calling handler <function inject_api_version_header_if_needed at 0x78a2964a6ac0>
+2026-04-05 00:16:45,201 - botocore.endpoint - DEBUG - Making request for OperationModel(name=GetCallerIdentity) with params: {'url_path': '/', 'query_string': '', 'method': 'POST', 'headers': {'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8', 'User-Agent': 'Boto3/1.35.53 md/Botocore#1.35.53 ua/2.0 os/linux#6.17.0-19-generic md/arch#x86_64 lang/python#3.12.3 md/pyimpl#CPython cfg/retry-mode#legacy Botocore/1.35.53'}, 'body': {'Action': 'GetCallerIdentity', 'Version': '2011-06-15'}, 'url': 'https://sts.amazonaws.com/', 'context': {'client_region': 'us-east-1', 'client_config': <botocore.config.Config object at 0x78a2960ed2e0>, 'has_streaming_input': False, 'auth_type': 'v4', 'unsigned_payload': None, 'signing': {'region': 'us-east-1', 'signing_name': 'sts'}, 'endpoint_properties': {'authSchemes': [{'name': 'sigv4', 'signingName': 'sts', 'signingRegion': 'us-east-1'}]}}}
+2026-04-05 00:16:45,201 - botocore.hooks - DEBUG - Event request-created.sts.GetCallerIdentity: calling handler <bound method RequestSigner.handler of <botocore.signers.RequestSigner object at 0x78a2960ed280>>
+2026-04-05 00:16:45,202 - botocore.hooks - DEBUG - Event choose-signer.sts.GetCallerIdentity: calling handler <function set_operation_specific_signer at 0x78a2964a4e00>
+2026-04-05 00:16:45,202 - botocore.auth - DEBUG - Calculating signature using v4 auth.
+2026-04-05 00:16:45,202 - botocore.auth - DEBUG - CanonicalRequest:
+POST
+/
+
+content-type:application/x-www-form-urlencoded; charset=utf-8
+host:sts.amazonaws.com
+x-amz-date:20260405T051645Z
+
+content-type;host;x-amz-date
+ab821ae955788b0e33ebd34c208442ccfc2d406e2edc5e7a39bd6458fbb4f843
+2026-04-05 00:16:45,202 - botocore.auth - DEBUG - StringToSign:
+AWS4-HMAC-SHA256
+20260405T051645Z
+20260405/us-east-1/sts/aws4_request
+df742a00c7acfa4f3d75e97a9a8757ed53f7f0c0d366b0d017d2f4d1ec1c816d
+2026-04-05 00:16:45,202 - botocore.auth - DEBUG - Signature:
+666bd6942ae7193d75da34f371ac19919c268d41426b0a82f10611c9e677f993
+2026-04-05 00:16:45,202 - botocore.hooks - DEBUG - Event request-created.sts.GetCallerIdentity: calling handler <function add_retry_headers at 0x78a2964a72e0>
+2026-04-05 00:16:45,202 - botocore.endpoint - DEBUG - Sending http request: <AWSPreparedRequest stream_output=False, method=POST, url=https://sts.amazonaws.com/, headers={'Content-Type': b'application/x-www-form-urlencoded; charset=utf-8', 'User-Agent': b'Boto3/1.35.53 md/Botocore#1.35.53 ua/2.0 os/linux#6.17.0-19-generic md/arch#x86_64 lang/python#3.12.3 md/pyimpl#CPython cfg/retry-mode#legacy Botocore/1.35.53', 'X-Amz-Date': b'20260405T051645Z', 'Authorization': b'AWS4-HMAC-SHA256 Credential=AKIA5WLTSZADV4FB6UI2/20260405/us-east-1/sts/aws4_request, SignedHeaders=content-type;host;x-amz-date, Signature=666bd6942ae7193d75da34f371ac19919c268d41426b0a82f10611c9e677f993', 'amz-sdk-invocation-id': b'b4902a81-9e7c-4761-8e9c-52af2cbf6bb7', 'amz-sdk-request': b'attempt=1', 'Content-Length': '43'}>
+2026-04-05 00:16:45,203 - botocore.httpsession - DEBUG - Certificate path: /home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/certifi/cacert.pem
+2026-04-05 00:16:45,203 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): sts.amazonaws.com:443
+2026-04-05 00:16:45,669 - urllib3.connectionpool - DEBUG - https://sts.amazonaws.com:443 "POST / HTTP/11" 200 405
+2026-04-05 00:16:45,671 - botocore.parsers - DEBUG - Response headers: {'x-amzn-RequestId': '99dae65c-bc42-439b-873f-146ce351ac1b', 'X-Amz-Sts-Extended-Request-Id': 'MTp1cy1lYXN0LTE6UzoxNzc1MzY2MjA1NTc3Okc6Z3F4RVFlSVU=', 'Content-Type': 'text/xml', 'Content-Length': '405', 'Date': 'Sun, 05 Apr 2026 05:16:45 GMT'}
+2026-04-05 00:16:45,671 - botocore.parsers - DEBUG - Response body:
+b'<GetCallerIdentityResponse xmlns="https://sts.amazonaws.com/doc/2011-06-15/">\n  <GetCallerIdentityResult>\n    <Arn>arn:aws:iam::941377112071:user/sce_user</Arn>\n    <UserId>AIDA5WLTSZADR57FVL7I4</UserId>\n    <Account>941377112071</Account>\n  </GetCallerIdentityResult>\n  <ResponseMetadata>\n    <RequestId>99dae65c-bc42-439b-873f-146ce351ac1b</RequestId>\n  </ResponseMetadata>\n</GetCallerIdentityResponse>\n'
+2026-04-05 00:16:45,676 - botocore.hooks - DEBUG - Event needs-retry.sts.GetCallerIdentity: calling handler <botocore.retryhandler.RetryHandler object at 0x78a2960ee330>
+2026-04-05 00:16:45,676 - botocore.retryhandler - DEBUG - No retry needed.
+2026-04-05 00:16:45,676 - chaosaws.ec2.1_3_sce_experiment_detective - INFO - AWS Account ID: 941377112071
+2026-04-05 00:16:45,678 - botocore.hooks - DEBUG - Changing event name from creating-client-class.iot-data to creating-client-class.iot-data-plane
+2026-04-05 00:16:45,679 - botocore.hooks - DEBUG - Changing event name from before-call.apigateway to before-call.api-gateway
+2026-04-05 00:16:45,680 - botocore.hooks - DEBUG - Changing event name from request-created.machinelearning.Predict to request-created.machine-learning.Predict
+2026-04-05 00:16:45,680 - botocore.hooks - DEBUG - Changing event name from before-parameter-build.autoscaling.CreateLaunchConfiguration to before-parameter-build.auto-scaling.CreateLaunchConfiguration
+2026-04-05 00:16:45,681 - botocore.hooks - DEBUG - Changing event name from before-parameter-build.route53 to before-parameter-build.route-53
+2026-04-05 00:16:45,681 - botocore.hooks - DEBUG - Changing event name from request-created.cloudsearchdomain.Search to request-created.cloudsearch-domain.Search
+2026-04-05 00:16:45,681 - botocore.hooks - DEBUG - Changing event name from docs.*.autoscaling.CreateLaunchConfiguration.complete-section to docs.*.auto-scaling.CreateLaunchConfiguration.complete-section
+2026-04-05 00:16:45,683 - botocore.hooks - DEBUG - Changing event name from before-parameter-build.logs.CreateExportTask to before-parameter-build.cloudwatch-logs.CreateExportTask
+2026-04-05 00:16:45,683 - botocore.hooks - DEBUG - Changing event name from docs.*.logs.CreateExportTask.complete-section to docs.*.cloudwatch-logs.CreateExportTask.complete-section
+2026-04-05 00:16:45,683 - botocore.hooks - DEBUG - Changing event name from before-parameter-build.cloudsearchdomain.Search to before-parameter-build.cloudsearch-domain.Search
+2026-04-05 00:16:45,683 - botocore.hooks - DEBUG - Changing event name from docs.*.cloudsearchdomain.Search.complete-section to docs.*.cloudsearch-domain.Search.complete-section
+2026-04-05 00:16:45,684 - chaosaws.ec2.1_3_sce_experiment_detective - INFO - AWS Region: us-east-1
+2026-04-05 00:16:45,684 - botocore.hooks - DEBUG - Event choose-service-name: calling handler <function handle_service_name_alias at 0x78a29648b4c0>
+2026-04-05 00:16:45,689 - botocore.loaders - DEBUG - Loading JSON file: /home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/data/cloudformation/2010-05-15/service-2.json.gz
+2026-04-05 00:16:45,694 - botocore.loaders - DEBUG - Loading JSON file: /home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/data/cloudformation/2010-05-15/endpoint-rule-set-1.json.gz
+2026-04-05 00:16:45,695 - botocore.hooks - DEBUG - Event creating-client-class.cloudformation: calling handler <function add_generate_presigned_url at 0x78a2963cbc40>
+2026-04-05 00:16:45,695 - botocore.configprovider - DEBUG - Looking for endpoint for cloudformation via: environment_service
+2026-04-05 00:16:45,695 - botocore.configprovider - DEBUG - Looking for endpoint for cloudformation via: environment_global
+2026-04-05 00:16:45,695 - botocore.configprovider - DEBUG - Looking for endpoint for cloudformation via: config_service
+2026-04-05 00:16:45,695 - botocore.configprovider - DEBUG - Looking for endpoint for cloudformation via: config_global
+2026-04-05 00:16:45,695 - botocore.configprovider - DEBUG - No configured endpoint found.
+2026-04-05 00:16:45,696 - botocore.endpoint - DEBUG - Setting cloudformation timeout as (60, 60)
+2026-04-05 00:16:45,697 - botocore.client - DEBUG - Registering retry handlers for service: cloudformation
+2026-04-05 00:16:45,697 - botocore.hooks - DEBUG - Event before-parameter-build.cloudformation.DescribeStacks: calling handler <function generate_idempotent_uuid at 0x78a2964a4fe0>
+2026-04-05 00:16:45,698 - botocore.regions - DEBUG - Calling endpoint provider with parameters: {'Region': 'us-east-1', 'UseDualStack': False, 'UseFIPS': False}
+2026-04-05 00:16:45,698 - botocore.regions - DEBUG - Endpoint provider result: https://cloudformation.us-east-1.amazonaws.com
+2026-04-05 00:16:45,698 - botocore.hooks - DEBUG - Event before-call.cloudformation.DescribeStacks: calling handler <function add_recursion_detection_header at 0x78a2964a4400>
+2026-04-05 00:16:45,698 - botocore.hooks - DEBUG - Event before-call.cloudformation.DescribeStacks: calling handler <function inject_api_version_header_if_needed at 0x78a2964a6ac0>
+2026-04-05 00:16:45,698 - botocore.endpoint - DEBUG - Making request for OperationModel(name=DescribeStacks) with params: {'url_path': '/', 'query_string': '', 'method': 'POST', 'headers': {'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8', 'User-Agent': 'Boto3/1.35.53 md/Botocore#1.35.53 ua/2.0 os/linux#6.17.0-19-generic md/arch#x86_64 lang/python#3.12.3 md/pyimpl#CPython cfg/retry-mode#legacy Botocore/1.35.53'}, 'body': {'Action': 'DescribeStacks', 'Version': '2010-05-15', 'StackName': 'sce-experiment-malicious-codebuild-1775366205'}, 'url': 'https://cloudformation.us-east-1.amazonaws.com/', 'context': {'client_region': 'us-east-1', 'client_config': <botocore.config.Config object at 0x78a295ad8e00>, 'has_streaming_input': False, 'auth_type': None, 'unsigned_payload': None}}
+2026-04-05 00:16:45,698 - botocore.hooks - DEBUG - Event request-created.cloudformation.DescribeStacks: calling handler <bound method RequestSigner.handler of <botocore.signers.RequestSigner object at 0x78a295ad8e60>>
+2026-04-05 00:16:45,698 - botocore.hooks - DEBUG - Event choose-signer.cloudformation.DescribeStacks: calling handler <function set_operation_specific_signer at 0x78a2964a4e00>
+2026-04-05 00:16:45,699 - botocore.auth - DEBUG - Calculating signature using v4 auth.
+2026-04-05 00:16:45,699 - botocore.auth - DEBUG - CanonicalRequest:
+POST
+/
+
+content-type:application/x-www-form-urlencoded; charset=utf-8
+host:cloudformation.us-east-1.amazonaws.com
+x-amz-date:20260405T051645Z
+
+content-type;host;x-amz-date
+98ee3ab708a8f1bac53c95a1b7bbecc640c61e5ea02c444939be8f6602cb5066
+2026-04-05 00:16:45,699 - botocore.auth - DEBUG - StringToSign:
+AWS4-HMAC-SHA256
+20260405T051645Z
+20260405/us-east-1/cloudformation/aws4_request
+dbfe14a433c33e5073020c0d520afe656a78b66f3421efc35df077558987b086
+2026-04-05 00:16:45,699 - botocore.auth - DEBUG - Signature:
+462406cc1bff3c8f9e03d6fea31c2c901935ede0719a2cc2909edea6d5e243d6
+2026-04-05 00:16:45,699 - botocore.hooks - DEBUG - Event request-created.cloudformation.DescribeStacks: calling handler <function add_retry_headers at 0x78a2964a72e0>
+2026-04-05 00:16:45,699 - botocore.endpoint - DEBUG - Sending http request: <AWSPreparedRequest stream_output=False, method=POST, url=https://cloudformation.us-east-1.amazonaws.com/, headers={'Content-Type': b'application/x-www-form-urlencoded; charset=utf-8', 'User-Agent': b'Boto3/1.35.53 md/Botocore#1.35.53 ua/2.0 os/linux#6.17.0-19-generic md/arch#x86_64 lang/python#3.12.3 md/pyimpl#CPython cfg/retry-mode#legacy Botocore/1.35.53', 'X-Amz-Date': b'20260405T051645Z', 'Authorization': b'AWS4-HMAC-SHA256 Credential=AKIA5WLTSZADV4FB6UI2/20260405/us-east-1/cloudformation/aws4_request, SignedHeaders=content-type;host;x-amz-date, Signature=462406cc1bff3c8f9e03d6fea31c2c901935ede0719a2cc2909edea6d5e243d6', 'amz-sdk-invocation-id': b'b7f8f7ea-7118-4b79-9ed1-5e45a24ed61d', 'amz-sdk-request': b'attempt=1', 'Content-Length': '96'}>
+2026-04-05 00:16:45,700 - botocore.httpsession - DEBUG - Certificate path: /home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/certifi/cacert.pem
+2026-04-05 00:16:45,700 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): cloudformation.us-east-1.amazonaws.com:443
+2026-04-05 00:16:46,211 - urllib3.connectionpool - DEBUG - https://cloudformation.us-east-1.amazonaws.com:443 "POST / HTTP/11" 400 331
+2026-04-05 00:16:46,212 - botocore.parsers - DEBUG - Response headers: {'x-amzn-RequestId': '89a49762-8d52-479a-9460-4b5bf10e6ce7', 'Date': 'Sun, 05 Apr 2026 05:16:46 GMT', 'Content-Type': 'text/xml', 'Content-Length': '331', 'connection': 'keep-alive'}
+2026-04-05 00:16:46,212 - botocore.parsers - DEBUG - Response body:
+b'<ErrorResponse xmlns="http://cloudformation.amazonaws.com/doc/2010-05-15/">\n  <Error>\n    <Type>Sender</Type>\n    <Code>ValidationError</Code>\n    <Message>Stack with id sce-experiment-malicious-codebuild-1775366205 does not exist</Message>\n  </Error>\n  <RequestId>89a49762-8d52-479a-9460-4b5bf10e6ce7</RequestId>\n</ErrorResponse>\n'
+2026-04-05 00:16:46,213 - botocore.hooks - DEBUG - Event needs-retry.cloudformation.DescribeStacks: calling handler <botocore.retryhandler.RetryHandler object at 0x78a295ad9b20>
+2026-04-05 00:16:46,214 - botocore.retryhandler - DEBUG - No retry needed.
+2026-04-05 00:16:46,214 - chaosaws.ec2.1_3_sce_experiment_detective - INFO - Creating CloudFormation stack: sce-experiment-malicious-codebuild-1775366205
+2026-04-05 00:16:46,214 - botocore.hooks - DEBUG - Event before-parameter-build.cloudformation.CreateStack: calling handler <function generate_idempotent_uuid at 0x78a2964a4fe0>
+2026-04-05 00:16:46,215 - botocore.regions - DEBUG - Calling endpoint provider with parameters: {'Region': 'us-east-1', 'UseDualStack': False, 'UseFIPS': False}
+2026-04-05 00:16:46,215 - botocore.regions - DEBUG - Endpoint provider result: https://cloudformation.us-east-1.amazonaws.com
+2026-04-05 00:16:46,215 - botocore.hooks - DEBUG - Event before-call.cloudformation.CreateStack: calling handler <function add_recursion_detection_header at 0x78a2964a4400>
+2026-04-05 00:16:46,215 - botocore.hooks - DEBUG - Event before-call.cloudformation.CreateStack: calling handler <function inject_api_version_header_if_needed at 0x78a2964a6ac0>
+2026-04-05 00:16:46,215 - botocore.endpoint - DEBUG - Making request for OperationModel(name=CreateStack) with params: {'url_path': '/', 'query_string': '', 'method': 'POST', 'headers': {'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8', 'User-Agent': 'Boto3/1.35.53 md/Botocore#1.35.53 ua/2.0 os/linux#6.17.0-19-generic md/arch#x86_64 lang/python#3.12.3 md/pyimpl#CPython cfg/retry-mode#legacy Botocore/1.35.53'}, 'body': {'Action': 'CreateStack', 'Version': '2010-05-15', 'StackName': 'sce-experiment-malicious-codebuild-1775366205', 'TemplateBody': '{"AWSTemplateFormatVersion": "2010-09-09", "Description": "SCE Experiment: Malicious CodeBuild Project Detection", "Resources": {"MaliciousArtifactsBucket": {"Type": "AWS::S3::Bucket", "Properties": {"BucketName": "sce-artifacts-941377112071-1775366205", "VersioningConfiguration": {"Status": "Enabled"}, "PublicAccessBlockConfiguration": {"BlockPublicAcls": false, "BlockPublicPolicy": false, "IgnorePublicAcls": false, "RestrictPublicBuckets": false}, "Tags": [{"Key": "experiment", "Value": "1.3-sce-experiment"}, {"Key": "timestamp", "Value": "1775366205"}]}}, "MaliciousCodeBuildRole": {"Type": "AWS::IAM::Role", "Properties": {"AssumeRolePolicyDocument": {"Version": "2012-10-17", "Statement": [{"Effect": "Allow", "Principal": {"Service": "codebuild.amazonaws.com"}, "Action": "sts:AssumeRole"}]}, "ManagedPolicyArns": ["arn:aws:iam::aws:policy/AdministratorAccess"], "Tags": [{"Key": "experiment", "Value": "1.3-sce-experiment"}, {"Key": "timestamp", "Value": "1775366205"}]}}, "MaliciousCodeBuildLogGroup": {"Type": "AWS::Logs::LogGroup", "Properties": {"LogGroupName": "/aws/codebuild/malicious-project-1775366205", "RetentionInDays": 7}}, "MaliciousCodeBuildProject": {"Type": "AWS::CodeBuild::Project", "DependsOn": ["MaliciousCodeBuildRole", "MaliciousArtifactsBucket"], "Properties": {"Name": "malicious-project-1775366205", "ServiceRole": {"Fn::GetAtt": ["MaliciousCodeBuildRole", "Arn"]}, "Source": {"Type": "GITHUB", "Location": "https://github.com/example/malicious-repo.git", "BuildSpec": "buildspec.yml"}, "Environment": {"Type": "LINUX_CONTAINER", "Image": "aws/codebuild/standard:5.0", "ComputeType": "BUILD_GENERAL1_SMALL", "PrivilegedMode": true, "EnvironmentVariables": [{"Name": "AWS_ACCOUNT_ID", "Value": "941377112071"}, {"Name": "MALICIOUS_FLAG", "Value": "true"}]}, "Artifacts": {"Type": "S3", "Location": "sce-artifacts-941377112071-1775366205"}, "LogsConfig": {"CloudWatchLogs": {"Status": "ENABLED", "GroupName": "/aws/codebuild/malicious-project-1775366205"}}, "Tags": [{"Key": "experiment", "Value": "1.3-sce-experiment"}, {"Key": "timestamp", "Value": "1775366205"}, {"Key": "malicious", "Value": "true"}]}}}, "Outputs": {"CodeBuildProjectArn": {"Value": {"Fn::GetAtt": ["MaliciousCodeBuildProject", "Arn"]}, "Export": {"Name": "CodeBuildProjectArn-1775366205"}}, "CodeBuildRoleArn": {"Value": {"Fn::GetAtt": ["MaliciousCodeBuildRole", "Arn"]}, "Export": {"Name": "CodeBuildRoleArn-1775366205"}}, "ArtifactsBucketName": {"Value": {"Ref": "MaliciousArtifactsBucket"}, "Export": {"Name": "ArtifactsBucketName-1775366205"}}}}', 'Capabilities.member.1': 'CAPABILITY_NAMED_IAM', 'Tags.member.1.Key': 'experiment', 'Tags.member.1.Value': '1.3-sce-experiment', 'Tags.member.2.Key': 'timestamp', 'Tags.member.2.Value': '1775366205'}, 'url': 'https://cloudformation.us-east-1.amazonaws.com/', 'context': {'client_region': 'us-east-1', 'client_config': <botocore.config.Config object at 0x78a295ad8e00>, 'has_streaming_input': False, 'auth_type': None, 'unsigned_payload': None}}
+2026-04-05 00:16:46,215 - botocore.hooks - DEBUG - Event request-created.cloudformation.CreateStack: calling handler <bound method RequestSigner.handler of <botocore.signers.RequestSigner object at 0x78a295ad8e60>>
+2026-04-05 00:16:46,216 - botocore.hooks - DEBUG - Event choose-signer.cloudformation.CreateStack: calling handler <function set_operation_specific_signer at 0x78a2964a4e00>
+2026-04-05 00:16:46,216 - botocore.auth - DEBUG - Calculating signature using v4 auth.
+2026-04-05 00:16:46,216 - botocore.auth - DEBUG - CanonicalRequest:
+POST
+/
+
+content-type:application/x-www-form-urlencoded; charset=utf-8
+host:cloudformation.us-east-1.amazonaws.com
+x-amz-date:20260405T051646Z
+
+content-type;host;x-amz-date
+4c3c51d3bbe1dc997988999faaf686a558bcfb98d4655a36cce0fbd67124d2b7
+2026-04-05 00:16:46,216 - botocore.auth - DEBUG - StringToSign:
+AWS4-HMAC-SHA256
+20260405T051646Z
+20260405/us-east-1/cloudformation/aws4_request
+06d92ab181c9cc5a798dd119e85ce15bee2f1494aee0612bb607beeda29cabd3
+2026-04-05 00:16:46,216 - botocore.auth - DEBUG - Signature:
+3bc39f03834363789f132d8578b962c8c00e35d51414c50e9be6312ed0831952
+2026-04-05 00:16:46,216 - botocore.hooks - DEBUG - Event request-created.cloudformation.CreateStack: calling handler <function add_retry_headers at 0x78a2964a72e0>
+2026-04-05 00:16:46,217 - botocore.endpoint - DEBUG - Sending http request: <AWSPreparedRequest stream_output=False, method=POST, url=https://cloudformation.us-east-1.amazonaws.com/, headers={'Content-Type': b'application/x-www-form-urlencoded; charset=utf-8', 'User-Agent': b'Boto3/1.35.53 md/Botocore#1.35.53 ua/2.0 os/linux#6.17.0-19-generic md/arch#x86_64 lang/python#3.12.3 md/pyimpl#CPython cfg/retry-mode#legacy Botocore/1.35.53', 'X-Amz-Date': b'20260405T051646Z', 'Authorization': b'AWS4-HMAC-SHA256 Credential=AKIA5WLTSZADV4FB6UI2/20260405/us-east-1/cloudformation/aws4_request, SignedHeaders=content-type;host;x-amz-date, Signature=3bc39f03834363789f132d8578b962c8c00e35d51414c50e9be6312ed0831952', 'amz-sdk-invocation-id': b'02fb1f87-82b7-4883-938a-5ec7d8d25f5f', 'amz-sdk-request': b'attempt=1', 'Content-Length': '4009'}>
+2026-04-05 00:16:46,217 - botocore.httpsession - DEBUG - Certificate path: /home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/certifi/cacert.pem
+2026-04-05 00:16:46,540 - urllib3.connectionpool - DEBUG - https://cloudformation.us-east-1.amazonaws.com:443 "POST / HTTP/11" 200 483
+2026-04-05 00:16:46,541 - botocore.parsers - DEBUG - Response headers: {'x-amzn-RequestId': '57a76fac-22e5-45c5-8070-c393c8704b81', 'Date': 'Sun, 05 Apr 2026 05:16:46 GMT', 'Content-Type': 'text/xml', 'Content-Length': '483', 'connection': 'keep-alive'}
+2026-04-05 00:16:46,541 - botocore.parsers - DEBUG - Response body:
+b'<CreateStackResponse xmlns="http://cloudformation.amazonaws.com/doc/2010-05-15/">\n  <CreateStackResult>\n    <StackId>arn:aws:cloudformation:us-east-1:941377112071:stack/sce-experiment-malicious-codebuild-1775366205/a436e5e0-30ae-11f1-a0d0-0e5465764757</StackId>\n    <OperationId>55cd63b5-7991-4ccb-b189-331921ba826c</OperationId>\n  </CreateStackResult>\n  <ResponseMetadata>\n    <RequestId>57a76fac-22e5-45c5-8070-c393c8704b81</RequestId>\n  </ResponseMetadata>\n</CreateStackResponse>\n'
+2026-04-05 00:16:46,542 - botocore.hooks - DEBUG - Event needs-retry.cloudformation.CreateStack: calling handler <botocore.retryhandler.RetryHandler object at 0x78a295ad9b20>
+2026-04-05 00:16:46,542 - botocore.retryhandler - DEBUG - No retry needed.
+2026-04-05 00:16:46,542 - chaosaws.ec2.1_3_sce_experiment_detective - INFO - Stack creation initiated for sce-experiment-malicious-codebuild-1775366205
+2026-04-05 00:16:46,542 - botocore.hooks - DEBUG - Event before-parameter-build.cloudformation.DescribeStacks: calling handler <function generate_idempotent_uuid at 0x78a2964a4fe0>
+2026-04-05 00:16:46,542 - botocore.regions - DEBUG - Calling endpoint provider with parameters: {'Region': 'us-east-1', 'UseDualStack': False, 'UseFIPS': False}
+2026-04-05 00:16:46,542 - botocore.regions - DEBUG - Endpoint provider result: https://cloudformation.us-east-1.amazonaws.com
+2026-04-05 00:16:46,542 - botocore.hooks - DEBUG - Event before-call.cloudformation.DescribeStacks: calling handler <function add_recursion_detection_header at 0x78a2964a4400>
+2026-04-05 00:16:46,542 - botocore.hooks - DEBUG - Event before-call.cloudformation.DescribeStacks: calling handler <function inject_api_version_header_if_needed at 0x78a2964a6ac0>
+2026-04-05 00:16:46,542 - botocore.endpoint - DEBUG - Making request for OperationModel(name=DescribeStacks) with params: {'url_path': '/', 'query_string': '', 'method': 'POST', 'headers': {'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8', 'User-Agent': 'Boto3/1.35.53 md/Botocore#1.35.53 ua/2.0 os/linux#6.17.0-19-generic md/arch#x86_64 lang/python#3.12.3 md/pyimpl#CPython cfg/retry-mode#legacy Botocore/1.35.53'}, 'body': {'Action': 'DescribeStacks', 'Version': '2010-05-15', 'StackName': 'sce-experiment-malicious-codebuild-1775366205'}, 'url': 'https://cloudformation.us-east-1.amazonaws.com/', 'context': {'client_region': 'us-east-1', 'client_config': <botocore.config.Config object at 0x78a295ad8e00>, 'has_streaming_input': False, 'auth_type': None, 'unsigned_payload': None}}
+2026-04-05 00:16:46,542 - botocore.hooks - DEBUG - Event request-created.cloudformation.DescribeStacks: calling handler <bound method RequestSigner.handler of <botocore.signers.RequestSigner object at 0x78a295ad8e60>>
+2026-04-05 00:16:46,542 - botocore.hooks - DEBUG - Event choose-signer.cloudformation.DescribeStacks: calling handler <function set_operation_specific_signer at 0x78a2964a4e00>
+2026-04-05 00:16:46,543 - botocore.auth - DEBUG - Calculating signature using v4 auth.
+2026-04-05 00:16:46,543 - botocore.auth - DEBUG - CanonicalRequest:
+POST
+/
+
+content-type:application/x-www-form-urlencoded; charset=utf-8
+host:cloudformation.us-east-1.amazonaws.com
+x-amz-date:20260405T051646Z
+
+content-type;host;x-amz-date
+98ee3ab708a8f1bac53c95a1b7bbecc640c61e5ea02c444939be8f6602cb5066
+2026-04-05 00:16:46,543 - botocore.auth - DEBUG - StringToSign:
+AWS4-HMAC-SHA256
+20260405T051646Z
+20260405/us-east-1/cloudformation/aws4_request
+003766215027e8669ab7f9cbc103b3a22de9a324d5e28bc0ef779a08b15879c2
+2026-04-05 00:16:46,543 - botocore.auth - DEBUG - Signature:
+2747dfd5e6e39875f348528f1b0fc1e0a80d3d1ffcdbcf9f6ea40280aef0e0c6
+2026-04-05 00:16:46,543 - botocore.hooks - DEBUG - Event request-created.cloudformation.DescribeStacks: calling handler <function add_retry_headers at 0x78a2964a72e0>
+2026-04-05 00:16:46,543 - botocore.endpoint - DEBUG - Sending http request: <AWSPreparedRequest stream_output=False, method=POST, url=https://cloudformation.us-east-1.amazonaws.com/, headers={'Content-Type': b'application/x-www-form-urlencoded; charset=utf-8', 'User-Agent': b'Boto3/1.35.53 md/Botocore#1.35.53 ua/2.0 os/linux#6.17.0-19-generic md/arch#x86_64 lang/python#3.12.3 md/pyimpl#CPython cfg/retry-mode#legacy Botocore/1.35.53', 'X-Amz-Date': b'20260405T051646Z', 'Authorization': b'AWS4-HMAC-SHA256 Credential=AKIA5WLTSZADV4FB6UI2/20260405/us-east-1/cloudformation/aws4_request, SignedHeaders=content-type;host;x-amz-date, Signature=2747dfd5e6e39875f348528f1b0fc1e0a80d3d1ffcdbcf9f6ea40280aef0e0c6', 'amz-sdk-invocation-id': b'20865397-497a-4640-a358-02b737685fcc', 'amz-sdk-request': b'attempt=1', 'Content-Length': '96'}>
+2026-04-05 00:16:46,543 - botocore.httpsession - DEBUG - Certificate path: /home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/certifi/cacert.pem
+2026-04-05 00:16:46,662 - urllib3.connectionpool - DEBUG - https://cloudformation.us-east-1.amazonaws.com:443 "POST / HTTP/11" 200 1707
+2026-04-05 00:16:46,663 - botocore.parsers - DEBUG - Response headers: {'x-amzn-RequestId': '8a701c24-3e7f-4b3a-a049-fc72066be224', 'Date': 'Sun, 05 Apr 2026 05:16:46 GMT', 'Content-Type': 'text/xml', 'Content-Length': '1707', 'connection': 'keep-alive'}
+2026-04-05 00:16:46,663 - botocore.parsers - DEBUG - Response body:
+b'<DescribeStacksResponse xmlns="http://cloudformation.amazonaws.com/doc/2010-05-15/">\n  <DescribeStacksResult>\n    <Stacks>\n      <member>\n        <CreationTime>2026-04-05T05:16:46.304Z</CreationTime>\n        <NotificationARNs/>\n        <StackName>sce-experiment-malicious-codebuild-1775366205</StackName>\n        <Description>SCE Experiment: Malicious CodeBuild Project Detection</Description>\n        <RollbackConfiguration/>\n        <LastOperations>\n          <member>\n            <OperationId>55cd63b5-7991-4ccb-b189-331921ba826c</OperationId>\n            <OperationType>CREATE_STACK</OperationType>\n          </member>\n        </LastOperations>\n        <DriftInformation>\n          <StackDriftStatus>NOT_CHECKED</StackDriftStatus>\n        </DriftInformation>\n        <EnableTerminationProtection>false</EnableTerminationProtection>\n        <StackStatusReason>User Initiated</StackStatusReason>\n        <Capabilities>\n          <member>CAPABILITY_NAMED_IAM</member>\n        </Capabilities>\n        <StackId>arn:aws:cloudformation:us-east-1:941377112071:stack/sce-experiment-malicious-codebuild-1775366205/a436e5e0-30ae-11f1-a0d0-0e5465764757</StackId>\n        <StackStatus>CREATE_IN_PROGRESS</StackStatus>\n        <DisableRollback>false</DisableRollback>\n        <Tags>\n          <member>\n            <Value>1.3-sce-experiment</Value>\n            <Key>experiment</Key>\n          </member>\n          <member>\n            <Value>1775366205</Value>\n            <Key>timestamp</Key>\n          </member>\n        </Tags>\n      </member>\n    </Stacks>\n  </DescribeStacksResult>\n  <ResponseMetadata>\n    <RequestId>8a701c24-3e7f-4b3a-a049-fc72066be224</RequestId>\n  </ResponseMetadata>\n</DescribeStacksResponse>\n'
+2026-04-05 00:16:46,666 - botocore.hooks - DEBUG - Event needs-retry.cloudformation.DescribeStacks: calling handler <botocore.retryhandler.RetryHandler object at 0x78a295ad9b20>
+2026-04-05 00:16:46,667 - botocore.retryhandler - DEBUG - No retry needed.
+2026-04-05 00:16:46,667 - chaosaws.ec2.1_3_sce_experiment_detective - DEBUG - Stack status: CREATE_IN_PROGRESS (attempt 1/60)
+2026-04-05 00:16:51,668 - botocore.hooks - DEBUG - Event before-parameter-build.cloudformation.DescribeStacks: calling handler <function generate_idempotent_uuid at 0x78a2964a4fe0>
+2026-04-05 00:16:51,668 - botocore.regions - DEBUG - Calling endpoint provider with parameters: {'Region': 'us-east-1', 'UseDualStack': False, 'UseFIPS': False}
+2026-04-05 00:16:51,668 - botocore.regions - DEBUG - Endpoint provider result: https://cloudformation.us-east-1.amazonaws.com
+2026-04-05 00:16:51,668 - botocore.hooks - DEBUG - Event before-call.cloudformation.DescribeStacks: calling handler <function add_recursion_detection_header at 0x78a2964a4400>
+2026-04-05 00:16:51,668 - botocore.hooks - DEBUG - Event before-call.cloudformation.DescribeStacks: calling handler <function inject_api_version_header_if_needed at 0x78a2964a6ac0>
+2026-04-05 00:16:51,668 - botocore.endpoint - DEBUG - Making request for OperationModel(name=DescribeStacks) with params: {'url_path': '/', 'query_string': '', 'method': 'POST', 'headers': {'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8', 'User-Agent': 'Boto3/1.35.53 md/Botocore#1.35.53 ua/2.0 os/linux#6.17.0-19-generic md/arch#x86_64 lang/python#3.12.3 md/pyimpl#CPython cfg/retry-mode#legacy Botocore/1.35.53'}, 'body': {'Action': 'DescribeStacks', 'Version': '2010-05-15', 'StackName': 'sce-experiment-malicious-codebuild-1775366205'}, 'url': 'https://cloudformation.us-east-1.amazonaws.com/', 'context': {'client_region': 'us-east-1', 'client_config': <botocore.config.Config object at 0x78a295ad8e00>, 'has_streaming_input': False, 'auth_type': None, 'unsigned_payload': None}}
+2026-04-05 00:16:51,669 - botocore.hooks - DEBUG - Event request-created.cloudformation.DescribeStacks: calling handler <bound method RequestSigner.handler of <botocore.signers.RequestSigner object at 0x78a295ad8e60>>
+2026-04-05 00:16:51,669 - botocore.hooks - DEBUG - Event choose-signer.cloudformation.DescribeStacks: calling handler <function set_operation_specific_signer at 0x78a2964a4e00>
+2026-04-05 00:16:51,669 - botocore.auth - DEBUG - Calculating signature using v4 auth.
+2026-04-05 00:16:51,669 - botocore.auth - DEBUG - CanonicalRequest:
+POST
+/
+
+content-type:application/x-www-form-urlencoded; charset=utf-8
+host:cloudformation.us-east-1.amazonaws.com
+x-amz-date:20260405T051651Z
+
+content-type;host;x-amz-date
+98ee3ab708a8f1bac53c95a1b7bbecc640c61e5ea02c444939be8f6602cb5066
+2026-04-05 00:16:51,669 - botocore.auth - DEBUG - StringToSign:
+AWS4-HMAC-SHA256
+20260405T051651Z
+20260405/us-east-1/cloudformation/aws4_request
+ca91c5ff93ad39c7da481ecc4398f6a05047af1f80687176613af9442a9297d2
+2026-04-05 00:16:51,669 - botocore.auth - DEBUG - Signature:
+ea4b92a11c89a6506464d9808be592404127f3e827f6c78e2eb34184b03b54bc
+2026-04-05 00:16:51,669 - botocore.hooks - DEBUG - Event request-created.cloudformation.DescribeStacks: calling handler <function add_retry_headers at 0x78a2964a72e0>
+2026-04-05 00:16:51,669 - botocore.endpoint - DEBUG - Sending http request: <AWSPreparedRequest stream_output=False, method=POST, url=https://cloudformation.us-east-1.amazonaws.com/, headers={'Content-Type': b'application/x-www-form-urlencoded; charset=utf-8', 'User-Agent': b'Boto3/1.35.53 md/Botocore#1.35.53 ua/2.0 os/linux#6.17.0-19-generic md/arch#x86_64 lang/python#3.12.3 md/pyimpl#CPython cfg/retry-mode#legacy Botocore/1.35.53', 'X-Amz-Date': b'20260405T051651Z', 'Authorization': b'AWS4-HMAC-SHA256 Credential=AKIA5WLTSZADV4FB6UI2/20260405/us-east-1/cloudformation/aws4_request, SignedHeaders=content-type;host;x-amz-date, Signature=ea4b92a11c89a6506464d9808be592404127f3e827f6c78e2eb34184b03b54bc', 'amz-sdk-invocation-id': b'ca22d51b-df33-40ed-bff2-19f16e0a7b70', 'amz-sdk-request': b'attempt=1', 'Content-Length': '96'}>
+2026-04-05 00:16:51,670 - botocore.httpsession - DEBUG - Certificate path: /home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/certifi/cacert.pem
+2026-04-05 00:16:51,781 - urllib3.connectionpool - DEBUG - https://cloudformation.us-east-1.amazonaws.com:443 "POST / HTTP/11" 200 1645
+2026-04-05 00:16:51,782 - botocore.parsers - DEBUG - Response headers: {'x-amzn-RequestId': '49583e04-0b11-4060-91de-5ddb39a5edb0', 'Date': 'Sun, 05 Apr 2026 05:16:51 GMT', 'Content-Type': 'text/xml', 'Content-Length': '1645', 'connection': 'keep-alive'}
+2026-04-05 00:16:51,782 - botocore.parsers - DEBUG - Response body:
+b'<DescribeStacksResponse xmlns="http://cloudformation.amazonaws.com/doc/2010-05-15/">\n  <DescribeStacksResult>\n    <Stacks>\n      <member>\n        <CreationTime>2026-04-05T05:16:46.304Z</CreationTime>\n        <NotificationARNs/>\n        <StackName>sce-experiment-malicious-codebuild-1775366205</StackName>\n        <Description>SCE Experiment: Malicious CodeBuild Project Detection</Description>\n        <RollbackConfiguration/>\n        <LastOperations>\n          <member>\n            <OperationId>55cd63b5-7991-4ccb-b189-331921ba826c</OperationId>\n            <OperationType>CREATE_STACK</OperationType>\n          </member>\n        </LastOperations>\n        <DriftInformation>\n          <StackDriftStatus>NOT_CHECKED</StackDriftStatus>\n        </DriftInformation>\n        <EnableTerminationProtection>false</EnableTerminationProtection>\n        <Capabilities>\n          <member>CAPABILITY_NAMED_IAM</member>\n        </Capabilities>\n        <StackId>arn:aws:cloudformation:us-east-1:941377112071:stack/sce-experiment-malicious-codebuild-1775366205/a436e5e0-30ae-11f1-a0d0-0e5465764757</StackId>\n        <StackStatus>CREATE_IN_PROGRESS</StackStatus>\n        <DisableRollback>false</DisableRollback>\n        <Tags>\n          <member>\n            <Value>1.3-sce-experiment</Value>\n            <Key>experiment</Key>\n          </member>\n          <member>\n            <Value>1775366205</Value>\n            <Key>timestamp</Key>\n          </member>\n        </Tags>\n      </member>\n    </Stacks>\n  </DescribeStacksResult>\n  <ResponseMetadata>\n    <RequestId>49583e04-0b11-4060-91de-5ddb39a5edb0</RequestId>\n  </ResponseMetadata>\n</DescribeStacksResponse>\n'
+2026-04-05 00:16:51,783 - botocore.hooks - DEBUG - Event needs-retry.cloudformation.DescribeStacks: calling handler <botocore.retryhandler.RetryHandler object at 0x78a295ad9b20>
+2026-04-05 00:16:51,783 - botocore.retryhandler - DEBUG - No retry needed.
+2026-04-05 00:16:51,783 - chaosaws.ec2.1_3_sce_experiment_detective - DEBUG - Stack status: CREATE_IN_PROGRESS (attempt 2/60)
+2026-04-05 00:16:59,284 - botocore.hooks - DEBUG - Event before-parameter-build.cloudformation.DescribeStacks: calling handler <function generate_idempotent_uuid at 0x78a2964a4fe0>
+2026-04-05 00:16:59,285 - botocore.regions - DEBUG - Calling endpoint provider with parameters: {'Region': 'us-east-1', 'UseDualStack': False, 'UseFIPS': False}
+2026-04-05 00:16:59,285 - botocore.regions - DEBUG - Endpoint provider result: https://cloudformation.us-east-1.amazonaws.com
+2026-04-05 00:16:59,285 - botocore.hooks - DEBUG - Event before-call.cloudformation.DescribeStacks: calling handler <function add_recursion_detection_header at 0x78a2964a4400>
+2026-04-05 00:16:59,285 - botocore.hooks - DEBUG - Event before-call.cloudformation.DescribeStacks: calling handler <function inject_api_version_header_if_needed at 0x78a2964a6ac0>
+2026-04-05 00:16:59,285 - botocore.endpoint - DEBUG - Making request for OperationModel(name=DescribeStacks) with params: {'url_path': '/', 'query_string': '', 'method': 'POST', 'headers': {'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8', 'User-Agent': 'Boto3/1.35.53 md/Botocore#1.35.53 ua/2.0 os/linux#6.17.0-19-generic md/arch#x86_64 lang/python#3.12.3 md/pyimpl#CPython cfg/retry-mode#legacy Botocore/1.35.53'}, 'body': {'Action': 'DescribeStacks', 'Version': '2010-05-15', 'StackName': 'sce-experiment-malicious-codebuild-1775366205'}, 'url': 'https://cloudformation.us-east-1.amazonaws.com/', 'context': {'client_region': 'us-east-1', 'client_config': <botocore.config.Config object at 0x78a295ad8e00>, 'has_streaming_input': False, 'auth_type': None, 'unsigned_payload': None}}
+2026-04-05 00:16:59,286 - botocore.hooks - DEBUG - Event request-created.cloudformation.DescribeStacks: calling handler <bound method RequestSigner.handler of <botocore.signers.RequestSigner object at 0x78a295ad8e60>>
+2026-04-05 00:16:59,286 - botocore.hooks - DEBUG - Event choose-signer.cloudformation.DescribeStacks: calling handler <function set_operation_specific_signer at 0x78a2964a4e00>
+2026-04-05 00:16:59,286 - botocore.auth - DEBUG - Calculating signature using v4 auth.
+2026-04-05 00:16:59,286 - botocore.auth - DEBUG - CanonicalRequest:
+POST
+/
+
+content-type:application/x-www-form-urlencoded; charset=utf-8
+host:cloudformation.us-east-1.amazonaws.com
+x-amz-date:20260405T051659Z
+
+content-type;host;x-amz-date
+98ee3ab708a8f1bac53c95a1b7bbecc640c61e5ea02c444939be8f6602cb5066
+2026-04-05 00:16:59,286 - botocore.auth - DEBUG - StringToSign:
+AWS4-HMAC-SHA256
+20260405T051659Z
+20260405/us-east-1/cloudformation/aws4_request
+6b8b0629f8e087b840fa06d2d8471c6f3fc6377387802a8232bb1af42c8bbc5a
+2026-04-05 00:16:59,286 - botocore.auth - DEBUG - Signature:
+023b3d75beb8e8133d73e60de41ea2c3e74c797e3d5688e80ca79b9c2076bb8b
+2026-04-05 00:16:59,286 - botocore.hooks - DEBUG - Event request-created.cloudformation.DescribeStacks: calling handler <function add_retry_headers at 0x78a2964a72e0>
+2026-04-05 00:16:59,286 - botocore.endpoint - DEBUG - Sending http request: <AWSPreparedRequest stream_output=False, method=POST, url=https://cloudformation.us-east-1.amazonaws.com/, headers={'Content-Type': b'application/x-www-form-urlencoded; charset=utf-8', 'User-Agent': b'Boto3/1.35.53 md/Botocore#1.35.53 ua/2.0 os/linux#6.17.0-19-generic md/arch#x86_64 lang/python#3.12.3 md/pyimpl#CPython cfg/retry-mode#legacy Botocore/1.35.53', 'X-Amz-Date': b'20260405T051659Z', 'Authorization': b'AWS4-HMAC-SHA256 Credential=AKIA5WLTSZADV4FB6UI2/20260405/us-east-1/cloudformation/aws4_request, SignedHeaders=content-type;host;x-amz-date, Signature=023b3d75beb8e8133d73e60de41ea2c3e74c797e3d5688e80ca79b9c2076bb8b', 'amz-sdk-invocation-id': b'9f74971c-73de-4595-a97b-8666c886e4a6', 'amz-sdk-request': b'attempt=1', 'Content-Length': '96'}>
+2026-04-05 00:16:59,286 - botocore.httpsession - DEBUG - Certificate path: /home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/certifi/cacert.pem
+2026-04-05 00:16:59,287 - urllib3.connectionpool - DEBUG - Resetting dropped connection: cloudformation.us-east-1.amazonaws.com
+2026-04-05 00:16:59,715 - urllib3.connectionpool - DEBUG - https://cloudformation.us-east-1.amazonaws.com:443 "POST / HTTP/11" 200 1645
+2026-04-05 00:16:59,715 - botocore.parsers - DEBUG - Response headers: {'x-amzn-RequestId': '5c1686c6-2eae-4351-b29f-afb4336fc420', 'Date': 'Sun, 05 Apr 2026 05:16:59 GMT', 'Content-Type': 'text/xml', 'Content-Length': '1645', 'connection': 'keep-alive'}
+2026-04-05 00:16:59,715 - botocore.parsers - DEBUG - Response body:
+b'<DescribeStacksResponse xmlns="http://cloudformation.amazonaws.com/doc/2010-05-15/">\n  <DescribeStacksResult>\n    <Stacks>\n      <member>\n        <CreationTime>2026-04-05T05:16:46.304Z</CreationTime>\n        <NotificationARNs/>\n        <StackName>sce-experiment-malicious-codebuild-1775366205</StackName>\n        <Description>SCE Experiment: Malicious CodeBuild Project Detection</Description>\n        <RollbackConfiguration/>\n        <LastOperations>\n          <member>\n            <OperationId>55cd63b5-7991-4ccb-b189-331921ba826c</OperationId>\n            <OperationType>CREATE_STACK</OperationType>\n          </member>\n        </LastOperations>\n        <DriftInformation>\n          <StackDriftStatus>NOT_CHECKED</StackDriftStatus>\n        </DriftInformation>\n        <EnableTerminationProtection>false</EnableTerminationProtection>\n        <Capabilities>\n          <member>CAPABILITY_NAMED_IAM</member>\n        </Capabilities>\n        <StackId>arn:aws:cloudformation:us-east-1:941377112071:stack/sce-experiment-malicious-codebuild-1775366205/a436e5e0-30ae-11f1-a0d0-0e5465764757</StackId>\n        <StackStatus>CREATE_IN_PROGRESS</StackStatus>\n        <DisableRollback>false</DisableRollback>\n        <Tags>\n          <member>\n            <Value>1.3-sce-experiment</Value>\n            <Key>experiment</Key>\n          </member>\n          <member>\n            <Value>1775366205</Value>\n            <Key>timestamp</Key>\n          </member>\n        </Tags>\n      </member>\n    </Stacks>\n  </DescribeStacksResult>\n  <ResponseMetadata>\n    <RequestId>5c1686c6-2eae-4351-b29f-afb4336fc420</RequestId>\n  </ResponseMetadata>\n</DescribeStacksResponse>\n'
+2026-04-05 00:16:59,716 - botocore.hooks - DEBUG - Event needs-retry.cloudformation.DescribeStacks: calling handler <botocore.retryhandler.RetryHandler object at 0x78a295ad9b20>
+2026-04-05 00:16:59,716 - botocore.retryhandler - DEBUG - No retry needed.
+2026-04-05 00:16:59,716 - chaosaws.ec2.1_3_sce_experiment_detective - DEBUG - Stack status: CREATE_IN_PROGRESS (attempt 3/60)
+2026-04-05 00:17:10,966 - botocore.hooks - DEBUG - Event before-parameter-build.cloudformation.DescribeStacks: calling handler <function generate_idempotent_uuid at 0x78a2964a4fe0>
+2026-04-05 00:17:10,967 - botocore.regions - DEBUG - Calling endpoint provider with parameters: {'Region': 'us-east-1', 'UseDualStack': False, 'UseFIPS': False}
+2026-04-05 00:17:10,967 - botocore.regions - DEBUG - Endpoint provider result: https://cloudformation.us-east-1.amazonaws.com
+2026-04-05 00:17:10,967 - botocore.hooks - DEBUG - Event before-call.cloudformation.DescribeStacks: calling handler <function add_recursion_detection_header at 0x78a2964a4400>
+2026-04-05 00:17:10,967 - botocore.hooks - DEBUG - Event before-call.cloudformation.DescribeStacks: calling handler <function inject_api_version_header_if_needed at 0x78a2964a6ac0>
+2026-04-05 00:17:10,967 - botocore.endpoint - DEBUG - Making request for OperationModel(name=DescribeStacks) with params: {'url_path': '/', 'query_string': '', 'method': 'POST', 'headers': {'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8', 'User-Agent': 'Boto3/1.35.53 md/Botocore#1.35.53 ua/2.0 os/linux#6.17.0-19-generic md/arch#x86_64 lang/python#3.12.3 md/pyimpl#CPython cfg/retry-mode#legacy Botocore/1.35.53'}, 'body': {'Action': 'DescribeStacks', 'Version': '2010-05-15', 'StackName': 'sce-experiment-malicious-codebuild-1775366205'}, 'url': 'https://cloudformation.us-east-1.amazonaws.com/', 'context': {'client_region': 'us-east-1', 'client_config': <botocore.config.Config object at 0x78a295ad8e00>, 'has_streaming_input': False, 'auth_type': None, 'unsigned_payload': None}}
+2026-04-05 00:17:10,967 - botocore.hooks - DEBUG - Event request-created.cloudformation.DescribeStacks: calling handler <bound method RequestSigner.handler of <botocore.signers.RequestSigner object at 0x78a295ad8e60>>
+2026-04-05 00:17:10,967 - botocore.hooks - DEBUG - Event choose-signer.cloudformation.DescribeStacks: calling handler <function set_operation_specific_signer at 0x78a2964a4e00>
+2026-04-05 00:17:10,968 - botocore.auth - DEBUG - Calculating signature using v4 auth.
+2026-04-05 00:17:10,968 - botocore.auth - DEBUG - CanonicalRequest:
+POST
+/
+
+content-type:application/x-www-form-urlencoded; charset=utf-8
+host:cloudformation.us-east-1.amazonaws.com
+x-amz-date:20260405T051710Z
+
+content-type;host;x-amz-date
+98ee3ab708a8f1bac53c95a1b7bbecc640c61e5ea02c444939be8f6602cb5066
+2026-04-05 00:17:10,968 - botocore.auth - DEBUG - StringToSign:
+AWS4-HMAC-SHA256
+20260405T051710Z
+20260405/us-east-1/cloudformation/aws4_request
+8594368cf92e4b5430ccb4f1da1b5b9bf44c4c33da01206fa39cacd6fb7a13c9
+2026-04-05 00:17:10,968 - botocore.auth - DEBUG - Signature:
+b94bc9e0f19e7fe188874aa857129b1569a96863d792c552272badcfe3f0a47c
+2026-04-05 00:17:10,968 - botocore.hooks - DEBUG - Event request-created.cloudformation.DescribeStacks: calling handler <function add_retry_headers at 0x78a2964a72e0>
+2026-04-05 00:17:10,968 - botocore.endpoint - DEBUG - Sending http request: <AWSPreparedRequest stream_output=False, method=POST, url=https://cloudformation.us-east-1.amazonaws.com/, headers={'Content-Type': b'application/x-www-form-urlencoded; charset=utf-8', 'User-Agent': b'Boto3/1.35.53 md/Botocore#1.35.53 ua/2.0 os/linux#6.17.0-19-generic md/arch#x86_64 lang/python#3.12.3 md/pyimpl#CPython cfg/retry-mode#legacy Botocore/1.35.53', 'X-Amz-Date': b'20260405T051710Z', 'Authorization': b'AWS4-HMAC-SHA256 Credential=AKIA5WLTSZADV4FB6UI2/20260405/us-east-1/cloudformation/aws4_request, SignedHeaders=content-type;host;x-amz-date, Signature=b94bc9e0f19e7fe188874aa857129b1569a96863d792c552272badcfe3f0a47c', 'amz-sdk-invocation-id': b'74c1e4f4-c3c0-49c0-a297-1343bf69b088', 'amz-sdk-request': b'attempt=1', 'Content-Length': '96'}>
+2026-04-05 00:17:10,968 - botocore.httpsession - DEBUG - Certificate path: /home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/certifi/cacert.pem
+2026-04-05 00:17:10,969 - urllib3.connectionpool - DEBUG - Resetting dropped connection: cloudformation.us-east-1.amazonaws.com
+2026-04-05 00:17:11,495 - urllib3.connectionpool - DEBUG - https://cloudformation.us-east-1.amazonaws.com:443 "POST / HTTP/11" 200 2488
+2026-04-05 00:17:11,495 - botocore.parsers - DEBUG - Response headers: {'x-amzn-RequestId': 'c1e5cc5d-8655-4561-9b72-d8110dc04852', 'Date': 'Sun, 05 Apr 2026 05:17:11 GMT', 'Content-Type': 'text/xml', 'Content-Length': '2488', 'connection': 'keep-alive'}
+2026-04-05 00:17:11,495 - botocore.parsers - DEBUG - Response body:
+b'<DescribeStacksResponse xmlns="http://cloudformation.amazonaws.com/doc/2010-05-15/">\n  <DescribeStacksResult>\n    <Stacks>\n      <member>\n        <Outputs>\n          <member>\n            <OutputKey>CodeBuildRoleArn</OutputKey>\n            <OutputValue>arn:aws:iam::941377112071:role/sce-experiment-malicious-cod-MaliciousCodeBuildRole-OEI9KU1nN0Eb</OutputValue>\n            <ExportName>CodeBuildRoleArn-1775366205</ExportName>\n          </member>\n          <member>\n            <OutputKey>CodeBuildProjectArn</OutputKey>\n            <OutputValue>arn:aws:codebuild:us-east-1:941377112071:project/malicious-project-1775366205</OutputValue>\n            <ExportName>CodeBuildProjectArn-1775366205</ExportName>\n          </member>\n          <member>\n            <OutputKey>ArtifactsBucketName</OutputKey>\n            <OutputValue>sce-artifacts-941377112071-1775366205</OutputValue>\n            <ExportName>ArtifactsBucketName-1775366205</ExportName>\n          </member>\n        </Outputs>\n        <CreationTime>2026-04-05T05:16:46.304Z</CreationTime>\n        <NotificationARNs/>\n        <StackName>sce-experiment-malicious-codebuild-1775366205</StackName>\n        <Description>SCE Experiment: Malicious CodeBuild Project Detection</Description>\n        <RollbackConfiguration/>\n        <LastOperations>\n          <member>\n            <OperationId>55cd63b5-7991-4ccb-b189-331921ba826c</OperationId>\n            <OperationType>CREATE_STACK</OperationType>\n          </member>\n        </LastOperations>\n        <DriftInformation>\n          <StackDriftStatus>NOT_CHECKED</StackDriftStatus>\n        </DriftInformation>\n        <EnableTerminationProtection>false</EnableTerminationProtection>\n        <Capabilities>\n          <member>CAPABILITY_NAMED_IAM</member>\n        </Capabilities>\n        <StackId>arn:aws:cloudformation:us-east-1:941377112071:stack/sce-experiment-malicious-codebuild-1775366205/a436e5e0-30ae-11f1-a0d0-0e5465764757</StackId>\n        <StackStatus>CREATE_COMPLETE</StackStatus>\n        <DisableRollback>false</DisableRollback>\n        <Tags>\n          <member>\n            <Value>1.3-sce-experiment</Value>\n            <Key>experiment</Key>\n          </member>\n          <member>\n            <Value>1775366205</Value>\n            <Key>timestamp</Key>\n          </member>\n        </Tags>\n      </member>\n    </Stacks>\n  </DescribeStacksResult>\n  <ResponseMetadata>\n    <RequestId>c1e5cc5d-8655-4561-9b72-d8110dc04852</RequestId>\n  </ResponseMetadata>\n</DescribeStacksResponse>\n'
+2026-04-05 00:17:11,496 - botocore.hooks - DEBUG - Event needs-retry.cloudformation.DescribeStacks: calling handler <botocore.retryhandler.RetryHandler object at 0x78a295ad9b20>
+2026-04-05 00:17:11,496 - botocore.retryhandler - DEBUG - No retry needed.
+2026-04-05 00:17:11,496 - chaosaws.ec2.1_3_sce_experiment_detective - DEBUG - Stack status: CREATE_COMPLETE (attempt 4/60)
+2026-04-05 00:17:11,496 - chaosaws.ec2.1_3_sce_experiment_detective - INFO - Stack reached CREATE_COMPLETE after 24.95s
+2026-04-05 00:17:11,497 - botocore.hooks - DEBUG - Event before-parameter-build.cloudformation.DescribeStacks: calling handler <function generate_idempotent_uuid at 0x78a2964a4fe0>
+2026-04-05 00:17:11,497 - botocore.regions - DEBUG - Calling endpoint provider with parameters: {'Region': 'us-east-1', 'UseDualStack': False, 'UseFIPS': False}
+2026-04-05 00:17:11,497 - botocore.regions - DEBUG - Endpoint provider result: https://cloudformation.us-east-1.amazonaws.com
+2026-04-05 00:17:11,497 - botocore.hooks - DEBUG - Event before-call.cloudformation.DescribeStacks: calling handler <function add_recursion_detection_header at 0x78a2964a4400>
+2026-04-05 00:17:11,497 - botocore.hooks - DEBUG - Event before-call.cloudformation.DescribeStacks: calling handler <function inject_api_version_header_if_needed at 0x78a2964a6ac0>
+2026-04-05 00:17:11,497 - botocore.endpoint - DEBUG - Making request for OperationModel(name=DescribeStacks) with params: {'url_path': '/', 'query_string': '', 'method': 'POST', 'headers': {'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8', 'User-Agent': 'Boto3/1.35.53 md/Botocore#1.35.53 ua/2.0 os/linux#6.17.0-19-generic md/arch#x86_64 lang/python#3.12.3 md/pyimpl#CPython cfg/retry-mode#legacy Botocore/1.35.53'}, 'body': {'Action': 'DescribeStacks', 'Version': '2010-05-15', 'StackName': 'sce-experiment-malicious-codebuild-1775366205'}, 'url': 'https://cloudformation.us-east-1.amazonaws.com/', 'context': {'client_region': 'us-east-1', 'client_config': <botocore.config.Config object at 0x78a295ad8e00>, 'has_streaming_input': False, 'auth_type': None, 'unsigned_payload': None}}
+2026-04-05 00:17:11,497 - botocore.hooks - DEBUG - Event request-created.cloudformation.DescribeStacks: calling handler <bound method RequestSigner.handler of <botocore.signers.RequestSigner object at 0x78a295ad8e60>>
+2026-04-05 00:17:11,497 - botocore.hooks - DEBUG - Event choose-signer.cloudformation.DescribeStacks: calling handler <function set_operation_specific_signer at 0x78a2964a4e00>
+2026-04-05 00:17:11,497 - botocore.auth - DEBUG - Calculating signature using v4 auth.
+2026-04-05 00:17:11,497 - botocore.auth - DEBUG - CanonicalRequest:
+POST
+/
+
+content-type:application/x-www-form-urlencoded; charset=utf-8
+host:cloudformation.us-east-1.amazonaws.com
+x-amz-date:20260405T051711Z
+
+content-type;host;x-amz-date
+98ee3ab708a8f1bac53c95a1b7bbecc640c61e5ea02c444939be8f6602cb5066
+2026-04-05 00:17:11,498 - botocore.auth - DEBUG - StringToSign:
+AWS4-HMAC-SHA256
+20260405T051711Z
+20260405/us-east-1/cloudformation/aws4_request
+75ace12d2c2f92f152a2387c4016d892f0b87436b5079c8c8c636e6c6a7c5cb6
+2026-04-05 00:17:11,498 - botocore.auth - DEBUG - Signature:
+c957acc4a81c5d7353bf576c41c9039d080b985961b169fcd37e0002a983fa31
+2026-04-05 00:17:11,498 - botocore.hooks - DEBUG - Event request-created.cloudformation.DescribeStacks: calling handler <function add_retry_headers at 0x78a2964a72e0>
+2026-04-05 00:17:11,498 - botocore.endpoint - DEBUG - Sending http request: <AWSPreparedRequest stream_output=False, method=POST, url=https://cloudformation.us-east-1.amazonaws.com/, headers={'Content-Type': b'application/x-www-form-urlencoded; charset=utf-8', 'User-Agent': b'Boto3/1.35.53 md/Botocore#1.35.53 ua/2.0 os/linux#6.17.0-19-generic md/arch#x86_64 lang/python#3.12.3 md/pyimpl#CPython cfg/retry-mode#legacy Botocore/1.35.53', 'X-Amz-Date': b'20260405T051711Z', 'Authorization': b'AWS4-HMAC-SHA256 Credential=AKIA5WLTSZADV4FB6UI2/20260405/us-east-1/cloudformation/aws4_request, SignedHeaders=content-type;host;x-amz-date, Signature=c957acc4a81c5d7353bf576c41c9039d080b985961b169fcd37e0002a983fa31', 'amz-sdk-invocation-id': b'f0eb5cb2-4cea-43f1-9930-e12fbee2b3b7', 'amz-sdk-request': b'attempt=1', 'Content-Length': '96'}>
+2026-04-05 00:17:11,498 - botocore.httpsession - DEBUG - Certificate path: /home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/certifi/cacert.pem
+2026-04-05 00:17:11,639 - urllib3.connectionpool - DEBUG - https://cloudformation.us-east-1.amazonaws.com:443 "POST / HTTP/11" 200 2488
+2026-04-05 00:17:11,639 - botocore.parsers - DEBUG - Response headers: {'x-amzn-RequestId': '7e6fa007-3401-40ae-b562-ff327b0acab1', 'Date': 'Sun, 05 Apr 2026 05:17:11 GMT', 'Content-Type': 'text/xml', 'Content-Length': '2488', 'connection': 'keep-alive'}
+2026-04-05 00:17:11,639 - botocore.parsers - DEBUG - Response body:
+b'<DescribeStacksResponse xmlns="http://cloudformation.amazonaws.com/doc/2010-05-15/">\n  <DescribeStacksResult>\n    <Stacks>\n      <member>\n        <Outputs>\n          <member>\n            <OutputKey>CodeBuildRoleArn</OutputKey>\n            <OutputValue>arn:aws:iam::941377112071:role/sce-experiment-malicious-cod-MaliciousCodeBuildRole-OEI9KU1nN0Eb</OutputValue>\n            <ExportName>CodeBuildRoleArn-1775366205</ExportName>\n          </member>\n          <member>\n            <OutputKey>CodeBuildProjectArn</OutputKey>\n            <OutputValue>arn:aws:codebuild:us-east-1:941377112071:project/malicious-project-1775366205</OutputValue>\n            <ExportName>CodeBuildProjectArn-1775366205</ExportName>\n          </member>\n          <member>\n            <OutputKey>ArtifactsBucketName</OutputKey>\n            <OutputValue>sce-artifacts-941377112071-1775366205</OutputValue>\n            <ExportName>ArtifactsBucketName-1775366205</ExportName>\n          </member>\n        </Outputs>\n        <CreationTime>2026-04-05T05:16:46.304Z</CreationTime>\n        <NotificationARNs/>\n        <StackName>sce-experiment-malicious-codebuild-1775366205</StackName>\n        <Description>SCE Experiment: Malicious CodeBuild Project Detection</Description>\n        <RollbackConfiguration/>\n        <LastOperations>\n          <member>\n            <OperationId>55cd63b5-7991-4ccb-b189-331921ba826c</OperationId>\n            <OperationType>CREATE_STACK</OperationType>\n          </member>\n        </LastOperations>\n        <DriftInformation>\n          <StackDriftStatus>NOT_CHECKED</StackDriftStatus>\n        </DriftInformation>\n        <EnableTerminationProtection>false</EnableTerminationProtection>\n        <Capabilities>\n          <member>CAPABILITY_NAMED_IAM</member>\n        </Capabilities>\n        <StackId>arn:aws:cloudformation:us-east-1:941377112071:stack/sce-experiment-malicious-codebuild-1775366205/a436e5e0-30ae-11f1-a0d0-0e5465764757</StackId>\n        <StackStatus>CREATE_COMPLETE</StackStatus>\n        <DisableRollback>false</DisableRollback>\n        <Tags>\n          <member>\n            <Value>1.3-sce-experiment</Value>\n            <Key>experiment</Key>\n          </member>\n          <member>\n            <Value>1775366205</Value>\n            <Key>timestamp</Key>\n          </member>\n        </Tags>\n      </member>\n    </Stacks>\n  </DescribeStacksResult>\n  <ResponseMetadata>\n    <RequestId>7e6fa007-3401-40ae-b562-ff327b0acab1</RequestId>\n  </ResponseMetadata>\n</DescribeStacksResponse>\n'
+2026-04-05 00:17:11,640 - botocore.hooks - DEBUG - Event needs-retry.cloudformation.DescribeStacks: calling handler <botocore.retryhandler.RetryHandler object at 0x78a295ad9b20>
+2026-04-05 00:17:11,640 - botocore.retryhandler - DEBUG - No retry needed.
+2026-04-05 00:17:11,640 - chaosaws.ec2.1_3_sce_experiment_detective - INFO - Stack created successfully
+2026-04-05 00:17:11,640 - chaosaws.ec2.1_3_sce_experiment_detective - INFO - CodeBuild Project: malicious-project-1775366205
+2026-04-05 00:17:11,640 - chaosaws.ec2.1_3_sce_experiment_detective - INFO - IAM Role ARN: arn:aws:iam::941377112071:role/sce-experiment-malicious-cod-MaliciousCodeBuildRole-OEI9KU1nN0Eb
+2026-04-05 00:17:11,640 - chaosaws.ec2.1_3_sce_experiment_detective - INFO - S3 Bucket: sce-artifacts-941377112071-1775366205
+[32m[2026-04-05 00:17:11 INFO] Action: Execute attack: Verify malicious CodeBuild indicators are present
+2026-04-05 00:17:11,642 - botocore.hooks - DEBUG - Changing event name from creating-client-class.iot-data to creating-client-class.iot-data-plane
+2026-04-05 00:17:11,644 - botocore.hooks - DEBUG - Changing event name from before-call.apigateway to before-call.api-gateway
+2026-04-05 00:17:11,644 - botocore.hooks - DEBUG - Changing event name from request-created.machinelearning.Predict to request-created.machine-learning.Predict
+2026-04-05 00:17:11,645 - botocore.hooks - DEBUG - Changing event name from before-parameter-build.autoscaling.CreateLaunchConfiguration to before-parameter-build.auto-scaling.CreateLaunchConfiguration
+2026-04-05 00:17:11,645 - botocore.hooks - DEBUG - Changing event name from before-parameter-build.route53 to before-parameter-build.route-53
+2026-04-05 00:17:11,645 - botocore.hooks - DEBUG - Changing event name from request-created.cloudsearchdomain.Search to request-created.cloudsearch-domain.Search
+2026-04-05 00:17:11,646 - botocore.hooks - DEBUG - Changing event name from docs.*.autoscaling.CreateLaunchConfiguration.complete-section to docs.*.auto-scaling.CreateLaunchConfiguration.complete-section
+2026-04-05 00:17:11,647 - botocore.hooks - DEBUG - Changing event name from before-parameter-build.logs.CreateExportTask to before-parameter-build.cloudwatch-logs.CreateExportTask
+2026-04-05 00:17:11,647 - botocore.hooks - DEBUG - Changing event name from docs.*.logs.CreateExportTask.complete-section to docs.*.cloudwatch-logs.CreateExportTask.complete-section
+2026-04-05 00:17:11,647 - botocore.hooks - DEBUG - Changing event name from before-parameter-build.cloudsearchdomain.Search to before-parameter-build.cloudsearch-domain.Search
+2026-04-05 00:17:11,647 - botocore.hooks - DEBUG - Changing event name from docs.*.cloudsearchdomain.Search.complete-section to docs.*.cloudsearch-domain.Search.complete-section
+2026-04-05 00:17:11,649 - chaosaws.ec2.1_3_sce_experiment_detective - INFO - AWS Region: us-east-1
+2026-04-05 00:17:11,649 - botocore.hooks - DEBUG - Event choose-service-name: calling handler <function handle_service_name_alias at 0x78a29648b4c0>
+2026-04-05 00:17:11,654 - botocore.loaders - DEBUG - Loading JSON file: /home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/data/codebuild/2016-10-06/service-2.json.gz
+2026-04-05 00:17:11,657 - botocore.loaders - DEBUG - Loading JSON file: /home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/data/codebuild/2016-10-06/endpoint-rule-set-1.json.gz
+2026-04-05 00:17:11,658 - botocore.hooks - DEBUG - Event creating-client-class.codebuild: calling handler <function add_generate_presigned_url at 0x78a2963cbc40>
+2026-04-05 00:17:11,658 - botocore.configprovider - DEBUG - Looking for endpoint for codebuild via: environment_service
+2026-04-05 00:17:11,658 - botocore.configprovider - DEBUG - Looking for endpoint for codebuild via: environment_global
+2026-04-05 00:17:11,658 - botocore.configprovider - DEBUG - Looking for endpoint for codebuild via: config_service
+2026-04-05 00:17:11,658 - botocore.configprovider - DEBUG - Looking for endpoint for codebuild via: config_global
+2026-04-05 00:17:11,658 - botocore.configprovider - DEBUG - No configured endpoint found.
+2026-04-05 00:17:11,659 - botocore.endpoint - DEBUG - Setting codebuild timeout as (60, 60)
+2026-04-05 00:17:11,660 - botocore.client - DEBUG - Registering retry handlers for service: codebuild
+2026-04-05 00:17:11,660 - botocore.hooks - DEBUG - Event choose-service-name: calling handler <function handle_service_name_alias at 0x78a29648b4c0>
+2026-04-05 00:17:11,667 - botocore.loaders - DEBUG - Loading JSON file: /home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/data/iam/2010-05-08/service-2.json.gz
+2026-04-05 00:17:11,674 - botocore.loaders - DEBUG - Loading JSON file: /home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/data/iam/2010-05-08/endpoint-rule-set-1.json.gz
+2026-04-05 00:17:11,679 - botocore.hooks - DEBUG - Event creating-client-class.iam: calling handler <function add_generate_presigned_url at 0x78a2963cbc40>
+2026-04-05 00:17:11,680 - botocore.configprovider - DEBUG - Looking for endpoint for iam via: environment_service
+2026-04-05 00:17:11,680 - botocore.configprovider - DEBUG - Looking for endpoint for iam via: environment_global
+2026-04-05 00:17:11,680 - botocore.configprovider - DEBUG - Looking for endpoint for iam via: config_service
+2026-04-05 00:17:11,680 - botocore.configprovider - DEBUG - Looking for endpoint for iam via: config_global
+2026-04-05 00:17:11,680 - botocore.configprovider - DEBUG - No configured endpoint found.
+2026-04-05 00:17:11,680 - botocore.regions - DEBUG - Using partition endpoint for iam, us-east-1: aws-global
+2026-04-05 00:17:11,681 - botocore.endpoint - DEBUG - Setting iam timeout as (60, 60)
+2026-04-05 00:17:11,683 - botocore.client - DEBUG - Registering retry handlers for service: iam
+2026-04-05 00:17:11,684 - botocore.hooks - DEBUG - Event choose-service-name: calling handler <function handle_service_name_alias at 0x78a29648b4c0>
+2026-04-05 00:17:11,691 - botocore.loaders - DEBUG - Loading JSON file: /home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/data/s3/2006-03-01/service-2.json.gz
+2026-04-05 00:17:11,700 - botocore.loaders - DEBUG - Loading JSON file: /home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/data/s3/2006-03-01/service-2.sdk-extras.json
+2026-04-05 00:17:11,703 - botocore.loaders - DEBUG - Loading JSON file: /home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/data/s3/2006-03-01/endpoint-rule-set-1.json.gz
+2026-04-05 00:17:11,707 - botocore.hooks - DEBUG - Event creating-client-class.s3: calling handler <function add_generate_presigned_post at 0x78a2963cbec0>
+2026-04-05 00:17:11,707 - botocore.hooks - DEBUG - Event creating-client-class.s3: calling handler <function lazy_call.<locals>._handler at 0x78a296290ae0>
+2026-04-05 00:17:11,762 - botocore.hooks - DEBUG - Event creating-client-class.s3: calling handler <function add_generate_presigned_url at 0x78a2963cbc40>
+2026-04-05 00:17:11,763 - botocore.configprovider - DEBUG - Looking for endpoint for s3 via: environment_service
+2026-04-05 00:17:11,763 - botocore.configprovider - DEBUG - Looking for endpoint for s3 via: environment_global
+2026-04-05 00:17:11,763 - botocore.configprovider - DEBUG - Looking for endpoint for s3 via: config_service
+2026-04-05 00:17:11,763 - botocore.configprovider - DEBUG - Looking for endpoint for s3 via: config_global
+2026-04-05 00:17:11,763 - botocore.configprovider - DEBUG - No configured endpoint found.
+2026-04-05 00:17:11,764 - botocore.endpoint - DEBUG - Setting s3 timeout as (60, 60)
+2026-04-05 00:17:11,769 - botocore.client - DEBUG - Registering retry handlers for service: s3
+2026-04-05 00:17:11,769 - botocore.utils - DEBUG - Registering S3 region redirector handler
+2026-04-05 00:17:11,769 - botocore.utils - DEBUG - Registering S3Express Identity Resolver
+2026-04-05 00:17:11,770 - chaosaws.ec2.1_3_sce_experiment_detective - INFO - [ATTACK] Checking CodeBuild project: malicious-project-1775366205
+2026-04-05 00:17:11,770 - botocore.hooks - DEBUG - Event before-parameter-build.codebuild.BatchGetProjects: calling handler <function generate_idempotent_uuid at 0x78a2964a4fe0>
+2026-04-05 00:17:11,770 - botocore.regions - DEBUG - Calling endpoint provider with parameters: {'Region': 'us-east-1', 'UseDualStack': False, 'UseFIPS': False}
+2026-04-05 00:17:11,771 - botocore.regions - DEBUG - Endpoint provider result: https://codebuild.us-east-1.amazonaws.com
+2026-04-05 00:17:11,771 - botocore.hooks - DEBUG - Event before-call.codebuild.BatchGetProjects: calling handler <function add_recursion_detection_header at 0x78a2964a4400>
+2026-04-05 00:17:11,771 - botocore.hooks - DEBUG - Event before-call.codebuild.BatchGetProjects: calling handler <function inject_api_version_header_if_needed at 0x78a2964a6ac0>
+2026-04-05 00:17:11,771 - botocore.endpoint - DEBUG - Making request for OperationModel(name=BatchGetProjects) with params: {'url_path': '/', 'query_string': '', 'method': 'POST', 'headers': {'X-Amz-Target': 'CodeBuild_20161006.BatchGetProjects', 'Content-Type': 'application/x-amz-json-1.1', 'User-Agent': 'Boto3/1.35.53 md/Botocore#1.35.53 ua/2.0 os/linux#6.17.0-19-generic md/arch#x86_64 lang/python#3.12.3 md/pyimpl#CPython cfg/retry-mode#legacy Botocore/1.35.53'}, 'body': b'{"names": ["malicious-project-1775366205"]}', 'url': 'https://codebuild.us-east-1.amazonaws.com/', 'context': {'client_region': 'us-east-1', 'client_config': <botocore.config.Config object at 0x78a2959faf30>, 'has_streaming_input': False, 'auth_type': None, 'unsigned_payload': None}}
+2026-04-05 00:17:11,771 - botocore.hooks - DEBUG - Event request-created.codebuild.BatchGetProjects: calling handler <bound method RequestSigner.handler of <botocore.signers.RequestSigner object at 0x78a2959faf90>>
+2026-04-05 00:17:11,771 - botocore.hooks - DEBUG - Event choose-signer.codebuild.BatchGetProjects: calling handler <function set_operation_specific_signer at 0x78a2964a4e00>
+2026-04-05 00:17:11,771 - botocore.auth - DEBUG - Calculating signature using v4 auth.
+2026-04-05 00:17:11,772 - botocore.auth - DEBUG - CanonicalRequest:
+POST
+/
+
+content-type:application/x-amz-json-1.1
+host:codebuild.us-east-1.amazonaws.com
+x-amz-date:20260405T051711Z
+x-amz-target:CodeBuild_20161006.BatchGetProjects
+
+content-type;host;x-amz-date;x-amz-target
+8f7d6959eae0ceb55fcd30f0b1070c5226f701076e7b03ae606e97ad64c6a763
+2026-04-05 00:17:11,772 - botocore.auth - DEBUG - StringToSign:
+AWS4-HMAC-SHA256
+20260405T051711Z
+20260405/us-east-1/codebuild/aws4_request
+98b6c5b06948ba7e80976d9963c70039aef414d2ce1cafbdd5f61245ce876e0a
+2026-04-05 00:17:11,772 - botocore.auth - DEBUG - Signature:
+c95d7ad0d414fa0f613357b4a6e871953c4c3436a13630971d9d19c3f747d798
+2026-04-05 00:17:11,772 - botocore.hooks - DEBUG - Event request-created.codebuild.BatchGetProjects: calling handler <function add_retry_headers at 0x78a2964a72e0>
+2026-04-05 00:17:11,772 - botocore.endpoint - DEBUG - Sending http request: <AWSPreparedRequest stream_output=False, method=POST, url=https://codebuild.us-east-1.amazonaws.com/, headers={'X-Amz-Target': b'CodeBuild_20161006.BatchGetProjects', 'Content-Type': b'application/x-amz-json-1.1', 'User-Agent': b'Boto3/1.35.53 md/Botocore#1.35.53 ua/2.0 os/linux#6.17.0-19-generic md/arch#x86_64 lang/python#3.12.3 md/pyimpl#CPython cfg/retry-mode#legacy Botocore/1.35.53', 'X-Amz-Date': b'20260405T051711Z', 'Authorization': b'AWS4-HMAC-SHA256 Credential=AKIA5WLTSZADV4FB6UI2/20260405/us-east-1/codebuild/aws4_request, SignedHeaders=content-type;host;x-amz-date;x-amz-target, Signature=c95d7ad0d414fa0f613357b4a6e871953c4c3436a13630971d9d19c3f747d798', 'amz-sdk-invocation-id': b'48958e27-3ad3-4aef-b58e-4220d0d14c5e', 'amz-sdk-request': b'attempt=1', 'Content-Length': '43'}>
+2026-04-05 00:17:11,772 - botocore.httpsession - DEBUG - Certificate path: /home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/certifi/cacert.pem
+2026-04-05 00:17:11,772 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): codebuild.us-east-1.amazonaws.com:443
+2026-04-05 00:17:12,299 - urllib3.connectionpool - DEBUG - https://codebuild.us-east-1.amazonaws.com:443 "POST / HTTP/11" 200 1813
+2026-04-05 00:17:12,299 - botocore.parsers - DEBUG - Response headers: {'x-amzn-RequestId': 'c62bb35a-c3a9-465a-a387-9a1dfd9a3fe0', 'Content-Type': 'application/x-amz-json-1.1', 'Content-Length': '1813', 'Date': 'Sun, 05 Apr 2026 05:17:12 GMT'}
+2026-04-05 00:17:12,299 - botocore.parsers - DEBUG - Response body:
+b'{"projects":[{"arn":"arn:aws:codebuild:us-east-1:941377112071:project/malicious-project-1775366205","artifacts":{"encryptionDisabled":false,"location":"sce-artifacts-941377112071-1775366205","name":"malicious-project-1775366205","namespaceType":"NONE","packaging":"NONE","type":"S3"},"badge":{"badgeEnabled":false},"cache":{"type":"NO_CACHE"},"created":1.775366228343E9,"encryptionKey":"arn:aws:kms:us-east-1:941377112071:alias/aws/s3","environment":{"computeType":"BUILD_GENERAL1_SMALL","environmentVariables":[{"name":"AWS_ACCOUNT_ID","type":"PLAINTEXT","value":"941377112071"},{"name":"MALICIOUS_FLAG","type":"PLAINTEXT","value":"true"}],"image":"aws/codebuild/standard:5.0","imagePullCredentialsType":"CODEBUILD","privilegedMode":true,"type":"LINUX_CONTAINER"},"lastModified":1.775366228343E9,"logsConfig":{"cloudWatchLogs":{"groupName":"/aws/codebuild/malicious-project-1775366205","status":"ENABLED"}},"name":"malicious-project-1775366205","projectVisibility":"PRIVATE","queuedTimeoutInMinutes":480,"serviceRole":"arn:aws:iam::941377112071:role/sce-experiment-malicious-cod-MaliciousCodeBuildRole-OEI9KU1nN0Eb","source":{"buildspec":"buildspec.yml","insecureSsl":false,"location":"https://github.com/example/malicious-repo.git","reportBuildStatus":false,"type":"GITHUB"},"tags":[{"key":"timestamp","value":"1775366205"},{"key":"aws:cloudformation:stack-name","value":"sce-experiment-malicious-codebuild-1775366205"},{"key":"aws:cloudformation:logical-id","value":"MaliciousCodeBuildProject"},{"key":"malicious","value":"true"},{"key":"aws:cloudformation:stack-id","value":"arn:aws:cloudformation:us-east-1:941377112071:stack/sce-experiment-malicious-codebuild-1775366205/a436e5e0-30ae-11f1-a0d0-0e5465764757"},{"key":"experiment","value":"1.3-sce-experiment"}],"timeoutInMinutes":60}],"projectsNotFound":[]}'
+2026-04-05 00:17:12,300 - botocore.hooks - DEBUG - Event needs-retry.codebuild.BatchGetProjects: calling handler <botocore.retryhandler.RetryHandler object at 0x78a2959fbce0>
+2026-04-05 00:17:12,300 - botocore.retryhandler - DEBUG - No retry needed.
+2026-04-05 00:17:12,300 - chaosaws.ec2.1_3_sce_experiment_detective - DEBUG - Project found: arn:aws:codebuild:us-east-1:941377112071:project/malicious-project-1775366205
+2026-04-05 00:17:12,301 - chaosaws.ec2.1_3_sce_experiment_detective - WARNING - [MALICIOUS] Privileged mode ENABLED in CodeBuild project
+2026-04-05 00:17:12,301 - chaosaws.ec2.1_3_sce_experiment_detective - WARNING - [MALICIOUS] Suspicious environment variable: MALICIOUS_FLAG=true
+2026-04-05 00:17:12,301 - chaosaws.ec2.1_3_sce_experiment_detective - INFO - CodeBuild project ARN: arn:aws:codebuild:us-east-1:941377112071:project/malicious-project-1775366205
+2026-04-05 00:17:12,301 - chaosaws.ec2.1_3_sce_experiment_detective - INFO - [ATTACK] Checking IAM role: arn:aws:iam::941377112071:role/sce-experiment-malicious-cod-MaliciousCodeBuildRole-OEI9KU1nN0Eb
+2026-04-05 00:17:12,301 - botocore.hooks - DEBUG - Event before-parameter-build.iam.ListAttachedRolePolicies: calling handler <function generate_idempotent_uuid at 0x78a2964a4fe0>
+2026-04-05 00:17:12,301 - botocore.regions - DEBUG - Calling endpoint provider with parameters: {'Region': 'us-east-1', 'UseDualStack': False, 'UseFIPS': False}
+2026-04-05 00:17:12,301 - botocore.regions - DEBUG - Endpoint provider result: https://iam.amazonaws.com
+2026-04-05 00:17:12,301 - botocore.regions - DEBUG - Selecting from endpoint provider's list of auth schemes: "sigv4". User selected auth scheme is: "None"
+2026-04-05 00:17:12,301 - botocore.regions - DEBUG - Selected auth type "v4" as "v4" with signing context params: {'region': 'us-east-1', 'signing_name': 'iam'}
+2026-04-05 00:17:12,301 - botocore.hooks - DEBUG - Event before-call.iam.ListAttachedRolePolicies: calling handler <function add_recursion_detection_header at 0x78a2964a4400>
+2026-04-05 00:17:12,301 - botocore.hooks - DEBUG - Event before-call.iam.ListAttachedRolePolicies: calling handler <function inject_api_version_header_if_needed at 0x78a2964a6ac0>
+2026-04-05 00:17:12,302 - botocore.endpoint - DEBUG - Making request for OperationModel(name=ListAttachedRolePolicies) with params: {'url_path': '/', 'query_string': '', 'method': 'POST', 'headers': {'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8', 'User-Agent': 'Boto3/1.35.53 md/Botocore#1.35.53 ua/2.0 os/linux#6.17.0-19-generic md/arch#x86_64 lang/python#3.12.3 md/pyimpl#CPython cfg/retry-mode#legacy Botocore/1.35.53'}, 'body': {'Action': 'ListAttachedRolePolicies', 'Version': '2010-05-08', 'RoleName': 'sce-experiment-malicious-cod-MaliciousCodeBuildRole-OEI9KU1nN0Eb'}, 'url': 'https://iam.amazonaws.com/', 'context': {'client_region': 'aws-global', 'client_config': <botocore.config.Config object at 0x78a295924980>, 'has_streaming_input': False, 'auth_type': 'v4', 'unsigned_payload': None, 'signing': {'region': 'us-east-1', 'signing_name': 'iam'}, 'endpoint_properties': {'authSchemes': [{'name': 'sigv4', 'signingName': 'iam', 'signingRegion': 'us-east-1'}]}}}
+2026-04-05 00:17:12,302 - botocore.hooks - DEBUG - Event request-created.iam.ListAttachedRolePolicies: calling handler <bound method RequestSigner.handler of <botocore.signers.RequestSigner object at 0x78a2959242c0>>
+2026-04-05 00:17:12,302 - botocore.hooks - DEBUG - Event choose-signer.iam.ListAttachedRolePolicies: calling handler <function set_operation_specific_signer at 0x78a2964a4e00>
+2026-04-05 00:17:12,302 - botocore.auth - DEBUG - Calculating signature using v4 auth.
+2026-04-05 00:17:12,302 - botocore.auth - DEBUG - CanonicalRequest:
+POST
+/
+
+content-type:application/x-www-form-urlencoded; charset=utf-8
+host:iam.amazonaws.com
+x-amz-date:20260405T051712Z
+
+content-type;host;x-amz-date
+09b0510a8db79b9c4a5e07999262e91f13bcd5eb6f9622c98b66e658ea14c9af
+2026-04-05 00:17:12,302 - botocore.auth - DEBUG - StringToSign:
+AWS4-HMAC-SHA256
+20260405T051712Z
+20260405/us-east-1/iam/aws4_request
+f900fba9a80b728e39c22e9a8e2b753ac162fd5e7a1fb275e5ff9f650000314f
+2026-04-05 00:17:12,302 - botocore.auth - DEBUG - Signature:
+56eb9df6fd84625614d264c28602bbce9f062caccd24a5c6104e68957b62cf11
+2026-04-05 00:17:12,302 - botocore.hooks - DEBUG - Event request-created.iam.ListAttachedRolePolicies: calling handler <function add_retry_headers at 0x78a2964a72e0>
+2026-04-05 00:17:12,302 - botocore.endpoint - DEBUG - Sending http request: <AWSPreparedRequest stream_output=False, method=POST, url=https://iam.amazonaws.com/, headers={'Content-Type': b'application/x-www-form-urlencoded; charset=utf-8', 'User-Agent': b'Boto3/1.35.53 md/Botocore#1.35.53 ua/2.0 os/linux#6.17.0-19-generic md/arch#x86_64 lang/python#3.12.3 md/pyimpl#CPython cfg/retry-mode#legacy Botocore/1.35.53', 'X-Amz-Date': b'20260405T051712Z', 'Authorization': b'AWS4-HMAC-SHA256 Credential=AKIA5WLTSZADV4FB6UI2/20260405/us-east-1/iam/aws4_request, SignedHeaders=content-type;host;x-amz-date, Signature=56eb9df6fd84625614d264c28602bbce9f062caccd24a5c6104e68957b62cf11', 'amz-sdk-invocation-id': b'49fb7c74-c3e8-4709-8692-e38f40452d15', 'amz-sdk-request': b'attempt=1', 'Content-Length': '124'}>
+2026-04-05 00:17:12,303 - botocore.httpsession - DEBUG - Certificate path: /home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/certifi/cacert.pem
+2026-04-05 00:17:12,303 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): iam.amazonaws.com:443
+2026-04-05 00:17:12,807 - urllib3.connectionpool - DEBUG - https://iam.amazonaws.com:443 "POST / HTTP/11" 200 542
+2026-04-05 00:17:12,808 - botocore.parsers - DEBUG - Response headers: {'Date': 'Sun, 05 Apr 2026 05:17:12 GMT', 'x-amzn-RequestId': '2a05972a-a6b1-4187-bc33-5a9076a3f6b8', 'Content-Type': 'text/xml', 'Content-Length': '542'}
+2026-04-05 00:17:12,808 - botocore.parsers - DEBUG - Response body:
+b'<ListAttachedRolePoliciesResponse xmlns="https://iam.amazonaws.com/doc/2010-05-08/">\n  <ListAttachedRolePoliciesResult>\n    <IsTruncated>false</IsTruncated>\n    <AttachedPolicies>\n      <member>\n        <PolicyArn>arn:aws:iam::aws:policy/AdministratorAccess</PolicyArn>\n        <PolicyName>AdministratorAccess</PolicyName>\n      </member>\n    </AttachedPolicies>\n  </ListAttachedRolePoliciesResult>\n  <ResponseMetadata>\n    <RequestId>2a05972a-a6b1-4187-bc33-5a9076a3f6b8</RequestId>\n  </ResponseMetadata>\n</ListAttachedRolePoliciesResponse>\n'
+2026-04-05 00:17:12,808 - botocore.hooks - DEBUG - Event needs-retry.iam.ListAttachedRolePolicies: calling handler <botocore.retryhandler.RetryHandler object at 0x78a295aab680>
+2026-04-05 00:17:12,808 - botocore.retryhandler - DEBUG - No retry needed.
+2026-04-05 00:17:12,808 - botocore.hooks - DEBUG - Event after-call.iam.ListAttachedRolePolicies: calling handler <function json_decode_policies at 0x78a2964a5c60>
+2026-04-05 00:17:12,808 - chaosaws.ec2.1_3_sce_experiment_detective - WARNING - [MALICIOUS] AdministratorAccess policy attached to CodeBuild role
+2026-04-05 00:17:12,808 - chaosaws.ec2.1_3_sce_experiment_detective - INFO - [ATTACK] Checking S3 bucket: sce-artifacts-941377112071-1775366205
+2026-04-05 00:17:12,808 - botocore.hooks - DEBUG - Event before-parameter-build.s3.GetPublicAccessBlock: calling handler <function validate_bucket_name at 0x78a2964a51c0>
+2026-04-05 00:17:12,808 - botocore.hooks - DEBUG - Event before-parameter-build.s3.GetPublicAccessBlock: calling handler <function remove_bucket_from_url_paths_from_model at 0x78a2964a7380>
+2026-04-05 00:17:12,808 - botocore.hooks - DEBUG - Event before-parameter-build.s3.GetPublicAccessBlock: calling handler <bound method S3RegionRedirectorv2.annotate_request_context of <botocore.utils.S3RegionRedirectorv2 object at 0x78a2951cf890>>
+2026-04-05 00:17:12,809 - botocore.hooks - DEBUG - Event before-parameter-build.s3.GetPublicAccessBlock: calling handler <bound method ClientCreator._inject_s3_input_parameters of <botocore.client.ClientCreator object at 0x78a2959fbd10>>
+2026-04-05 00:17:12,809 - botocore.hooks - DEBUG - Event before-parameter-build.s3.GetPublicAccessBlock: calling handler <function generate_idempotent_uuid at 0x78a2964a4fe0>
+2026-04-05 00:17:12,809 - botocore.hooks - DEBUG - Event before-endpoint-resolution.s3: calling handler <function customize_endpoint_resolver_builtins at 0x78a2964a7560>
+2026-04-05 00:17:12,809 - botocore.hooks - DEBUG - Event before-endpoint-resolution.s3: calling handler <bound method S3RegionRedirectorv2.redirect_from_cache of <botocore.utils.S3RegionRedirectorv2 object at 0x78a2951cf890>>
+2026-04-05 00:17:12,809 - botocore.regions - DEBUG - Calling endpoint provider with parameters: {'Bucket': 'sce-artifacts-941377112071-1775366205', 'Region': 'us-east-1', 'UseFIPS': False, 'UseDualStack': False, 'ForcePathStyle': False, 'Accelerate': False, 'UseGlobalEndpoint': True, 'DisableMultiRegionAccessPoints': False, 'UseArnRegion': True, 'UseS3ExpressControlEndpoint': True}
+2026-04-05 00:17:12,809 - botocore.regions - DEBUG - Endpoint provider result: https://sce-artifacts-941377112071-1775366205.s3.amazonaws.com
+2026-04-05 00:17:12,809 - botocore.regions - DEBUG - Selecting from endpoint provider's list of auth schemes: "sigv4". User selected auth scheme is: "None"
+2026-04-05 00:17:12,809 - botocore.regions - DEBUG - Selected auth type "v4" as "v4" with signing context params: {'region': 'us-east-1', 'signing_name': 's3', 'disableDoubleEncoding': True}
+2026-04-05 00:17:12,809 - botocore.hooks - DEBUG - Event before-call.s3.GetPublicAccessBlock: calling handler <function add_expect_header at 0x78a2964a5580>
+2026-04-05 00:17:12,810 - botocore.hooks - DEBUG - Event before-call.s3.GetPublicAccessBlock: calling handler <bound method S3ExpressIdentityResolver.apply_signing_cache_key of <botocore.utils.S3ExpressIdentityResolver object at 0x78a2951cfc80>>
+2026-04-05 00:17:12,810 - botocore.hooks - DEBUG - Event before-call.s3.GetPublicAccessBlock: calling handler <function add_recursion_detection_header at 0x78a2964a4400>
+2026-04-05 00:17:12,810 - botocore.hooks - DEBUG - Event before-call.s3.GetPublicAccessBlock: calling handler <function inject_api_version_header_if_needed at 0x78a2964a6ac0>
+2026-04-05 00:17:12,810 - botocore.endpoint - DEBUG - Making request for OperationModel(name=GetPublicAccessBlock) with params: {'url_path': '?publicAccessBlock', 'query_string': {}, 'method': 'GET', 'headers': {'User-Agent': 'Boto3/1.35.53 md/Botocore#1.35.53 ua/2.0 os/linux#6.17.0-19-generic md/arch#x86_64 lang/python#3.12.3 md/pyimpl#CPython cfg/retry-mode#legacy Botocore/1.35.53'}, 'body': b'', 'auth_path': '/sce-artifacts-941377112071-1775366205/', 'url': 'https://sce-artifacts-941377112071-1775366205.s3.amazonaws.com/?publicAccessBlock', 'context': {'client_region': 'us-east-1', 'client_config': <botocore.config.Config object at 0x78a2954ace30>, 'has_streaming_input': False, 'auth_type': 'v4', 'unsigned_payload': None, 's3_redirect': {'redirected': False, 'bucket': 'sce-artifacts-941377112071-1775366205', 'params': {'Bucket': 'sce-artifacts-941377112071-1775366205'}}, 'input_params': {'Bucket': 'sce-artifacts-941377112071-1775366205'}, 'signing': {'region': 'us-east-1', 'signing_name': 's3', 'disableDoubleEncoding': True}, 'endpoint_properties': {'authSchemes': [{'disableDoubleEncoding': True, 'name': 'sigv4', 'signingName': 's3', 'signingRegion': 'us-east-1'}]}}}
+2026-04-05 00:17:12,810 - botocore.hooks - DEBUG - Event request-created.s3.GetPublicAccessBlock: calling handler <bound method RequestSigner.handler of <botocore.signers.RequestSigner object at 0x78a29559c1d0>>
+2026-04-05 00:17:12,810 - botocore.hooks - DEBUG - Event choose-signer.s3.GetPublicAccessBlock: calling handler <bound method ClientCreator._default_s3_presign_to_sigv2 of <botocore.client.ClientCreator object at 0x78a2959fbd10>>
+2026-04-05 00:17:12,810 - botocore.hooks - DEBUG - Event choose-signer.s3.GetPublicAccessBlock: calling handler <function set_operation_specific_signer at 0x78a2964a4e00>
+2026-04-05 00:17:12,810 - botocore.hooks - DEBUG - Event before-sign.s3.GetPublicAccessBlock: calling handler <function remove_arn_from_signing_path at 0x78a2964a74c0>
+2026-04-05 00:17:12,810 - botocore.hooks - DEBUG - Event before-sign.s3.GetPublicAccessBlock: calling handler <bound method S3ExpressIdentityResolver.resolve_s3express_identity of <botocore.utils.S3ExpressIdentityResolver object at 0x78a2951cfc80>>
+2026-04-05 00:17:12,810 - botocore.auth - DEBUG - Calculating signature using v4 auth.
+2026-04-05 00:17:12,810 - botocore.auth - DEBUG - CanonicalRequest:
+GET
+/
+publicAccessBlock=
+host:sce-artifacts-941377112071-1775366205.s3.amazonaws.com
+x-amz-content-sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+x-amz-date:20260405T051712Z
+
+host;x-amz-content-sha256;x-amz-date
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+2026-04-05 00:17:12,810 - botocore.auth - DEBUG - StringToSign:
+AWS4-HMAC-SHA256
+20260405T051712Z
+20260405/us-east-1/s3/aws4_request
+38575796d6b34b4139c92c93193c7e0f194e4b3bb2a52d51c604f3bf7f9e39a0
+2026-04-05 00:17:12,810 - botocore.auth - DEBUG - Signature:
+89bad20fdb0edada31c7865eea04938c1b0a41b75cd1e40132118cb79b4dbaf3
+2026-04-05 00:17:12,810 - botocore.hooks - DEBUG - Event request-created.s3.GetPublicAccessBlock: calling handler <function add_retry_headers at 0x78a2964a72e0>
+2026-04-05 00:17:12,810 - botocore.endpoint - DEBUG - Sending http request: <AWSPreparedRequest stream_output=False, method=GET, url=https://sce-artifacts-941377112071-1775366205.s3.amazonaws.com/?publicAccessBlock, headers={'User-Agent': b'Boto3/1.35.53 md/Botocore#1.35.53 ua/2.0 os/linux#6.17.0-19-generic md/arch#x86_64 lang/python#3.12.3 md/pyimpl#CPython cfg/retry-mode#legacy Botocore/1.35.53', 'X-Amz-Date': b'20260405T051712Z', 'X-Amz-Content-SHA256': b'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', 'Authorization': b'AWS4-HMAC-SHA256 Credential=AKIA5WLTSZADV4FB6UI2/20260405/us-east-1/s3/aws4_request, SignedHeaders=host;x-amz-content-sha256;x-amz-date, Signature=89bad20fdb0edada31c7865eea04938c1b0a41b75cd1e40132118cb79b4dbaf3', 'amz-sdk-invocation-id': b'8e331490-23aa-4649-a2cd-816224df1717', 'amz-sdk-request': b'attempt=1'}>
+2026-04-05 00:17:12,811 - botocore.httpsession - DEBUG - Certificate path: /home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/certifi/cacert.pem
+2026-04-05 00:17:12,811 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): sce-artifacts-941377112071-1775366205.s3.amazonaws.com:443
+2026-04-05 00:17:13,242 - urllib3.connectionpool - DEBUG - https://sce-artifacts-941377112071-1775366205.s3.amazonaws.com:443 "GET /?publicAccessBlock HTTP/11" 200 None
+2026-04-05 00:17:13,243 - botocore.hooks - DEBUG - Event before-parse.s3.GetPublicAccessBlock: calling handler <function _handle_200_error at 0x78a2964a7880>
+2026-04-05 00:17:13,245 - botocore.hooks - DEBUG - Event before-parse.s3.GetPublicAccessBlock: calling handler <function handle_expires_header at 0x78a2964a76a0>
+2026-04-05 00:17:13,245 - botocore.parsers - DEBUG - Response headers: {'x-amz-id-2': 'j67Um2YEgjA1VPLR5U2rEqBeqX4MLjS0iDZg+fQhqryVGNrf1RhmBivsTncv6wHtUmFX4I9OurIzQ4vF9SKg/Dc+PSax1ajA', 'x-amz-request-id': 'F8HATA6C7FFV0YSE', 'Date': 'Sun, 05 Apr 2026 05:17:14 GMT', 'Transfer-Encoding': 'chunked', 'Server': 'AmazonS3'}
+2026-04-05 00:17:13,245 - botocore.parsers - DEBUG - Response body:
+b'<?xml version="1.0" encoding="UTF-8"?>\n<PublicAccessBlockConfiguration xmlns="http://s3.amazonaws.com/doc/2006-03-01/"><BlockPublicAcls>false</BlockPublicAcls><IgnorePublicAcls>false</IgnorePublicAcls><BlockPublicPolicy>false</BlockPublicPolicy><RestrictPublicBuckets>false</RestrictPublicBuckets></PublicAccessBlockConfiguration>'
+2026-04-05 00:17:13,246 - botocore.hooks - DEBUG - Event needs-retry.s3.GetPublicAccessBlock: calling handler <function _update_status_code at 0x78a2964a79c0>
+2026-04-05 00:17:13,246 - botocore.hooks - DEBUG - Event needs-retry.s3.GetPublicAccessBlock: calling handler <botocore.retryhandler.RetryHandler object at 0x78a2951cfc20>
+2026-04-05 00:17:13,246 - botocore.retryhandler - DEBUG - No retry needed.
+2026-04-05 00:17:13,246 - botocore.hooks - DEBUG - Event needs-retry.s3.GetPublicAccessBlock: calling handler <bound method S3RegionRedirectorv2.redirect_from_error of <botocore.utils.S3RegionRedirectorv2 object at 0x78a2951cf890>>
+2026-04-05 00:17:13,246 - chaosaws.ec2.1_3_sce_experiment_detective - WARNING - [MALICIOUS] S3 bucket has public access enabled
+2026-04-05 00:17:13,246 - chaosaws.ec2.1_3_sce_experiment_detective - WARNING - [MALICIOUS] CodeBuild source is from untrusted GitHub repository
+2026-04-05 00:17:13,246 - chaosaws.ec2.1_3_sce_experiment_detective - INFO - [ATTACK SUCCESS] All malicious indicators present: ['privileged_mode', 'malicious_env_var', 'admin_policy', 'public_s3_access', 'untrusted_source']
+[32m[2026-04-05 00:17:13 INFO] Steady state hypothesis: Detective probe identifies malicious CodeBuild project configurations
+[32m[2026-04-05 00:17:13 INFO] Probe: Verify detective control flags malicious CodeBuild configuration
+2026-04-05 00:17:13,250 - botocore.hooks - DEBUG - Changing event name from creating-client-class.iot-data to creating-client-class.iot-data-plane
+2026-04-05 00:17:13,252 - botocore.hooks - DEBUG - Changing event name from before-call.apigateway to before-call.api-gateway
+2026-04-05 00:17:13,252 - botocore.hooks - DEBUG - Changing event name from request-created.machinelearning.Predict to request-created.machine-learning.Predict
+2026-04-05 00:17:13,253 - botocore.hooks - DEBUG - Changing event name from before-parameter-build.autoscaling.CreateLaunchConfiguration to before-parameter-build.auto-scaling.CreateLaunchConfiguration
+2026-04-05 00:17:13,253 - botocore.hooks - DEBUG - Changing event name from before-parameter-build.route53 to before-parameter-build.route-53
+2026-04-05 00:17:13,253 - botocore.hooks - DEBUG - Changing event name from request-created.cloudsearchdomain.Search to request-created.cloudsearch-domain.Search
+2026-04-05 00:17:13,254 - botocore.hooks - DEBUG - Changing event name from docs.*.autoscaling.CreateLaunchConfiguration.complete-section to docs.*.auto-scaling.CreateLaunchConfiguration.complete-section
+2026-04-05 00:17:13,255 - botocore.hooks - DEBUG - Changing event name from before-parameter-build.logs.CreateExportTask to before-parameter-build.cloudwatch-logs.CreateExportTask
+2026-04-05 00:17:13,255 - botocore.hooks - DEBUG - Changing event name from docs.*.logs.CreateExportTask.complete-section to docs.*.cloudwatch-logs.CreateExportTask.complete-section
+2026-04-05 00:17:13,255 - botocore.hooks - DEBUG - Changing event name from before-parameter-build.cloudsearchdomain.Search to before-parameter-build.cloudsearch-domain.Search
+2026-04-05 00:17:13,255 - botocore.hooks - DEBUG - Changing event name from docs.*.cloudsearchdomain.Search.complete-section to docs.*.cloudsearch-domain.Search.complete-section
+2026-04-05 00:17:13,257 - chaosaws.ec2.1_3_sce_experiment_detective - INFO - AWS Region: us-east-1
+2026-04-05 00:17:13,257 - chaosaws.ec2.1_3_sce_experiment_detective - INFO - [VERIFY] Querying CloudWatch Logs for suspicious CodeBuild events
+2026-04-05 00:17:13,257 - botocore.hooks - DEBUG - Event choose-service-name: calling handler <function handle_service_name_alias at 0x78a29648b4c0>
+2026-04-05 00:17:13,260 - botocore.loaders - DEBUG - Loading JSON file: /home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/data/logs/2014-03-28/service-2.json.gz
+2026-04-05 00:17:13,265 - botocore.loaders - DEBUG - Loading JSON file: /home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/data/logs/2014-03-28/endpoint-rule-set-1.json.gz
+2026-04-05 00:17:13,266 - botocore.hooks - DEBUG - Event creating-client-class.cloudwatch-logs: calling handler <function add_generate_presigned_url at 0x78a2963cbc40>
+2026-04-05 00:17:13,267 - botocore.configprovider - DEBUG - Looking for endpoint for logs via: environment_service
+2026-04-05 00:17:13,267 - botocore.configprovider - DEBUG - Looking for endpoint for logs via: environment_global
+2026-04-05 00:17:13,267 - botocore.configprovider - DEBUG - Looking for endpoint for logs via: config_service
+2026-04-05 00:17:13,267 - botocore.configprovider - DEBUG - Looking for endpoint for logs via: config_global
+2026-04-05 00:17:13,267 - botocore.configprovider - DEBUG - No configured endpoint found.
+2026-04-05 00:17:13,268 - botocore.endpoint - DEBUG - Setting logs timeout as (60, 60)
+2026-04-05 00:17:13,269 - botocore.client - DEBUG - Registering retry handlers for service: logs
+2026-04-05 00:17:13,269 - botocore.hooks - DEBUG - Event before-parameter-build.cloudwatch-logs.DescribeLogStreams: calling handler <function generate_idempotent_uuid at 0x78a2964a4fe0>
+2026-04-05 00:17:13,269 - botocore.regions - DEBUG - Calling endpoint provider with parameters: {'Region': 'us-east-1', 'UseDualStack': False, 'UseFIPS': False}
+2026-04-05 00:17:13,269 - botocore.regions - DEBUG - Endpoint provider result: https://logs.us-east-1.amazonaws.com
+2026-04-05 00:17:13,270 - botocore.hooks - DEBUG - Event before-call.cloudwatch-logs.DescribeLogStreams: calling handler <function add_recursion_detection_header at 0x78a2964a4400>
+2026-04-05 00:17:13,270 - botocore.hooks - DEBUG - Event before-call.cloudwatch-logs.DescribeLogStreams: calling handler <function inject_api_version_header_if_needed at 0x78a2964a6ac0>
+2026-04-05 00:17:13,270 - botocore.endpoint - DEBUG - Making request for OperationModel(name=DescribeLogStreams) with params: {'url_path': '/', 'query_string': '', 'method': 'POST', 'headers': {'X-Amz-Target': 'Logs_20140328.DescribeLogStreams', 'Content-Type': 'application/x-amz-json-1.1', 'User-Agent': 'Boto3/1.35.53 md/Botocore#1.35.53 ua/2.0 os/linux#6.17.0-19-generic md/arch#x86_64 lang/python#3.12.3 md/pyimpl#CPython cfg/retry-mode#legacy Botocore/1.35.53'}, 'body': b'{"logGroupName": "/aws/codebuild/malicious-project-1775366205"}', 'url': 'https://logs.us-east-1.amazonaws.com/', 'context': {'client_region': 'us-east-1', 'client_config': <botocore.config.Config object at 0x78a2950c53d0>, 'has_streaming_input': False, 'auth_type': None, 'unsigned_payload': None}}
+2026-04-05 00:17:13,270 - botocore.hooks - DEBUG - Event request-created.cloudwatch-logs.DescribeLogStreams: calling handler <bound method RequestSigner.handler of <botocore.signers.RequestSigner object at 0x78a2950c5430>>
+2026-04-05 00:17:13,270 - botocore.hooks - DEBUG - Event choose-signer.cloudwatch-logs.DescribeLogStreams: calling handler <function set_operation_specific_signer at 0x78a2964a4e00>
+2026-04-05 00:17:13,270 - botocore.auth - DEBUG - Calculating signature using v4 auth.
+2026-04-05 00:17:13,270 - botocore.auth - DEBUG - CanonicalRequest:
+POST
+/
+
+content-type:application/x-amz-json-1.1
+host:logs.us-east-1.amazonaws.com
+x-amz-date:20260405T051713Z
+x-amz-target:Logs_20140328.DescribeLogStreams
+
+content-type;host;x-amz-date;x-amz-target
+6c19ec612283dc43b62ce89f9a8444374bd4ddb406d997c8005b7e92f5859db6
+2026-04-05 00:17:13,271 - botocore.auth - DEBUG - StringToSign:
+AWS4-HMAC-SHA256
+20260405T051713Z
+20260405/us-east-1/logs/aws4_request
+9533540471a378d11f967f92ce23f84fa613c275f2084c50ec3cce87531e7915
+2026-04-05 00:17:13,271 - botocore.auth - DEBUG - Signature:
+0aa799e558c810e9e85d25982826f8612f2a584a72a96adbd149f7f0661e54ce
+2026-04-05 00:17:13,271 - botocore.hooks - DEBUG - Event request-created.cloudwatch-logs.DescribeLogStreams: calling handler <function add_retry_headers at 0x78a2964a72e0>
+2026-04-05 00:17:13,271 - botocore.endpoint - DEBUG - Sending http request: <AWSPreparedRequest stream_output=False, method=POST, url=https://logs.us-east-1.amazonaws.com/, headers={'X-Amz-Target': b'Logs_20140328.DescribeLogStreams', 'Content-Type': b'application/x-amz-json-1.1', 'User-Agent': b'Boto3/1.35.53 md/Botocore#1.35.53 ua/2.0 os/linux#6.17.0-19-generic md/arch#x86_64 lang/python#3.12.3 md/pyimpl#CPython cfg/retry-mode#legacy Botocore/1.35.53', 'X-Amz-Date': b'20260405T051713Z', 'Authorization': b'AWS4-HMAC-SHA256 Credential=AKIA5WLTSZADV4FB6UI2/20260405/us-east-1/logs/aws4_request, SignedHeaders=content-type;host;x-amz-date;x-amz-target, Signature=0aa799e558c810e9e85d25982826f8612f2a584a72a96adbd149f7f0661e54ce', 'amz-sdk-invocation-id': b'083c13e8-a4f1-4bdf-89e3-e4fc2de6f86b', 'amz-sdk-request': b'attempt=1', 'Content-Length': '63'}>
+2026-04-05 00:17:13,271 - botocore.httpsession - DEBUG - Certificate path: /home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/certifi/cacert.pem
+2026-04-05 00:17:13,272 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): logs.us-east-1.amazonaws.com:443
+2026-04-05 00:17:13,776 - urllib3.connectionpool - DEBUG - https://logs.us-east-1.amazonaws.com:443 "POST / HTTP/11" 200 17
+2026-04-05 00:17:13,777 - botocore.parsers - DEBUG - Response headers: {'x-amzn-RequestId': 'efc933b6-84c5-4edd-a357-d3244deaa2ce', 'Content-Type': 'application/x-amz-json-1.1', 'Content-Length': '17', 'Date': 'Sun, 05 Apr 2026 05:17:13 GMT'}
+2026-04-05 00:17:13,777 - botocore.parsers - DEBUG - Response body:
+b'{"logStreams":[]}'
+2026-04-05 00:17:13,777 - botocore.hooks - DEBUG - Event needs-retry.cloudwatch-logs.DescribeLogStreams: calling handler <botocore.retryhandler.RetryHandler object at 0x78a2950c63c0>
+2026-04-05 00:17:13,777 - botocore.retryhandler - DEBUG - No retry needed.
+2026-04-05 00:17:13,777 - chaosaws.ec2.1_3_sce_experiment_detective - INFO - [VERIFY] Checking AWS Config for CodeBuild compliance violations
+2026-04-05 00:17:13,777 - botocore.hooks - DEBUG - Event choose-service-name: calling handler <function handle_service_name_alias at 0x78a29648b4c0>
+2026-04-05 00:17:13,783 - botocore.loaders - DEBUG - Loading JSON file: /home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/data/config/2014-11-12/service-2.json.gz
+2026-04-05 00:17:13,789 - botocore.loaders - DEBUG - Loading JSON file: /home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/data/config/2014-11-12/endpoint-rule-set-1.json.gz
+2026-04-05 00:17:13,791 - botocore.hooks - DEBUG - Event creating-client-class.config-service: calling handler <function add_generate_presigned_url at 0x78a2963cbc40>
+2026-04-05 00:17:13,791 - botocore.configprovider - DEBUG - Looking for endpoint for config via: environment_service
+2026-04-05 00:17:13,791 - botocore.configprovider - DEBUG - Looking for endpoint for config via: environment_global
+2026-04-05 00:17:13,791 - botocore.configprovider - DEBUG - Looking for endpoint for config via: config_service
+2026-04-05 00:17:13,792 - botocore.configprovider - DEBUG - Looking for endpoint for config via: config_global
+2026-04-05 00:17:13,792 - botocore.configprovider - DEBUG - No configured endpoint found.
+2026-04-05 00:17:13,792 - botocore.endpoint - DEBUG - Setting config timeout as (60, 60)
+2026-04-05 00:17:13,793 - botocore.client - DEBUG - Registering retry handlers for service: config
+2026-04-05 00:17:13,794 - botocore.hooks - DEBUG - Event before-parameter-build.config-service.DescribeConfigRules: calling handler <function generate_idempotent_uuid at 0x78a2964a4fe0>
+2026-04-05 00:17:13,794 - botocore.regions - DEBUG - Calling endpoint provider with parameters: {'Region': 'us-east-1', 'UseDualStack': False, 'UseFIPS': False}
+2026-04-05 00:17:13,794 - botocore.regions - DEBUG - Endpoint provider result: https://config.us-east-1.amazonaws.com
+2026-04-05 00:17:13,794 - botocore.hooks - DEBUG - Event before-call.config-service.DescribeConfigRules: calling handler <function add_recursion_detection_header at 0x78a2964a4400>
+2026-04-05 00:17:13,794 - botocore.hooks - DEBUG - Event before-call.config-service.DescribeConfigRules: calling handler <function inject_api_version_header_if_needed at 0x78a2964a6ac0>
+2026-04-05 00:17:13,794 - botocore.endpoint - DEBUG - Making request for OperationModel(name=DescribeConfigRules) with params: {'url_path': '/', 'query_string': '', 'method': 'POST', 'headers': {'X-Amz-Target': 'StarlingDoveService.DescribeConfigRules', 'Content-Type': 'application/x-amz-json-1.1', 'User-Agent': 'Boto3/1.35.53 md/Botocore#1.35.53 ua/2.0 os/linux#6.17.0-19-generic md/arch#x86_64 lang/python#3.12.3 md/pyimpl#CPython cfg/retry-mode#legacy Botocore/1.35.53'}, 'body': b'{}', 'url': 'https://config.us-east-1.amazonaws.com/', 'context': {'client_region': 'us-east-1', 'client_config': <botocore.config.Config object at 0x78a295056ed0>, 'has_streaming_input': False, 'auth_type': None, 'unsigned_payload': None}}
+2026-04-05 00:17:13,794 - botocore.hooks - DEBUG - Event request-created.config-service.DescribeConfigRules: calling handler <bound method RequestSigner.handler of <botocore.signers.RequestSigner object at 0x78a295056f00>>
+2026-04-05 00:17:13,795 - botocore.hooks - DEBUG - Event choose-signer.config-service.DescribeConfigRules: calling handler <function set_operation_specific_signer at 0x78a2964a4e00>
+2026-04-05 00:17:13,795 - botocore.auth - DEBUG - Calculating signature using v4 auth.
+2026-04-05 00:17:13,795 - botocore.auth - DEBUG - CanonicalRequest:
+POST
+/
+
+content-type:application/x-amz-json-1.1
+host:config.us-east-1.amazonaws.com
+x-amz-date:20260405T051713Z
+x-amz-target:StarlingDoveService.DescribeConfigRules
+
+content-type;host;x-amz-date;x-amz-target
+44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a
+2026-04-05 00:17:13,795 - botocore.auth - DEBUG - StringToSign:
+AWS4-HMAC-SHA256
+20260405T051713Z
+20260405/us-east-1/config/aws4_request
+1e1c14ab71f076c58fb27aeb6835067bbbddfe290d150739f6b0c889220c35b7
+2026-04-05 00:17:13,795 - botocore.auth - DEBUG - Signature:
+167a3edd367efa215f2354350598a482a46d4d89218b983408c1586cd797de38
+2026-04-05 00:17:13,795 - botocore.hooks - DEBUG - Event request-created.config-service.DescribeConfigRules: calling handler <function add_retry_headers at 0x78a2964a72e0>
+2026-04-05 00:17:13,795 - botocore.endpoint - DEBUG - Sending http request: <AWSPreparedRequest stream_output=False, method=POST, url=https://config.us-east-1.amazonaws.com/, headers={'X-Amz-Target': b'StarlingDoveService.DescribeConfigRules', 'Content-Type': b'application/x-amz-json-1.1', 'User-Agent': b'Boto3/1.35.53 md/Botocore#1.35.53 ua/2.0 os/linux#6.17.0-19-generic md/arch#x86_64 lang/python#3.12.3 md/pyimpl#CPython cfg/retry-mode#legacy Botocore/1.35.53', 'X-Amz-Date': b'20260405T051713Z', 'Authorization': b'AWS4-HMAC-SHA256 Credential=AKIA5WLTSZADV4FB6UI2/20260405/us-east-1/config/aws4_request, SignedHeaders=content-type;host;x-amz-date;x-amz-target, Signature=167a3edd367efa215f2354350598a482a46d4d89218b983408c1586cd797de38', 'amz-sdk-invocation-id': b'8247e68e-87cf-4f44-9491-be6ad83536f1', 'amz-sdk-request': b'attempt=1', 'Content-Length': '2'}>
+2026-04-05 00:17:13,795 - botocore.httpsession - DEBUG - Certificate path: /home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/certifi/cacert.pem
+2026-04-05 00:17:13,796 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): config.us-east-1.amazonaws.com:443
+2026-04-05 00:17:14,333 - urllib3.connectionpool - DEBUG - https://config.us-east-1.amazonaws.com:443 "POST / HTTP/11" 200 18
+2026-04-05 00:17:14,334 - botocore.parsers - DEBUG - Response headers: {'x-amzn-RequestId': '64f30105-ad68-4fef-b720-6f93ae1d7935', 'Strict-Transport-Security': 'max-age=86400', 'Content-Type': 'application/x-amz-json-1.1', 'Content-Length': '18', 'Date': 'Sun, 05 Apr 2026 05:17:14 GMT'}
+2026-04-05 00:17:14,334 - botocore.parsers - DEBUG - Response body:
+b'{"ConfigRules":[]}'
+2026-04-05 00:17:14,334 - botocore.hooks - DEBUG - Event needs-retry.config-service.DescribeConfigRules: calling handler <botocore.retryhandler.RetryHandler object at 0x78a295057f20>
+2026-04-05 00:17:14,334 - botocore.retryhandler - DEBUG - No retry needed.
+2026-04-05 00:17:14,335 - chaosaws.ec2.1_3_sce_experiment_detective - INFO - No CodeBuild-specific Config rules found (detective mechanism disabled)
+2026-04-05 00:17:14,335 - chaosaws.ec2.1_3_sce_experiment_detective - INFO - [VERIFY] Checking AWS Security Hub for malicious CodeBuild findings
+2026-04-05 00:17:14,335 - botocore.hooks - DEBUG - Event choose-service-name: calling handler <function handle_service_name_alias at 0x78a29648b4c0>
+2026-04-05 00:17:14,345 - botocore.loaders - DEBUG - Loading JSON file: /home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/data/securityhub/2018-10-26/service-2.json.gz
+2026-04-05 00:17:14,362 - botocore.loaders - DEBUG - Loading JSON file: /home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/data/securityhub/2018-10-26/endpoint-rule-set-1.json.gz
+2026-04-05 00:17:14,364 - botocore.hooks - DEBUG - Event creating-client-class.securityhub: calling handler <function add_generate_presigned_url at 0x78a2963cbc40>
+2026-04-05 00:17:14,364 - botocore.configprovider - DEBUG - Looking for endpoint for securityhub via: environment_service
+2026-04-05 00:17:14,364 - botocore.configprovider - DEBUG - Looking for endpoint for securityhub via: environment_global
+2026-04-05 00:17:14,364 - botocore.configprovider - DEBUG - Looking for endpoint for securityhub via: config_service
+2026-04-05 00:17:14,364 - botocore.configprovider - DEBUG - Looking for endpoint for securityhub via: config_global
+2026-04-05 00:17:14,364 - botocore.configprovider - DEBUG - No configured endpoint found.
+2026-04-05 00:17:14,365 - botocore.endpoint - DEBUG - Setting securityhub timeout as (60, 60)
+2026-04-05 00:17:14,366 - botocore.client - DEBUG - Registering retry handlers for service: securityhub
+2026-04-05 00:17:14,367 - botocore.hooks - DEBUG - Event before-parameter-build.securityhub.GetFindings: calling handler <function generate_idempotent_uuid at 0x78a2964a4fe0>
+2026-04-05 00:17:14,367 - botocore.regions - DEBUG - Calling endpoint provider with parameters: {'Region': 'us-east-1', 'UseDualStack': False, 'UseFIPS': False}
+2026-04-05 00:17:14,367 - botocore.regions - DEBUG - Endpoint provider result: https://securityhub.us-east-1.amazonaws.com
+2026-04-05 00:17:14,373 - botocore.hooks - DEBUG - Event before-call.securityhub.GetFindings: calling handler <function add_recursion_detection_header at 0x78a2964a4400>
+2026-04-05 00:17:14,374 - botocore.hooks - DEBUG - Event before-call.securityhub.GetFindings: calling handler <function inject_api_version_header_if_needed at 0x78a2964a6ac0>
+2026-04-05 00:17:14,374 - botocore.endpoint - DEBUG - Making request for OperationModel(name=GetFindings) with params: {'url_path': '/findings', 'query_string': {}, 'method': 'POST', 'headers': {'Content-Type': 'application/json', 'User-Agent': 'Boto3/1.35.53 md/Botocore#1.35.53 ua/2.0 os/linux#6.17.0-19-generic md/arch#x86_64 lang/python#3.12.3 md/pyimpl#CPython cfg/retry-mode#legacy Botocore/1.35.53'}, 'body': b'{"Filters": {"ResourceId": [{"Value": "arn:aws:codebuild:us-east-1:*:project/malicious-project-1775366205", "Comparison": "EQUALS"}], "RecordState": [{"Value": "ACTIVE", "Comparison": "EQUALS"}]}}', 'url': 'https://securityhub.us-east-1.amazonaws.com/findings', 'context': {'client_region': 'us-east-1', 'client_config': <botocore.config.Config object at 0x78a294a64c80>, 'has_streaming_input': False, 'auth_type': None, 'unsigned_payload': None}}
+2026-04-05 00:17:14,374 - botocore.hooks - DEBUG - Event request-created.securityhub.GetFindings: calling handler <bound method RequestSigner.handler of <botocore.signers.RequestSigner object at 0x78a294a64ce0>>
+2026-04-05 00:17:14,374 - botocore.hooks - DEBUG - Event choose-signer.securityhub.GetFindings: calling handler <function set_operation_specific_signer at 0x78a2964a4e00>
+2026-04-05 00:17:14,374 - botocore.auth - DEBUG - Calculating signature using v4 auth.
+2026-04-05 00:17:14,374 - botocore.auth - DEBUG - CanonicalRequest:
+POST
+/findings
+
+content-type:application/json
+host:securityhub.us-east-1.amazonaws.com
+x-amz-date:20260405T051714Z
+
+content-type;host;x-amz-date
+c29d7f5a1d154595ca30a0845ed7277267520a6905fca38cd18524919f7b1f93
+2026-04-05 00:17:14,374 - botocore.auth - DEBUG - StringToSign:
+AWS4-HMAC-SHA256
+20260405T051714Z
+20260405/us-east-1/securityhub/aws4_request
+adfd8c9ae12cc668467952998100d50ba0e785645765bb4956287f3648cca2e9
+2026-04-05 00:17:14,375 - botocore.auth - DEBUG - Signature:
+743bbb82369237c58e1aa28e0b42f3ff30f4dbec879207778c96f379c597a45f
+2026-04-05 00:17:14,375 - botocore.hooks - DEBUG - Event request-created.securityhub.GetFindings: calling handler <function add_retry_headers at 0x78a2964a72e0>
+2026-04-05 00:17:14,375 - botocore.endpoint - DEBUG - Sending http request: <AWSPreparedRequest stream_output=False, method=POST, url=https://securityhub.us-east-1.amazonaws.com/findings, headers={'Content-Type': b'application/json', 'User-Agent': b'Boto3/1.35.53 md/Botocore#1.35.53 ua/2.0 os/linux#6.17.0-19-generic md/arch#x86_64 lang/python#3.12.3 md/pyimpl#CPython cfg/retry-mode#legacy Botocore/1.35.53', 'X-Amz-Date': b'20260405T051714Z', 'Authorization': b'AWS4-HMAC-SHA256 Credential=AKIA5WLTSZADV4FB6UI2/20260405/us-east-1/securityhub/aws4_request, SignedHeaders=content-type;host;x-amz-date, Signature=743bbb82369237c58e1aa28e0b42f3ff30f4dbec879207778c96f379c597a45f', 'amz-sdk-invocation-id': b'f52f864e-ab85-4caa-af4f-3e48340e0aa0', 'amz-sdk-request': b'attempt=1', 'Content-Length': '196'}>
+2026-04-05 00:17:14,375 - botocore.httpsession - DEBUG - Certificate path: /home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/certifi/cacert.pem
+2026-04-05 00:17:14,375 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): securityhub.us-east-1.amazonaws.com:443
+2026-04-05 00:17:14,967 - urllib3.connectionpool - DEBUG - https://securityhub.us-east-1.amazonaws.com:443 "POST /findings HTTP/11" 401 187
+2026-04-05 00:17:14,968 - botocore.parsers - DEBUG - Response headers: {'Date': 'Sun, 05 Apr 2026 05:17:14 GMT', 'Content-Type': 'application/json', 'Content-Length': '187', 'Connection': 'keep-alive', 'x-amzn-RequestId': '8d1d50eb-a661-4769-9824-b5439fe7192f', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Authorization,Date,X-Amz-Date,X-Amz-Security-Token,X-Amz-Target,content-type,x-amz-content-sha256,x-amz-user-agent,x-amzn-platform-id,x-amzn-trace-id', 'x-amzn-ErrorType': 'InvalidAccessException', 'x-amz-apigw-id': 'bVJ-QFHToAMEhfQ=', 'Cache-Control': 'no-cache', 'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,PUT,PATCH,DELETE', 'Access-Control-Expose-Headers': 'x-amzn-errortype,x-amzn-requestid,x-amzn-errormessage,x-amzn-trace-id,x-amz-apigw-id,date', 'X-Amzn-Trace-Id': 'Root=1-69d1f05a-300122fe215478ef233ff898', 'Access-Control-Max-Age': '86400'}
+2026-04-05 00:17:14,968 - botocore.parsers - DEBUG - Response body:
+b'{"Code":"InvalidAccessException","Type":"InvalidAccessException","RequestId":"8b710591-d158-4e62-bb11-108bc1b7d8ef","Message":"Account 941377112071 is not subscribed to AWS Security Hub"}'
+2026-04-05 00:17:14,970 - botocore.parsers - DEBUG - Response headers: {'Date': 'Sun, 05 Apr 2026 05:17:14 GMT', 'Content-Type': 'application/json', 'Content-Length': '187', 'Connection': 'keep-alive', 'x-amzn-RequestId': '8d1d50eb-a661-4769-9824-b5439fe7192f', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Authorization,Date,X-Amz-Date,X-Amz-Security-Token,X-Amz-Target,content-type,x-amz-content-sha256,x-amz-user-agent,x-amzn-platform-id,x-amzn-trace-id', 'x-amzn-ErrorType': 'InvalidAccessException', 'x-amz-apigw-id': 'bVJ-QFHToAMEhfQ=', 'Cache-Control': 'no-cache', 'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,PUT,PATCH,DELETE', 'Access-Control-Expose-Headers': 'x-amzn-errortype,x-amzn-requestid,x-amzn-errormessage,x-amzn-trace-id,x-amz-apigw-id,date', 'X-Amzn-Trace-Id': 'Root=1-69d1f05a-300122fe215478ef233ff898', 'Access-Control-Max-Age': '86400'}
+2026-04-05 00:17:14,970 - botocore.parsers - DEBUG - Response body:
+b'{"Code":"InvalidAccessException","Type":"InvalidAccessException","RequestId":"8b710591-d158-4e62-bb11-108bc1b7d8ef","Message":"Account 941377112071 is not subscribed to AWS Security Hub"}'
+2026-04-05 00:17:14,970 - botocore.hooks - DEBUG - Event needs-retry.securityhub.GetFindings: calling handler <botocore.retryhandler.RetryHandler object at 0x78a294a65c10>
+2026-04-05 00:17:14,971 - botocore.retryhandler - DEBUG - No retry needed.
+2026-04-05 00:17:14,971 - chaosaws.ec2.1_3_sce_experiment_detective - WARNING - Security Hub query failed: An error occurred (InvalidAccessException) when calling the GetFindings operation: Account 941377112071 is not subscribed to AWS Security Hub
+2026-04-05 00:17:14,971 - chaosaws.ec2.1_3_sce_experiment_detective - INFO - [VERIFY] Analyzing CodeBuild project configuration against security baseline
+2026-04-05 00:17:14,971 - botocore.hooks - DEBUG - Event choose-service-name: calling handler <function handle_service_name_alias at 0x78a29648b4c0>
+2026-04-05 00:17:14,972 - botocore.hooks - DEBUG - Event creating-client-class.codebuild: calling handler <function add_generate_presigned_url at 0x78a2963cbc40>
+2026-04-05 00:17:14,972 - botocore.configprovider - DEBUG - Looking for endpoint for codebuild via: environment_service
+2026-04-05 00:17:14,972 - botocore.configprovider - DEBUG - Looking for endpoint for codebuild via: environment_global
+2026-04-05 00:17:14,972 - botocore.configprovider - DEBUG - Looking for endpoint for codebuild via: config_service
+2026-04-05 00:17:14,972 - botocore.configprovider - DEBUG - Looking for endpoint for codebuild via: config_global
+2026-04-05 00:17:14,972 - botocore.configprovider - DEBUG - No configured endpoint found.
+2026-04-05 00:17:15,008 - botocore.endpoint - DEBUG - Setting codebuild timeout as (60, 60)
+2026-04-05 00:17:15,009 - botocore.client - DEBUG - Registering retry handlers for service: codebuild
+2026-04-05 00:17:15,009 - botocore.hooks - DEBUG - Event before-parameter-build.codebuild.BatchGetProjects: calling handler <function generate_idempotent_uuid at 0x78a2964a4fe0>
+2026-04-05 00:17:15,009 - botocore.regions - DEBUG - Calling endpoint provider with parameters: {'Region': 'us-east-1', 'UseDualStack': False, 'UseFIPS': False}
+2026-04-05 00:17:15,009 - botocore.regions - DEBUG - Endpoint provider result: https://codebuild.us-east-1.amazonaws.com
+2026-04-05 00:17:15,010 - botocore.hooks - DEBUG - Event before-call.codebuild.BatchGetProjects: calling handler <function add_recursion_detection_header at 0x78a2964a4400>
+2026-04-05 00:17:15,010 - botocore.hooks - DEBUG - Event before-call.codebuild.BatchGetProjects: calling handler <function inject_api_version_header_if_needed at 0x78a2964a6ac0>
+2026-04-05 00:17:15,010 - botocore.endpoint - DEBUG - Making request for OperationModel(name=BatchGetProjects) with params: {'url_path': '/', 'query_string': '', 'method': 'POST', 'headers': {'X-Amz-Target': 'CodeBuild_20161006.BatchGetProjects', 'Content-Type': 'application/x-amz-json-1.1', 'User-Agent': 'Boto3/1.35.53 md/Botocore#1.35.53 ua/2.0 os/linux#6.17.0-19-generic md/arch#x86_64 lang/python#3.12.3 md/pyimpl#CPython cfg/retry-mode#legacy Botocore/1.35.53'}, 'body': b'{"names": ["malicious-project-1775366205"]}', 'url': 'https://codebuild.us-east-1.amazonaws.com/', 'context': {'client_region': 'us-east-1', 'client_config': <botocore.config.Config object at 0x78a296207e30>, 'has_streaming_input': False, 'auth_type': None, 'unsigned_payload': None}}
+2026-04-05 00:17:15,010 - botocore.hooks - DEBUG - Event request-created.codebuild.BatchGetProjects: calling handler <bound method RequestSigner.handler of <botocore.signers.RequestSigner object at 0x78a2964b3d70>>
+2026-04-05 00:17:15,010 - botocore.hooks - DEBUG - Event choose-signer.codebuild.BatchGetProjects: calling handler <function set_operation_specific_signer at 0x78a2964a4e00>
+2026-04-05 00:17:15,010 - botocore.auth - DEBUG - Calculating signature using v4 auth.
+2026-04-05 00:17:15,010 - botocore.auth - DEBUG - CanonicalRequest:
+POST
+/
+
+content-type:application/x-amz-json-1.1
+host:codebuild.us-east-1.amazonaws.com
+x-amz-date:20260405T051715Z
+x-amz-target:CodeBuild_20161006.BatchGetProjects
+
+content-type;host;x-amz-date;x-amz-target
+8f7d6959eae0ceb55fcd30f0b1070c5226f701076e7b03ae606e97ad64c6a763
+2026-04-05 00:17:15,010 - botocore.auth - DEBUG - StringToSign:
+AWS4-HMAC-SHA256
+20260405T051715Z
+20260405/us-east-1/codebuild/aws4_request
+f65fa51b6ea03096047e5a10a3ef4eb3364337ca4d5d418675743c548a3d9d4c
+2026-04-05 00:17:15,010 - botocore.auth - DEBUG - Signature:
+473a79fe5c975cc2d12a8debb709c08358d0219119fd3d278f60378e083d8411
+2026-04-05 00:17:15,010 - botocore.hooks - DEBUG - Event request-created.codebuild.BatchGetProjects: calling handler <function add_retry_headers at 0x78a2964a72e0>
+2026-04-05 00:17:15,010 - botocore.endpoint - DEBUG - Sending http request: <AWSPreparedRequest stream_output=False, method=POST, url=https://codebuild.us-east-1.amazonaws.com/, headers={'X-Amz-Target': b'CodeBuild_20161006.BatchGetProjects', 'Content-Type': b'application/x-amz-json-1.1', 'User-Agent': b'Boto3/1.35.53 md/Botocore#1.35.53 ua/2.0 os/linux#6.17.0-19-generic md/arch#x86_64 lang/python#3.12.3 md/pyimpl#CPython cfg/retry-mode#legacy Botocore/1.35.53', 'X-Amz-Date': b'20260405T051715Z', 'Authorization': b'AWS4-HMAC-SHA256 Credential=AKIA5WLTSZADV4FB6UI2/20260405/us-east-1/codebuild/aws4_request, SignedHeaders=content-type;host;x-amz-date;x-amz-target, Signature=473a79fe5c975cc2d12a8debb709c08358d0219119fd3d278f60378e083d8411', 'amz-sdk-invocation-id': b'9c4e9b42-8294-45f1-b732-4d42c9a713b7', 'amz-sdk-request': b'attempt=1', 'Content-Length': '43'}>
+2026-04-05 00:17:15,011 - botocore.httpsession - DEBUG - Certificate path: /home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/certifi/cacert.pem
+2026-04-05 00:17:15,011 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): codebuild.us-east-1.amazonaws.com:443
+2026-04-05 00:17:15,445 - urllib3.connectionpool - DEBUG - https://codebuild.us-east-1.amazonaws.com:443 "POST / HTTP/11" 200 1813
+2026-04-05 00:17:15,445 - botocore.parsers - DEBUG - Response headers: {'x-amzn-RequestId': 'c575fedc-3760-49e9-acca-6d005ec06ff5', 'Content-Type': 'application/x-amz-json-1.1', 'Content-Length': '1813', 'Date': 'Sun, 05 Apr 2026 05:17:15 GMT'}
+2026-04-05 00:17:15,445 - botocore.parsers - DEBUG - Response body:
+b'{"projects":[{"arn":"arn:aws:codebuild:us-east-1:941377112071:project/malicious-project-1775366205","artifacts":{"encryptionDisabled":false,"location":"sce-artifacts-941377112071-1775366205","name":"malicious-project-1775366205","namespaceType":"NONE","packaging":"NONE","type":"S3"},"badge":{"badgeEnabled":false},"cache":{"type":"NO_CACHE"},"created":1.775366228343E9,"encryptionKey":"arn:aws:kms:us-east-1:941377112071:alias/aws/s3","environment":{"computeType":"BUILD_GENERAL1_SMALL","environmentVariables":[{"name":"AWS_ACCOUNT_ID","type":"PLAINTEXT","value":"941377112071"},{"name":"MALICIOUS_FLAG","type":"PLAINTEXT","value":"true"}],"image":"aws/codebuild/standard:5.0","imagePullCredentialsType":"CODEBUILD","privilegedMode":true,"type":"LINUX_CONTAINER"},"lastModified":1.775366228343E9,"logsConfig":{"cloudWatchLogs":{"groupName":"/aws/codebuild/malicious-project-1775366205","status":"ENABLED"}},"name":"malicious-project-1775366205","projectVisibility":"PRIVATE","queuedTimeoutInMinutes":480,"serviceRole":"arn:aws:iam::941377112071:role/sce-experiment-malicious-cod-MaliciousCodeBuildRole-OEI9KU1nN0Eb","source":{"buildspec":"buildspec.yml","insecureSsl":false,"location":"https://github.com/example/malicious-repo.git","reportBuildStatus":false,"type":"GITHUB"},"tags":[{"key":"timestamp","value":"1775366205"},{"key":"aws:cloudformation:stack-name","value":"sce-experiment-malicious-codebuild-1775366205"},{"key":"aws:cloudformation:logical-id","value":"MaliciousCodeBuildProject"},{"key":"malicious","value":"true"},{"key":"aws:cloudformation:stack-id","value":"arn:aws:cloudformation:us-east-1:941377112071:stack/sce-experiment-malicious-codebuild-1775366205/a436e5e0-30ae-11f1-a0d0-0e5465764757"},{"key":"experiment","value":"1.3-sce-experiment"}],"timeoutInMinutes":60}],"projectsNotFound":[]}'
+2026-04-05 00:17:15,446 - botocore.hooks - DEBUG - Event needs-retry.codebuild.BatchGetProjects: calling handler <botocore.retryhandler.RetryHandler object at 0x78a295572d20>
+2026-04-05 00:17:15,446 - botocore.retryhandler - DEBUG - No retry needed.
+2026-04-05 00:17:15,446 - chaosaws.ec2.1_3_sce_experiment_detective - WARNING - [DETECTIVE] Privileged mode violation detected
+2026-04-05 00:17:15,447 - chaosaws.ec2.1_3_sce_experiment_detective - WARNING - [DETECTIVE] Malicious tag detected on resource
+2026-04-05 00:17:15,447 - chaosaws.ec2.1_3_sce_experiment_detective - INFO - [VERIFY] Detective findings: ['privileged_mode_violation', 'malicious_tag']
+2026-04-05 00:17:15,447 - chaosaws.ec2.1_3_sce_experiment_detective - INFO - [HYPOTHESIS VERIFIED] Detective control identified malicious activity
+[32m[2026-04-05 00:17:15 INFO] Steady state hypothesis is met!
+[32m[2026-04-05 00:17:15 INFO] Let's rollback...
+[32m[2026-04-05 00:17:15 INFO] Rollback: Delete CloudFormation stack and clean up all resources
+[32m[2026-04-05 00:17:15 INFO] Action: Delete CloudFormation stack and clean up all resources
+2026-04-05 00:17:15,455 - botocore.hooks - DEBUG - Event choose-service-name: calling handler <function handle_service_name_alias at 0x78a29648b4c0>
+2026-04-05 00:17:15,456 - botocore.hooks - DEBUG - Event creating-client-class.cloudformation: calling handler <function add_generate_presigned_url at 0x78a2963cbc40>
+2026-04-05 00:17:15,456 - botocore.configprovider - DEBUG - Looking for endpoint for cloudformation via: environment_service
+2026-04-05 00:17:15,456 - botocore.configprovider - DEBUG - Looking for endpoint for cloudformation via: environment_global
+2026-04-05 00:17:15,456 - botocore.configprovider - DEBUG - Looking for endpoint for cloudformation via: config_service
+2026-04-05 00:17:15,456 - botocore.configprovider - DEBUG - Looking for endpoint for cloudformation via: config_global
+2026-04-05 00:17:15,456 - botocore.configprovider - DEBUG - No configured endpoint found.
+2026-04-05 00:17:15,457 - botocore.endpoint - DEBUG - Setting cloudformation timeout as (60, 60)
+2026-04-05 00:17:15,458 - botocore.client - DEBUG - Registering retry handlers for service: cloudformation
+2026-04-05 00:17:15,458 - chaosaws.ec2.1_3_sce_experiment_detective - INFO - [ROLLBACK] Deleting CloudFormation stack: sce-experiment-malicious-codebuild-1775366205
+2026-04-05 00:17:15,459 - botocore.hooks - DEBUG - Event before-parameter-build.cloudformation.DeleteStack: calling handler <function generate_idempotent_uuid at 0x78a2964a4fe0>
+2026-04-05 00:17:15,459 - botocore.regions - DEBUG - Calling endpoint provider with parameters: {'Region': 'us-east-1', 'UseDualStack': False, 'UseFIPS': False}
+2026-04-05 00:17:15,459 - botocore.regions - DEBUG - Endpoint provider result: https://cloudformation.us-east-1.amazonaws.com
+2026-04-05 00:17:15,459 - botocore.hooks - DEBUG - Event before-call.cloudformation.DeleteStack: calling handler <function add_recursion_detection_header at 0x78a2964a4400>
+2026-04-05 00:17:15,459 - botocore.hooks - DEBUG - Event before-call.cloudformation.DeleteStack: calling handler <function inject_api_version_header_if_needed at 0x78a2964a6ac0>
+2026-04-05 00:17:15,459 - botocore.endpoint - DEBUG - Making request for OperationModel(name=DeleteStack) with params: {'url_path': '/', 'query_string': '', 'method': 'POST', 'headers': {'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8', 'User-Agent': 'Boto3/1.35.53 md/Botocore#1.35.53 ua/2.0 os/linux#6.17.0-19-generic md/arch#x86_64 lang/python#3.12.3 md/pyimpl#CPython cfg/retry-mode#legacy Botocore/1.35.53'}, 'body': {'Action': 'DeleteStack', 'Version': '2010-05-15', 'StackName': 'sce-experiment-malicious-codebuild-1775366205'}, 'url': 'https://cloudformation.us-east-1.amazonaws.com/', 'context': {'client_region': 'us-east-1', 'client_config': <botocore.config.Config object at 0x78a2955730b0>, 'has_streaming_input': False, 'auth_type': None, 'unsigned_payload': None}}
+2026-04-05 00:17:15,460 - botocore.hooks - DEBUG - Event request-created.cloudformation.DeleteStack: calling handler <bound method RequestSigner.handler of <botocore.signers.RequestSigner object at 0x78a2955732c0>>
+2026-04-05 00:17:15,460 - botocore.hooks - DEBUG - Event choose-signer.cloudformation.DeleteStack: calling handler <function set_operation_specific_signer at 0x78a2964a4e00>
+2026-04-05 00:17:15,460 - botocore.auth - DEBUG - Calculating signature using v4 auth.
+2026-04-05 00:17:15,460 - botocore.auth - DEBUG - CanonicalRequest:
+POST
+/
+
+content-type:application/x-www-form-urlencoded; charset=utf-8
+host:cloudformation.us-east-1.amazonaws.com
+x-amz-date:20260405T051715Z
+
+content-type;host;x-amz-date
+6edcfd3bc0607e7fc803e3fa6b5523bf2ce8c10f4e3de5115a4be44be60ba4e3
+2026-04-05 00:17:15,460 - botocore.auth - DEBUG - StringToSign:
+AWS4-HMAC-SHA256
+20260405T051715Z
+20260405/us-east-1/cloudformation/aws4_request
+021ff4811542a2ce5336096d9fb20288a9de4df30ddc83bdfb2eb66690ab57ba
+2026-04-05 00:17:15,460 - botocore.auth - DEBUG - Signature:
+2c061051baadcefd730faeb2b50252dcbf82b5a396b784b6c7312ff3a044b309
+2026-04-05 00:17:15,460 - botocore.hooks - DEBUG - Event request-created.cloudformation.DeleteStack: calling handler <function add_retry_headers at 0x78a2964a72e0>
+2026-04-05 00:17:15,460 - botocore.endpoint - DEBUG - Sending http request: <AWSPreparedRequest stream_output=False, method=POST, url=https://cloudformation.us-east-1.amazonaws.com/, headers={'Content-Type': b'application/x-www-form-urlencoded; charset=utf-8', 'User-Agent': b'Boto3/1.35.53 md/Botocore#1.35.53 ua/2.0 os/linux#6.17.0-19-generic md/arch#x86_64 lang/python#3.12.3 md/pyimpl#CPython cfg/retry-mode#legacy Botocore/1.35.53', 'X-Amz-Date': b'20260405T051715Z', 'Authorization': b'AWS4-HMAC-SHA256 Credential=AKIA5WLTSZADV4FB6UI2/20260405/us-east-1/cloudformation/aws4_request, SignedHeaders=content-type;host;x-amz-date, Signature=2c061051baadcefd730faeb2b50252dcbf82b5a396b784b6c7312ff3a044b309', 'amz-sdk-invocation-id': b'f0295a53-6900-4282-8261-02634ee3073e', 'amz-sdk-request': b'attempt=1', 'Content-Length': '93'}>
+2026-04-05 00:17:15,461 - botocore.httpsession - DEBUG - Certificate path: /home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/certifi/cacert.pem
+2026-04-05 00:17:15,461 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): cloudformation.us-east-1.amazonaws.com:443
+2026-04-05 00:17:16,043 - urllib3.connectionpool - DEBUG - https://cloudformation.us-east-1.amazonaws.com:443 "POST / HTTP/11" 200 212
+2026-04-05 00:17:16,043 - botocore.parsers - DEBUG - Response headers: {'x-amzn-RequestId': '6b65852c-f5d8-4c9f-a508-a68efa116d52', 'Date': 'Sun, 05 Apr 2026 05:17:15 GMT', 'Content-Type': 'text/xml', 'Content-Length': '212', 'connection': 'keep-alive'}
+2026-04-05 00:17:16,043 - botocore.parsers - DEBUG - Response body:
+b'<DeleteStackResponse xmlns="http://cloudformation.amazonaws.com/doc/2010-05-15/">\n  <ResponseMetadata>\n    <RequestId>6b65852c-f5d8-4c9f-a508-a68efa116d52</RequestId>\n  </ResponseMetadata>\n</DeleteStackResponse>\n'
+2026-04-05 00:17:16,043 - botocore.hooks - DEBUG - Event needs-retry.cloudformation.DeleteStack: calling handler <botocore.retryhandler.RetryHandler object at 0x78a295570aa0>
+2026-04-05 00:17:16,043 - botocore.retryhandler - DEBUG - No retry needed.
+2026-04-05 00:17:16,044 - chaosaws.ec2.1_3_sce_experiment_detective - INFO - Stack deletion initiated for sce-experiment-malicious-codebuild-1775366205
+2026-04-05 00:17:16,044 - botocore.hooks - DEBUG - Event before-parameter-build.cloudformation.DescribeStacks: calling handler <function generate_idempotent_uuid at 0x78a2964a4fe0>
+2026-04-05 00:17:16,044 - botocore.regions - DEBUG - Calling endpoint provider with parameters: {'Region': 'us-east-1', 'UseDualStack': False, 'UseFIPS': False}
+2026-04-05 00:17:16,044 - botocore.regions - DEBUG - Endpoint provider result: https://cloudformation.us-east-1.amazonaws.com
+2026-04-05 00:17:16,044 - botocore.hooks - DEBUG - Event before-call.cloudformation.DescribeStacks: calling handler <function add_recursion_detection_header at 0x78a2964a4400>
+2026-04-05 00:17:16,044 - botocore.hooks - DEBUG - Event before-call.cloudformation.DescribeStacks: calling handler <function inject_api_version_header_if_needed at 0x78a2964a6ac0>
+2026-04-05 00:17:16,044 - botocore.endpoint - DEBUG - Making request for OperationModel(name=DescribeStacks) with params: {'url_path': '/', 'query_string': '', 'method': 'POST', 'headers': {'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8', 'User-Agent': 'Boto3/1.35.53 md/Botocore#1.35.53 ua/2.0 os/linux#6.17.0-19-generic md/arch#x86_64 lang/python#3.12.3 md/pyimpl#CPython cfg/retry-mode#legacy Botocore/1.35.53'}, 'body': {'Action': 'DescribeStacks', 'Version': '2010-05-15', 'StackName': 'sce-experiment-malicious-codebuild-1775366205'}, 'url': 'https://cloudformation.us-east-1.amazonaws.com/', 'context': {'client_region': 'us-east-1', 'client_config': <botocore.config.Config object at 0x78a2955730b0>, 'has_streaming_input': False, 'auth_type': None, 'unsigned_payload': None}}
+2026-04-05 00:17:16,045 - botocore.hooks - DEBUG - Event request-created.cloudformation.DescribeStacks: calling handler <bound method RequestSigner.handler of <botocore.signers.RequestSigner object at 0x78a2955732c0>>
+2026-04-05 00:17:16,045 - botocore.hooks - DEBUG - Event choose-signer.cloudformation.DescribeStacks: calling handler <function set_operation_specific_signer at 0x78a2964a4e00>
+2026-04-05 00:17:16,045 - botocore.auth - DEBUG - Calculating signature using v4 auth.
+2026-04-05 00:17:16,045 - botocore.auth - DEBUG - CanonicalRequest:
+POST
+/
+
+content-type:application/x-www-form-urlencoded; charset=utf-8
+host:cloudformation.us-east-1.amazonaws.com
+x-amz-date:20260405T051716Z
+
+content-type;host;x-amz-date
+98ee3ab708a8f1bac53c95a1b7bbecc640c61e5ea02c444939be8f6602cb5066
+2026-04-05 00:17:16,045 - botocore.auth - DEBUG - StringToSign:
+AWS4-HMAC-SHA256
+20260405T051716Z
+20260405/us-east-1/cloudformation/aws4_request
+7dc939ec335d716f50e44dcbaf97f8c6ae452264ff3750737d19f3e612291c2e
+2026-04-05 00:17:16,045 - botocore.auth - DEBUG - Signature:
+c523189c7521aa91a1a3a658babbd844b8b51ddc2d65996249eb7fa4793e041a
+2026-04-05 00:17:16,045 - botocore.hooks - DEBUG - Event request-created.cloudformation.DescribeStacks: calling handler <function add_retry_headers at 0x78a2964a72e0>
+2026-04-05 00:17:16,045 - botocore.endpoint - DEBUG - Sending http request: <AWSPreparedRequest stream_output=False, method=POST, url=https://cloudformation.us-east-1.amazonaws.com/, headers={'Content-Type': b'application/x-www-form-urlencoded; charset=utf-8', 'User-Agent': b'Boto3/1.35.53 md/Botocore#1.35.53 ua/2.0 os/linux#6.17.0-19-generic md/arch#x86_64 lang/python#3.12.3 md/pyimpl#CPython cfg/retry-mode#legacy Botocore/1.35.53', 'X-Amz-Date': b'20260405T051716Z', 'Authorization': b'AWS4-HMAC-SHA256 Credential=AKIA5WLTSZADV4FB6UI2/20260405/us-east-1/cloudformation/aws4_request, SignedHeaders=content-type;host;x-amz-date, Signature=c523189c7521aa91a1a3a658babbd844b8b51ddc2d65996249eb7fa4793e041a', 'amz-sdk-invocation-id': b'ec81fa48-53ce-456c-9f27-edae10a29114', 'amz-sdk-request': b'attempt=1', 'Content-Length': '96'}>
+2026-04-05 00:17:16,045 - botocore.httpsession - DEBUG - Certificate path: /home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/certifi/cacert.pem
+2026-04-05 00:17:16,163 - urllib3.connectionpool - DEBUG - https://cloudformation.us-east-1.amazonaws.com:443 "POST / HTTP/11" 200 2615
+2026-04-05 00:17:16,164 - botocore.parsers - DEBUG - Response headers: {'x-amzn-RequestId': '4ce9a7b9-f06c-4202-9421-c944d95981e9', 'Date': 'Sun, 05 Apr 2026 05:17:16 GMT', 'Content-Type': 'text/xml', 'Content-Length': '2615', 'connection': 'keep-alive'}
+2026-04-05 00:17:16,164 - botocore.parsers - DEBUG - Response body:
+b'<DescribeStacksResponse xmlns="http://cloudformation.amazonaws.com/doc/2010-05-15/">\n  <DescribeStacksResult>\n    <Stacks>\n      <member>\n        <Outputs>\n          <member>\n            <OutputKey>CodeBuildRoleArn</OutputKey>\n            <OutputValue>arn:aws:iam::941377112071:role/sce-experiment-malicious-cod-MaliciousCodeBuildRole-OEI9KU1nN0Eb</OutputValue>\n            <ExportName>CodeBuildRoleArn-1775366205</ExportName>\n          </member>\n          <member>\n            <OutputKey>CodeBuildProjectArn</OutputKey>\n            <OutputValue>arn:aws:codebuild:us-east-1:941377112071:project/malicious-project-1775366205</OutputValue>\n            <ExportName>CodeBuildProjectArn-1775366205</ExportName>\n          </member>\n          <member>\n            <OutputKey>ArtifactsBucketName</OutputKey>\n            <OutputValue>sce-artifacts-941377112071-1775366205</OutputValue>\n            <ExportName>ArtifactsBucketName-1775366205</ExportName>\n          </member>\n        </Outputs>\n        <CreationTime>2026-04-05T05:16:46.304Z</CreationTime>\n        <NotificationARNs/>\n        <StackName>sce-experiment-malicious-codebuild-1775366205</StackName>\n        <Description>SCE Experiment: Malicious CodeBuild Project Detection</Description>\n        <DeletionTime>2026-04-05T05:17:15.864Z</DeletionTime>\n        <RollbackConfiguration/>\n        <LastOperations>\n          <member>\n            <OperationId>c1a2480e-2d3a-4e5e-9351-2834a897c0bf</OperationId>\n            <OperationType>DELETE_STACK</OperationType>\n          </member>\n        </LastOperations>\n        <DriftInformation>\n          <StackDriftStatus>NOT_CHECKED</StackDriftStatus>\n        </DriftInformation>\n        <EnableTerminationProtection>false</EnableTerminationProtection>\n        <StackStatusReason>User Initiated</StackStatusReason>\n        <Capabilities>\n          <member>CAPABILITY_NAMED_IAM</member>\n        </Capabilities>\n        <StackId>arn:aws:cloudformation:us-east-1:941377112071:stack/sce-experiment-malicious-codebuild-1775366205/a436e5e0-30ae-11f1-a0d0-0e5465764757</StackId>\n        <StackStatus>DELETE_IN_PROGRESS</StackStatus>\n        <DisableRollback>false</DisableRollback>\n        <Tags>\n          <member>\n            <Value>1.3-sce-experiment</Value>\n            <Key>experiment</Key>\n          </member>\n          <member>\n            <Value>1775366205</Value>\n            <Key>timestamp</Key>\n          </member>\n        </Tags>\n      </member>\n    </Stacks>\n  </DescribeStacksResult>\n  <ResponseMetadata>\n    <RequestId>4ce9a7b9-f06c-4202-9421-c944d95981e9</RequestId>\n  </ResponseMetadata>\n</DescribeStacksResponse>\n'
+2026-04-05 00:17:16,165 - botocore.hooks - DEBUG - Event needs-retry.cloudformation.DescribeStacks: calling handler <botocore.retryhandler.RetryHandler object at 0x78a295570aa0>
+2026-04-05 00:17:16,165 - botocore.retryhandler - DEBUG - No retry needed.
+2026-04-05 00:17:16,165 - chaosaws.ec2.1_3_sce_experiment_detective - DEBUG - Stack status: DELETE_IN_PROGRESS (attempt 1/60)
+2026-04-05 00:17:21,165 - botocore.hooks - DEBUG - Event before-parameter-build.cloudformation.DescribeStacks: calling handler <function generate_idempotent_uuid at 0x78a2964a4fe0>
+2026-04-05 00:17:21,166 - botocore.regions - DEBUG - Calling endpoint provider with parameters: {'Region': 'us-east-1', 'UseDualStack': False, 'UseFIPS': False}
+2026-04-05 00:17:21,166 - botocore.regions - DEBUG - Endpoint provider result: https://cloudformation.us-east-1.amazonaws.com
+2026-04-05 00:17:21,166 - botocore.hooks - DEBUG - Event before-call.cloudformation.DescribeStacks: calling handler <function add_recursion_detection_header at 0x78a2964a4400>
+2026-04-05 00:17:21,166 - botocore.hooks - DEBUG - Event before-call.cloudformation.DescribeStacks: calling handler <function inject_api_version_header_if_needed at 0x78a2964a6ac0>
+2026-04-05 00:17:21,166 - botocore.endpoint - DEBUG - Making request for OperationModel(name=DescribeStacks) with params: {'url_path': '/', 'query_string': '', 'method': 'POST', 'headers': {'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8', 'User-Agent': 'Boto3/1.35.53 md/Botocore#1.35.53 ua/2.0 os/linux#6.17.0-19-generic md/arch#x86_64 lang/python#3.12.3 md/pyimpl#CPython cfg/retry-mode#legacy Botocore/1.35.53'}, 'body': {'Action': 'DescribeStacks', 'Version': '2010-05-15', 'StackName': 'sce-experiment-malicious-codebuild-1775366205'}, 'url': 'https://cloudformation.us-east-1.amazonaws.com/', 'context': {'client_region': 'us-east-1', 'client_config': <botocore.config.Config object at 0x78a2955730b0>, 'has_streaming_input': False, 'auth_type': None, 'unsigned_payload': None}}
+2026-04-05 00:17:21,166 - botocore.hooks - DEBUG - Event request-created.cloudformation.DescribeStacks: calling handler <bound method RequestSigner.handler of <botocore.signers.RequestSigner object at 0x78a2955732c0>>
+2026-04-05 00:17:21,166 - botocore.hooks - DEBUG - Event choose-signer.cloudformation.DescribeStacks: calling handler <function set_operation_specific_signer at 0x78a2964a4e00>
+2026-04-05 00:17:21,166 - botocore.auth - DEBUG - Calculating signature using v4 auth.
+2026-04-05 00:17:21,166 - botocore.auth - DEBUG - CanonicalRequest:
+POST
+/
+
+content-type:application/x-www-form-urlencoded; charset=utf-8
+host:cloudformation.us-east-1.amazonaws.com
+x-amz-date:20260405T051721Z
+
+content-type;host;x-amz-date
+98ee3ab708a8f1bac53c95a1b7bbecc640c61e5ea02c444939be8f6602cb5066
+2026-04-05 00:17:21,166 - botocore.auth - DEBUG - StringToSign:
+AWS4-HMAC-SHA256
+20260405T051721Z
+20260405/us-east-1/cloudformation/aws4_request
+3c53a1e8d361da7bcaca5781e509b0e09e5b07e3c3ad72fe08ae361d21d691ee
+2026-04-05 00:17:21,166 - botocore.auth - DEBUG - Signature:
+662c22a9f8b085bdfe61245aa1266f4113d342411b8a89e83b52a349bf581c24
+2026-04-05 00:17:21,166 - botocore.hooks - DEBUG - Event request-created.cloudformation.DescribeStacks: calling handler <function add_retry_headers at 0x78a2964a72e0>
+2026-04-05 00:17:21,167 - botocore.endpoint - DEBUG - Sending http request: <AWSPreparedRequest stream_output=False, method=POST, url=https://cloudformation.us-east-1.amazonaws.com/, headers={'Content-Type': b'application/x-www-form-urlencoded; charset=utf-8', 'User-Agent': b'Boto3/1.35.53 md/Botocore#1.35.53 ua/2.0 os/linux#6.17.0-19-generic md/arch#x86_64 lang/python#3.12.3 md/pyimpl#CPython cfg/retry-mode#legacy Botocore/1.35.53', 'X-Amz-Date': b'20260405T051721Z', 'Authorization': b'AWS4-HMAC-SHA256 Credential=AKIA5WLTSZADV4FB6UI2/20260405/us-east-1/cloudformation/aws4_request, SignedHeaders=content-type;host;x-amz-date, Signature=662c22a9f8b085bdfe61245aa1266f4113d342411b8a89e83b52a349bf581c24', 'amz-sdk-invocation-id': b'57578ada-b586-4f4d-bdd8-5dcd0e99b5a5', 'amz-sdk-request': b'attempt=1', 'Content-Length': '96'}>
+2026-04-05 00:17:21,167 - botocore.httpsession - DEBUG - Certificate path: /home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/certifi/cacert.pem
+2026-04-05 00:17:21,282 - urllib3.connectionpool - DEBUG - https://cloudformation.us-east-1.amazonaws.com:443 "POST / HTTP/11" 200 2553
+2026-04-05 00:17:21,282 - botocore.parsers - DEBUG - Response headers: {'x-amzn-RequestId': 'c94d4b20-406f-490a-b4ab-12da116a79f6', 'Date': 'Sun, 05 Apr 2026 05:17:21 GMT', 'Content-Type': 'text/xml', 'Content-Length': '2553', 'connection': 'keep-alive'}
+2026-04-05 00:17:21,282 - botocore.parsers - DEBUG - Response body:
+b'<DescribeStacksResponse xmlns="http://cloudformation.amazonaws.com/doc/2010-05-15/">\n  <DescribeStacksResult>\n    <Stacks>\n      <member>\n        <Outputs>\n          <member>\n            <OutputKey>CodeBuildRoleArn</OutputKey>\n            <OutputValue>arn:aws:iam::941377112071:role/sce-experiment-malicious-cod-MaliciousCodeBuildRole-OEI9KU1nN0Eb</OutputValue>\n            <ExportName>CodeBuildRoleArn-1775366205</ExportName>\n          </member>\n          <member>\n            <OutputKey>CodeBuildProjectArn</OutputKey>\n            <OutputValue>arn:aws:codebuild:us-east-1:941377112071:project/malicious-project-1775366205</OutputValue>\n            <ExportName>CodeBuildProjectArn-1775366205</ExportName>\n          </member>\n          <member>\n            <OutputKey>ArtifactsBucketName</OutputKey>\n            <OutputValue>sce-artifacts-941377112071-1775366205</OutputValue>\n            <ExportName>ArtifactsBucketName-1775366205</ExportName>\n          </member>\n        </Outputs>\n        <CreationTime>2026-04-05T05:16:46.304Z</CreationTime>\n        <NotificationARNs/>\n        <StackName>sce-experiment-malicious-codebuild-1775366205</StackName>\n        <Description>SCE Experiment: Malicious CodeBuild Project Detection</Description>\n        <DeletionTime>2026-04-05T05:17:15.864Z</DeletionTime>\n        <RollbackConfiguration/>\n        <LastOperations>\n          <member>\n            <OperationId>c1a2480e-2d3a-4e5e-9351-2834a897c0bf</OperationId>\n            <OperationType>DELETE_STACK</OperationType>\n          </member>\n        </LastOperations>\n        <DriftInformation>\n          <StackDriftStatus>NOT_CHECKED</StackDriftStatus>\n        </DriftInformation>\n        <EnableTerminationProtection>false</EnableTerminationProtection>\n        <Capabilities>\n          <member>CAPABILITY_NAMED_IAM</member>\n        </Capabilities>\n        <StackId>arn:aws:cloudformation:us-east-1:941377112071:stack/sce-experiment-malicious-codebuild-1775366205/a436e5e0-30ae-11f1-a0d0-0e5465764757</StackId>\n        <StackStatus>DELETE_IN_PROGRESS</StackStatus>\n        <DisableRollback>false</DisableRollback>\n        <Tags>\n          <member>\n            <Value>1.3-sce-experiment</Value>\n            <Key>experiment</Key>\n          </member>\n          <member>\n            <Value>1775366205</Value>\n            <Key>timestamp</Key>\n          </member>\n        </Tags>\n      </member>\n    </Stacks>\n  </DescribeStacksResult>\n  <ResponseMetadata>\n    <RequestId>c94d4b20-406f-490a-b4ab-12da116a79f6</RequestId>\n  </ResponseMetadata>\n</DescribeStacksResponse>\n'
+2026-04-05 00:17:21,283 - botocore.hooks - DEBUG - Event needs-retry.cloudformation.DescribeStacks: calling handler <botocore.retryhandler.RetryHandler object at 0x78a295570aa0>
+2026-04-05 00:17:21,283 - botocore.retryhandler - DEBUG - No retry needed.
+2026-04-05 00:17:21,283 - chaosaws.ec2.1_3_sce_experiment_detective - DEBUG - Stack status: DELETE_IN_PROGRESS (attempt 2/60)
+2026-04-05 00:17:28,784 - botocore.hooks - DEBUG - Event before-parameter-build.cloudformation.DescribeStacks: calling handler <function generate_idempotent_uuid at 0x78a2964a4fe0>
+2026-04-05 00:17:28,784 - botocore.regions - DEBUG - Calling endpoint provider with parameters: {'Region': 'us-east-1', 'UseDualStack': False, 'UseFIPS': False}
+2026-04-05 00:17:28,784 - botocore.regions - DEBUG - Endpoint provider result: https://cloudformation.us-east-1.amazonaws.com
+2026-04-05 00:17:28,784 - botocore.hooks - DEBUG - Event before-call.cloudformation.DescribeStacks: calling handler <function add_recursion_detection_header at 0x78a2964a4400>
+2026-04-05 00:17:28,784 - botocore.hooks - DEBUG - Event before-call.cloudformation.DescribeStacks: calling handler <function inject_api_version_header_if_needed at 0x78a2964a6ac0>
+2026-04-05 00:17:28,784 - botocore.endpoint - DEBUG - Making request for OperationModel(name=DescribeStacks) with params: {'url_path': '/', 'query_string': '', 'method': 'POST', 'headers': {'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8', 'User-Agent': 'Boto3/1.35.53 md/Botocore#1.35.53 ua/2.0 os/linux#6.17.0-19-generic md/arch#x86_64 lang/python#3.12.3 md/pyimpl#CPython cfg/retry-mode#legacy Botocore/1.35.53'}, 'body': {'Action': 'DescribeStacks', 'Version': '2010-05-15', 'StackName': 'sce-experiment-malicious-codebuild-1775366205'}, 'url': 'https://cloudformation.us-east-1.amazonaws.com/', 'context': {'client_region': 'us-east-1', 'client_config': <botocore.config.Config object at 0x78a2955730b0>, 'has_streaming_input': False, 'auth_type': None, 'unsigned_payload': None}}
+2026-04-05 00:17:28,784 - botocore.hooks - DEBUG - Event request-created.cloudformation.DescribeStacks: calling handler <bound method RequestSigner.handler of <botocore.signers.RequestSigner object at 0x78a2955732c0>>
+2026-04-05 00:17:28,784 - botocore.hooks - DEBUG - Event choose-signer.cloudformation.DescribeStacks: calling handler <function set_operation_specific_signer at 0x78a2964a4e00>
+2026-04-05 00:17:28,785 - botocore.auth - DEBUG - Calculating signature using v4 auth.
+2026-04-05 00:17:28,785 - botocore.auth - DEBUG - CanonicalRequest:
+POST
+/
+
+content-type:application/x-www-form-urlencoded; charset=utf-8
+host:cloudformation.us-east-1.amazonaws.com
+x-amz-date:20260405T051728Z
+
+content-type;host;x-amz-date
+98ee3ab708a8f1bac53c95a1b7bbecc640c61e5ea02c444939be8f6602cb5066
+2026-04-05 00:17:28,785 - botocore.auth - DEBUG - StringToSign:
+AWS4-HMAC-SHA256
+20260405T051728Z
+20260405/us-east-1/cloudformation/aws4_request
+51f7035f1fc8df41d33e7d431560ac0f51f1f7cb158a03c213c71a5f9f105128
+2026-04-05 00:17:28,785 - botocore.auth - DEBUG - Signature:
+6d80b6905cf86c0442be2fda388a6ef49b6e43c8c69e8495e67e30238bf80673
+2026-04-05 00:17:28,785 - botocore.hooks - DEBUG - Event request-created.cloudformation.DescribeStacks: calling handler <function add_retry_headers at 0x78a2964a72e0>
+2026-04-05 00:17:28,785 - botocore.endpoint - DEBUG - Sending http request: <AWSPreparedRequest stream_output=False, method=POST, url=https://cloudformation.us-east-1.amazonaws.com/, headers={'Content-Type': b'application/x-www-form-urlencoded; charset=utf-8', 'User-Agent': b'Boto3/1.35.53 md/Botocore#1.35.53 ua/2.0 os/linux#6.17.0-19-generic md/arch#x86_64 lang/python#3.12.3 md/pyimpl#CPython cfg/retry-mode#legacy Botocore/1.35.53', 'X-Amz-Date': b'20260405T051728Z', 'Authorization': b'AWS4-HMAC-SHA256 Credential=AKIA5WLTSZADV4FB6UI2/20260405/us-east-1/cloudformation/aws4_request, SignedHeaders=content-type;host;x-amz-date, Signature=6d80b6905cf86c0442be2fda388a6ef49b6e43c8c69e8495e67e30238bf80673', 'amz-sdk-invocation-id': b'f13dcf86-f659-47b7-9bf8-cce80e3cb0e9', 'amz-sdk-request': b'attempt=1', 'Content-Length': '96'}>
+2026-04-05 00:17:28,785 - botocore.httpsession - DEBUG - Certificate path: /home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/certifi/cacert.pem
+2026-04-05 00:17:28,785 - urllib3.connectionpool - DEBUG - Resetting dropped connection: cloudformation.us-east-1.amazonaws.com
+2026-04-05 00:17:29,218 - urllib3.connectionpool - DEBUG - https://cloudformation.us-east-1.amazonaws.com:443 "POST / HTTP/11" 200 2553
+2026-04-05 00:17:29,218 - botocore.parsers - DEBUG - Response headers: {'x-amzn-RequestId': 'e6b05851-1a74-4c42-ae0f-54dc5f65675d', 'Date': 'Sun, 05 Apr 2026 05:17:29 GMT', 'Content-Type': 'text/xml', 'Content-Length': '2553', 'connection': 'keep-alive'}
+2026-04-05 00:17:29,218 - botocore.parsers - DEBUG - Response body:
+b'<DescribeStacksResponse xmlns="http://cloudformation.amazonaws.com/doc/2010-05-15/">\n  <DescribeStacksResult>\n    <Stacks>\n      <member>\n        <Outputs>\n          <member>\n            <OutputKey>CodeBuildRoleArn</OutputKey>\n            <OutputValue>arn:aws:iam::941377112071:role/sce-experiment-malicious-cod-MaliciousCodeBuildRole-OEI9KU1nN0Eb</OutputValue>\n            <ExportName>CodeBuildRoleArn-1775366205</ExportName>\n          </member>\n          <member>\n            <OutputKey>CodeBuildProjectArn</OutputKey>\n            <OutputValue>arn:aws:codebuild:us-east-1:941377112071:project/malicious-project-1775366205</OutputValue>\n            <ExportName>CodeBuildProjectArn-1775366205</ExportName>\n          </member>\n          <member>\n            <OutputKey>ArtifactsBucketName</OutputKey>\n            <OutputValue>sce-artifacts-941377112071-1775366205</OutputValue>\n            <ExportName>ArtifactsBucketName-1775366205</ExportName>\n          </member>\n        </Outputs>\n        <CreationTime>2026-04-05T05:16:46.304Z</CreationTime>\n        <NotificationARNs/>\n        <StackName>sce-experiment-malicious-codebuild-1775366205</StackName>\n        <Description>SCE Experiment: Malicious CodeBuild Project Detection</Description>\n        <DeletionTime>2026-04-05T05:17:15.864Z</DeletionTime>\n        <RollbackConfiguration/>\n        <LastOperations>\n          <member>\n            <OperationId>c1a2480e-2d3a-4e5e-9351-2834a897c0bf</OperationId>\n            <OperationType>DELETE_STACK</OperationType>\n          </member>\n        </LastOperations>\n        <DriftInformation>\n          <StackDriftStatus>NOT_CHECKED</StackDriftStatus>\n        </DriftInformation>\n        <EnableTerminationProtection>false</EnableTerminationProtection>\n        <Capabilities>\n          <member>CAPABILITY_NAMED_IAM</member>\n        </Capabilities>\n        <StackId>arn:aws:cloudformation:us-east-1:941377112071:stack/sce-experiment-malicious-codebuild-1775366205/a436e5e0-30ae-11f1-a0d0-0e5465764757</StackId>\n        <StackStatus>DELETE_IN_PROGRESS</StackStatus>\n        <DisableRollback>false</DisableRollback>\n        <Tags>\n          <member>\n            <Value>1.3-sce-experiment</Value>\n            <Key>experiment</Key>\n          </member>\n          <member>\n            <Value>1775366205</Value>\n            <Key>timestamp</Key>\n          </member>\n        </Tags>\n      </member>\n    </Stacks>\n  </DescribeStacksResult>\n  <ResponseMetadata>\n    <RequestId>e6b05851-1a74-4c42-ae0f-54dc5f65675d</RequestId>\n  </ResponseMetadata>\n</DescribeStacksResponse>\n'
+2026-04-05 00:17:29,219 - botocore.hooks - DEBUG - Event needs-retry.cloudformation.DescribeStacks: calling handler <botocore.retryhandler.RetryHandler object at 0x78a295570aa0>
+2026-04-05 00:17:29,219 - botocore.retryhandler - DEBUG - No retry needed.
+2026-04-05 00:17:29,219 - chaosaws.ec2.1_3_sce_experiment_detective - DEBUG - Stack status: DELETE_IN_PROGRESS (attempt 3/60)
+2026-04-05 00:17:40,470 - botocore.hooks - DEBUG - Event before-parameter-build.cloudformation.DescribeStacks: calling handler <function generate_idempotent_uuid at 0x78a2964a4fe0>
+2026-04-05 00:17:40,470 - botocore.regions - DEBUG - Calling endpoint provider with parameters: {'Region': 'us-east-1', 'UseDualStack': False, 'UseFIPS': False}
+2026-04-05 00:17:40,470 - botocore.regions - DEBUG - Endpoint provider result: https://cloudformation.us-east-1.amazonaws.com
+2026-04-05 00:17:40,470 - botocore.hooks - DEBUG - Event before-call.cloudformation.DescribeStacks: calling handler <function add_recursion_detection_header at 0x78a2964a4400>
+2026-04-05 00:17:40,470 - botocore.hooks - DEBUG - Event before-call.cloudformation.DescribeStacks: calling handler <function inject_api_version_header_if_needed at 0x78a2964a6ac0>
+2026-04-05 00:17:40,470 - botocore.endpoint - DEBUG - Making request for OperationModel(name=DescribeStacks) with params: {'url_path': '/', 'query_string': '', 'method': 'POST', 'headers': {'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8', 'User-Agent': 'Boto3/1.35.53 md/Botocore#1.35.53 ua/2.0 os/linux#6.17.0-19-generic md/arch#x86_64 lang/python#3.12.3 md/pyimpl#CPython cfg/retry-mode#legacy Botocore/1.35.53'}, 'body': {'Action': 'DescribeStacks', 'Version': '2010-05-15', 'StackName': 'sce-experiment-malicious-codebuild-1775366205'}, 'url': 'https://cloudformation.us-east-1.amazonaws.com/', 'context': {'client_region': 'us-east-1', 'client_config': <botocore.config.Config object at 0x78a2955730b0>, 'has_streaming_input': False, 'auth_type': None, 'unsigned_payload': None}}
+2026-04-05 00:17:40,470 - botocore.hooks - DEBUG - Event request-created.cloudformation.DescribeStacks: calling handler <bound method RequestSigner.handler of <botocore.signers.RequestSigner object at 0x78a2955732c0>>
+2026-04-05 00:17:40,470 - botocore.hooks - DEBUG - Event choose-signer.cloudformation.DescribeStacks: calling handler <function set_operation_specific_signer at 0x78a2964a4e00>
+2026-04-05 00:17:40,471 - botocore.auth - DEBUG - Calculating signature using v4 auth.
+2026-04-05 00:17:40,471 - botocore.auth - DEBUG - CanonicalRequest:
+POST
+/
+
+content-type:application/x-www-form-urlencoded; charset=utf-8
+host:cloudformation.us-east-1.amazonaws.com
+x-amz-date:20260405T051740Z
+
+content-type;host;x-amz-date
+98ee3ab708a8f1bac53c95a1b7bbecc640c61e5ea02c444939be8f6602cb5066
+2026-04-05 00:17:40,471 - botocore.auth - DEBUG - StringToSign:
+AWS4-HMAC-SHA256
+20260405T051740Z
+20260405/us-east-1/cloudformation/aws4_request
+689687953d0e6687240d1c6258fdb2df5011129e3ad625b89190c32fe26b597d
+2026-04-05 00:17:40,471 - botocore.auth - DEBUG - Signature:
+c140ab405806d4961f8b5ac27f7df4e7caa8007d9b380cfa23089be04e1d0e6e
+2026-04-05 00:17:40,471 - botocore.hooks - DEBUG - Event request-created.cloudformation.DescribeStacks: calling handler <function add_retry_headers at 0x78a2964a72e0>
+2026-04-05 00:17:40,471 - botocore.endpoint - DEBUG - Sending http request: <AWSPreparedRequest stream_output=False, method=POST, url=https://cloudformation.us-east-1.amazonaws.com/, headers={'Content-Type': b'application/x-www-form-urlencoded; charset=utf-8', 'User-Agent': b'Boto3/1.35.53 md/Botocore#1.35.53 ua/2.0 os/linux#6.17.0-19-generic md/arch#x86_64 lang/python#3.12.3 md/pyimpl#CPython cfg/retry-mode#legacy Botocore/1.35.53', 'X-Amz-Date': b'20260405T051740Z', 'Authorization': b'AWS4-HMAC-SHA256 Credential=AKIA5WLTSZADV4FB6UI2/20260405/us-east-1/cloudformation/aws4_request, SignedHeaders=content-type;host;x-amz-date, Signature=c140ab405806d4961f8b5ac27f7df4e7caa8007d9b380cfa23089be04e1d0e6e', 'amz-sdk-invocation-id': b'0d8ccef9-0e9c-483f-8d20-c6e4e51db68e', 'amz-sdk-request': b'attempt=1', 'Content-Length': '96'}>
+2026-04-05 00:17:40,471 - botocore.httpsession - DEBUG - Certificate path: /home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/certifi/cacert.pem
+2026-04-05 00:17:40,471 - urllib3.connectionpool - DEBUG - Resetting dropped connection: cloudformation.us-east-1.amazonaws.com
+2026-04-05 00:17:40,884 - urllib3.connectionpool - DEBUG - https://cloudformation.us-east-1.amazonaws.com:443 "POST / HTTP/11" 400 331
+2026-04-05 00:17:40,885 - botocore.parsers - DEBUG - Response headers: {'x-amzn-RequestId': '2fba73b3-d678-4f73-b062-3521ad839493', 'Date': 'Sun, 05 Apr 2026 05:17:40 GMT', 'Content-Type': 'text/xml', 'Content-Length': '331', 'connection': 'keep-alive'}
+2026-04-05 00:17:40,885 - botocore.parsers - DEBUG - Response body:
+b'<ErrorResponse xmlns="http://cloudformation.amazonaws.com/doc/2010-05-15/">\n  <Error>\n    <Type>Sender</Type>\n    <Code>ValidationError</Code>\n    <Message>Stack with id sce-experiment-malicious-codebuild-1775366205 does not exist</Message>\n  </Error>\n  <RequestId>2fba73b3-d678-4f73-b062-3521ad839493</RequestId>\n</ErrorResponse>\n'
+2026-04-05 00:17:40,886 - botocore.hooks - DEBUG - Event needs-retry.cloudformation.DescribeStacks: calling handler <botocore.retryhandler.RetryHandler object at 0x78a295570aa0>
+2026-04-05 00:17:40,886 - botocore.retryhandler - DEBUG - No retry needed.
+2026-04-05 00:17:40,886 - chaosaws.ec2.1_3_sce_experiment_detective - INFO - Stack sce-experiment-malicious-codebuild-1775366205 does not exist (already deleted)
+2026-04-05 00:17:40,886 - chaosaws.ec2.1_3_sce_experiment_detective - INFO - [ROLLBACK] Stack successfully deleted: sce-experiment-malicious-codebuild-1775366205
+[32m[2026-04-05 00:17:40 INFO] Experiment ended with status: completed
+
+
+RETURN CODE: 0

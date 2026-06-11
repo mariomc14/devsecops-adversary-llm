@@ -1,0 +1,389 @@
+[36m[2026-04-15 21:45:33 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-04-15 21:45:33 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-04-15 21:45:33 DEBUG] [__init__:106] Using settings file '/home/sce-user/.chaostoolkit/settings.yaml'
+[36m[2026-04-15 21:45:33 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/sce-user/.chaostoolkit/settings.yaml'.
+[36m[2026-04-15 21:45:33 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-15 21:45:33 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-15 21:45:33 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-15 21:45:33 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-04-15 21:45:33 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-04-15 21:45:33 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-15 21:45:33 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-15 21:45:33 DEBUG] [secret:104] Done loading secrets
+[32m[2026-04-15 21:45:33 INFO] [experiment:112] Experiment looks valid
+[36m[2026-04-15 21:45:33 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-15 21:45:33 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-04-15 21:45:33 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-15 21:45:33 DEBUG] [caching:35] Cached 3 activities
+[36m[2026-04-15 21:45:33 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-15 21:45:33 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-15 21:45:33 DEBUG] [secret:104] Done loading secrets
+[36m[2026-04-15 21:45:33 DEBUG] [configuration:161] Loading dynamic configuration...
+[32m[2026-04-15 21:45:33 INFO] [run:440] Running experiment: CodeBuild Credential Exposure Prevention
+[36m[2026-04-15 21:45:33 DEBUG] [__init__:67] Initializing controls
+[32m[2026-04-15 21:45:33 INFO] [run:471] Steady-state strategy: after-method-only
+[32m[2026-04-15 21:45:33 INFO] [run:477] Rollbacks strategy: default
+[36m[2026-04-15 21:45:33 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[32m[2026-04-15 21:45:33 INFO] [run:778] Playing your experiment's method now...
+[36m[2026-04-15 21:45:33 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-15 21:45:33 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-15 21:45:33 INFO] [activity:232] Action: Deploy Test Infrastructure
+[36m[2026-04-15 21:45:33 DEBUG] [python:33] Activity 'Deploy Test Infrastructure' loaded from '/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaosaws/ec2/1_8_sce_experiment_reactive.py'
+[36m[2026-04-15 21:46:04 DEBUG] [activity:317] Activity failed
+    Traceback (most recent call last):
+      File "/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+               ^^^^^^^^^^^^^^^^^
+      File "/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaosaws/ec2/1_8_sce_experiment_reactive.py", line 68, in steady_state
+        waiter.wait(StackName=stack_name)
+      File "/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/waiter.py", line 55, in wait
+        Waiter.wait(self, **kwargs)
+      File "/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/waiter.py", line 374, in wait
+        raise WaiterError(
+    botocore.exceptions.WaiterError: Waiter StackCreateComplete failed: Waiter encountered a terminal failure state: For expression "Stacks[].StackStatus" we matched expected path: "ROLLBACK_COMPLETE" at least once
+    
+    During handling of the above exception, another exception occurred:
+    
+    Traceback (most recent call last):
+      File "/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaoslib/activity.py", line 310, in run_activity
+        result = run_python_activity(activity, configuration, secrets)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      File "/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaoslib/provider/python.py", line 58, in run_python_activity
+        raise ActivityFailed(
+      File "/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+               ^^^^^^^^^^^^^^^^^
+      File "/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaosaws/ec2/1_8_sce_experiment_reactive.py", line 68, in steady_state
+        waiter.wait(StackName=stack_name)
+      File "/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/waiter.py", line 55, in wait
+        Waiter.wait(self, **kwargs)
+      File "/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/waiter.py", line 374, in wait
+        raise WaiterError(
+    chaoslib.exceptions.ActivityFailed: botocore.exceptions.WaiterError: Waiter StackCreateComplete failed: Waiter encountered a terminal failure state: For expression "Stacks[].StackStatus" we matched expected path: "ROLLBACK_COMPLETE" at least once
+[31m[2026-04-15 21:46:05 ERROR] [activity:268]   => failed: botocore.exceptions.WaiterError: Waiter StackCreateComplete failed: Waiter encountered a terminal failure state: For expression "Stacks[].StackStatus" we matched expected path: "ROLLBACK_COMPLETE" at least once
+[36m[2026-04-15 21:46:05 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-15 21:46:05 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-15 21:46:05 INFO] [activity:232] Action: Simulate Build Configuration Attack
+[36m[2026-04-15 21:46:05 DEBUG] [python:33] Activity 'Simulate Build Configuration Attack' loaded from '/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaosaws/ec2/1_8_sce_experiment_reactive.py'
+[36m[2026-04-15 21:46:05 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-04-15 21:46:05 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-15 21:46:05 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-15 21:46:05 DEBUG] [run:696] Running steady-state hypothesis after the method
+[32m[2026-04-15 21:46:05 INFO] [hypothesis:205] Steady state hypothesis: Build Project Configuration Integrity
+[36m[2026-04-15 21:46:05 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[36m[2026-04-15 21:46:05 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-15 21:46:05 INFO] [activity:232] Probe: Check Build Project Security
+[36m[2026-04-15 21:46:05 DEBUG] [python:33] Activity 'Check Build Project Security' loaded from '/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaosaws/ec2/1_8_sce_experiment_reactive.py'
+[36m[2026-04-15 21:46:05 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-04-15 21:46:05 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-15 21:46:05 DEBUG] [hypothesis:247] allowed tolerance is True
+[36m[2026-04-15 21:46:05 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[31m[2026-04-15 21:46:05 CRITICAL] [run:716] Steady state probe 'Check Build Project Security' is not in the given tolerance so failing this experiment
+[32m[2026-04-15 21:46:05 INFO] [run:1072] Let's rollback...
+[36m[2026-04-15 21:46:05 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-15 21:46:05 INFO] [rollback:36] Rollback: Clean Up Experimental Resources
+[36m[2026-04-15 21:46:05 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-15 21:46:05 INFO] [activity:232] Action: Clean Up Experimental Resources
+[36m[2026-04-15 21:46:05 DEBUG] [python:33] Activity 'Clean Up Experimental Resources' loaded from '/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaosaws/ec2/1_8_sce_experiment_reactive.py'
+[36m[2026-04-15 21:46:05 DEBUG] [activity:262]   => succeeded without any result value
+[36m[2026-04-15 21:46:05 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-15 21:46:05 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-15 21:46:05 INFO] [run:598] Experiment ended with status: deviated
+[32m[2026-04-15 21:46:05 INFO] [run:600] The steady-state has deviated, a weakness may have been discovered
+[36m[2026-04-15 21:46:05 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[36m[2026-04-15 21:46:05 DEBUG] [__init__:106] Cleaning up controls
+[36m[2026-04-15 21:46:05 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-15 21:48:29 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-04-15 21:48:29 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-04-15 21:48:29 DEBUG] [__init__:106] Using settings file '/home/sce-user/.chaostoolkit/settings.yaml'
+[36m[2026-04-15 21:48:29 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/sce-user/.chaostoolkit/settings.yaml'.
+[36m[2026-04-15 21:48:29 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-15 21:48:29 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-15 21:48:29 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-15 21:48:29 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-04-15 21:48:29 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-04-15 21:48:29 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-15 21:48:29 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-15 21:48:29 DEBUG] [secret:104] Done loading secrets
+[32m[2026-04-15 21:48:29 INFO] [experiment:112] Experiment looks valid
+[36m[2026-04-15 21:48:29 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-15 21:48:29 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-04-15 21:48:29 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-15 21:48:29 DEBUG] [caching:35] Cached 3 activities
+[36m[2026-04-15 21:48:29 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-15 21:48:29 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-15 21:48:29 DEBUG] [secret:104] Done loading secrets
+[36m[2026-04-15 21:48:29 DEBUG] [configuration:161] Loading dynamic configuration...
+[32m[2026-04-15 21:48:29 INFO] [run:440] Running experiment: CodeBuild Credential Exposure Prevention
+[36m[2026-04-15 21:48:29 DEBUG] [__init__:67] Initializing controls
+[32m[2026-04-15 21:48:29 INFO] [run:471] Steady-state strategy: after-method-only
+[32m[2026-04-15 21:48:29 INFO] [run:477] Rollbacks strategy: default
+[36m[2026-04-15 21:48:29 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[32m[2026-04-15 21:48:29 INFO] [run:778] Playing your experiment's method now...
+[36m[2026-04-15 21:48:29 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-15 21:48:29 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-15 21:48:29 INFO] [activity:232] Action: Deploy Test Infrastructure
+[36m[2026-04-15 21:48:29 DEBUG] [python:33] Activity 'Deploy Test Infrastructure' loaded from '/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaosaws/ec2/1_8_sce_experiment_reactive.py'
+[36m[2026-04-15 21:49:01 DEBUG] [activity:260]   => succeeded with '{'stack_name': 'sce-codebuild-experiment-1776307709', 'project_name': 'test-project-1776307709'}'
+[36m[2026-04-15 21:49:01 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-15 21:49:01 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-15 21:49:01 INFO] [activity:232] Action: Simulate Build Configuration Attack
+[36m[2026-04-15 21:49:01 DEBUG] [python:33] Activity 'Simulate Build Configuration Attack' loaded from '/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaosaws/ec2/1_8_sce_experiment_reactive.py'
+[36m[2026-04-15 21:49:01 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-04-15 21:49:01 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-15 21:49:01 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-15 21:49:01 DEBUG] [run:696] Running steady-state hypothesis after the method
+[32m[2026-04-15 21:49:01 INFO] [hypothesis:205] Steady state hypothesis: Build Project Configuration Integrity
+[36m[2026-04-15 21:49:01 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[36m[2026-04-15 21:49:01 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-15 21:49:01 INFO] [activity:232] Probe: Check Build Project Security
+[36m[2026-04-15 21:49:01 DEBUG] [python:33] Activity 'Check Build Project Security' loaded from '/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaosaws/ec2/1_8_sce_experiment_reactive.py'
+[36m[2026-04-15 21:49:01 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-04-15 21:49:01 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-15 21:49:01 DEBUG] [hypothesis:247] allowed tolerance is True
+[36m[2026-04-15 21:49:01 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[31m[2026-04-15 21:49:01 CRITICAL] [run:716] Steady state probe 'Check Build Project Security' is not in the given tolerance so failing this experiment
+[32m[2026-04-15 21:49:01 INFO] [run:1072] Let's rollback...
+[36m[2026-04-15 21:49:01 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-15 21:49:01 INFO] [rollback:36] Rollback: Clean Up Experimental Resources
+[36m[2026-04-15 21:49:01 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-15 21:49:01 INFO] [activity:232] Action: Clean Up Experimental Resources
+[36m[2026-04-15 21:49:01 DEBUG] [python:33] Activity 'Clean Up Experimental Resources' loaded from '/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaosaws/ec2/1_8_sce_experiment_reactive.py'
+[36m[2026-04-15 21:49:01 DEBUG] [activity:262]   => succeeded without any result value
+[36m[2026-04-15 21:49:01 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-15 21:49:01 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-15 21:49:01 INFO] [run:598] Experiment ended with status: deviated
+[32m[2026-04-15 21:49:01 INFO] [run:600] The steady-state has deviated, a weakness may have been discovered
+[36m[2026-04-15 21:49:01 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[36m[2026-04-15 21:49:01 DEBUG] [__init__:106] Cleaning up controls
+[36m[2026-04-15 21:49:01 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-15 21:52:44 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-04-15 21:52:44 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-04-15 21:52:44 DEBUG] [__init__:106] Using settings file '/home/sce-user/.chaostoolkit/settings.yaml'
+[36m[2026-04-15 21:52:44 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/sce-user/.chaostoolkit/settings.yaml'.
+[36m[2026-04-15 21:52:44 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-15 21:52:44 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-15 21:52:44 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-15 21:52:44 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-04-15 21:52:44 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-04-15 21:52:44 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-15 21:52:44 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-15 21:52:44 DEBUG] [secret:104] Done loading secrets
+[36m[2026-04-15 21:52:44 DEBUG] [caching:42] Clearing activities cache
+[31m[2026-04-15 21:52:44 ERROR] [run:188] required argument 'context' is missing from activity 'hypothesis_verification'
+[36m[2026-04-15 21:52:44 DEBUG] [run:189] required argument 'context' is missing from activity 'hypothesis_verification'
+[36m[2026-04-15 21:55:45 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-04-15 21:55:45 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-04-15 21:55:45 DEBUG] [__init__:106] Using settings file '/home/sce-user/.chaostoolkit/settings.yaml'
+[36m[2026-04-15 21:55:45 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/sce-user/.chaostoolkit/settings.yaml'.
+[36m[2026-04-15 21:55:45 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-15 21:55:45 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-15 21:55:45 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-15 21:55:45 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-04-15 21:55:45 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-04-15 21:55:45 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-15 21:55:45 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-15 21:55:45 DEBUG] [secret:104] Done loading secrets
+[32m[2026-04-15 21:55:45 INFO] [experiment:112] Experiment looks valid
+[36m[2026-04-15 21:55:45 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-15 21:55:45 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-04-15 21:55:45 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-15 21:55:45 DEBUG] [caching:35] Cached 3 activities
+[36m[2026-04-15 21:55:45 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-15 21:55:45 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-15 21:55:45 DEBUG] [secret:104] Done loading secrets
+[36m[2026-04-15 21:55:45 DEBUG] [configuration:161] Loading dynamic configuration...
+[32m[2026-04-15 21:55:45 INFO] [run:440] Running experiment: CodeBuild Privileged Mode Prevention Experiment
+[36m[2026-04-15 21:55:45 DEBUG] [__init__:67] Initializing controls
+[32m[2026-04-15 21:55:45 INFO] [run:471] Steady-state strategy: after-method-only
+[32m[2026-04-15 21:55:45 INFO] [run:477] Rollbacks strategy: default
+[36m[2026-04-15 21:55:45 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[32m[2026-04-15 21:55:45 INFO] [run:778] Playing your experiment's method now...
+[36m[2026-04-15 21:55:45 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-15 21:55:45 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-15 21:55:45 INFO] [activity:232] Action: Create CodeBuild Infrastructure
+[36m[2026-04-15 21:55:45 DEBUG] [python:33] Activity 'Create CodeBuild Infrastructure' loaded from '/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaosaws/ec2/1_8_sce_experiment_reactive.py'
+[36m[2026-04-15 21:56:16 DEBUG] [activity:260]   => succeeded with 'sce-codebuild-experiment-1776308145'
+[36m[2026-04-15 21:56:16 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-15 21:56:16 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-15 21:56:16 INFO] [activity:232] Action: Attempt Privileged Mode Modification
+[36m[2026-04-15 21:56:16 DEBUG] [python:33] Activity 'Attempt Privileged Mode Modification' loaded from '/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaosaws/ec2/1_8_sce_experiment_reactive.py'
+[36m[2026-04-15 21:56:16 DEBUG] [activity:317] Activity failed
+    Traceback (most recent call last):
+      File "/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+               ^^^^^^^^^^^^^^^^^
+      File "/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaosaws/ec2/1_8_sce_experiment_reactive.py", line 97, in attack
+        response = cfn.describe_stacks(StackName=stack_name)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      File "/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/client.py", line 569, in _api_call
+        return self._make_api_call(operation_name, kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      File "/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/client.py", line 980, in _make_api_call
+        request_dict = self._convert_to_request_dict(
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      File "/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/client.py", line 1047, in _convert_to_request_dict
+        request_dict = self._serializer.serialize_to_request(
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      File "/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/validate.py", line 381, in serialize_to_request
+        raise ParamValidationError(report=report.generate_report())
+    botocore.exceptions.ParamValidationError: Parameter validation failed:
+    Invalid type for parameter StackName, value: None, type: <class 'NoneType'>, valid types: <class 'str'>
+    
+    During handling of the above exception, another exception occurred:
+    
+    Traceback (most recent call last):
+      File "/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaoslib/activity.py", line 310, in run_activity
+        result = run_python_activity(activity, configuration, secrets)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      File "/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaoslib/provider/python.py", line 58, in run_python_activity
+        raise ActivityFailed(
+      File "/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+               ^^^^^^^^^^^^^^^^^
+      File "/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaosaws/ec2/1_8_sce_experiment_reactive.py", line 97, in attack
+        response = cfn.describe_stacks(StackName=stack_name)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      File "/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/client.py", line 569, in _api_call
+        return self._make_api_call(operation_name, kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      File "/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/client.py", line 980, in _make_api_call
+        request_dict = self._convert_to_request_dict(
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      File "/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/client.py", line 1047, in _convert_to_request_dict
+        request_dict = self._serializer.serialize_to_request(
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      File "/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/validate.py", line 381, in serialize_to_request
+        raise ParamValidationError(report=report.generate_report())
+    chaoslib.exceptions.ActivityFailed: botocore.exceptions.ParamValidationError: Parameter validation failed:
+    Invalid type for parameter StackName, value: None, type: <class 'NoneType'>, valid types: <class 'str'>
+[31m[2026-04-15 21:56:16 ERROR] [activity:268]   => failed: botocore.exceptions.ParamValidationError: Parameter validation failed:
+    Invalid type for parameter StackName, value: None, type: <class 'NoneType'>, valid types: <class 'str'>
+[36m[2026-04-15 21:56:16 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-15 21:56:16 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-15 21:56:16 DEBUG] [run:696] Running steady-state hypothesis after the method
+[32m[2026-04-15 21:56:16 INFO] [hypothesis:205] Steady state hypothesis: CodeBuild project should prevent privileged mode modification
+[36m[2026-04-15 21:56:16 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[36m[2026-04-15 21:56:16 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-15 21:56:16 INFO] [activity:232] Probe: Verify No Privileged Mode
+[36m[2026-04-15 21:56:16 DEBUG] [python:33] Activity 'Verify No Privileged Mode' loaded from '/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaosaws/ec2/1_8_sce_experiment_reactive.py'
+[36m[2026-04-15 21:56:16 DEBUG] [activity:317] Activity failed
+    Traceback (most recent call last):
+      File "/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+               ^^^^^^^^^^^^^^^^^
+      File "/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaosaws/ec2/1_8_sce_experiment_reactive.py", line 131, in hypothesis_verification
+        response = cfn.describe_stacks(StackName=stack_name)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      File "/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/client.py", line 569, in _api_call
+        return self._make_api_call(operation_name, kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      File "/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/client.py", line 980, in _make_api_call
+        request_dict = self._convert_to_request_dict(
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      File "/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/client.py", line 1047, in _convert_to_request_dict
+        request_dict = self._serializer.serialize_to_request(
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      File "/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/validate.py", line 381, in serialize_to_request
+        raise ParamValidationError(report=report.generate_report())
+    botocore.exceptions.ParamValidationError: Parameter validation failed:
+    Invalid type for parameter StackName, value: None, type: <class 'NoneType'>, valid types: <class 'str'>
+    
+    During handling of the above exception, another exception occurred:
+    
+    Traceback (most recent call last):
+      File "/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaoslib/activity.py", line 310, in run_activity
+        result = run_python_activity(activity, configuration, secrets)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      File "/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaoslib/provider/python.py", line 58, in run_python_activity
+        raise ActivityFailed(
+      File "/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+               ^^^^^^^^^^^^^^^^^
+      File "/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaosaws/ec2/1_8_sce_experiment_reactive.py", line 131, in hypothesis_verification
+        response = cfn.describe_stacks(StackName=stack_name)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      File "/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/client.py", line 569, in _api_call
+        return self._make_api_call(operation_name, kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      File "/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/client.py", line 980, in _make_api_call
+        request_dict = self._convert_to_request_dict(
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      File "/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/client.py", line 1047, in _convert_to_request_dict
+        request_dict = self._serializer.serialize_to_request(
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      File "/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/validate.py", line 381, in serialize_to_request
+        raise ParamValidationError(report=report.generate_report())
+    chaoslib.exceptions.ActivityFailed: botocore.exceptions.ParamValidationError: Parameter validation failed:
+    Invalid type for parameter StackName, value: None, type: <class 'NoneType'>, valid types: <class 'str'>
+[31m[2026-04-15 21:56:16 ERROR] [activity:268]   => failed: botocore.exceptions.ParamValidationError: Parameter validation failed:
+    Invalid type for parameter StackName, value: None, type: <class 'NoneType'>, valid types: <class 'str'>
+[36m[2026-04-15 21:56:16 DEBUG] [__init__:472] No controls to apply on 'activity'
+[33m[2026-04-15 21:56:16 WARNING] [hypothesis:232] Probe terminated unexpectedly, so its tolerance could not be validated
+[36m[2026-04-15 21:56:16 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[31m[2026-04-15 21:56:16 CRITICAL] [run:716] Steady state probe 'Verify No Privileged Mode' is not in the given tolerance so failing this experiment
+[32m[2026-04-15 21:56:16 INFO] [run:598] Experiment ended with status: deviated
+[32m[2026-04-15 21:56:16 INFO] [run:600] The steady-state has deviated, a weakness may have been discovered
+[36m[2026-04-15 21:56:16 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[36m[2026-04-15 21:56:16 DEBUG] [__init__:106] Cleaning up controls
+[36m[2026-04-15 21:56:16 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-15 21:58:17 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-04-15 21:58:17 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-04-15 21:58:17 DEBUG] [__init__:106] Using settings file '/home/sce-user/.chaostoolkit/settings.yaml'
+[36m[2026-04-15 21:58:17 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/sce-user/.chaostoolkit/settings.yaml'.
+[36m[2026-04-15 21:58:17 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-15 21:58:17 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-15 21:58:17 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-15 21:58:17 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-04-15 21:58:17 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-04-15 21:58:17 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-15 21:58:17 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-15 21:58:17 DEBUG] [secret:104] Done loading secrets
+[36m[2026-04-15 21:58:17 DEBUG] [caching:42] Clearing activities cache
+[31m[2026-04-15 21:58:17 ERROR] [run:188] required argument 'stack_name' is missing from activity 'hypothesis_verification'
+[36m[2026-04-15 21:58:17 DEBUG] [run:189] required argument 'stack_name' is missing from activity 'hypothesis_verification'
+[36m[2026-04-15 22:06:00 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-04-15 22:06:00 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-04-15 22:06:00 DEBUG] [__init__:106] Using settings file '/home/sce-user/.chaostoolkit/settings.yaml'
+[36m[2026-04-15 22:06:00 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/sce-user/.chaostoolkit/settings.yaml'.
+[36m[2026-04-15 22:06:00 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-15 22:06:00 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-15 22:06:00 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-15 22:06:00 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-04-15 22:06:00 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-04-15 22:06:00 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-15 22:06:00 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-15 22:06:00 DEBUG] [secret:104] Done loading secrets
+[36m[2026-04-15 22:06:00 DEBUG] [caching:42] Clearing activities cache
+[31m[2026-04-15 22:06:00 ERROR] [run:188] could not find Python module 'chaosaws.ec2.sce_1_8_sce_experiment_reactive' in activity 'Verify CodeBuild Project Configuration'
+[36m[2026-04-15 22:06:00 DEBUG] [run:189] could not find Python module 'chaosaws.ec2.sce_1_8_sce_experiment_reactive' in activity 'Verify CodeBuild Project Configuration'
+[36m[2026-04-15 22:09:31 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-04-15 22:09:31 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-04-15 22:09:31 DEBUG] [__init__:106] Using settings file '/home/sce-user/.chaostoolkit/settings.yaml'
+[36m[2026-04-15 22:09:31 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/sce-user/.chaostoolkit/settings.yaml'.
+[36m[2026-04-15 22:09:31 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-15 22:09:31 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-15 22:09:31 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-15 22:09:31 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-04-15 22:09:31 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-04-15 22:09:31 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-15 22:09:31 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-15 22:09:31 DEBUG] [secret:104] Done loading secrets
+[36m[2026-04-15 22:09:31 DEBUG] [caching:42] Clearing activities cache
+[31m[2026-04-15 22:09:31 ERROR] [run:188] could not find Python module 'chaosaws.ec2.sce_1_8_sce_experiment_reactive' in activity 'Verify project configuration is secure'
+[36m[2026-04-15 22:09:31 DEBUG] [run:189] could not find Python module 'chaosaws.ec2.sce_1_8_sce_experiment_reactive' in activity 'Verify project configuration is secure'
+[36m[2026-04-15 22:13:52 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-04-15 22:13:52 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-04-15 22:13:52 DEBUG] [__init__:106] Using settings file '/home/sce-user/.chaostoolkit/settings.yaml'
+[36m[2026-04-15 22:13:52 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/sce-user/.chaostoolkit/settings.yaml'.
+[36m[2026-04-15 22:13:52 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-15 22:13:52 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-15 22:13:52 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-15 22:13:52 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-04-15 22:13:52 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-04-15 22:13:52 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-15 22:13:52 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-15 22:13:52 DEBUG] [secret:104] Done loading secrets
+[36m[2026-04-15 22:13:52 DEBUG] [caching:42] Clearing activities cache
+[31m[2026-04-15 22:13:52 ERROR] [run:188] could not find Python module 'chaosaws.ec2.sce_1_8_sce_experiment_reactive' in activity 'Verify project configuration security'
+[36m[2026-04-15 22:13:52 DEBUG] [run:189] could not find Python module 'chaosaws.ec2.sce_1_8_sce_experiment_reactive' in activity 'Verify project configuration security'

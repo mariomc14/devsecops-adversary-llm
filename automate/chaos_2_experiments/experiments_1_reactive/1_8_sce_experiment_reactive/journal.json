@@ -1,0 +1,153 @@
+{
+  "chaoslib-version": "1.44.0",
+  "platform": "Linux-6.17.0-20-generic-x86_64-with-glibc2.39",
+  "node": "sce-user-VirtualBox",
+  "experiment": {
+    "title": "CodeBuild Privileged Mode Prevention Experiment",
+    "description": "Validate that privileged mode cannot be enabled for CodeBuild projects",
+    "tags": [
+      "aws",
+      "codebuild",
+      "security",
+      "iam"
+    ],
+    "steady-state-hypothesis": {
+      "title": "CodeBuild project should prevent privileged mode modification",
+      "probes": [
+        {
+          "type": "probe",
+          "name": "Verify No Privileged Mode",
+          "tolerance": true,
+          "provider": {
+            "type": "python",
+            "module": "chaosaws.ec2.1_8_sce_experiment_reactive",
+            "func": "hypothesis_verification"
+          }
+        }
+      ]
+    },
+    "method": [
+      {
+        "type": "action",
+        "name": "Create CodeBuild Infrastructure",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_reactive",
+          "func": "steady_state"
+        }
+      },
+      {
+        "type": "action",
+        "name": "Attempt Privileged Mode Modification",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_reactive",
+          "func": "attack"
+        }
+      }
+    ],
+    "rollbacks": [
+      {
+        "type": "action",
+        "name": "Cleanup Experiment Resources",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_reactive",
+          "func": "rollback"
+        }
+      }
+    ],
+    "dry": null
+  },
+  "start": "2026-04-16T02:55:45.148018+00:00",
+  "status": "failed",
+  "deviated": true,
+  "steady_states": {
+    "before": null,
+    "after": {
+      "steady_state_met": false,
+      "probes": [
+        {
+          "activity": {
+            "type": "probe",
+            "name": "Verify No Privileged Mode",
+            "tolerance": true,
+            "provider": {
+              "type": "python",
+              "module": "chaosaws.ec2.1_8_sce_experiment_reactive",
+              "func": "hypothesis_verification"
+            }
+          },
+          "output": null,
+          "start": "2026-04-16T02:56:16.517869+00:00",
+          "status": "failed",
+          "exception": [
+            "Traceback (most recent call last):\n",
+            "  File \"/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaoslib/provider/python.py\", line 56, in run_python_activity\n    return func(**arguments)\n           ^^^^^^^^^^^^^^^^^\n",
+            "  File \"/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaosaws/ec2/1_8_sce_experiment_reactive.py\", line 131, in hypothesis_verification\n    response = cfn.describe_stacks(StackName=stack_name)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+            "  File \"/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/client.py\", line 569, in _api_call\n    return self._make_api_call(operation_name, kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+            "  File \"/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/client.py\", line 980, in _make_api_call\n    request_dict = self._convert_to_request_dict(\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+            "  File \"/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/client.py\", line 1047, in _convert_to_request_dict\n    request_dict = self._serializer.serialize_to_request(\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+            "  File \"/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/validate.py\", line 381, in serialize_to_request\n    raise ParamValidationError(report=report.generate_report())\n",
+            "botocore.exceptions.ParamValidationError: Parameter validation failed:\nInvalid type for parameter StackName, value: None, type: <class 'NoneType'>, valid types: <class 'str'>\n",
+            "\nDuring handling of the above exception, another exception occurred:\n\n",
+            "chaoslib.exceptions.ActivityFailed: botocore.exceptions.ParamValidationError: Parameter validation failed:\nInvalid type for parameter StackName, value: None, type: <class 'NoneType'>, valid types: <class 'str'>\n"
+          ],
+          "end": "2026-04-16T02:56:16.528838+00:00",
+          "duration": 0.010969,
+          "tolerance_met": false
+        }
+      ]
+    },
+    "during": []
+  },
+  "run": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "Create CodeBuild Infrastructure",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_reactive",
+          "func": "steady_state"
+        }
+      },
+      "output": "sce-codebuild-experiment-1776308145",
+      "start": "2026-04-16T02:55:45.149480+00:00",
+      "status": "succeeded",
+      "end": "2026-04-16T02:56:16.492164+00:00",
+      "duration": 31.342684
+    },
+    {
+      "activity": {
+        "type": "action",
+        "name": "Attempt Privileged Mode Modification",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_reactive",
+          "func": "attack"
+        }
+      },
+      "output": null,
+      "start": "2026-04-16T02:56:16.492910+00:00",
+      "status": "failed",
+      "exception": [
+        "Traceback (most recent call last):\n",
+        "  File \"/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaoslib/provider/python.py\", line 56, in run_python_activity\n    return func(**arguments)\n           ^^^^^^^^^^^^^^^^^\n",
+        "  File \"/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaosaws/ec2/1_8_sce_experiment_reactive.py\", line 97, in attack\n    response = cfn.describe_stacks(StackName=stack_name)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+        "  File \"/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/client.py\", line 569, in _api_call\n    return self._make_api_call(operation_name, kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+        "  File \"/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/client.py\", line 980, in _make_api_call\n    request_dict = self._convert_to_request_dict(\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+        "  File \"/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/client.py\", line 1047, in _convert_to_request_dict\n    request_dict = self._serializer.serialize_to_request(\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+        "  File \"/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/validate.py\", line 381, in serialize_to_request\n    raise ParamValidationError(report=report.generate_report())\n",
+        "botocore.exceptions.ParamValidationError: Parameter validation failed:\nInvalid type for parameter StackName, value: None, type: <class 'NoneType'>, valid types: <class 'str'>\n",
+        "\nDuring handling of the above exception, another exception occurred:\n\n",
+        "chaoslib.exceptions.ActivityFailed: botocore.exceptions.ParamValidationError: Parameter validation failed:\nInvalid type for parameter StackName, value: None, type: <class 'NoneType'>, valid types: <class 'str'>\n"
+      ],
+      "end": "2026-04-16T02:56:16.516998+00:00",
+      "duration": 0.024088
+    }
+  ],
+  "rollbacks": [],
+  "end": "2026-04-16T02:56:16.529689+00:00",
+  "duration": 31.385478973388672
+}

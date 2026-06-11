@@ -1,0 +1,157 @@
+{
+  "chaoslib-version": "1.44.0",
+  "platform": "Linux-6.17.0-20-generic-x86_64-with-glibc2.39",
+  "node": "sce-user-VirtualBox",
+  "experiment": {
+    "title": "SCE 1.8: Encrypted CodeBuild Artifact Control",
+    "description": "Preventive probe validating that S3 encryption enforcement and bucket policies block credential exfiltration from malicious CodeBuild projects. Targets MITRE ATT&CK T1552.005 (Unsecured Credentials) through enforced artifact encryption.",
+    "tags": [
+      "security-chaos",
+      "preventive-control",
+      "codebuild",
+      "s3-encryption",
+      "credential-protection"
+    ],
+    "steady-state-hypothesis": {
+      "title": "CodeBuild artifacts are encrypted at rest and unencrypted credential exfiltration is blocked",
+      "probes": [
+        {
+          "type": "probe",
+          "name": "Verify artifact encryption control is active",
+          "tolerance": true,
+          "provider": {
+            "type": "python",
+            "module": "chaosaws.ec2.1_8_sce_experiment_preventive",
+            "func": "hypothesis_verification"
+          }
+        }
+      ]
+    },
+    "method": [
+      {
+        "type": "action",
+        "name": "Deploy preventive controls: S3 encryption enforcement and CodeBuild project",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_preventive",
+          "func": "steady_state"
+        }
+      },
+      {
+        "type": "action",
+        "name": "Execute attack node 1.7: Trigger malicious CodeBuild build attempting credential exfiltration",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_preventive",
+          "func": "attack"
+        }
+      }
+    ],
+    "rollbacks": [
+      {
+        "type": "action",
+        "name": "Rollback: Delete CloudFormation stack and all experiment resources",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_preventive",
+          "func": "rollback"
+        }
+      }
+    ],
+    "dry": null
+  },
+  "start": "2026-04-25T05:13:27.696515+00:00",
+  "status": "completed",
+  "deviated": true,
+  "steady_states": {
+    "before": null,
+    "after": {
+      "steady_state_met": false,
+      "probes": [
+        {
+          "activity": {
+            "type": "probe",
+            "name": "Verify artifact encryption control is active",
+            "tolerance": true,
+            "provider": {
+              "type": "python",
+              "module": "chaosaws.ec2.1_8_sce_experiment_preventive",
+              "func": "hypothesis_verification"
+            }
+          },
+          "output": false,
+          "start": "2026-04-25T05:13:32.245212+00:00",
+          "status": "succeeded",
+          "end": "2026-04-25T05:13:33.047830+00:00",
+          "duration": 0.802618,
+          "tolerance_met": false
+        }
+      ]
+    },
+    "during": []
+  },
+  "run": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "Deploy preventive controls: S3 encryption enforcement and CodeBuild project",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_preventive",
+          "func": "steady_state"
+        }
+      },
+      "output": null,
+      "start": "2026-04-25T05:13:27.697255+00:00",
+      "status": "failed",
+      "exception": [
+        "Traceback (most recent call last):\n",
+        "  File \"/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaoslib/provider/python.py\", line 56, in run_python_activity\n    return func(**arguments)\n           ^^^^^^^^^^^^^^^^^\n",
+        "  File \"/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaosaws/ec2/1_8_sce_experiment_preventive.py\", line 329, in steady_state\n    encryption = s3_client.get_bucket_encryption(Bucket=ARTIFACT_BUCKET)\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+        "  File \"/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/client.py\", line 569, in _api_call\n    return self._make_api_call(operation_name, kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+        "  File \"/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/client.py\", line 1023, in _make_api_call\n    raise error_class(parsed_response, operation_name)\n",
+        "botocore.errorfactory.NoSuchBucket: An error occurred (NoSuchBucket) when calling the GetBucketEncryption operation: The specified bucket does not exist\n",
+        "\nDuring handling of the above exception, another exception occurred:\n\n",
+        "chaoslib.exceptions.ActivityFailed: botocore.errorfactory.NoSuchBucket: An error occurred (NoSuchBucket) when calling the GetBucketEncryption operation: The specified bucket does not exist\n"
+      ],
+      "end": "2026-04-25T05:13:31.754575+00:00",
+      "duration": 4.05732
+    },
+    {
+      "activity": {
+        "type": "action",
+        "name": "Execute attack node 1.7: Trigger malicious CodeBuild build attempting credential exfiltration",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_preventive",
+          "func": "attack"
+        }
+      },
+      "output": false,
+      "start": "2026-04-25T05:13:31.754856+00:00",
+      "status": "succeeded",
+      "end": "2026-04-25T05:13:32.244626+00:00",
+      "duration": 0.48977
+    }
+  ],
+  "rollbacks": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "Rollback: Delete CloudFormation stack and all experiment resources",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_preventive",
+          "func": "rollback"
+        }
+      },
+      "output": null,
+      "start": "2026-04-25T05:13:33.048552+00:00",
+      "status": "succeeded",
+      "end": "2026-04-25T05:13:35.707920+00:00",
+      "duration": 2.659368
+    }
+  ],
+  "end": "2026-04-25T05:13:35.708066+00:00",
+  "duration": 8.015251636505127
+}

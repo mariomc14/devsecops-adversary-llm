@@ -1,0 +1,51 @@
+{
+    "title": "SCE 1.8 - Detective Control for Malicious Build Start",
+    "description": "Validates that a detective control detects when a malicious build is started in AWS CodeBuild (Attack Node 1.7). The experiment deploys a CodeBuild project with an EventBridge rule that forwards build state change events to CloudWatch Logs, then starts a malicious build and verifies the event was captured.",
+    "tags": ["sce", "detective", "codebuild", "malicious-build", "eventbridge", "cloudtrail"],
+    "steady-state-hypothesis": {
+        "title": "Malicious build start is detected by EventBridge rule and logged to CloudWatch Logs",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "verify-malicious-build-detected",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.1_8_sce_experiment_detective",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "deploy-codebuild-project-and-detective-controls",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_8_sce_experiment_detective",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "start-malicious-build",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_8_sce_experiment_detective",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "delete-experiment-resources",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_8_sce_experiment_detective",
+                "func": "rollback"
+            }
+        }
+    ]
+}

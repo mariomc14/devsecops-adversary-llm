@@ -1,0 +1,57 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-04-27 17:11:22 INFO] Validating the experiment's syntax
+[32m[2026-04-27 17:11:22 INFO] Experiment looks valid
+[32m[2026-04-27 17:11:22 INFO] Running experiment: SCE 1.8 - Detective Control for Malicious Build Start
+[32m[2026-04-27 17:11:22 INFO] Steady-state strategy: after-method-only
+[32m[2026-04-27 17:11:22 INFO] Rollbacks strategy: default
+[32m[2026-04-27 17:11:22 INFO] Playing your experiment's method now...
+[32m[2026-04-27 17:11:22 INFO] Action: deploy-codebuild-project-and-detective-controls
+2026-04-27 17:11:22,683 - INFO - === STEADY STATE: Deploying stack sce-1-8-detective-1777327882 ===
+2026-04-27 17:11:22,689 - INFO - Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-27 17:11:23,474 - INFO - Stack creation initiated: sce-1-8-detective-1777327882
+2026-04-27 17:11:23,591 - INFO - Stack sce-1-8-detective-1777327882 status: CREATE_IN_PROGRESS
+2026-04-27 17:11:39,022 - INFO - Stack sce-1-8-detective-1777327882 status: CREATE_IN_PROGRESS
+2026-04-27 17:11:54,465 - INFO - Stack sce-1-8-detective-1777327882 status: CREATE_IN_PROGRESS
+2026-04-27 17:12:09,905 - INFO - Stack sce-1-8-detective-1777327882 status: CREATE_IN_PROGRESS
+2026-04-27 17:12:25,326 - INFO - Stack sce-1-8-detective-1777327882 status: CREATE_IN_PROGRESS
+2026-04-27 17:12:40,758 - INFO - Stack sce-1-8-detective-1777327882 status: CREATE_IN_PROGRESS
+2026-04-27 17:12:56,199 - INFO - Stack sce-1-8-detective-1777327882 status: CREATE_COMPLETE
+2026-04-27 17:12:56,199 - INFO - Waiting 15 seconds for IAM role propagation...
+2026-04-27 17:13:11,199 - INFO - Steady state established successfully.
+[32m[2026-04-27 17:13:11 INFO] Action: start-malicious-build
+2026-04-27 17:13:11,202 - INFO - === ATTACK: Starting Malicious Build ===
+2026-04-27 17:13:11,749 - INFO - Confirmed project exists: malicious-build-target-1777327882
+2026-04-27 17:13:12,003 - INFO - Malicious build started successfully!
+2026-04-27 17:13:12,003 - INFO -   Build ID: malicious-build-target-1777327882:ec729424-f704-4823-ab7c-e75023b76cf4
+2026-04-27 17:13:12,003 - INFO -   Build ARN: arn:aws:codebuild:us-east-1:941377112071:build/malicious-build-target-1777327882:ec729424-f704-4823-ab7c-e75023b76cf4
+2026-04-27 17:13:12,003 - INFO -   HTTP Status: 200
+2026-04-27 17:13:12,003 - INFO - Waiting 30 seconds for event propagation to CloudWatch Logs...
+[32m[2026-04-27 17:13:42 INFO] Steady state hypothesis: Malicious build start is detected by EventBridge rule and logged to CloudWatch Logs
+[32m[2026-04-27 17:13:42 INFO] Probe: verify-malicious-build-detected
+2026-04-27 17:13:42,006 - INFO - === HYPOTHESIS VERIFICATION: Checking detective control ===
+2026-04-27 17:13:42,597 - INFO - EventBridge rule 'sce-detect-build-1777327882' state: ENABLED
+2026-04-27 17:13:42,597 - INFO - Checking log group for detection events (attempt 1/8)...
+2026-04-27 17:13:43,033 - INFO - Found 2 log stream(s)
+2026-04-27 17:13:43,185 - INFO - Log event found: {"version":"0","id":"6d34c0bd-73a5-af61-639e-6455253efb1e","detail-type":"CodeBuild Build State Change","source":"aws.codebuild","account":"941377112071","time":"2026-04-27T22:13:20Z","region":"us-eas...
+2026-04-27 17:13:43,185 - INFO - DETECTED: Build state change for project 'malicious-build-target-1777327882', status: 'SUCCEEDED'
+2026-04-27 17:13:43,185 - INFO - ✅ HYPOTHESIS VERIFIED: Detective control successfully detected the malicious build start.
+[32m[2026-04-27 17:13:43 INFO] Steady state hypothesis is met!
+[32m[2026-04-27 17:13:43 INFO] Let's rollback...
+[32m[2026-04-27 17:13:43 INFO] Rollback: delete-experiment-resources
+[32m[2026-04-27 17:13:43 INFO] Action: delete-experiment-resources
+2026-04-27 17:13:43,188 - INFO - === ROLLBACK: Deleting stack sce-1-8-detective-1777327882 ===
+2026-04-27 17:13:43,628 - INFO - Stopped build: malicious-build-target-1777327882:ec729424-f704-4823-ab7c-e75023b76cf4
+2026-04-27 17:13:44,219 - INFO - Stack deletion initiated: sce-1-8-detective-1777327882
+2026-04-27 17:13:44,340 - INFO - Stack sce-1-8-detective-1777327882 status: DELETE_IN_PROGRESS
+2026-04-27 17:13:59,767 - INFO - Stack sce-1-8-detective-1777327882 status: DELETE_IN_PROGRESS
+2026-04-27 17:14:15,186 - INFO - Stack sce-1-8-detective-1777327882 status: DELETE_IN_PROGRESS
+2026-04-27 17:14:30,658 - INFO - Stack deleted successfully.
+2026-04-27 17:14:31,086 - WARNING - Could not delete log group (may already be deleted): An error occurred (ResourceNotFoundException) when calling the DeleteLogGroup operation: The specified log group does not exist.
+2026-04-27 17:14:31,086 - INFO - Rollback complete.
+[32m[2026-04-27 17:14:31 INFO] Experiment ended with status: completed
+
+
+RETURN CODE: 0

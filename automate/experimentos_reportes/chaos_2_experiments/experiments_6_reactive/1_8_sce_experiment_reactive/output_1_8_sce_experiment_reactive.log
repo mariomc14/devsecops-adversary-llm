@@ -1,0 +1,58 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-04-27 18:35:35 INFO] Validating the experiment's syntax
+[32m[2026-04-27 18:35:35 INFO] Experiment looks valid
+[32m[2026-04-27 18:35:35 INFO] Running experiment: SCE 1.8 Reactive Probe: Stop Malicious Build (Attack 1.7)
+[32m[2026-04-27 18:35:35 INFO] Steady-state strategy: after-method-only
+[32m[2026-04-27 18:35:35 INFO] Rollbacks strategy: default
+[32m[2026-04-27 18:35:35 INFO] Playing your experiment's method now...
+[32m[2026-04-27 18:35:35 INFO] Action: deploy-codebuild-project-with-reactive-controls
+2026-04-27 18:35:35,511 [INFO] === STEADY STATE: Deploying stack sce-experiment-1777332935 ===
+2026-04-27 18:35:35,522 [INFO] Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-27 18:35:36,655 [INFO] Creating CloudFormation stack sce-experiment-1777332935...
+2026-04-27 18:35:37,107 [INFO] Stack sce-experiment-1777332935 status: CREATE_IN_PROGRESS
+2026-04-27 18:35:47,561 [INFO] Stack sce-experiment-1777332935 status: CREATE_IN_PROGRESS
+2026-04-27 18:35:58,048 [INFO] Stack sce-experiment-1777332935 status: CREATE_IN_PROGRESS
+2026-04-27 18:36:08,500 [INFO] Stack sce-experiment-1777332935 status: CREATE_IN_PROGRESS
+2026-04-27 18:36:18,932 [INFO] Stack sce-experiment-1777332935 status: CREATE_IN_PROGRESS
+2026-04-27 18:36:29,399 [INFO] Stack sce-experiment-1777332935 status: CREATE_IN_PROGRESS
+2026-04-27 18:36:39,867 [INFO] Stack sce-experiment-1777332935 status: CREATE_IN_PROGRESS
+2026-04-27 18:36:50,305 [INFO] Stack sce-experiment-1777332935 status: CREATE_IN_PROGRESS
+2026-04-27 18:37:01,127 [INFO] Stack sce-experiment-1777332935 status: CREATE_IN_PROGRESS
+2026-04-27 18:37:11,616 [INFO] Stack sce-experiment-1777332935 status: CREATE_IN_PROGRESS
+2026-04-27 18:37:22,102 [INFO] Stack sce-experiment-1777332935 status: CREATE_COMPLETE
+2026-04-27 18:37:22,102 [INFO] Stack sce-experiment-1777332935 created successfully.
+2026-04-27 18:37:22,102 [INFO] Waiting 15 seconds for IAM role propagation and EventBridge rule activation...
+[32m[2026-04-27 18:37:37 INFO] Action: start-malicious-codebuild-build
+2026-04-27 18:37:37,105 [INFO] === ATTACK: Starting malicious build on project sce-malicious-build-1777332935 ===
+2026-04-27 18:37:37,695 [INFO] Build started successfully!
+2026-04-27 18:37:37,695 [INFO]   Build ID: sce-malicious-build-1777332935:6c8cd157-b669-4ec6-b484-a6f31105dfc8
+2026-04-27 18:37:37,695 [INFO]   Build ARN: arn:aws:codebuild:us-east-1:941377112071:build/sce-malicious-build-1777332935:6c8cd157-b669-4ec6-b484-a6f31105dfc8
+2026-04-27 18:37:37,695 [INFO]   Initial Status: IN_PROGRESS
+2026-04-27 18:37:37,695 [INFO] Attack executed — malicious build started with ID: sce-malicious-build-1777332935:6c8cd157-b669-4ec6-b484-a6f31105dfc8
+[32m[2026-04-27 18:37:37 INFO] Steady state hypothesis: Malicious build should be reactively stopped by the EventBridge-Lambda control
+[32m[2026-04-27 18:37:37 INFO] Probe: verify-malicious-build-was-stopped
+2026-04-27 18:37:37,698 [INFO] === HYPOTHESIS VERIFICATION: Checking if reactive control stopped the build ===
+2026-04-27 18:37:37,707 [INFO] Polling build sce-malicious-build-1777332935:6c8cd157-b669-4ec6-b484-a6f31105dfc8 for STOPPED status (max 180s)...
+2026-04-27 18:37:38,150 [INFO]   Build sce-malicious-build-1777332935:6c8cd157-b669-4ec6-b484-a6f31105dfc8 status: IN_PROGRESS
+2026-04-27 18:37:48,276 [INFO]   Build sce-malicious-build-1777332935:6c8cd157-b669-4ec6-b484-a6f31105dfc8 status: STOPPED
+2026-04-27 18:37:48,276 [INFO] SUCCESS: Build was STOPPED by the reactive control!
+[32m[2026-04-27 18:37:48 INFO] Steady state hypothesis is met!
+[32m[2026-04-27 18:37:48 INFO] Let's rollback...
+[32m[2026-04-27 18:37:48 INFO] Rollback: delete-cloudformation-stack-and-all-resources
+[32m[2026-04-27 18:37:48 INFO] Action: delete-cloudformation-stack-and-all-resources
+2026-04-27 18:37:48,278 [INFO] === ROLLBACK: Deleting stack sce-experiment-1777332935 ===
+2026-04-27 18:37:49,310 [INFO] Delete request sent for stack sce-experiment-1777332935.
+2026-04-27 18:37:49,420 [INFO] Stack sce-experiment-1777332935 status: DELETE_IN_PROGRESS
+2026-04-27 18:37:59,852 [INFO] Stack sce-experiment-1777332935 status: DELETE_IN_PROGRESS
+2026-04-27 18:38:10,296 [INFO] Stack sce-experiment-1777332935 status: DELETE_IN_PROGRESS
+2026-04-27 18:38:20,770 [INFO] Stack sce-experiment-1777332935 status: DELETE_IN_PROGRESS
+2026-04-27 18:38:31,209 [INFO] Stack sce-experiment-1777332935 status: DELETE_IN_PROGRESS
+2026-04-27 18:38:41,646 [INFO] Stack sce-experiment-1777332935 deleted.
+2026-04-27 18:38:41,646 [INFO] Stack sce-experiment-1777332935 deleted successfully.
+[32m[2026-04-27 18:38:41 INFO] Experiment ended with status: completed
+
+
+RETURN CODE: 0

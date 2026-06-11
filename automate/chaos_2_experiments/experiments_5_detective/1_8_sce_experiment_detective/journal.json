@@ -1,0 +1,149 @@
+{
+  "chaoslib-version": "1.44.0",
+  "platform": "Linux-6.17.0-20-generic-x86_64-with-glibc2.39",
+  "node": "sce-user-VirtualBox",
+  "experiment": {
+    "title": "SCE 1.8 - Detect Malicious Build Start",
+    "description": "This Security Chaos Engineering experiment validates that detective controls can identify when a malicious or unauthorized CodeBuild build is started. The experiment deploys EventBridge rules and CloudWatch monitoring to detect build state changes, then simulates a malicious build start to verify the detection capability.",
+    "tags": [
+      "security-chaos-engineering",
+      "detective-control",
+      "codebuild",
+      "malicious-build",
+      "eventbridge",
+      "cloudwatch",
+      "sce-1.8"
+    ],
+    "steady-state-hypothesis": {
+      "title": "Detective controls should detect malicious build starts",
+      "probes": [
+        {
+          "type": "probe",
+          "name": "verify-malicious-build-detected",
+          "tolerance": true,
+          "provider": {
+            "type": "python",
+            "module": "chaosaws.ec2.1_8_sce_experiment_detective",
+            "func": "hypothesis_verification"
+          }
+        }
+      ]
+    },
+    "method": [
+      {
+        "type": "action",
+        "name": "establish-detective-controls",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_detective",
+          "func": "steady_state"
+        }
+      },
+      {
+        "type": "action",
+        "name": "start-malicious-build",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_detective",
+          "func": "attack"
+        }
+      }
+    ],
+    "rollbacks": [
+      {
+        "type": "action",
+        "name": "cleanup-experiment-resources",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_detective",
+          "func": "rollback"
+        }
+      }
+    ],
+    "dry": null
+  },
+  "start": "2026-04-27T22:57:17.069066+00:00",
+  "status": "completed",
+  "deviated": false,
+  "steady_states": {
+    "before": null,
+    "after": {
+      "steady_state_met": true,
+      "probes": [
+        {
+          "activity": {
+            "type": "probe",
+            "name": "verify-malicious-build-detected",
+            "tolerance": true,
+            "provider": {
+              "type": "python",
+              "module": "chaosaws.ec2.1_8_sce_experiment_detective",
+              "func": "hypothesis_verification"
+            }
+          },
+          "output": true,
+          "start": "2026-04-27T22:59:03.879915+00:00",
+          "status": "succeeded",
+          "end": "2026-04-27T22:59:05.697980+00:00",
+          "duration": 1.818065,
+          "tolerance_met": true
+        }
+      ]
+    },
+    "during": []
+  },
+  "run": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "establish-detective-controls",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_detective",
+          "func": "steady_state"
+        }
+      },
+      "output": true,
+      "start": "2026-04-27T22:57:17.069834+00:00",
+      "status": "succeeded",
+      "end": "2026-04-27T22:58:58.126312+00:00",
+      "duration": 101.056478
+    },
+    {
+      "activity": {
+        "type": "action",
+        "name": "start-malicious-build",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_detective",
+          "func": "attack"
+        }
+      },
+      "output": true,
+      "start": "2026-04-27T22:58:58.126551+00:00",
+      "status": "succeeded",
+      "end": "2026-04-27T22:59:03.879389+00:00",
+      "duration": 5.752838
+    }
+  ],
+  "rollbacks": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "cleanup-experiment-resources",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_detective",
+          "func": "rollback"
+        }
+      },
+      "output": true,
+      "start": "2026-04-27T22:59:05.698822+00:00",
+      "status": "succeeded",
+      "end": "2026-04-27T23:00:14.554311+00:00",
+      "duration": 68.855489
+    }
+  ],
+  "end": "2026-04-27T23:00:14.554520+00:00",
+  "duration": 177.49081873893738
+}

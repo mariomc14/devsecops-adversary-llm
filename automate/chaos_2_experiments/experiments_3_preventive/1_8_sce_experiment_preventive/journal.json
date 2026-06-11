@@ -1,0 +1,147 @@
+{
+  "chaoslib-version": "1.44.0",
+  "platform": "Linux-6.17.0-20-generic-x86_64-with-glibc2.39",
+  "node": "sce-user-VirtualBox",
+  "experiment": {
+    "title": "SCE Experiment 1.8 - Preventive Control Against Malicious Builds",
+    "description": "Validates that preventive controls successfully block malicious build processes from being initiated through AWS CodeBuild. This experiment deploys an EventBridge rule with a Lambda function that monitors CodeBuild state changes and stops builds with suspicious characteristics before they can execute malicious code.",
+    "tags": [
+      "sce",
+      "preventive",
+      "codebuild",
+      "security",
+      "chaos-engineering"
+    ],
+    "steady-state-hypothesis": {
+      "title": "Preventive control blocks malicious builds before execution",
+      "probes": [
+        {
+          "type": "probe",
+          "name": "verify-preventive-control-blocked-build",
+          "tolerance": true,
+          "provider": {
+            "type": "python",
+            "module": "chaosaws.ec2.1_8_sce_experiment_preventive",
+            "func": "hypothesis_verification"
+          }
+        }
+      ]
+    },
+    "method": [
+      {
+        "type": "action",
+        "name": "deploy-codebuild-with-preventive-controls",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_preventive",
+          "func": "steady_state"
+        }
+      },
+      {
+        "type": "action",
+        "name": "start-malicious-build",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_preventive",
+          "func": "attack"
+        }
+      }
+    ],
+    "rollbacks": [
+      {
+        "type": "action",
+        "name": "cleanup-experiment-resources",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_preventive",
+          "func": "rollback"
+        }
+      }
+    ],
+    "dry": null
+  },
+  "start": "2026-04-12T02:35:09.732865+00:00",
+  "status": "completed",
+  "deviated": false,
+  "steady_states": {
+    "before": null,
+    "after": {
+      "steady_state_met": true,
+      "probes": [
+        {
+          "activity": {
+            "type": "probe",
+            "name": "verify-preventive-control-blocked-build",
+            "tolerance": true,
+            "provider": {
+              "type": "python",
+              "module": "chaosaws.ec2.1_8_sce_experiment_preventive",
+              "func": "hypothesis_verification"
+            }
+          },
+          "output": true,
+          "start": "2026-04-12T02:37:02.070313+00:00",
+          "status": "succeeded",
+          "end": "2026-04-12T02:37:08.808801+00:00",
+          "duration": 6.738488,
+          "tolerance_met": true
+        }
+      ]
+    },
+    "during": []
+  },
+  "run": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "deploy-codebuild-with-preventive-controls",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_preventive",
+          "func": "steady_state"
+        }
+      },
+      "output": true,
+      "start": "2026-04-12T02:35:09.734242+00:00",
+      "status": "succeeded",
+      "end": "2026-04-12T02:36:56.285838+00:00",
+      "duration": 106.551596
+    },
+    {
+      "activity": {
+        "type": "action",
+        "name": "start-malicious-build",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_preventive",
+          "func": "attack"
+        }
+      },
+      "output": true,
+      "start": "2026-04-12T02:36:56.286265+00:00",
+      "status": "succeeded",
+      "end": "2026-04-12T02:37:02.069338+00:00",
+      "duration": 5.783073
+    }
+  ],
+  "rollbacks": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "cleanup-experiment-resources",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_preventive",
+          "func": "rollback"
+        }
+      },
+      "output": true,
+      "start": "2026-04-12T02:37:08.810107+00:00",
+      "status": "succeeded",
+      "end": "2026-04-12T02:38:01.984797+00:00",
+      "duration": 53.17469
+    }
+  ],
+  "end": "2026-04-12T02:38:01.985232+00:00",
+  "duration": 172.25849723815918
+}

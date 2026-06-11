@@ -1,0 +1,127 @@
+[36m[2026-04-08 21:09:17 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-04-08 21:09:17 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-04-08 21:09:17 DEBUG] [__init__:106] Using settings file '/home/sce-user/.chaostoolkit/settings.yaml'
+[36m[2026-04-08 21:09:18 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/sce-user/.chaostoolkit/settings.yaml'.
+[36m[2026-04-08 21:09:18 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-08 21:09:18 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-08 21:09:18 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-08 21:09:18 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-04-08 21:09:18 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-04-08 21:09:18 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-08 21:09:18 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-08 21:09:18 DEBUG] [secret:104] Done loading secrets
+[32m[2026-04-08 21:09:18 INFO] [experiment:112] Experiment looks valid
+[36m[2026-04-08 21:09:18 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-08 21:09:18 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-04-08 21:09:18 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-08 21:09:18 DEBUG] [caching:35] Cached 3 activities
+[36m[2026-04-08 21:09:18 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-08 21:09:18 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-08 21:09:18 DEBUG] [secret:104] Done loading secrets
+[36m[2026-04-08 21:09:18 DEBUG] [configuration:161] Loading dynamic configuration...
+[32m[2026-04-08 21:09:18 INFO] [run:440] Running experiment: Detect Malicious CodeBuild Project Creation
+[36m[2026-04-08 21:09:18 DEBUG] [__init__:67] Initializing controls
+[32m[2026-04-08 21:09:18 INFO] [run:471] Steady-state strategy: after-method-only
+[32m[2026-04-08 21:09:18 INFO] [run:477] Rollbacks strategy: default
+[36m[2026-04-08 21:09:18 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[32m[2026-04-08 21:09:18 INFO] [run:778] Playing your experiment's method now...
+[36m[2026-04-08 21:09:18 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-08 21:09:18 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-08 21:09:18 INFO] [activity:232] Action: Deploy detection infrastructure and establish steady state
+[36m[2026-04-08 21:09:18 DEBUG] [python:33] Activity 'Deploy detection infrastructure and establish steady state' loaded from '/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaosaws/ec2/1_3_sce_experiment_detective.py'
+[36m[2026-04-08 21:19:35 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-04-08 21:19:35 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-08 21:19:35 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-08 21:19:35 INFO] [activity:232] Action: Create malicious CodeBuild project to trigger detection
+[36m[2026-04-08 21:19:35 DEBUG] [python:33] Activity 'Create malicious CodeBuild project to trigger detection' loaded from '/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaosaws/ec2/1_3_sce_experiment_detective.py'
+[36m[2026-04-08 21:19:36 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-04-08 21:19:36 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-08 21:19:36 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-08 21:19:36 DEBUG] [run:696] Running steady-state hypothesis after the method
+[32m[2026-04-08 21:19:36 INFO] [hypothesis:205] Steady state hypothesis: Detective controls should detect CodeBuild project creation events
+[36m[2026-04-08 21:19:36 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[36m[2026-04-08 21:19:36 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-08 21:19:36 INFO] [activity:232] Probe: Verify detection of malicious CodeBuild project creation
+[36m[2026-04-08 21:19:36 DEBUG] [python:33] Activity 'Verify detection of malicious CodeBuild project creation' loaded from '/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaosaws/ec2/1_3_sce_experiment_detective.py'
+[36m[2026-04-08 21:19:37 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-04-08 21:19:37 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-08 21:19:37 DEBUG] [hypothesis:247] allowed tolerance is True
+[36m[2026-04-08 21:19:37 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[31m[2026-04-08 21:19:37 CRITICAL] [run:716] Steady state probe 'Verify detection of malicious CodeBuild project creation' is not in the given tolerance so failing this experiment
+[32m[2026-04-08 21:19:37 INFO] [run:1072] Let's rollback...
+[36m[2026-04-08 21:19:37 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-08 21:19:37 INFO] [rollback:36] Rollback: Delete all experiment resources and CodeBuild project
+[36m[2026-04-08 21:19:37 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-08 21:19:37 INFO] [activity:232] Action: Delete all experiment resources and CodeBuild project
+[36m[2026-04-08 21:19:37 DEBUG] [python:33] Activity 'Delete all experiment resources and CodeBuild project' loaded from '/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaosaws/ec2/1_3_sce_experiment_detective.py'
+[36m[2026-04-08 21:19:38 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-04-08 21:19:38 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-08 21:19:38 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-08 21:19:38 INFO] [run:598] Experiment ended with status: deviated
+[32m[2026-04-08 21:19:38 INFO] [run:600] The steady-state has deviated, a weakness may have been discovered
+[36m[2026-04-08 21:19:38 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[36m[2026-04-08 21:19:38 DEBUG] [__init__:106] Cleaning up controls
+[36m[2026-04-08 21:19:38 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-08 21:23:00 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-04-08 21:23:00 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-04-08 21:23:00 DEBUG] [__init__:106] Using settings file '/home/sce-user/.chaostoolkit/settings.yaml'
+[36m[2026-04-08 21:23:00 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/sce-user/.chaostoolkit/settings.yaml'.
+[36m[2026-04-08 21:23:00 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-08 21:23:00 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-08 21:23:00 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-08 21:23:00 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-04-08 21:23:00 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-04-08 21:23:00 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-08 21:23:00 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-08 21:23:00 DEBUG] [secret:104] Done loading secrets
+[32m[2026-04-08 21:23:00 INFO] [experiment:112] Experiment looks valid
+[36m[2026-04-08 21:23:00 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-08 21:23:00 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-04-08 21:23:00 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-08 21:23:00 DEBUG] [caching:35] Cached 3 activities
+[36m[2026-04-08 21:23:00 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-08 21:23:00 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-08 21:23:00 DEBUG] [secret:104] Done loading secrets
+[36m[2026-04-08 21:23:00 DEBUG] [configuration:161] Loading dynamic configuration...
+[32m[2026-04-08 21:23:00 INFO] [run:440] Running experiment: Detect Malicious CodeBuild Project Creation
+[36m[2026-04-08 21:23:00 DEBUG] [__init__:67] Initializing controls
+[32m[2026-04-08 21:23:00 INFO] [run:471] Steady-state strategy: after-method-only
+[32m[2026-04-08 21:23:00 INFO] [run:477] Rollbacks strategy: default
+[36m[2026-04-08 21:23:00 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[32m[2026-04-08 21:23:00 INFO] [run:778] Playing your experiment's method now...
+[36m[2026-04-08 21:23:00 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-08 21:23:00 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-08 21:23:00 INFO] [activity:232] Action: Deploy detection infrastructure and establish steady state
+[36m[2026-04-08 21:23:00 DEBUG] [python:33] Activity 'Deploy detection infrastructure and establish steady state' loaded from '/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaosaws/ec2/1_3_sce_experiment_detective.py'
+[36m[2026-04-08 21:24:35 DEBUG] [activity:260]   => succeeded with '{'stack_name': 'sce-codebuild-detect-1775701380', 'status': 'created', 'outputs': {'CodeBuildRoleArn': 'arn:aws:iam::941377112071:role/sce-codebuild-role-1775701380', 'DetectionRuleName': 'detect-codebuild-create-1775701380', 'LogGroupName': '/aws/events/codebuild-detection-1775701380'}}'
+[36m[2026-04-08 21:24:35 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-08 21:24:35 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-08 21:24:35 INFO] [activity:232] Action: Create malicious CodeBuild project to trigger detection
+[36m[2026-04-08 21:24:35 DEBUG] [python:33] Activity 'Create malicious CodeBuild project to trigger detection' loaded from '/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaosaws/ec2/1_3_sce_experiment_detective.py'
+[36m[2026-04-08 21:25:37 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-04-08 21:25:37 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-08 21:25:37 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-08 21:25:37 DEBUG] [run:696] Running steady-state hypothesis after the method
+[32m[2026-04-08 21:25:37 INFO] [hypothesis:205] Steady state hypothesis: Detective controls should detect CodeBuild project creation events
+[36m[2026-04-08 21:25:37 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[36m[2026-04-08 21:25:37 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-08 21:25:37 INFO] [activity:232] Probe: Verify detection of malicious CodeBuild project creation
+[36m[2026-04-08 21:25:37 DEBUG] [python:33] Activity 'Verify detection of malicious CodeBuild project creation' loaded from '/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaosaws/ec2/1_3_sce_experiment_detective.py'
+[36m[2026-04-08 21:25:38 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-04-08 21:25:38 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-08 21:25:38 DEBUG] [hypothesis:247] allowed tolerance is True
+[32m[2026-04-08 21:25:38 INFO] [hypothesis:260] Steady state hypothesis is met!
+[36m[2026-04-08 21:25:38 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[32m[2026-04-08 21:25:38 INFO] [run:1072] Let's rollback...
+[36m[2026-04-08 21:25:38 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-08 21:25:38 INFO] [rollback:36] Rollback: Delete all experiment resources including CodeBuild project and CloudFormation stack
+[36m[2026-04-08 21:25:38 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-08 21:25:38 INFO] [activity:232] Action: Delete all experiment resources including CodeBuild project and CloudFormation stack
+[36m[2026-04-08 21:25:38 DEBUG] [python:33] Activity 'Delete all experiment resources including CodeBuild project and CloudFormation stack' loaded from '/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaosaws/ec2/1_3_sce_experiment_detective.py'
+[36m[2026-04-08 21:26:22 DEBUG] [activity:260]   => succeeded with '{'codebuild_deleted': True, 'stack_deleted': True, 'errors': []}'
+[36m[2026-04-08 21:26:22 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-08 21:26:22 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-08 21:26:22 INFO] [run:598] Experiment ended with status: completed
+[36m[2026-04-08 21:26:22 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[36m[2026-04-08 21:26:22 DEBUG] [__init__:106] Cleaning up controls
+[36m[2026-04-08 21:26:22 DEBUG] [caching:42] Clearing activities cache

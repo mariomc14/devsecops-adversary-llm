@@ -1,0 +1,49 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-04-11 21:55:03 INFO] Validating the experiment's syntax
+[32m[2026-04-11 21:55:03 INFO] Experiment looks valid
+[32m[2026-04-11 21:55:03 INFO] Running experiment: SCE 1.8 - Preventive Control for Malicious Build Execution
+[32m[2026-04-11 21:55:03 INFO] Steady-state strategy: after-method-only
+[32m[2026-04-11 21:55:03 INFO] Rollbacks strategy: default
+[32m[2026-04-11 21:55:03 INFO] Playing your experiment's method now...
+[32m[2026-04-11 21:55:03 INFO] Action: deploy-codebuild-with-preventive-controls
+2026-04-11 21:55:03,451 - INFO - Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-11 21:55:04,057 - INFO - Operating in account 941377112071, region us-east-1
+2026-04-11 21:55:04,060 - INFO - Creating stack: sce-experiment-1775962503
+2026-04-11 21:55:04,998 - INFO - Stack creation initiated: arn:aws:cloudformation:us-east-1:941377112071:stack/sce-experiment-1775962503/7cbf3a40-361b-11f1-bd27-0afff05f6923
+2026-04-11 21:55:05,164 - INFO - Stack sce-experiment-1775962503 status: CREATE_IN_PROGRESS
+2026-04-11 21:55:10,280 - INFO - Stack sce-experiment-1775962503 status: CREATE_IN_PROGRESS
+2026-04-11 21:55:18,209 - INFO - Stack sce-experiment-1775962503 status: CREATE_IN_PROGRESS
+2026-04-11 21:55:29,906 - INFO - Stack sce-experiment-1775962503 status: CREATE_IN_PROGRESS
+2026-04-11 21:55:47,228 - INFO - Stack sce-experiment-1775962503 status: CREATE_COMPLETE
+2026-04-11 21:55:47,228 - INFO - Stack sce-experiment-1775962503 created successfully
+2026-04-11 21:55:47,228 - INFO - Waiting for IAM role propagation...
+[32m[2026-04-11 21:56:02 INFO] Action: attempt-malicious-build-execution
+2026-04-11 21:56:02,232 - INFO - Executing attack: Start Malicious Build
+2026-04-11 21:56:02,718 - INFO - Assumed attacker role: arn:aws:iam::941377112071:role/sce-attacker-role-1775962503
+2026-04-11 21:56:02,736 - INFO - Attempting malicious build on project: sce-build-project-1775962503
+2026-04-11 21:56:03,266 - INFO - Build attempt response - Code: AccessDeniedException, Status: 400
+2026-04-11 21:56:03,266 - INFO - Error message: User: arn:aws:sts::941377112071:assumed-role/sce-attacker-role-1775962503/sce-malicious-build-attempt is not authorized to perform: codebuild:StartBuild on resource: arn:aws:codebuild:us-east-1:941377112071:project/sce-build-project-1775962503 with an explicit deny in an identity-based policy
+2026-04-11 21:56:03,266 - INFO - ATTACK BLOCKED - Preventive control working
+[32m[2026-04-11 21:56:03 INFO] Steady state hypothesis: Preventive control blocks malicious build attempts
+[32m[2026-04-11 21:56:03 INFO] Probe: verify-malicious-build-blocked
+2026-04-11 21:56:03,270 - INFO - Verifying hypothesis: Preventive control blocked malicious build
+2026-04-11 21:56:03,692 - INFO - Found 0 builds for project sce-build-project-1775962503
+2026-04-11 21:56:04,241 - INFO - Preventive IAM policy with Deny for StartBuild confirmed
+2026-04-11 21:56:04,241 - INFO - Preventive control VERIFIED - Attack blocked. Reason: AccessDeniedException: User: arn:aws:sts::941377112071:assumed-role/sce-attacker-role-1775962503/sce-malicious-build-attempt is not authorized to perform: codebuild:StartBuild on resource: arn:aws:codebuild:us-east-1:941377112071:project/sce-build-project-1775962503 with an explicit deny in an identity-based policy
+[32m[2026-04-11 21:56:04 INFO] Steady state hypothesis is met!
+[32m[2026-04-11 21:56:04 INFO] Let's rollback...
+[32m[2026-04-11 21:56:04 INFO] Rollback: cleanup-experiment-resources
+[32m[2026-04-11 21:56:04 INFO] Action: cleanup-experiment-resources
+2026-04-11 21:56:04,247 - INFO - Rolling back: Deleting stack sce-experiment-1775962503
+2026-04-11 21:56:05,416 - INFO - Stack deletion initiated: sce-experiment-1775962503
+2026-04-11 21:56:05,535 - INFO - Stack sce-experiment-1775962503 status: DELETE_IN_PROGRESS
+2026-04-11 21:56:10,649 - INFO - Stack sce-experiment-1775962503 status: DELETE_IN_PROGRESS
+2026-04-11 21:56:18,593 - INFO - Stack sce-experiment-1775962503 status: DELETE_IN_PROGRESS
+2026-04-11 21:56:30,313 - INFO - Stack sce-experiment-1775962503 deleted successfully
+[32m[2026-04-11 21:56:30 INFO] Experiment ended with status: completed
+
+
+RETURN CODE: 0

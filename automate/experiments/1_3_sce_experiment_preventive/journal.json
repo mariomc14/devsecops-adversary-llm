@@ -1,0 +1,156 @@
+{
+  "chaoslib-version": "1.44.0",
+  "platform": "Linux-6.17.0-20-generic-x86_64-with-glibc2.39",
+  "node": "sce-user-VirtualBox",
+  "experiment": {
+    "title": "CodeBuild Project Security Preventive Control Test",
+    "description": "Validate CodeBuild project's resistance to malicious buildspec modifications",
+    "tags": [
+      "aws",
+      "codebuild",
+      "security",
+      "preventive"
+    ],
+    "steady-state-hypothesis": {
+      "title": "CodeBuild Project Should Resist Malicious Modifications",
+      "probes": [
+        {
+          "type": "probe",
+          "name": "Verify Preventive Controls",
+          "tolerance": true,
+          "provider": {
+            "type": "python",
+            "module": "chaosaws.ec2.1_3_sce_experiment_preventive",
+            "func": "hypothesis_verification"
+          }
+        }
+      ]
+    },
+    "method": [
+      {
+        "type": "action",
+        "name": "Create Initial CodeBuild Project",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_sce_experiment_preventive",
+          "func": "steady_state"
+        }
+      },
+      {
+        "type": "action",
+        "name": "Attempt Malicious Project Modification",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_sce_experiment_preventive",
+          "func": "attack"
+        }
+      }
+    ],
+    "rollbacks": [
+      {
+        "type": "action",
+        "name": "Delete Test Resources",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_sce_experiment_preventive",
+          "func": "rollback"
+        }
+      }
+    ],
+    "dry": null
+  },
+  "start": "2026-04-28T04:20:58.670123+00:00",
+  "status": "completed",
+  "deviated": true,
+  "steady_states": {
+    "before": null,
+    "after": {
+      "steady_state_met": false,
+      "probes": [
+        {
+          "activity": {
+            "type": "probe",
+            "name": "Verify Preventive Controls",
+            "tolerance": true,
+            "provider": {
+              "type": "python",
+              "module": "chaosaws.ec2.1_3_sce_experiment_preventive",
+              "func": "hypothesis_verification"
+            }
+          },
+          "output": false,
+          "start": "2026-04-28T04:21:32.175010+00:00",
+          "status": "succeeded",
+          "end": "2026-04-28T04:21:32.175144+00:00",
+          "duration": 0.000134,
+          "tolerance_met": false
+        }
+      ]
+    },
+    "during": []
+  },
+  "run": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "Create Initial CodeBuild Project",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_sce_experiment_preventive",
+          "func": "steady_state"
+        }
+      },
+      "output": null,
+      "start": "2026-04-28T04:20:58.671161+00:00",
+      "status": "failed",
+      "exception": [
+        "Traceback (most recent call last):\n",
+        "  File \"/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaoslib/provider/python.py\", line 56, in run_python_activity\n    return func(**arguments)\n           ^^^^^^^^^^^^^^^^^\n",
+        "  File \"/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaosaws/ec2/1_3_sce_experiment_preventive.py\", line 83, in steady_state\n    waiter.wait(StackName=stack_name)\n",
+        "  File \"/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/waiter.py\", line 55, in wait\n    Waiter.wait(self, **kwargs)\n",
+        "  File \"/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/waiter.py\", line 374, in wait\n    raise WaiterError(\n",
+        "botocore.exceptions.WaiterError: Waiter StackCreateComplete failed: Waiter encountered a terminal failure state: For expression \"Stacks[].StackStatus\" we matched expected path: \"ROLLBACK_COMPLETE\" at least once\n",
+        "\nDuring handling of the above exception, another exception occurred:\n\n",
+        "chaoslib.exceptions.ActivityFailed: botocore.exceptions.WaiterError: Waiter StackCreateComplete failed: Waiter encountered a terminal failure state: For expression \"Stacks[].StackStatus\" we matched expected path: \"ROLLBACK_COMPLETE\" at least once\n"
+      ],
+      "end": "2026-04-28T04:21:32.172942+00:00",
+      "duration": 33.501781
+    },
+    {
+      "activity": {
+        "type": "action",
+        "name": "Attempt Malicious Project Modification",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_sce_experiment_preventive",
+          "func": "attack"
+        }
+      },
+      "output": false,
+      "start": "2026-04-28T04:21:32.174330+00:00",
+      "status": "succeeded",
+      "end": "2026-04-28T04:21:32.174715+00:00",
+      "duration": 0.000385
+    }
+  ],
+  "rollbacks": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "Delete Test Resources",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_sce_experiment_preventive",
+          "func": "rollback"
+        }
+      },
+      "output": null,
+      "start": "2026-04-28T04:21:32.175992+00:00",
+      "status": "succeeded",
+      "end": "2026-04-28T04:21:32.176291+00:00",
+      "duration": 0.000299
+    }
+  ],
+  "end": "2026-04-28T04:21:32.176378+00:00",
+  "duration": 33.551292181015015
+}

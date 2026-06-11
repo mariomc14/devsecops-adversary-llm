@@ -1,0 +1,57 @@
+{
+    "title": "SCE 1.8: Encrypted CodeBuild Artifact Control",
+    "description": "Preventive probe validating that S3 encryption enforcement and bucket policies block credential exfiltration from malicious CodeBuild projects. Targets MITRE ATT&CK T1552.005 (Unsecured Credentials) through enforced artifact encryption.",
+    "tags": [
+        "security-chaos",
+        "preventive-control",
+        "codebuild",
+        "s3-encryption",
+        "credential-protection"
+    ],
+    "steady-state-hypothesis": {
+        "title": "CodeBuild artifacts are encrypted at rest and unencrypted credential exfiltration is blocked",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "Verify artifact encryption control is active",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.1_8_sce_experiment_preventive",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "Deploy preventive controls: S3 encryption enforcement and CodeBuild project",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_8_sce_experiment_preventive",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "Execute attack node 1.7: Trigger malicious CodeBuild build attempting credential exfiltration",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_8_sce_experiment_preventive",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "Rollback: Delete CloudFormation stack and all experiment resources",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_8_sce_experiment_preventive",
+                "func": "rollback"
+            }
+        }
+    ]
+}

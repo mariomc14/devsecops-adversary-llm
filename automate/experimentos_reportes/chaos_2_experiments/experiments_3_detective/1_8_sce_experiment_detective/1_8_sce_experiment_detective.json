@@ -1,0 +1,59 @@
+{
+    "title": "SCE 1.8 - Detective Control for Malicious CodeBuild Activity",
+    "description": "Validates runtime container monitoring by executing a malicious CodeBuild project that attempts credential exfiltration, then verifying that CloudWatch-based detective controls (metric filters and alarms) successfully detect the malicious activity. This experiment tests defense node 1.9 (Runtime Container Monitoring) against attack node 1.7 (Start Malicious Build).",
+    "tags": [
+        "aws",
+        "codebuild",
+        "detective",
+        "runtime-monitoring",
+        "credential-exfiltration",
+        "cloudwatch",
+        "container-security"
+    ],
+    "steady-state-hypothesis": {
+        "title": "Detective control detects malicious build activity",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "Verify CloudWatch alarm detects malicious build indicators",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.1_8_sce_experiment_detective",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "Deploy CodeBuild infrastructure with detective controls",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_8_sce_experiment_detective",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "Execute malicious build with credential exfiltration attempt",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_8_sce_experiment_detective",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "Delete CloudFormation stack and all resources",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_8_sce_experiment_detective",
+                "func": "rollback"
+            }
+        }
+    ]
+}

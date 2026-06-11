@@ -1,0 +1,59 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-04-16 22:23:00 INFO] Validating the experiment's syntax
+[32m[2026-04-16 22:23:00 INFO] Experiment looks valid
+[32m[2026-04-16 22:23:00 INFO] Running experiment: SCE 1.8 – Reactive Probe: Detect and Stop Malicious CodeBuild Build
+[32m[2026-04-16 22:23:00 INFO] Steady-state strategy: after-method-only
+[32m[2026-04-16 22:23:00 INFO] Rollbacks strategy: default
+[32m[2026-04-16 22:23:00 INFO] Playing your experiment's method now...
+[32m[2026-04-16 22:23:00 INFO] Action: deploy-experiment-infrastructure-codebuild-eventbridge-lambda
+2026-04-16 22:23:00,618 [INFO] Deploying stack sce-experiment-1776396180 in region us-east-1 …
+2026-04-16 22:23:00,627 [INFO] Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-16 22:23:01,576 [INFO] Stack creation initiated.
+2026-04-16 22:23:02,011 [INFO] Stack sce-experiment-1776396180 status: CREATE_IN_PROGRESS
+2026-04-16 22:23:12,427 [INFO] Stack sce-experiment-1776396180 status: CREATE_IN_PROGRESS
+2026-04-16 22:23:27,841 [INFO] Stack sce-experiment-1776396180 status: CREATE_IN_PROGRESS
+2026-04-16 22:23:50,756 [INFO] Stack sce-experiment-1776396180 status: CREATE_IN_PROGRESS
+2026-04-16 22:24:21,280 [INFO] Stack sce-experiment-1776396180 status: CREATE_IN_PROGRESS
+2026-04-16 22:24:51,699 [INFO] Stack sce-experiment-1776396180 status: CREATE_COMPLETE
+2026-04-16 22:24:52,110 [INFO] Stack outputs: {'FunctionName': 'sce-reactive-fn-1776396180', 'ProjectName': 'sce-malicious-project-1776396180', 'AlertTopicArn': 'arn:aws:sns:us-east-1:941377112071:sce-malicious-build-alert-1776396180', 'RuleName': 'sce-malicious-build-rule-1776396180'}
+2026-04-16 22:24:52,111 [INFO] steady_state complete. Resources ready.
+[32m[2026-04-16 22:24:52 INFO] Action: start-malicious-codebuild-build-as-attacker
+2026-04-16 22:24:52,122 [INFO] ATTACK: Starting malicious build on project sce-malicious-project-1776396180 …
+2026-04-16 22:24:52,743 [INFO] Malicious build started — id=sce-malicious-project-1776396180:314687d5-2e0c-4b77-a201-63311f22d92a arn=arn:aws:codebuild:us-east-1:941377112071:build/sce-malicious-project-1776396180:314687d5-2e0c-4b77-a201-63311f22d92a status=IN_PROGRESS
+2026-04-16 22:24:52,878 [INFO] Confirmed build status via BatchGetBuilds: IN_PROGRESS
+[32m[2026-04-16 22:24:52 INFO] Steady state hypothesis: Reactive control stops the malicious CodeBuild build automatically
+[32m[2026-04-16 22:24:52 INFO] Probe: malicious-build-is-stopped-by-reactive-control
+2026-04-16 22:24:52,931 [INFO] Waiting for build sce-malicious-project-1776396180:314687d5-2e0c-4b77-a201-63311f22d92a to reach terminal state …
+2026-04-16 22:24:53,400 [INFO] Build sce-malicious-project-1776396180:314687d5-2e0c-4b77-a201-63311f22d92a status: IN_PROGRESS
+2026-04-16 22:24:58,521 [INFO] Build sce-malicious-project-1776396180:314687d5-2e0c-4b77-a201-63311f22d92a status: IN_PROGRESS
+2026-04-16 22:25:06,154 [INFO] Build sce-malicious-project-1776396180:314687d5-2e0c-4b77-a201-63311f22d92a status: STOPPED
+2026-04-16 22:25:06,156 [INFO] Build final status: STOPPED
+2026-04-16 22:25:06,156 [INFO] ✓ Build was stopped by reactive control (status=STOPPED).
+2026-04-16 22:25:06,664 [INFO] Lambda sce-reactive-fn-1776396180 invocation count (last 10 min): 0
+2026-04-16 22:25:06,665 [INFO] Waiting for CloudWatch Lambda metrics to propagate …
+2026-04-16 22:25:22,146 [INFO] Lambda sce-reactive-fn-1776396180 invocation count (last 10 min): 0
+2026-04-16 22:25:22,146 [INFO] Waiting for CloudWatch Lambda metrics to propagate …
+2026-04-16 22:25:45,105 [INFO] Lambda sce-reactive-fn-1776396180 invocation count (last 10 min): 1.0
+2026-04-16 22:25:45,106 [INFO] ✓ Reactive Lambda was invoked 1 time(s).
+2026-04-16 22:25:45,692 [INFO] EventBridge rule sce-malicious-build-rule-1776396180 state: ENABLED
+2026-04-16 22:25:45,805 [INFO] ✓ EventBridge rule targets reactive Lambda.
+2026-04-16 22:25:45,806 [INFO] hypothesis_verification PASSED — reactive control behaved as expected.
+[32m[2026-04-16 22:25:45 INFO] Steady state hypothesis is met!
+[32m[2026-04-16 22:25:45 INFO] Let's rollback...
+[32m[2026-04-16 22:25:45 INFO] Rollback: delete-cloudformation-stack-and-all-experiment-resources
+[32m[2026-04-16 22:25:45 INFO] Action: delete-cloudformation-stack-and-all-experiment-resources
+2026-04-16 22:25:46,275 [INFO] Pre-rollback: stopped build sce-malicious-project-1776396180:314687d5-2e0c-4b77-a201-63311f22d92a.
+2026-04-16 22:25:46,282 [INFO] Deleting stack sce-experiment-1776396180 …
+2026-04-16 22:25:47,529 [INFO] Stack sce-experiment-1776396180 status: DELETE_IN_PROGRESS
+2026-04-16 22:25:58,024 [INFO] Stack sce-experiment-1776396180 status: DELETE_IN_PROGRESS
+2026-04-16 22:26:13,621 [INFO] Stack sce-experiment-1776396180 status: DELETE_IN_PROGRESS
+2026-04-16 22:26:36,607 [INFO] Stack sce-experiment-1776396180 status: DELETE_IN_PROGRESS
+2026-04-16 22:27:07,163 [INFO] Stack sce-experiment-1776396180 status: DELETE_IN_PROGRESS
+2026-04-16 22:27:37,634 [INFO] Stack sce-experiment-1776396180 deleted successfully.
+[32m[2026-04-16 22:27:37 INFO] Experiment ended with status: completed
+
+
+RETURN CODE: 0

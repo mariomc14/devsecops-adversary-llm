@@ -1,0 +1,137 @@
+{
+  "chaoslib-version": "1.44.0",
+  "platform": "Linux-6.17.0-20-generic-x86_64-with-glibc2.39",
+  "node": "sce-user-VirtualBox",
+  "experiment": {
+    "title": "IAM Role Trust Policy Security Control",
+    "description": "Validate IAM role trust policy restrictions against unauthorized access attempts",
+    "tags": [
+      "iam",
+      "trust-policy",
+      "security-control"
+    ],
+    "steady-state-hypothesis": {
+      "title": "IAM Role Has Restrictive Trust Policy",
+      "probes": [
+        {
+          "type": "probe",
+          "name": "Verify Trust Policy Restrictions",
+          "tolerance": true,
+          "provider": {
+            "type": "python",
+            "module": "chaosaws.ec2.1_8_sce_experiment_preventive",
+            "func": "hypothesis_verification"
+          }
+        }
+      ]
+    },
+    "method": [
+      {
+        "type": "action",
+        "name": "Create IAM Role",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_preventive",
+          "func": "steady_state"
+        }
+      },
+      {
+        "type": "action",
+        "name": "Attempt Trust Policy Modification",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_preventive",
+          "func": "attack"
+        }
+      }
+    ],
+    "rollbacks": [
+      {
+        "type": "action",
+        "name": "Clean Up Experiment Resources",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_preventive",
+          "func": "rollback"
+        }
+      }
+    ],
+    "dry": null
+  },
+  "start": "2026-04-12T02:12:36.079615+00:00",
+  "status": "failed",
+  "deviated": true,
+  "steady_states": {
+    "before": null,
+    "after": {
+      "steady_state_met": false,
+      "probes": [
+        {
+          "activity": {
+            "type": "probe",
+            "name": "Verify Trust Policy Restrictions",
+            "tolerance": true,
+            "provider": {
+              "type": "python",
+              "module": "chaosaws.ec2.1_8_sce_experiment_preventive",
+              "func": "hypothesis_verification"
+            }
+          },
+          "output": null,
+          "start": "2026-04-12T02:13:08.057796+00:00",
+          "status": "failed",
+          "exception": [
+            "Traceback (most recent call last):\n",
+            "  File \"/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaoslib/provider/python.py\", line 56, in run_python_activity\n    return func(**arguments)\n           ^^^^^^^^^^^^^^^^^\n",
+            "  File \"/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaosaws/ec2/1_8_sce_experiment_preventive.py\", line 107, in hypothesis_verification\n    trust_policy = json.loads(\n                   ^^^^^^^^^^^\n",
+            "  File \"/usr/lib/python3.12/json/__init__.py\", line 339, in loads\n    raise TypeError(f'the JSON object must be str, bytes or bytearray, '\n",
+            "TypeError: the JSON object must be str, bytes or bytearray, not dict\n",
+            "\nDuring handling of the above exception, another exception occurred:\n\n",
+            "chaoslib.exceptions.ActivityFailed: TypeError: the JSON object must be str, bytes or bytearray, not dict\n"
+          ],
+          "end": "2026-04-12T02:13:08.512869+00:00",
+          "duration": 0.455073,
+          "tolerance_met": false
+        }
+      ]
+    },
+    "during": []
+  },
+  "run": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "Create IAM Role",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_preventive",
+          "func": "steady_state"
+        }
+      },
+      "output": "sce-iam-trust-experiment-1775959956",
+      "start": "2026-04-12T02:12:36.080279+00:00",
+      "status": "succeeded",
+      "end": "2026-04-12T02:13:07.483868+00:00",
+      "duration": 31.403589
+    },
+    {
+      "activity": {
+        "type": "action",
+        "name": "Attempt Trust Policy Modification",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_preventive",
+          "func": "attack"
+        }
+      },
+      "output": true,
+      "start": "2026-04-12T02:13:07.485130+00:00",
+      "status": "succeeded",
+      "end": "2026-04-12T02:13:08.055486+00:00",
+      "duration": 0.570356
+    }
+  ],
+  "rollbacks": [],
+  "end": "2026-04-12T02:13:08.513643+00:00",
+  "duration": 32.43811011314392
+}

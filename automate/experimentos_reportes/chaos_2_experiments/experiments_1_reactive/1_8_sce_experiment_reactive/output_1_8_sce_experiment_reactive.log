@@ -1,0 +1,9 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-04-15 22:13:52 INFO] Validating the experiment's syntax
+[31m[2026-04-15 22:13:52 ERROR] could not find Python module 'chaosaws.ec2.sce_1_8_sce_experiment_reactive' in activity 'Verify project configuration security'
+
+
+RETURN CODE: 1

@@ -1,0 +1,84 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-04-03 22:20:44 INFO] Validating the experiment's syntax
+2026-04-03 22:20:44,853 - INFO - Found credentials in shared credentials file: ~/.aws/credentials
+[32m[2026-04-03 22:20:44 INFO] Experiment looks valid
+[32m[2026-04-03 22:20:44 INFO] Running experiment: SCE 1.3: Preventive Probe - Malicious CodeBuild Project Prevention
+[32m[2026-04-03 22:20:44 INFO] Steady-state strategy: after-method-only
+[32m[2026-04-03 22:20:44 INFO] Rollbacks strategy: default
+[32m[2026-04-03 22:20:44 INFO] Playing your experiment's method now...
+[32m[2026-04-03 22:20:44 INFO] Action: deploy-preventive-control-infrastructure
+2026-04-03 22:20:44,926 - INFO - ================================================================================
+2026-04-03 22:20:44,926 - INFO - PHASE 1: STEADY STATE - Deploying Preventive Control Infrastructure
+2026-04-03 22:20:44,926 - INFO - ================================================================================
+2026-04-03 22:20:45,415 - INFO - AWS Account ID: 941377112071
+2026-04-03 22:20:45,415 - INFO - Creating CloudFormation stack: sce-1-3-preventive-1775272845
+2026-04-03 22:20:46,122 - INFO - Stack creation initiated. Stack ID: arn:aws:cloudformation:us-east-1:941377112071:stack/sce-1-3-preventive-1775272845/451639a0-2fd5-11f1-b766-0e710c6ae2df
+2026-04-03 22:20:46,122 - INFO - Waiting for stack creation (this may take 30-60 seconds)...
+2026-04-03 22:20:46,250 - INFO - Stack status: CREATE_IN_PROGRESS
+2026-04-03 22:20:46,250 - INFO - Waiting 1s before retry (attempt 1/60)
+2026-04-03 22:20:47,390 - INFO - Stack status: CREATE_IN_PROGRESS
+2026-04-03 22:20:47,390 - INFO - Waiting 2s before retry (attempt 2/60)
+2026-04-03 22:20:49,526 - INFO - Stack status: CREATE_IN_PROGRESS
+2026-04-03 22:20:49,526 - INFO - Waiting 4s before retry (attempt 3/60)
+2026-04-03 22:20:53,675 - INFO - Stack status: CREATE_IN_PROGRESS
+2026-04-03 22:20:53,675 - INFO - Waiting 8s before retry (attempt 4/60)
+2026-04-03 22:21:02,122 - INFO - Stack status: CREATE_IN_PROGRESS
+2026-04-03 22:21:02,122 - INFO - Waiting 16s before retry (attempt 5/60)
+2026-04-03 22:21:18,575 - INFO - Stack status: CREATE_IN_PROGRESS
+2026-04-03 22:21:18,575 - INFO - Waiting 30s before retry (attempt 6/60)
+2026-04-03 22:21:49,152 - INFO - Stack status: CREATE_COMPLETE
+2026-04-03 22:21:49,152 - INFO - ✓ Stack created successfully
+2026-04-03 22:21:49,269 - INFO - Stack Outputs: {
+  "RoleName": "sce-codebuild-role-1775272845",
+  "BucketName": "sce-experiment-941377112071-1775272845",
+  "RoleArn": "arn:aws:iam::941377112071:role/sce-codebuild-role-1775272845"
+}
+2026-04-03 22:21:49,269 - INFO - ✓ Preventive control infrastructure deployed successfully
+[32m[2026-04-03 22:21:49 INFO] Action: execute-malicious-codebuild-creation-attack
+2026-04-03 22:21:49,269 - INFO - ================================================================================
+2026-04-03 22:21:49,269 - INFO - PHASE 2: ATTACK - Attempting Malicious CodeBuild Project Creation
+2026-04-03 22:21:49,269 - INFO - ================================================================================
+2026-04-03 22:21:49,269 - INFO - Target Role ARN: arn:aws:iam::941377112071:role/sce-codebuild-role-1775272845
+2026-04-03 22:21:49,269 - INFO - Target Role Name: sce-codebuild-role-1775272845
+2026-04-03 22:21:49,269 - INFO - Executing CreateProject API call for: sce-malicious-project-1775272845
+2026-04-03 22:21:50,000 - INFO - ✗ ATTACK SUCCEEDED (unexpected): Project created: arn:aws:codebuild:us-east-1:941377112071:project/sce-malicious-project-1775272845
+2026-04-03 22:21:50,000 - ERROR - Preventive control FAILED - malicious project was created!
+[32m[2026-04-03 22:21:50 INFO] Steady state hypothesis: CodeBuild Malicious Project Creation is Blocked by IAM Preventive Controls
+[32m[2026-04-03 22:21:50 INFO] Probe: verify-preventive-control-blocks-malicious-codebuild
+2026-04-03 22:21:50,001 - INFO - ================================================================================
+2026-04-03 22:21:50,001 - INFO - PHASE 3: HYPOTHESIS VERIFICATION - Checking Preventive Control Effectiveness
+2026-04-03 22:21:50,001 - INFO - ================================================================================
+2026-04-03 22:21:50,001 - INFO - Querying for malicious project: sce-malicious-project-1775272845
+2026-04-03 22:21:50,139 - ERROR - ✗ FAIL: Malicious project EXISTS: arn:aws:codebuild:us-east-1:941377112071:project/sce-malicious-project-1775272845
+2026-04-03 22:21:50,140 - ERROR - Preventive control did NOT block project creation!
+[31m[2026-04-03 22:21:50 CRITICAL] Steady state probe 'verify-preventive-control-blocks-malicious-codebuild' is not in the given tolerance so failing this experiment
+[32m[2026-04-03 22:21:50 INFO] Let's rollback...
+[32m[2026-04-03 22:21:50 INFO] Rollback: cleanup-experiment-resources
+[32m[2026-04-03 22:21:50 INFO] Action: cleanup-experiment-resources
+2026-04-03 22:21:50,140 - INFO - ================================================================================
+2026-04-03 22:21:50,140 - INFO - PHASE 4: ROLLBACK - Cleaning Up Experiment Resources
+2026-04-03 22:21:50,140 - INFO - ================================================================================
+2026-04-03 22:21:50,140 - INFO - Initiating stack deletion: sce-1-3-preventive-1775272845
+2026-04-03 22:21:50,402 - INFO - Stack deletion initiated
+2026-04-03 22:21:50,402 - INFO - Waiting for stack deletion (this may take 30-60 seconds)...
+2026-04-03 22:21:50,521 - INFO - Stack status: DELETE_IN_PROGRESS
+2026-04-03 22:21:50,522 - INFO - Waiting 1s before retry (attempt 1/60)
+2026-04-03 22:21:51,651 - INFO - Stack status: DELETE_IN_PROGRESS
+2026-04-03 22:21:51,652 - INFO - Waiting 2s before retry (attempt 2/60)
+2026-04-03 22:21:54,009 - INFO - Stack status: DELETE_IN_PROGRESS
+2026-04-03 22:21:54,009 - INFO - Waiting 4s before retry (attempt 3/60)
+2026-04-03 22:21:58,155 - INFO - Stack status: DELETE_IN_PROGRESS
+2026-04-03 22:21:58,155 - INFO - Waiting 8s before retry (attempt 4/60)
+2026-04-03 22:22:06,602 - INFO - Stack status: DELETE_IN_PROGRESS
+2026-04-03 22:22:06,602 - INFO - Waiting 16s before retry (attempt 5/60)
+2026-04-03 22:22:23,054 - INFO - Stack successfully deleted (not found)
+2026-04-03 22:22:23,054 - INFO - ✓ Stack has been deleted
+2026-04-03 22:22:23,055 - INFO - ✓ Experiment rollback completed successfully
+[32m[2026-04-03 22:22:23 INFO] Experiment ended with status: deviated
+[32m[2026-04-03 22:22:23 INFO] The steady-state has deviated, a weakness may have been discovered
+
+
+RETURN CODE: 1

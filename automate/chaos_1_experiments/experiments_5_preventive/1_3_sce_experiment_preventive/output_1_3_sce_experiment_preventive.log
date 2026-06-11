@@ -1,0 +1,54 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-04-04 21:21:53 INFO] Validating the experiment's syntax
+[32m[2026-04-04 21:21:53 INFO] Experiment looks valid
+[32m[2026-04-04 21:21:53 INFO] Running experiment: SCE 1.3 Preventive Control - Block Malicious CodeBuild Project Creation
+[32m[2026-04-04 21:21:53 INFO] Steady-state strategy: after-method-only
+[32m[2026-04-04 21:21:53 INFO] Rollbacks strategy: default
+[32m[2026-04-04 21:21:53 INFO] Playing your experiment's method now...
+[32m[2026-04-04 21:21:53 INFO] Action: deploy-preventive-control-infrastructure
+2026-04-04 21:21:53,901 - INFO - Starting steady_state deployment: sce-1-3-codebuild-preventive-1775355713
+2026-04-04 21:21:53,911 - INFO - Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-04 21:21:54,551 - INFO - AWS Context - Account: 941377112071, Region: us-east-1
+2026-04-04 21:21:55,081 - INFO - Stack sce-1-3-codebuild-preventive-1775355713 does not exist, creating...
+2026-04-04 21:21:55,407 - INFO - Stack creation initiated: arn:aws:cloudformation:us-east-1:941377112071:stack/sce-1-3-codebuild-preventive-1775355713/37081420-3096-11f1-a764-1207d267a3c9
+2026-04-04 21:21:55,536 - INFO - Stack status: CREATE_IN_PROGRESS
+2026-04-04 21:22:00,759 - INFO - Stack status: CREATE_IN_PROGRESS
+2026-04-04 21:22:08,717 - INFO - Stack status: CREATE_IN_PROGRESS
+2026-04-04 21:22:20,407 - INFO - Stack status: CREATE_IN_PROGRESS
+2026-04-04 21:22:37,808 - INFO - Stack status: CREATE_COMPLETE
+2026-04-04 21:22:37,809 - INFO - Stack sce-1-3-codebuild-preventive-1775355713 created successfully
+2026-04-04 21:22:37,925 - INFO - Stack outputs: {'CodeBuildServiceRoleArn': 'arn:aws:iam::941377112071:role/sce-codebuild-service-1775355713', 'PreventiveControlRoleArn': 'arn:aws:iam::941377112071:role/sce-preventive-control-1775355713'}
+[32m[2026-04-04 21:22:37 INFO] Action: attempt-malicious-codebuild-project-creation
+2026-04-04 21:22:37,928 - INFO - Starting attack: Create Malicious CodeBuild Project
+2026-04-04 21:22:38,412 - INFO - AWS Context - Account: 941377112071, Region: us-east-1
+2026-04-04 21:22:38,838 - INFO - Preventive Control Role: arn:aws:iam::941377112071:role/sce-preventive-control-1775355713
+2026-04-04 21:22:38,838 - INFO - CodeBuild Service Role: arn:aws:iam::941377112071:role/sce-codebuild-service-1775355713
+2026-04-04 21:22:39,272 - INFO - Successfully assumed preventive control role
+2026-04-04 21:22:39,288 - INFO - Attempting to create malicious CodeBuild project: malicious-exfil-project-1775355713
+2026-04-04 21:22:39,978 - WARNING - ATTACK SUCCEEDED - Malicious project created: arn:aws:codebuild:us-east-1:941377112071:project/malicious-exfil-project-1775355713
+2026-04-04 21:22:40,074 - ERROR - Failed to clean up project: An error occurred (AccessDeniedException) when calling the DeleteProject operation: User: arn:aws:sts::941377112071:assumed-role/sce-preventive-control-1775355713/sce-attack-1775355713 is not authorized to perform: codebuild:DeleteProject on resource: arn:aws:codebuild:us-east-1:941377112071:project/malicious-exfil-project-1775355713 because no identity-based policy allows the codebuild:DeleteProject action
+[32m[2026-04-04 21:22:40 INFO] Steady state hypothesis: Malicious CodeBuild project creation should be denied by preventive control
+[32m[2026-04-04 21:22:40 INFO] Probe: verify-preventive-control-blocks-malicious-codebuild
+2026-04-04 21:22:40,079 - INFO - Starting hypothesis verification
+2026-04-04 21:22:40,490 - INFO - AWS Context - Account: 941377112071, Region: us-east-1
+2026-04-04 21:22:40,927 - ERROR - VERIFICATION FAILED - Malicious project exists: arn:aws:codebuild:us-east-1:941377112071:project/malicious-exfil-project-1775355713
+[31m[2026-04-04 21:22:40 CRITICAL] Steady state probe 'verify-preventive-control-blocks-malicious-codebuild' is not in the given tolerance so failing this experiment
+[32m[2026-04-04 21:22:40 INFO] Let's rollback...
+[32m[2026-04-04 21:22:40 INFO] Rollback: cleanup-experiment-resources
+[32m[2026-04-04 21:22:40 INFO] Action: cleanup-experiment-resources
+2026-04-04 21:22:40,931 - INFO - Starting rollback for stack: sce-1-3-codebuild-preventive-1775355713
+2026-04-04 21:22:41,338 - INFO - AWS Context - Account: 941377112071, Region: us-east-1
+2026-04-04 21:22:41,838 - INFO - Deleted CodeBuild project: malicious-exfil-project-1775355713
+2026-04-04 21:22:42,254 - INFO - Deleting stack: sce-1-3-codebuild-preventive-1775355713
+2026-04-04 21:22:42,636 - INFO - Stack deletion status: DELETE_IN_PROGRESS
+2026-04-04 21:22:47,756 - INFO - Stack deletion status: DELETE_IN_PROGRESS
+2026-04-04 21:22:55,785 - INFO - Stack deletion status: DELETE_IN_PROGRESS
+2026-04-04 21:23:07,463 - INFO - Stack sce-1-3-codebuild-preventive-1775355713 deleted successfully
+[32m[2026-04-04 21:23:07 INFO] Experiment ended with status: deviated
+[32m[2026-04-04 21:23:07 INFO] The steady-state has deviated, a weakness may have been discovered
+
+
+RETURN CODE: 1

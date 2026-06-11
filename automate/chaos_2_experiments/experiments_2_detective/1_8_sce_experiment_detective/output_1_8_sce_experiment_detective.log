@@ -1,0 +1,143 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-04-12 23:04:58 INFO] Validating the experiment's syntax
+[32m[2026-04-12 23:04:58 INFO] Experiment looks valid
+[32m[2026-04-12 23:04:58 INFO] Running experiment: SCE 1.8 Detective Probe: Malicious Build Detection
+[32m[2026-04-12 23:04:58 INFO] Steady-state strategy: after-method-only
+[32m[2026-04-12 23:04:58 INFO] Rollbacks strategy: default
+[32m[2026-04-12 23:04:58 INFO] Playing your experiment's method now...
+[32m[2026-04-12 23:04:58 INFO] Action: setup-detective-infrastructure
+[2026-04-12 23:04:58 INFO] ============================================================
+[2026-04-12 23:04:58 INFO] STEADY STATE: Setting up detective infrastructure
+[2026-04-12 23:04:58 INFO] ============================================================
+[2026-04-12 23:04:58 INFO] Found credentials in shared credentials file: ~/.aws/credentials
+[2026-04-12 23:04:59 INFO] Authenticated to AWS Account: 941377112071
+[2026-04-12 23:04:59 INFO] Principal ARN: arn:aws:iam::941377112071:user/sce_user
+[2026-04-12 23:04:59 INFO] Operating in region: us-east-1
+[2026-04-12 23:04:59 INFO] Stack name: sce-experiment-1-8-1776053098
+[2026-04-12 23:04:59 INFO] Project name: sce-malicious-project-1776053098
+[2026-04-12 23:04:59 INFO] Log group: /aws/codebuild/sce-1-8-detective-1776053098
+[2026-04-12 23:05:00 INFO] Stack does not exist, creating new stack
+[2026-04-12 23:05:00 INFO] Creating CloudFormation stack with IAM capabilities...
+[2026-04-12 23:05:00 INFO] CloudFormation stack created: arn:aws:cloudformation:us-east-1:941377112071:stack/sce-experiment-1-8-1776053098/f1c40320-36ed-11f1-9f4c-12b6e139516b
+[2026-04-12 23:05:00 INFO] Stack status: CREATE_IN_PROGRESS
+[2026-04-12 23:05:00 INFO] Waiting for stack creation... (attempt 1/30)
+[2026-04-12 23:05:02 INFO] Stack status: CREATE_IN_PROGRESS
+[2026-04-12 23:05:02 INFO] Waiting for stack creation... (attempt 2/30)
+[2026-04-12 23:05:04 INFO] Stack status: CREATE_IN_PROGRESS
+[2026-04-12 23:05:04 INFO] Waiting for stack creation... (attempt 3/30)
+[2026-04-12 23:05:06 INFO] Stack status: CREATE_IN_PROGRESS
+[2026-04-12 23:05:06 INFO] Waiting for stack creation... (attempt 4/30)
+[2026-04-12 23:05:09 INFO] Stack status: CREATE_IN_PROGRESS
+[2026-04-12 23:05:09 INFO] Waiting for stack creation... (attempt 5/30)
+[2026-04-12 23:05:11 INFO] Stack status: CREATE_IN_PROGRESS
+[2026-04-12 23:05:11 INFO] Waiting for stack creation... (attempt 6/30)
+[2026-04-12 23:05:13 INFO] Stack status: CREATE_IN_PROGRESS
+[2026-04-12 23:05:13 INFO] Waiting for stack creation... (attempt 7/30)
+[2026-04-12 23:05:15 INFO] Stack status: CREATE_IN_PROGRESS
+[2026-04-12 23:05:15 INFO] Waiting for stack creation... (attempt 8/30)
+[2026-04-12 23:05:17 INFO] Stack status: CREATE_IN_PROGRESS
+[2026-04-12 23:05:17 INFO] Waiting for stack creation... (attempt 9/30)
+[2026-04-12 23:05:19 INFO] Stack status: CREATE_IN_PROGRESS
+[2026-04-12 23:05:19 INFO] Waiting for stack creation... (attempt 10/30)
+[2026-04-12 23:05:21 INFO] Stack status: CREATE_IN_PROGRESS
+[2026-04-12 23:05:21 INFO] Waiting for stack creation... (attempt 11/30)
+[2026-04-12 23:05:23 INFO] Stack status: CREATE_COMPLETE
+[2026-04-12 23:05:23 INFO] ✓ Stack creation successful
+[2026-04-12 23:05:23 INFO] Verifying CodeBuild project exists: sce-malicious-project-1776053098
+[2026-04-12 23:05:24 INFO] ✓ CodeBuild project verified: arn:aws:codebuild:us-east-1:941377112071:project/sce-malicious-project-1776053098
+[2026-04-12 23:05:24 INFO] ✓ Steady state setup complete
+[32m[2026-04-12 23:05:24 INFO] Action: initiate-malicious-build
+[2026-04-12 23:05:24 INFO] ============================================================
+[2026-04-12 23:05:24 INFO] ATTACK: Initiating malicious build
+[2026-04-12 23:05:24 INFO] ============================================================
+[2026-04-12 23:05:24 INFO] Authenticated to AWS Account: 941377112071
+[2026-04-12 23:05:24 INFO] Principal ARN: arn:aws:iam::941377112071:user/sce_user
+[2026-04-12 23:05:24 INFO] Operating in region: us-east-1
+[2026-04-12 23:05:24 INFO] Verifying CodeBuild project exists: sce-malicious-project-1776053098
+[2026-04-12 23:05:25 INFO] ✓ Project found: arn:aws:codebuild:us-east-1:941377112071:project/sce-malicious-project-1776053098
+[2026-04-12 23:05:25 INFO] Starting malicious build in project: sce-malicious-project-1776053098
+[2026-04-12 23:05:25 INFO] ✓ Malicious build started successfully
+[2026-04-12 23:05:25 INFO]   Build ID: sce-malicious-project-1776053098:908ba5c4-dc72-49bf-a3d2-4d448858ced7
+[2026-04-12 23:05:25 INFO]   Build ARN: arn:aws:codebuild:us-east-1:941377112071:build/sce-malicious-project-1776053098:908ba5c4-dc72-49bf-a3d2-4d448858ced7
+[2026-04-12 23:05:25 INFO]   Status: IN_PROGRESS
+[2026-04-12 23:05:28 INFO]   Current status: IN_PROGRESS
+[2026-04-12 23:05:28 INFO] ✓ Build attack executed - attack produced real AWS evidence (Build ID, ARN, execution)
+[32m[2026-04-12 23:05:28 INFO] Steady state hypothesis: Detective control captures all CodeBuild executions
+[32m[2026-04-12 23:05:28 INFO] Probe: verify-build-detection
+[2026-04-12 23:05:28 INFO] ============================================================
+[2026-04-12 23:05:28 INFO] HYPOTHESIS VERIFICATION: Detective controls capture all CodeBuild executions
+[2026-04-12 23:05:28 INFO] ============================================================
+[2026-04-12 23:05:29 INFO] Authenticated to AWS Account: 941377112071
+[2026-04-12 23:05:29 INFO] Principal ARN: arn:aws:iam::941377112071:user/sce_user
+[2026-04-12 23:05:29 INFO] Operating in region: us-east-1
+[2026-04-12 23:05:29 INFO] Verifying detection of build ID: sce-malicious-project-1776053098:908ba5c4-dc72-49bf-a3d2-4d448858ced7
+[2026-04-12 23:05:29 INFO] 
+[Detective Layer 1] CodeBuild Service Monitoring
+[2026-04-12 23:05:29 INFO] --------------------------------------------------
+[2026-04-12 23:05:29 INFO] ✓ Build found in CodeBuild service
+[2026-04-12 23:05:29 INFO]   Status: IN_PROGRESS
+[2026-04-12 23:05:29 INFO]   Start time: 2026-04-12 23:05:26.743000-05:00
+[2026-04-12 23:05:29 INFO]   End time: N/A
+[2026-04-12 23:05:29 INFO]   Phases: 3
+[2026-04-12 23:05:29 INFO]     - SUBMITTED: SUCCEEDED
+[2026-04-12 23:05:29 INFO]     - QUEUED: SUCCEEDED
+[2026-04-12 23:05:29 INFO]     - PROVISIONING: None
+[2026-04-12 23:05:29 INFO] ✓ Detective Layer 1: DETECTED
+[2026-04-12 23:05:29 INFO] 
+[Detective Layer 2] CloudWatch Logs Analysis
+[2026-04-12 23:05:29 INFO] --------------------------------------------------
+[2026-04-12 23:05:29 WARNING] ⚠ No log streams found yet (eventual consistency)
+[2026-04-12 23:05:29 INFO]   CloudWatch Logs may lag behind build execution
+[2026-04-12 23:05:29 INFO] ⚠ Detective Layer 2: PENDING (checking eventual consistency)
+[2026-04-12 23:05:29 INFO] 
+[Detective Layer 3] CloudWatch Metrics Analysis
+[2026-04-12 23:05:29 INFO] --------------------------------------------------
+[2026-04-12 23:05:30 INFO] ⚠ No SuccessfulBuilds metric datapoints yet
+[2026-04-12 23:05:30 INFO] ⚠ Detective Layer 3: PENDING (checking eventual consistency)
+[2026-04-12 23:05:30 INFO] 
+============================================================
+[2026-04-12 23:05:30 INFO] DETECTION SUMMARY
+[2026-04-12 23:05:30 INFO] ============================================================
+[2026-04-12 23:05:30 INFO] Layer 1 (CodeBuild Service): ✓ DETECTED
+[2026-04-12 23:05:30 INFO] Layer 2 (CloudWatch Logs): ⚠ PENDING
+[2026-04-12 23:05:30 INFO] Layer 3 (CloudWatch Metrics): ⚠ PENDING
+[2026-04-12 23:05:30 INFO] 
+✓ HYPOTHESIS VERIFIED: Detective controls captured the malicious build execution
+[2026-04-12 23:05:30 INFO]   The malicious build was executed and detected by CodeBuild service monitoring.
+[32m[2026-04-12 23:05:30 INFO] Steady state hypothesis is met!
+[32m[2026-04-12 23:05:30 INFO] Let's rollback...
+[32m[2026-04-12 23:05:30 INFO] Rollback: cleanup-experiment-resources
+[32m[2026-04-12 23:05:30 INFO] Action: cleanup-experiment-resources
+[2026-04-12 23:05:30 INFO] ============================================================
+[2026-04-12 23:05:30 INFO] ROLLBACK: Cleaning up experiment resources
+[2026-04-12 23:05:30 INFO] ============================================================
+[2026-04-12 23:05:30 INFO] Authenticated to AWS Account: 941377112071
+[2026-04-12 23:05:30 INFO] Principal ARN: arn:aws:iam::941377112071:user/sce_user
+[2026-04-12 23:05:30 INFO] Operating in region: us-east-1
+[2026-04-12 23:05:30 INFO] Deleting CloudFormation stack: sce-experiment-1-8-1776053098
+[2026-04-12 23:05:31 INFO] Stack deletion initiated
+[2026-04-12 23:05:31 INFO] Stack status: DELETE_IN_PROGRESS
+[2026-04-12 23:05:31 INFO] Waiting for stack deletion... (attempt 1/30)
+[2026-04-12 23:05:33 INFO] Stack status: DELETE_IN_PROGRESS
+[2026-04-12 23:05:33 INFO] Waiting for stack deletion... (attempt 2/30)
+[2026-04-12 23:05:35 INFO] Stack status: DELETE_IN_PROGRESS
+[2026-04-12 23:05:35 INFO] Waiting for stack deletion... (attempt 3/30)
+[2026-04-12 23:05:37 INFO] Stack status: DELETE_IN_PROGRESS
+[2026-04-12 23:05:37 INFO] Waiting for stack deletion... (attempt 4/30)
+[2026-04-12 23:05:39 INFO] Stack status: DELETE_IN_PROGRESS
+[2026-04-12 23:05:39 INFO] Waiting for stack deletion... (attempt 5/30)
+[2026-04-12 23:05:42 INFO] Stack status: DELETE_IN_PROGRESS
+[2026-04-12 23:05:42 INFO] Waiting for stack deletion... (attempt 6/30)
+[2026-04-12 23:05:44 INFO] Stack status: DELETE_IN_PROGRESS
+[2026-04-12 23:05:44 INFO] Waiting for stack deletion... (attempt 7/30)
+[2026-04-12 23:05:46 INFO] Stack status: DELETE_IN_PROGRESS
+[2026-04-12 23:05:46 INFO] Waiting for stack deletion... (attempt 8/30)
+[2026-04-12 23:05:48 INFO] ✓ Stack successfully deleted
+[2026-04-12 23:05:48 INFO] ✓ Rollback complete
+[32m[2026-04-12 23:05:48 INFO] Experiment ended with status: completed
+
+
+RETURN CODE: 0

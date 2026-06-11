@@ -1,0 +1,63 @@
+[36m[2026-04-27 17:41:45 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-04-27 17:41:45 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-04-27 17:41:45 DEBUG] [__init__:106] Using settings file '/home/sce-user/.chaostoolkit/settings.yaml'
+[36m[2026-04-27 17:41:45 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/sce-user/.chaostoolkit/settings.yaml'.
+[36m[2026-04-27 17:41:45 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-27 17:41:45 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-27 17:41:45 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-27 17:41:45 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-04-27 17:41:45 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-04-27 17:41:45 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-27 17:41:45 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-27 17:41:45 DEBUG] [secret:104] Done loading secrets
+[32m[2026-04-27 17:41:45 INFO] [experiment:112] Experiment looks valid
+[36m[2026-04-27 17:41:45 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-27 17:41:45 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-04-27 17:41:45 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-27 17:41:45 DEBUG] [caching:35] Cached 3 activities
+[36m[2026-04-27 17:41:45 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-27 17:41:45 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-27 17:41:45 DEBUG] [secret:104] Done loading secrets
+[36m[2026-04-27 17:41:45 DEBUG] [configuration:161] Loading dynamic configuration...
+[32m[2026-04-27 17:41:45 INFO] [run:440] Running experiment: SCE Experiment 1.8 - Reactive Probe for Malicious Build Detection
+[36m[2026-04-27 17:41:45 DEBUG] [__init__:67] Initializing controls
+[32m[2026-04-27 17:41:45 INFO] [run:471] Steady-state strategy: after-method-only
+[32m[2026-04-27 17:41:45 INFO] [run:477] Rollbacks strategy: default
+[36m[2026-04-27 17:41:45 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[32m[2026-04-27 17:41:45 INFO] [run:778] Playing your experiment's method now...
+[36m[2026-04-27 17:41:45 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-27 17:41:45 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-27 17:41:45 INFO] [activity:232] Action: deploy-codebuild-project-and-reactive-controls
+[36m[2026-04-27 17:41:45 DEBUG] [python:33] Activity 'deploy-codebuild-project-and-reactive-controls' loaded from '/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaosaws/ec2/1_8_sce_experiment_reactive.py'
+[36m[2026-04-27 17:43:01 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-04-27 17:43:01 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-27 17:43:01 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-27 17:43:01 INFO] [activity:232] Action: execute-malicious-build-attack
+[36m[2026-04-27 17:43:01 DEBUG] [python:33] Activity 'execute-malicious-build-attack' loaded from '/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaosaws/ec2/1_8_sce_experiment_reactive.py'
+[36m[2026-04-27 17:43:18 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-04-27 17:43:18 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-27 17:43:18 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-27 17:43:18 DEBUG] [run:696] Running steady-state hypothesis after the method
+[32m[2026-04-27 17:43:18 INFO] [hypothesis:205] Steady state hypothesis: Reactive controls should detect malicious CodeBuild execution
+[36m[2026-04-27 17:43:18 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[36m[2026-04-27 17:43:18 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-27 17:43:18 INFO] [activity:232] Probe: verify-reactive-controls-detected-malicious-build
+[36m[2026-04-27 17:43:18 DEBUG] [python:33] Activity 'verify-reactive-controls-detected-malicious-build' loaded from '/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaosaws/ec2/1_8_sce_experiment_reactive.py'
+[36m[2026-04-27 17:43:30 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-04-27 17:43:30 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-27 17:43:30 DEBUG] [hypothesis:247] allowed tolerance is True
+[32m[2026-04-27 17:43:30 INFO] [hypothesis:260] Steady state hypothesis is met!
+[36m[2026-04-27 17:43:30 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[32m[2026-04-27 17:43:30 INFO] [run:1072] Let's rollback...
+[36m[2026-04-27 17:43:30 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-27 17:43:30 INFO] [rollback:36] Rollback: cleanup-experiment-resources
+[36m[2026-04-27 17:43:30 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-27 17:43:30 INFO] [activity:232] Action: cleanup-experiment-resources
+[36m[2026-04-27 17:43:30 DEBUG] [python:33] Activity 'cleanup-experiment-resources' loaded from '/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaosaws/ec2/1_8_sce_experiment_reactive.py'
+[36m[2026-04-27 17:44:55 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-04-27 17:44:55 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-27 17:44:55 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-27 17:44:55 INFO] [run:598] Experiment ended with status: completed
+[36m[2026-04-27 17:44:55 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[36m[2026-04-27 17:44:55 DEBUG] [__init__:106] Cleaning up controls
+[36m[2026-04-27 17:44:55 DEBUG] [caching:42] Clearing activities cache

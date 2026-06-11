@@ -1,0 +1,227 @@
+[36m[2026-04-24 23:58:55 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-04-24 23:58:55 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-04-24 23:58:55 DEBUG] [__init__:106] Using settings file '/home/sce-user/.chaostoolkit/settings.yaml'
+[36m[2026-04-24 23:58:55 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/sce-user/.chaostoolkit/settings.yaml'.
+[36m[2026-04-24 23:58:55 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-24 23:58:55 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-24 23:58:55 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-24 23:58:55 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-04-24 23:58:55 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-04-24 23:58:55 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-24 23:58:55 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-24 23:58:55 DEBUG] [secret:104] Done loading secrets
+[32m[2026-04-24 23:58:55 INFO] [experiment:112] Experiment looks valid
+[36m[2026-04-24 23:58:55 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-24 23:58:55 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-04-24 23:58:55 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-24 23:58:55 DEBUG] [caching:35] Cached 3 activities
+[36m[2026-04-24 23:58:55 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-24 23:58:55 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-24 23:58:55 DEBUG] [secret:104] Done loading secrets
+[36m[2026-04-24 23:58:55 DEBUG] [configuration:161] Loading dynamic configuration...
+[32m[2026-04-24 23:58:55 INFO] [run:440] Running experiment: SCE 1.8 - Preventive Probe: Encrypted CodeBuild Artifact Control
+[36m[2026-04-24 23:58:55 DEBUG] [__init__:67] Initializing controls
+[32m[2026-04-24 23:58:55 INFO] [run:471] Steady-state strategy: after-method-only
+[32m[2026-04-24 23:58:55 INFO] [run:477] Rollbacks strategy: default
+[36m[2026-04-24 23:58:55 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[32m[2026-04-24 23:58:55 INFO] [run:778] Playing your experiment's method now...
+[36m[2026-04-24 23:58:55 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-24 23:58:55 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-24 23:58:55 INFO] [activity:232] Action: Provision encrypted CodeBuild environment and artifact storage
+[36m[2026-04-24 23:58:55 DEBUG] [python:33] Activity 'Provision encrypted CodeBuild environment and artifact storage' loaded from '/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaosaws/ec2/1_8_sce_experiment_preventive.py'
+[36m[2026-04-24 23:59:05 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-04-24 23:59:05 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-24 23:59:05 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-24 23:59:05 INFO] [activity:232] Action: Trigger malicious build attempt (1.7 Start Malicious Build)
+[36m[2026-04-24 23:59:05 DEBUG] [python:33] Activity 'Trigger malicious build attempt (1.7 Start Malicious Build)' loaded from '/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaosaws/ec2/1_8_sce_experiment_preventive.py'
+[36m[2026-04-24 23:59:06 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-04-24 23:59:06 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-24 23:59:06 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-24 23:59:06 DEBUG] [run:696] Running steady-state hypothesis after the method
+[32m[2026-04-24 23:59:06 INFO] [hypothesis:205] Steady state hypothesis: CodeBuild artifacts are encrypted at rest and cannot be exfiltrated unencrypted
+[36m[2026-04-24 23:59:06 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[36m[2026-04-24 23:59:06 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-24 23:59:06 INFO] [activity:232] Probe: Verify artifact encryption control is active
+[36m[2026-04-24 23:59:06 DEBUG] [python:33] Activity 'Verify artifact encryption control is active' loaded from '/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaosaws/ec2/1_8_sce_experiment_preventive.py'
+[36m[2026-04-24 23:59:07 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-04-24 23:59:07 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-24 23:59:07 DEBUG] [hypothesis:247] allowed tolerance is True
+[36m[2026-04-24 23:59:07 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[31m[2026-04-24 23:59:07 CRITICAL] [run:716] Steady state probe 'Verify artifact encryption control is active' is not in the given tolerance so failing this experiment
+[32m[2026-04-24 23:59:07 INFO] [run:1072] Let's rollback...
+[36m[2026-04-24 23:59:07 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-24 23:59:07 INFO] [rollback:36] Rollback: Remove experiment resources and restore baseline
+[36m[2026-04-24 23:59:07 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-24 23:59:07 INFO] [activity:232] Action: Remove experiment resources and restore baseline
+[36m[2026-04-24 23:59:07 DEBUG] [python:33] Activity 'Remove experiment resources and restore baseline' loaded from '/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaosaws/ec2/1_8_sce_experiment_preventive.py'
+[36m[2026-04-24 23:59:14 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-04-24 23:59:14 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-24 23:59:14 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-24 23:59:14 INFO] [run:598] Experiment ended with status: deviated
+[32m[2026-04-24 23:59:14 INFO] [run:600] The steady-state has deviated, a weakness may have been discovered
+[36m[2026-04-24 23:59:14 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[36m[2026-04-24 23:59:14 DEBUG] [__init__:106] Cleaning up controls
+[36m[2026-04-24 23:59:14 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-25 00:11:58 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-04-25 00:11:58 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-04-25 00:11:58 DEBUG] [__init__:106] Using settings file '/home/sce-user/.chaostoolkit/settings.yaml'
+[36m[2026-04-25 00:11:58 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/sce-user/.chaostoolkit/settings.yaml'.
+[36m[2026-04-25 00:11:58 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-25 00:11:58 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-25 00:11:58 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-25 00:11:58 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-04-25 00:11:58 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-04-25 00:11:58 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-25 00:11:58 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-25 00:11:58 DEBUG] [secret:104] Done loading secrets
+[32m[2026-04-25 00:11:59 INFO] [experiment:112] Experiment looks valid
+[36m[2026-04-25 00:11:59 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-25 00:11:59 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-04-25 00:11:59 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-25 00:11:59 DEBUG] [caching:35] Cached 3 activities
+[36m[2026-04-25 00:11:59 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-25 00:11:59 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-25 00:11:59 DEBUG] [secret:104] Done loading secrets
+[36m[2026-04-25 00:11:59 DEBUG] [configuration:161] Loading dynamic configuration...
+[32m[2026-04-25 00:11:59 INFO] [run:440] Running experiment: SCE 1.8: Encrypted CodeBuild Artifact Control
+[36m[2026-04-25 00:11:59 DEBUG] [__init__:67] Initializing controls
+[32m[2026-04-25 00:11:59 INFO] [run:471] Steady-state strategy: after-method-only
+[32m[2026-04-25 00:11:59 INFO] [run:477] Rollbacks strategy: default
+[36m[2026-04-25 00:11:59 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[32m[2026-04-25 00:11:59 INFO] [run:778] Playing your experiment's method now...
+[36m[2026-04-25 00:11:59 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-25 00:11:59 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-25 00:11:59 INFO] [activity:232] Action: Deploy preventive controls: S3 encryption enforcement and CodeBuild project
+[36m[2026-04-25 00:11:59 DEBUG] [python:33] Activity 'Deploy preventive controls: S3 encryption enforcement and CodeBuild project' loaded from '/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaosaws/ec2/1_8_sce_experiment_preventive.py'
+[36m[2026-04-25 00:12:03 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-04-25 00:12:03 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-25 00:12:03 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-25 00:12:03 INFO] [activity:232] Action: Execute attack node 1.7: Trigger malicious CodeBuild build attempting credential exfiltration
+[36m[2026-04-25 00:12:03 DEBUG] [python:33] Activity 'Execute attack node 1.7: Trigger malicious CodeBuild build attempting credential exfiltration' loaded from '/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaosaws/ec2/1_8_sce_experiment_preventive.py'
+[36m[2026-04-25 00:12:04 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-04-25 00:12:04 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-25 00:12:04 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-25 00:12:04 DEBUG] [run:696] Running steady-state hypothesis after the method
+[32m[2026-04-25 00:12:04 INFO] [hypothesis:205] Steady state hypothesis: CodeBuild artifacts are encrypted at rest and unencrypted credential exfiltration is blocked
+[36m[2026-04-25 00:12:04 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[36m[2026-04-25 00:12:04 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-25 00:12:04 INFO] [activity:232] Probe: Verify artifact encryption control is active
+[36m[2026-04-25 00:12:04 DEBUG] [python:33] Activity 'Verify artifact encryption control is active' loaded from '/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaosaws/ec2/1_8_sce_experiment_preventive.py'
+[36m[2026-04-25 00:12:05 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-04-25 00:12:05 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-25 00:12:05 DEBUG] [hypothesis:247] allowed tolerance is True
+[36m[2026-04-25 00:12:05 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[31m[2026-04-25 00:12:05 CRITICAL] [run:716] Steady state probe 'Verify artifact encryption control is active' is not in the given tolerance so failing this experiment
+[32m[2026-04-25 00:12:05 INFO] [run:1072] Let's rollback...
+[36m[2026-04-25 00:12:05 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-25 00:12:05 INFO] [rollback:36] Rollback: Rollback: Delete CodeBuild project, S3 bucket, and IAM role
+[36m[2026-04-25 00:12:05 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-25 00:12:05 INFO] [activity:232] Action: Rollback: Delete CodeBuild project, S3 bucket, and IAM role
+[36m[2026-04-25 00:12:05 DEBUG] [python:33] Activity 'Rollback: Delete CodeBuild project, S3 bucket, and IAM role' loaded from '/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaosaws/ec2/1_8_sce_experiment_preventive.py'
+[36m[2026-04-25 00:12:06 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-04-25 00:12:06 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-25 00:12:06 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-25 00:12:06 INFO] [run:598] Experiment ended with status: deviated
+[32m[2026-04-25 00:12:06 INFO] [run:600] The steady-state has deviated, a weakness may have been discovered
+[36m[2026-04-25 00:12:06 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[36m[2026-04-25 00:12:06 DEBUG] [__init__:106] Cleaning up controls
+[36m[2026-04-25 00:12:06 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-25 00:13:27 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-04-25 00:13:27 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-04-25 00:13:27 DEBUG] [__init__:106] Using settings file '/home/sce-user/.chaostoolkit/settings.yaml'
+[36m[2026-04-25 00:13:27 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/sce-user/.chaostoolkit/settings.yaml'.
+[36m[2026-04-25 00:13:27 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-25 00:13:27 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-25 00:13:27 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-25 00:13:27 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-04-25 00:13:27 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-04-25 00:13:27 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-25 00:13:27 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-25 00:13:27 DEBUG] [secret:104] Done loading secrets
+[32m[2026-04-25 00:13:27 INFO] [experiment:112] Experiment looks valid
+[36m[2026-04-25 00:13:27 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-25 00:13:27 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-04-25 00:13:27 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-25 00:13:27 DEBUG] [caching:35] Cached 3 activities
+[36m[2026-04-25 00:13:27 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-25 00:13:27 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-25 00:13:27 DEBUG] [secret:104] Done loading secrets
+[36m[2026-04-25 00:13:27 DEBUG] [configuration:161] Loading dynamic configuration...
+[32m[2026-04-25 00:13:27 INFO] [run:440] Running experiment: SCE 1.8: Encrypted CodeBuild Artifact Control
+[36m[2026-04-25 00:13:27 DEBUG] [__init__:67] Initializing controls
+[32m[2026-04-25 00:13:27 INFO] [run:471] Steady-state strategy: after-method-only
+[32m[2026-04-25 00:13:27 INFO] [run:477] Rollbacks strategy: default
+[36m[2026-04-25 00:13:27 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[32m[2026-04-25 00:13:27 INFO] [run:778] Playing your experiment's method now...
+[36m[2026-04-25 00:13:27 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-25 00:13:27 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-25 00:13:27 INFO] [activity:232] Action: Deploy preventive controls: S3 encryption enforcement and CodeBuild project
+[36m[2026-04-25 00:13:27 DEBUG] [python:33] Activity 'Deploy preventive controls: S3 encryption enforcement and CodeBuild project' loaded from '/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaosaws/ec2/1_8_sce_experiment_preventive.py'
+[36m[2026-04-25 00:13:31 DEBUG] [activity:317] Activity failed
+    Traceback (most recent call last):
+      File "/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+               ^^^^^^^^^^^^^^^^^
+      File "/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaosaws/ec2/1_8_sce_experiment_preventive.py", line 329, in steady_state
+        encryption = s3_client.get_bucket_encryption(Bucket=ARTIFACT_BUCKET)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      File "/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/client.py", line 569, in _api_call
+        return self._make_api_call(operation_name, kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      File "/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/client.py", line 1023, in _make_api_call
+        raise error_class(parsed_response, operation_name)
+    botocore.errorfactory.NoSuchBucket: An error occurred (NoSuchBucket) when calling the GetBucketEncryption operation: The specified bucket does not exist
+    
+    During handling of the above exception, another exception occurred:
+    
+    Traceback (most recent call last):
+      File "/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaoslib/activity.py", line 310, in run_activity
+        result = run_python_activity(activity, configuration, secrets)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      File "/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaoslib/provider/python.py", line 58, in run_python_activity
+        raise ActivityFailed(
+      File "/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+               ^^^^^^^^^^^^^^^^^
+      File "/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaosaws/ec2/1_8_sce_experiment_preventive.py", line 329, in steady_state
+        encryption = s3_client.get_bucket_encryption(Bucket=ARTIFACT_BUCKET)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      File "/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/client.py", line 569, in _api_call
+        return self._make_api_call(operation_name, kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      File "/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/client.py", line 1023, in _make_api_call
+        raise error_class(parsed_response, operation_name)
+    chaoslib.exceptions.ActivityFailed: botocore.errorfactory.NoSuchBucket: An error occurred (NoSuchBucket) when calling the GetBucketEncryption operation: The specified bucket does not exist
+[31m[2026-04-25 00:13:31 ERROR] [activity:268]   => failed: botocore.errorfactory.NoSuchBucket: An error occurred (NoSuchBucket) when calling the GetBucketEncryption operation: The specified bucket does not exist
+[36m[2026-04-25 00:13:31 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-25 00:13:31 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-25 00:13:31 INFO] [activity:232] Action: Execute attack node 1.7: Trigger malicious CodeBuild build attempting credential exfiltration
+[36m[2026-04-25 00:13:31 DEBUG] [python:33] Activity 'Execute attack node 1.7: Trigger malicious CodeBuild build attempting credential exfiltration' loaded from '/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaosaws/ec2/1_8_sce_experiment_preventive.py'
+[36m[2026-04-25 00:13:32 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-04-25 00:13:32 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-25 00:13:32 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-25 00:13:32 DEBUG] [run:696] Running steady-state hypothesis after the method
+[32m[2026-04-25 00:13:32 INFO] [hypothesis:205] Steady state hypothesis: CodeBuild artifacts are encrypted at rest and unencrypted credential exfiltration is blocked
+[36m[2026-04-25 00:13:32 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[36m[2026-04-25 00:13:32 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-25 00:13:32 INFO] [activity:232] Probe: Verify artifact encryption control is active
+[36m[2026-04-25 00:13:32 DEBUG] [python:33] Activity 'Verify artifact encryption control is active' loaded from '/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaosaws/ec2/1_8_sce_experiment_preventive.py'
+[36m[2026-04-25 00:13:33 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-04-25 00:13:33 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-25 00:13:33 DEBUG] [hypothesis:247] allowed tolerance is True
+[36m[2026-04-25 00:13:33 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[31m[2026-04-25 00:13:33 CRITICAL] [run:716] Steady state probe 'Verify artifact encryption control is active' is not in the given tolerance so failing this experiment
+[32m[2026-04-25 00:13:33 INFO] [run:1072] Let's rollback...
+[36m[2026-04-25 00:13:33 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-25 00:13:33 INFO] [rollback:36] Rollback: Rollback: Delete CloudFormation stack and all experiment resources
+[36m[2026-04-25 00:13:33 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-25 00:13:33 INFO] [activity:232] Action: Rollback: Delete CloudFormation stack and all experiment resources
+[36m[2026-04-25 00:13:33 DEBUG] [python:33] Activity 'Rollback: Delete CloudFormation stack and all experiment resources' loaded from '/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaosaws/ec2/1_8_sce_experiment_preventive.py'
+[36m[2026-04-25 00:13:35 DEBUG] [activity:262]   => succeeded without any result value
+[36m[2026-04-25 00:13:35 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-25 00:13:35 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-25 00:13:35 INFO] [run:598] Experiment ended with status: deviated
+[32m[2026-04-25 00:13:35 INFO] [run:600] The steady-state has deviated, a weakness may have been discovered
+[36m[2026-04-25 00:13:35 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[36m[2026-04-25 00:13:35 DEBUG] [__init__:106] Cleaning up controls
+[36m[2026-04-25 00:13:35 DEBUG] [caching:42] Clearing activities cache

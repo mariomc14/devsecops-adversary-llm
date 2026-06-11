@@ -20,6 +20,34 @@ except ImportError:
 
 from botocore.config import Config
 
+AVAILABLE_MODELS = [
+    # Haiku
+    "us.anthropic.claude-3-5-haiku-20241022-v1:0",
+    "us.anthropic.claude-haiku-4-5-20251001-v1:0",
+    # Sonnet
+    "us.anthropic.claude-3-5-sonnet-20241022-v2:0",
+    "us.anthropic.claude-3-7-sonnet-20250219-v1:0",
+    "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+    "us.anthropic.claude-sonnet-4-6",
+    # Opus
+    "us.anthropic.claude-opus-4-5-20251101-v1:0",
+    "us.anthropic.claude-opus-4-6-v1",
+]
+
+
+def _select_model(prompt_label: str) -> str:
+    """Present numbered model options and return the selected model ID."""
+    print(f"\n🤖 Select model for {prompt_label}:")
+    for i, model in enumerate(AVAILABLE_MODELS, 1):
+        print(f"  {i}. {model}")
+    while True:
+        choice = input("> ").strip()
+        if choice.isdigit() and 1 <= int(choice) <= len(AVAILABLE_MODELS):
+            selected = AVAILABLE_MODELS[int(choice) - 1]
+            print(f"✅ Selected: {selected}")
+            return selected
+        print(f"⚠️  Please enter a number between 1 and {len(AVAILABLE_MODELS)}")
+
 
 class SCEAutomationAPI:
     def __init__(self):
@@ -32,107 +60,134 @@ class SCEAutomationAPI:
         self.bedrock = boto3.client('bedrock-runtime', config=bedrock_config)
         self.conversation_history = []
         self.tracking_table: List[Dict] = []
+        self.model_tree: Optional[str] = None
+        self.model_experiment: Optional[str] = None
 
     # ─────────────────────────────────────────────────────────────────────────
     # Tracking helpers
     # ─────────────────────────────────────────────────────────────────────────
 
     def _tracking_add(self, experiment: str, loop: int,
-                      q_pre: Optional[float], q_post: Optional[float]) -> None:
-        """Append one row to the tracking table."""
+                      q_pre: Optional[float], q_post: Optional[float],
+                      model: Optional[str] = None) -> None:
         self.tracking_table.append({
             "experiment": experiment,
             "loop":       loop,
             "q_pre":      q_pre,
             "q_post":     q_post,
+            "model":      model or "N/A",
         })
 
     def _tracking_print(self) -> None:
-        """Pretty-print the tracking table to stdout."""
         if not self.tracking_table:
             print("\n📋 No experiments were tracked in this session.")
             return
 
-        col_exp  = max(len(r["experiment"]) for r in self.tracking_table)
-        col_exp  = max(col_exp, len("Experimento"))
-        col_loop = max(len(str(r["loop"])) for r in self.tracking_table)
-        col_loop = max(col_loop, len("# Loop"))
-        col_pre  = len("Q_pre")
-        col_post = len("Q_post")
+        col_exp   = max(len(r["experiment"]) for r in self.tracking_table)
+        col_exp   = max(col_exp, len("Experimento"))
+        col_loop  = max(len(str(r["loop"])) for r in self.tracking_table)
+        col_loop  = max(col_loop, len("# Loop"))
+        col_pre   = len("Q_pre")
+        col_post  = len("Q_post")
+        col_model = max(len(r.get("model", "N/A")) for r in self.tracking_table)
+        col_model = max(col_model, len("Modelo"))
 
-        sep  = f"+{'-'*(col_exp+2)}+{'-'*(col_loop+2)}+{'-'*(col_pre+2)}+{'-'*(col_post+2)}+"
+        sep  = (f"+{'-'*(col_exp+2)}+{'-'*(col_loop+2)}"
+                f"+{'-'*(col_pre+2)}+{'-'*(col_post+2)}+{'-'*(col_model+2)}+")
         head = (f"| {'Experimento':<{col_exp}} "
                 f"| {'# Loop':>{col_loop}} "
                 f"| {'Q_pre':>{col_pre}} "
-                f"| {'Q_post':>{col_post}} |")
+                f"| {'Q_post':>{col_post}} "
+                f"| {'Modelo':<{col_model}} |")
 
-        print("\n" + "="*60)
+        print("\n" + "="*70)
         print("📋  CUADRO DE SEGUIMIENTO DE EXPERIMENTOS SCE")
-        print("="*60)
+        print("="*70)
         print(sep)
         print(head)
         print(sep)
         for r in self.tracking_table:
             q_pre_s  = f"{r['q_pre']:.2f}"  if r["q_pre"]  is not None else "N/A"
             q_post_s = f"{r['q_post']:.2f}" if r["q_post"] is not None else "N/A"
+            model_s  = r.get("model", "N/A")
             print(f"| {r['experiment']:<{col_exp}} "
                   f"| {r['loop']:>{col_loop}} "
                   f"| {q_pre_s:>{col_pre}} "
-                  f"| {q_post_s:>{col_post}} |")
+                  f"| {q_post_s:>{col_post}} "
+                  f"| {model_s:<{col_model}} |")
         print(sep)
         print()
 
-    def _tracking_save_md(self) -> None:
-        """Save the tracking table as a Markdown file in workspace_path."""
-        if not self.tracking_table:
-            return
-
-        lines = []
-        lines.append("# SCE Experiment Tracking Summary\n")
-        lines.append(f"**Session date**: {time.strftime('%Y-%m-%d %H:%M:%S')}\n")
-        lines.append("")
-        lines.append("| Experimento | # Loop | Q_pre | Q_post |")
-        lines.append("|---|---|---|---|")
+    def _build_session_block(self) -> str:
+        """Build the markdown block for the current session only."""
+        session_ts = time.strftime('%Y-%m-%d %H:%M:%S')
+        lines = [
+            f"### 🗓️ Session: {session_ts}",
+            "",
+            "| Experimento | # Loop | Q_pre | Q_post | Modelo |",
+            "|---|---|---|---|---|",
+        ]
         for r in self.tracking_table:
             q_pre_s  = f"{r['q_pre']:.2f}"  if r["q_pre"]  is not None else "N/A"
             q_post_s = f"{r['q_post']:.2f}" if r["q_post"] is not None else "N/A"
-            lines.append(f"| {r['experiment']} | {r['loop']} | {q_pre_s} | {q_post_s} |")
+            lines.append(
+                f"| {r['experiment']} | {r['loop']} | {q_pre_s} "
+                f"| {q_post_s} | {r.get('model', 'N/A')} |"
+            )
+        return "\n".join(lines)
 
-        lines.append("")
-        lines.append("## Legend")
-        lines.append("- **Q_pre**: Pre-execution quality score (0–100)")
-        lines.append("- **Q_post**: Post-execution quality score (0–100)")
-        lines.append("- **N/A**: Score not available (experiment not executed or evaluation failed)")
+    def _tracking_save_md(self) -> None:
+        if not self.tracking_table:
+            return
 
-        md_content = "\n".join(lines)
         filepath = os.path.join(self.workspace_path, "tracking_summary.md")
+        session_block = self._build_session_block()
+
+        # ── Ask whether to append to an existing file ────────────────────────
+        if os.path.exists(filepath):
+            print(f"\n📋 Found existing tracking_summary.md.")
+            print("   Append this session's results to it? (y/n):")
+            choice = input("> ").strip().lower()
+            if choice == 'y':
+                try:
+                    separator = (
+                        "\n\n---\n\n"
+                        "<!-- ════════════════════ NEW EXECUTION ════════════════════ -->\n\n"
+                    )
+                    with open(filepath, 'a', encoding='utf-8') as f:
+                        f.write(separator + session_block + "\n")
+                    print(f"✅ Session appended to: {filepath}")
+                except Exception as e:
+                    print(f"⚠️ Could not append to tracking summary: {e}")
+                return  # done — don't overwrite
+
+        # ── No existing file (or user chose not to append) — write fresh ─────
+        header = "\n".join([
+            "# SCE Experiment Tracking Summary",
+            "",
+            "## Legend",
+            "- **Q_pre**: Pre-execution quality score (0–100)",
+            "- **Q_post**: Post-execution quality score (0–100)",
+            "- **Modelo**: Model used to generate the experiment",
+            "- **N/A**: Score not available",
+            "",
+        ])
         try:
             with open(filepath, 'w', encoding='utf-8') as f:
-                f.write(md_content)
+                f.write(header + session_block + "\n")
             print(f"✅ Tracking summary saved to: {filepath}")
         except Exception as e:
             print(f"⚠️ Could not save tracking summary: {e}")
 
     # ─────────────────────────────────────────────────────────────────────────
-    # Score extraction  (FIX: robust multi-pattern approach)
+    # Score extraction
     # ─────────────────────────────────────────────────────────────────────────
 
     def _extract_score(self, text: str, metric: str) -> Optional[float]:
-        """
-        Extract a numeric score (0-100) for `metric` (e.g. 'Q_pre' or 'Q_post')
-        from a free-form LLM report.
-
-        Strategy (tried in order):
-        1. Full inline calculation:  Q_pre = 0.40 × 100 + 0.30 × 50 + 0.30 × 100 = 85.00
-        2. Bold final value:         **Q_pre = 85.00**  or  **Q_pre = 85**
-        3. Value after equals sign on its own line
-        4. Any standalone number on a line that follows a line containing the metric name
-        """
-        # -- 1. Full calculation line: metric = ... = NUMBER
         pattern_full = (
-            rf'{re.escape(metric)}\s*='           # Q_pre =
-            r'(?:[^=\n]+=\s*)'                     # ... =
-            r'(\d{1,3}(?:\.\d+)?)'                 # final number
+            rf'{re.escape(metric)}\s*='
+            r'(?:[^=\n]+=\s*)'
+            r'(\d{1,3}(?:\.\d+)?)'
         )
         m = re.search(pattern_full, text, re.IGNORECASE)
         if m:
@@ -140,7 +195,6 @@ class SCEAutomationAPI:
             if 0 <= v <= 100:
                 return v
 
-        # -- 2. Bold: **Q_pre = 85.00** or **Q_pre = 85**
         pattern_bold = rf'\*\*\s*{re.escape(metric)}\s*=\s*(\d{{1,3}}(?:\.\d+)?)\s*\*\*'
         m = re.search(pattern_bold, text, re.IGNORECASE)
         if m:
@@ -148,26 +202,21 @@ class SCEAutomationAPI:
             if 0 <= v <= 100:
                 return v
 
-        # -- 3. Simple assignment anywhere: Q_pre = 85  or  Q_pre = 85.00
         pattern_simple = rf'{re.escape(metric)}\s*=\s*(\d{{1,3}}(?:\.\d+)?)'
         for m in re.finditer(pattern_simple, text, re.IGNORECASE):
             v = float(m.group(1))
-            # Reject coefficient-like values (0.40, 0.30, 0.50)
             if 1 <= v <= 100:
                 return v
 
-        # -- 4. Line-after-metric heuristic
         lines = text.splitlines()
         for i, line in enumerate(lines):
             if re.search(rf'\b{re.escape(metric)}\b', line, re.IGNORECASE):
-                # Look at this line and the next two for a standalone number
                 for candidate in lines[i:i+3]:
                     nums = re.findall(r'\b(\d{1,3}(?:\.\d+)?)\b', candidate)
                     for n in nums:
                         v = float(n)
                         if 1 <= v <= 100:
                             return v
-
         return None
 
     # ─────────────────────────────────────────────────────────────────────────
@@ -352,46 +401,56 @@ The following report contains a post-execution quality evaluation from a previou
 - Type of probe: {probe_type}
 - Attack Node/s: {attack_nodes}
 {log_context}{metrics_context}{post_metrics_context}
-Goal: Generate an end-to-end Security Chaos Engineering unit test that validates exactly this one probe, by.
-- Translating each associated attack step into safe, scoped AWS actions against only the resources created by the experiment
-- Implementing the probe's security intent (Preventive / Detective / Reactive as an AWS-native control in the experiment)
-- Verifying, programatically, that this control behaves as described in the probe's label and classification.
+Goal: Generate an end-to-end Security Chaos Engineering unit test that validates exactly this one probe, by:
+- Translating each associated attack step into real, scoped AWS API calls against only the resources created by the experiment
+- Implementing the probe's security intent (Preventive / Detective / Reactive) as an AWS-native control
+- Verifying programmatically that this control behaves as described in the probe's label and classification
 
 Environment:
-- The script runs in a real but completely clean AWS account (no existing IAM roles, policies, buckets, parameters, alarms, etc)
+- The script runs authenticated against a REAL dedicated AWS test account
+- Active credentials are already configured via the default credential chain (~/.aws/credentials)
+- The account is isolated and intended exclusively for security chaos experiments — it is safe to create, modify, and delete real AWS resources
+- There are no pre-existing IAM roles, policies, buckets, parameters, alarms, etc.
+
+CRITICAL EXECUTION REQUIREMENTS — non-negotiable:
+- Every boto3 call MUST be a real API call against the live AWS account; do NOT simulate, mock, print-only, or stub any AWS interaction
+- Do NOT use placeholder values such as "your-account-id", "your-region", "SIMULATED", or "TODO"
+- attack() MUST actually execute the attack action and capture a real AWS API response as evidence (ARN, resource ID, HTTP status, etc.)
+- hypothesis_verification() MUST query real AWS resources (CloudWatch, Config, IAM, S3, etc.) and derive its True/False result exclusively from actual API responses — a hardcoded return value is INVALID
+- Any function that returns a result without having made at least one real AWS API call is INVALID and will be rejected
 
 Deliverables (return two artifacts):
 Produce exactly two files, in this order:
 1. Python script implementing the experiment logic
-2. JSON experiment manifest for the chaostoolkit runner, it must follow the structure of the file @template.json, replace:
-    - [SCE_NODE] with: {self._sanitize_name(sce_node)}
-    - [PROBE_TYPE] with: {self._sanitize_name(probe_type)}
+2. JSON experiment manifest for the chaostoolkit runner, following the structure of @template.json:
+    - Replace [SCE_NODE] with: {self._sanitize_name(sce_node)}
+    - Replace [PROBE_TYPE] with: {self._sanitize_name(probe_type)}
     - Keep "chaosaws.ec2" prefix fixed in all module paths
-    - DO NOT include a "secrets" section - AWS credentials will be automatically discovered from the standard credential chain (~/.aws/credentials)
+    - DO NOT include a "secrets" section — credentials are discovered automatically
 
-Script structure (must follow this flow):
-The script is self-contained: no CLI arguments, no external config files, no pre-existing AWS resources. Use only the standard library unless unavoidable; if needed, install boto3 at runtime programmatically and keep the footprint minimal. Implement basic retries/backoff for eventual consistency using time.monotonic(). All functions take no parameters. Finally, log every error encountered.
+Script structure (must follow this exact flow):
+Self-contained: no CLI arguments, no external config files. Use only the standard library unless unavoidable; install boto3 at runtime if needed. Implement bounded retries/backoff with time.monotonic() for eventual consistency. Log every error encountered.
 
-1. Preparation block (executes on import/run)
-- Function: steady_state()
-- Generate a unique timestamp suffix using int(time.time()) to append to stack name (e.g., "sce-experiment-1703123456")
-- Use AWS CloudFormation to provision everything the test needs:
-    - Create a CloudFormation template defining only the AWS resources required for the specified attack step
-    - Deploy the stack with timestamped name to avoid conflicts
-    - Generate any sample data needed and set environment variables or acquire temporary tokens if required
-    - Handle stack conflicts gracefully: if stack already exists, log warning and continue
-- Reliability: add bounded retries/backoff for stack creation completion, IAM policy propagation, etc.
-- Tagging: tag the CloudFormation stack and all resources with experiment tag and timestamp
-- Wait until CloudFormation complete execution to continue with the experiment
+1. steady_state()
+- Generate a unique timestamp suffix with int(time.time()) for the stack name (e.g. "sce-experiment-1703123456")
+- Deploy a CloudFormation stack that provisions only the AWS resources required for this attack step
+- Handle pre-existing stacks gracefully (log warning and continue)
+- Wait for CREATE_COMPLETE before proceeding; use retries/backoff
+- Tag the stack and all resources with the experiment name and timestamp
 
-2. attack() -> bool: Execute the provided attack step in order and only those steps, operating strictly on resources created in steady_state()
-3. hypothesis_verification() -> bool: Verify countermeasure based on probe type from the SCE experiment node.
-4. rollback(): Complete teardown using CloudFormation:
-- Delete the CloudFormation stack created in steady_state() using the timestamped stack name
-- Wait for stack deletion to complete with proper error handling
-- Be safe and tolerant: catch stack not found errors and proceed
-- The test function must always attempt rollback, even on failure (e.g., try/finally)
-- If execution is halted midway, stack deletion will still clean up all resources automatically
+2. attack() -> bool
+- Execute each attack step against resources created in steady_state() — real API calls only
+- Return True if the attack was carried out and produced verifiable AWS-side evidence, False otherwise
+
+3. hypothesis_verification() -> bool
+- Query real AWS resources to determine whether the control worked as expected
+- Return True only if the API responses confirm the expected defensive behavior
+- Return False (never raise) if the control did not behave as expected or evidence is missing
+
+4. rollback()
+- Delete the CloudFormation stack by its timestamped name and wait for DELETE_COMPLETE
+- Tolerate "stack does not exist" errors gracefully
+- Always attempt rollback even if earlier phases failed (use try/finally)
 
 @template.json (update the placeholders):
 {template_json}
@@ -600,61 +659,80 @@ Q_post = XX.XX
             experiment_subdir = os.path.join(experiments_dir, f"{safe_sce_node}_{safe_probe_type}")
             os.makedirs(experiment_subdir, exist_ok=True)
 
-            # Extract Python script
-            python_start = response_text.find("```python")
-            if python_start != -1:
-                python_start += 9
-                python_end = response_text.find("```", python_start)
-                if python_end != -1:
-                    python_content  = response_text[python_start:python_end].strip()
-                    python_filename = f"{safe_sce_node}_{safe_probe_type}.py"
-                    python_filepath = os.path.join(experiment_subdir, python_filename)
-                    with open(python_filepath, 'w', encoding='utf-8') as f:
+            # ── Python block — tolerant search ───────────────────────────────
+            python_content = None
+            for py_tag in ["```python", "```Python", "```py"]:
+                idx = response_text.find(py_tag)
+                if idx != -1:
+                    start = idx + len(py_tag)
+                    end   = response_text.find("```", start)
+                    if end != -1:
+                        python_content = response_text[start:end].strip()
+                        break
+
+            if python_content:
+                python_filename = f"{safe_sce_node}_{safe_probe_type}.py"
+                python_filepath = os.path.join(experiment_subdir, python_filename)
+                with open(python_filepath, 'w', encoding='utf-8') as f:
+                    f.write(python_content)
+                print(f"✅ Python script saved to: {python_filepath}")
+
+                try:
+                    import chaosaws.ec2
+                    chaosaws_path     = chaosaws.ec2.__path__[0]
+                    chaosaws_filepath = os.path.join(chaosaws_path, python_filename)
+                    with open(chaosaws_filepath, 'w', encoding='utf-8') as f:
                         f.write(python_content)
-                    print(f"✅ Python script saved to: {python_filepath}")
+                    print(f"✅ Python script copied to chaosaws: {chaosaws_filepath}")
+                except ImportError:
+                    print("⚠️ chaosaws.ec2 not found, skipping copy to chaosaws directory")
+                except Exception as e:
+                    print(f"⚠️ Could not copy to chaosaws directory: {e}")
+            else:
+                print("⚠️  No se encontró bloque ```python en la respuesta del modelo")
 
-                    try:
-                        import chaosaws.ec2
-                        chaosaws_path    = chaosaws.ec2.__path__[0]
-                        chaosaws_filepath = os.path.join(chaosaws_path, python_filename)
-                        with open(chaosaws_filepath, 'w', encoding='utf-8') as f:
-                            f.write(python_content)
-                        print(f"✅ Python script copied to chaosaws: {chaosaws_filepath}")
-                    except ImportError:
-                        print("⚠️ chaosaws.ec2 not found, skipping copy to chaosaws directory")
-                    except Exception as e:
-                        print(f"⚠️ Could not copy to chaosaws directory: {e}")
+            # ── JSON block — tolerant search ─────────────────────────────────
+            json_content = None
+            for json_tag in ["```json", "```JSON"]:
+                idx = response_text.find(json_tag)
+                if idx != -1:
+                    start = idx + len(json_tag)
+                    end   = response_text.find("```", start)
+                    if end != -1:
+                        json_content = response_text[start:end].strip()
+                        break
 
-            # Extract JSON manifest
-            json_start = response_text.find("```json")
-            if json_start != -1:
-                json_start += 7
-                json_end = response_text.find("```", json_start)
-                if json_end != -1:
-                    json_content  = response_text[json_start:json_end].strip()
-                    json_filepath = os.path.join(experiment_subdir,
-                                                 f"{safe_sce_node}_{safe_probe_type}.json")
-                    with open(json_filepath, 'w', encoding='utf-8') as f:
-                        f.write(json_content)
-                    print(f"✅ JSON manifest saved to: {json_filepath}")
-                    return True
+            if json_content:
+                json_filepath = os.path.join(experiment_subdir,
+                                             f"{safe_sce_node}_{safe_probe_type}.json")
+                with open(json_filepath, 'w', encoding='utf-8') as f:
+                    f.write(json_content)
+                print(f"✅ JSON manifest saved to: {json_filepath}")
+                return True
 
+            # ── Neither block found — save raw response for diagnosis ─────────
+            print("⚠️  No se encontró bloque ```json en la respuesta del modelo")
+            raw_path = os.path.join(experiment_subdir,
+                                    f"{safe_sce_node}_{safe_probe_type}_raw_response.txt")
+            with open(raw_path, 'w', encoding='utf-8') as f:
+                f.write(response_text)
+            print(f"📄 Respuesta cruda guardada en: {raw_path}")
+            print("   Revisa ese archivo para ver qué devolvió el modelo.")
             return False
+
         except Exception as e:
             print(f"❌ Error saving SCE experiment files: {e}")
             return False
 
     def _save_metrics_report(self, response_text: str, sce_node: str, probe_type: str):
-        """Save pre-execution report and extract Q_pre. Returns (success, q_pre_score)."""
         try:
             safe_sce_node   = self._sanitize_name(sce_node)
             safe_probe_type = self._sanitize_name(probe_type)
 
-            reports_dir  = os.path.join(self.workspace_path, "reports")
-            report_subdir = os.path.join(reports_dir, f"{safe_sce_node}_{safe_probe_type}")
+            report_subdir = os.path.join(self.workspace_path, "reports",
+                                         f"{safe_sce_node}_{safe_probe_type}")
             os.makedirs(report_subdir, exist_ok=True)
 
-            # Extract markdown block
             report_start = response_text.find("```markdown")
             if report_start != -1:
                 report_start += 11
@@ -666,13 +744,12 @@ Q_post = XX.XX
                 report_content = (response_text[idx:].strip()
                                   if idx != -1 else response_text.strip())
 
-            report_filename = f"pre_execution_report_{safe_sce_node}_{safe_probe_type}.md"
-            report_filepath = os.path.join(report_subdir, report_filename)
+            report_filepath = os.path.join(report_subdir,
+                                           f"pre_execution_report_{safe_sce_node}_{safe_probe_type}.md")
             with open(report_filepath, 'w', encoding='utf-8') as f:
                 f.write(report_content)
             print(f"✅ Pre-execution report saved to: {report_filepath}")
 
-            # FIX: use robust extractor on the FULL response (not just markdown block)
             q_pre_score = self._extract_score(response_text, "Q_pre")
             if q_pre_score is None:
                 q_pre_score = self._extract_score(report_content, "Q_pre")
@@ -698,13 +775,12 @@ Q_post = XX.XX
             return False, None
 
     def _save_metrics_post_report(self, response_text: str, sce_node: str, probe_type: str):
-        """Save post-execution report and extract Q_post. Returns (success, q_post_score)."""
         try:
             safe_sce_node   = self._sanitize_name(sce_node)
             safe_probe_type = self._sanitize_name(probe_type)
 
-            reports_dir   = os.path.join(self.workspace_path, "reports")
-            report_subdir = os.path.join(reports_dir, f"{safe_sce_node}_{safe_probe_type}")
+            report_subdir = os.path.join(self.workspace_path, "reports",
+                                         f"{safe_sce_node}_{safe_probe_type}")
             os.makedirs(report_subdir, exist_ok=True)
 
             report_start = response_text.find("```markdown")
@@ -718,13 +794,12 @@ Q_post = XX.XX
                 report_content = (response_text[idx:].strip()
                                   if idx != -1 else response_text.strip())
 
-            report_filename = f"post_execution_report_{safe_sce_node}_{safe_probe_type}.md"
-            report_filepath = os.path.join(report_subdir, report_filename)
+            report_filepath = os.path.join(report_subdir,
+                                           f"post_execution_report_{safe_sce_node}_{safe_probe_type}.md")
             with open(report_filepath, 'w', encoding='utf-8') as f:
                 f.write(report_content)
             print(f"✅ Post-execution report saved to: {report_filepath}")
 
-            # FIX: use robust extractor
             q_post_score = self._extract_score(response_text, "Q_post")
             if q_post_score is None:
                 q_post_score = self._extract_score(report_content, "Q_post")
@@ -775,7 +850,8 @@ Q_post = XX.XX
             print(f"❌ Error saving DOT file: {e}")
             return False
 
-    def _call_amazon_q(self, prompt: str, use_context: bool = True) -> str:
+    def _call_amazon_q(self, prompt: str, use_context: bool = True,
+                       model_id: Optional[str] = None) -> str:
         try:
             if use_context and self.conversation_history:
                 context = "\n\n".join([
@@ -786,14 +862,16 @@ Q_post = XX.XX
             else:
                 full_prompt = prompt
 
+            effective_model = model_id or self.model_experiment or AVAILABLE_MODELS[0]
+
             response = self.bedrock.converse(
-                modelId="global.anthropic.claude-haiku-4-5-20251001-v1:0",
+                modelId=effective_model,
                 messages=[{
                     "role": "user",
                     "content": [{"text": full_prompt}]
                 }],
                 inferenceConfig={
-                    "maxTokens": 64000,
+                    "maxTokens": 8192,
                     "temperature": 1,
                 },
             )
@@ -817,85 +895,121 @@ Q_post = XX.XX
     # Main orchestrator
     # ─────────────────────────────────────────────────────────────────────────
 
-    def run_automated_conversation(self, mission_yaml: str, threat_intelligence: str,
-                                   attack_yaml: str, structure_dot: str):
+    def run_automated_conversation(self, start_mode: str,
+                                   existing_dot: Optional[str] = None,
+                                   mission_yaml: Optional[str] = None,
+                                   threat_intelligence: Optional[str] = None,
+                                   attack_yaml: Optional[str] = None,
+                                   structure_dot: Optional[str] = None):
+        """
+        start_mode:
+          'full'     — stages 1-2-3 (build tree from scratch) then experiments
+          'from_dot' — skip stages 1-2-3, load existing .dot, go straight to experiments
+        """
+        print("🚀 Starting Automated SCE Conversation")
 
-        print("🚀 Starting Automated SCE Conversation with Amazon Q")
+        # ── Model selection ──────────────────────────────────────────────────
+        if start_mode == 'full':
+            self.model_tree       = _select_model("Attack-Defense Tree generation")
+            self.model_experiment = _select_model("SCE Experiment generation")
+        else:
+            # Tree model only needed if a rebuild is triggered later via regen option
+            print("\n💡 Starting from existing .dot — tree model only needed if you later "
+                  "choose to rebuild the tree.")
+            self.model_tree       = _select_model("Attack-Defense Tree (rebuild only)")
+            self.model_experiment = _select_model("SCE Experiment generation")
 
-        # Stage 1
-        print(f"\n📁 Loading mission configuration from {mission_yaml}...")
-        if not self._load_yaml(mission_yaml):
-            print("❌ Failed to load mission configuration")
-            return
+        print(f"\n📌 Tree model      : {self.model_tree}")
+        print(f"📌 Experiment model: {self.model_experiment}")
 
-        print("📋 Stage 1: Analyzing mission from YAML configuration...")
-        mission_prompt = self._build_mission_prompt()
-        if not mission_prompt:
-            print("❌ Failed to build mission prompt")
-            return
+        # ── Stage 3 helper ───────────────────────────────────────────────────
+        def run_stage3() -> bool:
+            if not structure_dot:
+                print("❌ structure.dot path not available — cannot rebuild tree")
+                return False
+            print(f"\n🌳 Stage 3: Building attack-defense tree...")
+            attacks_yaml_path    = os.path.join(self.workspace_path, "attacks.yaml")
+            attacks_yaml_content = self._load_file(attacks_yaml_path)
+            if not attacks_yaml_content:
+                print("❌ Failed to load attacks.yaml file")
+                return False
+            structure_dot_content = self._load_file(structure_dot)
+            if not structure_dot_content:
+                print("❌ Failed to load structure.dot file")
+                return False
+            tree_prompt     = self._build_attack_defense_tree_prompt(attacks_yaml_content,
+                                                                     structure_dot_content)
+            stage3_response = self._call_amazon_q(tree_prompt, use_context=True,
+                                                  model_id=self.model_tree)
+            if not stage3_response:
+                print("❌ Failed to generate attack-defense tree")
+                return False
+            if not self._save_dot_output(stage3_response):
+                print("❌ Failed to save DOT output")
+                return False
+            print("✅ Attack-defense tree generated and saved as DOT file")
+            return True
 
-        stage1_response = self._call_amazon_q(mission_prompt, use_context=True)
-        if not stage1_response:
-            print("❌ Failed to get mission analysis")
-            return
-        print("✅ Mission analysis completed")
+        # ── Entry point branching ────────────────────────────────────────────
+        if start_mode == 'from_dot':
+            dest_dot    = os.path.join(self.workspace_path, "attack_defense_tree.dot")
+            dot_content = self._load_file(existing_dot)
+            if not dot_content:
+                print(f"❌ Could not load existing .dot file: {existing_dot}")
+                return
+            # Only copy if source and dest differ
+            if os.path.abspath(existing_dot) != os.path.abspath(dest_dot):
+                with open(dest_dot, 'w', encoding='utf-8') as f:
+                    f.write(dot_content)
+            print(f"✅ Loaded existing ADT from: {existing_dot}")
+            print("   Skipping Stages 1-2-3 (mission analysis, attack YAML, tree generation)")
 
-        # Stage 2
-        print(f"\n📁 Loading attack template from {attack_yaml}...")
-        self.attack_template = self._load_yaml(attack_yaml)
-        if not self.attack_template:
-            print("❌ Failed to load attack template")
-            return
+        else:
+            # full mode — stages 1, 2, 3
+            print(f"\n📁 Loading mission configuration from {mission_yaml}...")
+            if not self._load_yaml(mission_yaml):
+                print("❌ Failed to load mission configuration")
+                return
 
-        print("🎯 Stage 2: Generating attack YAML from threat intelligence...")
-        attack_prompt = self._build_attack_prompt(threat_intelligence)
-        if not attack_prompt:
-            print("❌ Failed to build attack prompt")
-            return
+            print("📋 Stage 1: Analyzing mission from YAML configuration...")
+            mission_prompt = self._build_mission_prompt()
+            if not mission_prompt:
+                print("❌ Failed to build mission prompt")
+                return
 
-        stage2_response = self._call_amazon_q(attack_prompt, False)
-        if not stage2_response:
-            print("❌ Failed to generate attack content")
-            return
+            stage1_response = self._call_amazon_q(mission_prompt, use_context=True,
+                                                  model_id=self.model_tree)
+            if not stage1_response:
+                print("❌ Failed to get mission analysis")
+                return
+            print("✅ Mission analysis completed")
 
-        if not self._extract_yaml_from_response(stage2_response):
-            print("❌ Failed to save attack file")
-            return
-        print("✅ Attack YAML generated and saved")
+            print(f"\n📁 Loading attack template from {attack_yaml}...")
+            self.attack_template = self._load_yaml(attack_yaml)
+            if not self.attack_template:
+                print("❌ Failed to load attack template")
+                return
 
-        # These hold the current experiment inputs across iterations
-        current_sce_node      : Optional[str] = None
-        current_probe_type    : Optional[str] = None
-        current_attack_nodes  : Optional[str] = None
-        current_template_json : Optional[str] = None
-        same_experiment       : bool           = False
+            print("🎯 Stage 2: Generating attack YAML from threat intelligence...")
+            attack_prompt = self._build_attack_prompt(threat_intelligence)
+            if not attack_prompt:
+                print("❌ Failed to build attack prompt")
+                return
 
-        print(f"\n🌳 Stage 3: Building attack-defense tree...")
-        
-        attacks_yaml_path    = os.path.join(self.workspace_path, "attacks.yaml")
-        attacks_yaml_content = self._load_file(attacks_yaml_path)
-        if not attacks_yaml_content:
-            print("❌ Failed to load attacks.yaml file")
-            return
+            stage2_response = self._call_amazon_q(attack_prompt, False, model_id=self.model_tree)
+            if not stage2_response:
+                print("❌ Failed to generate attack content")
+                return
 
-        structure_dot_content = self._load_file(structure_dot)
-        if not structure_dot_content:
-            print("❌ Failed to load structure.dot file")
-            return
+            if not self._extract_yaml_from_response(stage2_response):
+                print("❌ Failed to save attack file")
+                return
+            print("✅ Attack YAML generated and saved")
 
-        tree_prompt    = self._build_attack_defense_tree_prompt(attacks_yaml_content,
-                                                                structure_dot_content)
-        stage3_response = self._call_amazon_q(tree_prompt, use_context=True)
-        if not stage3_response:
-            print("❌ Failed to generate attack-defense tree")
-            return
+            if not run_stage3():
+                return
 
-        if not self._save_dot_output(stage3_response):
-            print("❌ Failed to save DOT output")
-            return
-        print("✅ Attack-defense tree generated and saved as DOT file")
-
-        # Quality thresholds
+        # ── Quality thresholds ───────────────────────────────────────────────
         print("\n📊 Enter quality threshold for pre-execution metrics (0-100, default=80):")
         threshold_input = input("> ").strip()
         try:
@@ -910,10 +1024,17 @@ Q_post = XX.XX
         try:
             quality_threshold_post = int(threshold_post_input) if threshold_post_input else 100
             quality_threshold_post = (quality_threshold_post
-                                    if 0 <= quality_threshold_post <= 100 else 100)
+                                      if 0 <= quality_threshold_post <= 100 else 100)
         except ValueError:
             quality_threshold_post = 100
         print(f"✅ Post-execution quality threshold: {quality_threshold_post}")
+
+        # ── Experiment loop ──────────────────────────────────────────────────
+        current_sce_node      : Optional[str] = None
+        current_probe_type    : Optional[str] = None
+        current_attack_nodes  : Optional[str] = None
+        current_template_json : Optional[str] = None
+        same_experiment       : bool           = False
 
         while True:
             loop_number = len(self.tracking_table) + 1
@@ -921,67 +1042,15 @@ Q_post = XX.XX
             print(f"🔁 Loop #{loop_number}")
             print(f"{'─'*60}")
 
-            if same_experiment:
-                # Stage 3
-                print(f"\n🌳 Stage 3: Building attack-defense tree...")
-
-                attacks_yaml_path    = os.path.join(self.workspace_path, "attacks.yaml")
-                attacks_yaml_content = self._load_file(attacks_yaml_path)
-                if not attacks_yaml_content:
-                    print("❌ Failed to load attacks.yaml file")
-                    return
-
-                structure_dot_content = self._load_file(structure_dot)
-                if not structure_dot_content:
-                    print("❌ Failed to load structure.dot file")
-                    return
-
-                tree_prompt    = self._build_attack_defense_tree_prompt(attacks_yaml_content,
-                                                                        structure_dot_content)
-                stage3_response = self._call_amazon_q(tree_prompt, use_context=True)
-                if not stage3_response:
-                    print("❌ Failed to generate attack-defense tree")
-                    return
-
-                if not self._save_dot_output(stage3_response):
-                    print("❌ Failed to save DOT output")
-                    return
-                print("✅ Attack-defense tree generated and saved as DOT file")
-
-                # Quality thresholds
-                print("\n📊 Enter quality threshold for pre-execution metrics (0-100, default=80):")
-                threshold_input = input("> ").strip()
-                try:
-                    quality_threshold = int(threshold_input) if threshold_input else 80
-                    quality_threshold = quality_threshold if 0 <= quality_threshold <= 100 else 80
-                except ValueError:
-                    quality_threshold = 80
-                print(f"✅ Pre-execution quality threshold: {quality_threshold}")
-
-                print("\n📊 Enter quality threshold for post-execution metrics (0-100, default=100):")
-                threshold_post_input = input("> ").strip()
-                try:
-                    quality_threshold_post = int(threshold_post_input) if threshold_post_input else 100
-                    quality_threshold_post = (quality_threshold_post
-                                            if 0 <= quality_threshold_post <= 100 else 100)
-                except ValueError:
-                    quality_threshold_post = 100
-                print(f"✅ Post-execution quality threshold: {quality_threshold_post}")
-
-            # Stage 4 — experiment loop
             print("\n🧪 Stage 4: Generating SCE experiments...")
 
-            # ── If NOT regenerating the same experiment, ask for new inputs ──
             if not same_experiment:
                 print("\n🧪 Enter SCE Node name:")
                 current_sce_node = input("> ")
-
                 print("\n🔍 Enter Probe Type (Preventive/Detective/Reactive):")
                 current_probe_type = input("> ")
-
                 print("\n🎯 Enter Attack Nodes:")
                 current_attack_nodes = input("> ")
-
                 print("\n📋 Enter Template JSON filename:")
                 current_template_json = input("> ")
             else:
@@ -991,7 +1060,6 @@ Q_post = XX.XX
                 print(f"   Attack Nodes: {current_attack_nodes}")
                 print(f"   Template    : {current_template_json}")
 
-            # Reset flag for next iteration
             same_experiment = False
 
             sce_node      = current_sce_node
@@ -1004,24 +1072,19 @@ Q_post = XX.XX
                 print("❌ Failed to load template.json")
                 experiment_name = (f"{self._sanitize_name(sce_node)}_"
                                    f"{self._sanitize_name(probe_type)}")
-                self._tracking_add(experiment_name, loop_number, None, None)
+                self._tracking_add(experiment_name, loop_number, None, None, self.model_experiment)
                 continue
 
             safe_sce_node   = self._sanitize_name(sce_node)
             safe_probe_type = self._sanitize_name(probe_type)
             experiment_name = f"{safe_sce_node}_{safe_probe_type}"
 
-            # Paths
-            experiments_dir   = os.path.join(self.workspace_path, "experiments")
-            experiment_subdir = os.path.join(experiments_dir, experiment_name)
-            reports_dir       = os.path.join(self.workspace_path, "reports")
-            report_subdir     = os.path.join(reports_dir, experiment_name)
-
+            experiment_subdir        = os.path.join(self.workspace_path, "experiments", experiment_name)
+            report_subdir            = os.path.join(self.workspace_path, "reports", experiment_name)
             log_path                 = os.path.join(experiment_subdir, f"output_{experiment_name}.log")
             metrics_report_path      = os.path.join(report_subdir, f"pre_execution_report_{experiment_name}.md")
             post_metrics_report_path = os.path.join(report_subdir, f"post_execution_report_{experiment_name}.md")
 
-            # Load previous artifacts silently if they exist
             previous_log = None
             if os.path.exists(log_path):
                 print(f"\n📝 Found existing execution log: output_{experiment_name}.log")
@@ -1061,43 +1124,41 @@ Q_post = XX.XX
             if not any([previous_log, previous_metrics_report, previous_post_metrics_report]):
                 print("   Generating experiment from scratch.")
 
-            # Generate experiment
             sce_prompt = self._build_sce_experiment_prompt(
                 sce_node, probe_type, attack_nodes, template_json_content,
                 previous_log, previous_metrics_report, previous_post_metrics_report
             )
-            sce_response = self._call_amazon_q(sce_prompt, use_context=True)
+            sce_response = self._call_amazon_q(sce_prompt, use_context=False,
+                                               model_id=self.model_experiment)
             if not sce_response:
                 print("❌ Failed to generate SCE experiment")
-                self._tracking_add(experiment_name, loop_number, None, None)
+                self._tracking_add(experiment_name, loop_number, None, None, self.model_experiment)
                 continue
 
             if not self._save_sce_experiment_output(sce_response, sce_node, probe_type):
                 print("❌ Failed to save SCE experiment files")
-                self._tracking_add(experiment_name, loop_number, None, None)
+                self._tracking_add(experiment_name, loop_number, None, None, self.model_experiment)
                 continue
             print("✅ SCE experiment generated and saved")
 
-            # Pre-execution quality evaluation
             print("\n📊 Evaluating pre-execution quality metrics...")
-
-            dot_filepath = os.path.join(self.workspace_path, "attack_defense_tree.dot")
-            dot_content  = self._load_file(dot_filepath) or "# DOT file not available"
+            dot_filepath  = os.path.join(self.workspace_path, "attack_defense_tree.dot")
+            dot_content   = self._load_file(dot_filepath) or "# DOT file not available"
             json_filepath = os.path.join(experiment_subdir, f"{experiment_name}.json")
             json_content  = self._load_file(json_filepath) or "{}"
-            py_filepath  = os.path.join(experiment_subdir, f"{experiment_name}.py")
-            py_content   = self._load_file(py_filepath) or "# Python file not available"
+            py_filepath   = os.path.join(experiment_subdir, f"{experiment_name}.py")
+            py_content    = self._load_file(py_filepath) or "# Python file not available"
 
             metrics_prompt   = self._build_metrics_prompt(
                 dot_content, json_content, py_content,
                 sce_node, probe_type, attack_nodes, quality_threshold
             )
-            metrics_response = self._call_amazon_q(metrics_prompt, use_context=False)
+            metrics_response = self._call_amazon_q(metrics_prompt, use_context=False,
+                                                   model_id=self.model_experiment)
 
             q_pre_score = None
             if metrics_response:
-                save_ok, q_pre_score = self._save_metrics_report(
-                    metrics_response, sce_node, probe_type)
+                save_ok, q_pre_score = self._save_metrics_report(metrics_response, sce_node, probe_type)
                 if save_ok:
                     print("✅ Pre-execution quality evaluation completed")
                 else:
@@ -1105,16 +1166,15 @@ Q_post = XX.XX
             else:
                 print("⚠️ Failed to generate metrics evaluation")
 
-            # Register row — q_post updated in place later
             tracking_row: Dict = {
                 "experiment": experiment_name,
                 "loop":       loop_number,
                 "q_pre":      q_pre_score,
                 "q_post":     None,
+                "model":      self.model_experiment,
             }
             self.tracking_table.append(tracking_row)
 
-            # Execution decision
             q_post_score = None
 
             if q_pre_score is not None and q_pre_score >= quality_threshold:
@@ -1165,7 +1225,6 @@ Q_post = XX.XX
                     except Exception as e:
                         print(f"❌ Error executing experiment: {e}")
 
-                    # Post-execution quality evaluation
                     if execution_successful and os.path.exists(log_filepath):
                         print("\n📊 Evaluating post-execution quality metrics...")
                         output_log = self._load_file(log_filepath)
@@ -1175,7 +1234,8 @@ Q_post = XX.XX
                                 attack_nodes, quality_threshold_post
                             )
                             metrics_post_response = self._call_amazon_q(
-                                metrics_post_prompt, use_context=False)
+                                metrics_post_prompt, use_context=False,
+                                model_id=self.model_experiment)
 
                             if metrics_post_response:
                                 save_ok, q_post_score = self._save_metrics_post_report(
@@ -1189,16 +1249,49 @@ Q_post = XX.XX
                                 if q_post_score is not None and q_post_score < quality_threshold_post:
                                     print(f"\n⚠️ Post-execution threshold not met "
                                           f"(Q_post={q_post_score:.2f} < {quality_threshold_post})")
-                                    # ── Continue? — two-step question ────────────────────────────────
-                                    print(f"\n🔁 Regenerate the same experiment ({experiment_name}) "
-                                        f"with updated logs/reports? (y/n): (The ADT will also be regenerated)")
+
+                                    print(f"\n🔁 Regenerate the same experiment ({experiment_name})? (y/n):")
                                     regen_response = input("> ").strip().lower()
 
                                     if regen_response == 'y':
-                                        # Keep current_sce_node / probe_type / attack_nodes / template_json
-                                        # and reload artifacts from disk on next iteration
-                                        same_experiment = True
-                                        continue
+                                        print("\n📐 Regenerate from:")
+                                        print("  1. Attack-Defense Tree (rebuild tree then experiment)")
+                                        print("  2. Experiment only (use existing tree + logs)")
+                                        regen_mode = input("> ").strip()
+
+                                        if regen_mode == '1':
+                                            # If in from_dot mode, structure_dot may be None
+                                            if not structure_dot:
+                                                print("\n⚠️  Tree rebuild requires structure.dot.")
+                                                print("   Enter path to structure.dot (or press Enter to skip):")
+                                                provided = input("> ").strip()
+                                                if provided:
+                                                    structure_dot = provided
+                                                else:
+                                                    print("❌ No structure.dot provided — falling back to experiment-only regen.")
+                                                    same_experiment = True
+                                                    continue
+                                            print("\n🌳 Rebuilding Attack-Defense Tree...")
+                                            if not run_stage3():
+                                                print("❌ Tree rebuild failed; regenerating experiment only...")
+                                            print("\n📊 Update pre-execution threshold? "
+                                                  f"(current={quality_threshold}, press Enter to keep):")
+                                            t_in = input("> ").strip()
+                                            if t_in.isdigit():
+                                                quality_threshold = max(0, min(100, int(t_in)))
+                                                print(f"✅ New pre-execution threshold: {quality_threshold}")
+                                            print("\n📊 Update post-execution threshold? "
+                                                  f"(current={quality_threshold_post}, press Enter to keep):")
+                                            t_in = input("> ").strip()
+                                            if t_in.isdigit():
+                                                quality_threshold_post = max(0, min(100, int(t_in)))
+                                                print(f"✅ New post-execution threshold: {quality_threshold_post}")
+                                            same_experiment = True
+                                            continue
+                                        else:
+                                            print("\n🔁 Regenerating experiment from existing tree and logs...")
+                                            same_experiment = True
+                                            continue
                             else:
                                 print("⚠️ Failed to generate post-execution metrics evaluation")
                 else:
@@ -1213,14 +1306,11 @@ Q_post = XX.XX
             else:
                 print("\n💡 No quality score available for execution decision.")
 
-            # Not regenerating the same — ask if they want a different one
             print("\n🔄 Generate a different SCE experiment? (y/n):")
             continue_response = input("> ").strip().lower()
             if continue_response != 'y':
                 break
-            # same_experiment is already False, so next iteration will ask for new inputs
 
-        # FIX: print AND save tracking table as .md
         self._tracking_print()
         self._tracking_save_md()
         print("🎉 All SCE experiments completed!")
@@ -1256,8 +1346,8 @@ def test_bedrock_connection() -> bool:
 
     print("\n3️⃣ Testing model access...")
     try:
-        bedrock_models  = boto3.client('bedrock')
-        models          = bedrock_models.list_foundation_models()
+        bedrock_models   = boto3.client('bedrock')
+        models           = bedrock_models.list_foundation_models()
         available_models = [m['modelId'] for m in models['modelSummaries']]
         print(f"✅ Found {len(available_models)} available models")
     except Exception as e:
@@ -1282,21 +1372,47 @@ def test_bedrock_connection() -> bool:
         return False
 
 
-def interactive_input():
+def interactive_input() -> Dict:
+    """
+    Ask for start mode first, then collect only what is needed for that mode.
+    Returns a dict that unpacks directly into run_automated_conversation().
+    """
     print("🤖 ADTs and Experiments Automation")
     print("====================================\n")
 
-    print("📋 Enter Mission (YAML) filename:")
+    print("📐 Select start mode:")
+    print("  1. Full pipeline  — build tree from mission/threat intelligence, then experiments")
+    print("  2. From .dot file — load existing attack-defense tree, go straight to experiments")
+    while True:
+        mode_choice = input("> ").strip()
+        if mode_choice in ('1', '2'):
+            break
+        print("⚠️  Please enter 1 or 2")
+
+    if mode_choice == '2':
+        print("\n🌳 Enter path to existing Attack-Defense Tree (.dot) file:")
+        existing_dot = input("> ").strip()
+        return {
+            'start_mode':          'from_dot',
+            'existing_dot':        existing_dot,
+            'mission_yaml':        None,
+            'threat_intelligence': None,
+            'attack_yaml':         None,
+            'structure_dot':       None,
+        }
+
+    # Full pipeline
+    print("\n📋 Enter Mission (YAML) filename:")
     mission_yaml = input("> ")
 
     print("\n🎯 Threat Intelligence (end with single quote ' on new line):")
-    threat_intelligence_lines = []
+    ti_lines = []
     while True:
         line = input()
         if line.strip() == "'":
             break
-        threat_intelligence_lines.append(line)
-    threat_intelligence = '\n'.join(threat_intelligence_lines)
+        ti_lines.append(line)
+    threat_intelligence = '\n'.join(ti_lines)
 
     print("\n📝 Enter Attack Template (YAML) filename:")
     attack_yaml = input("> ")
@@ -1304,14 +1420,20 @@ def interactive_input():
     print("\n🌳 Enter Structure (DOT) filename:")
     structure_dot = input("> ")
 
-    return mission_yaml, threat_intelligence, attack_yaml, structure_dot
+    return {
+        'start_mode':          'full',
+        'existing_dot':        None,
+        'mission_yaml':        mission_yaml,
+        'threat_intelligence': threat_intelligence,
+        'attack_yaml':         attack_yaml,
+        'structure_dot':       structure_dot,
+    }
 
 
 def main():
-    mission_yaml, threat_intelligence, attack_yaml, structure_dot = interactive_input()
+    inputs = interactive_input()
     automation = SCEAutomationAPI()
-    automation.run_automated_conversation(mission_yaml, threat_intelligence,
-                                         attack_yaml, structure_dot)
+    automation.run_automated_conversation(**inputs)
 
 
 def run_test():

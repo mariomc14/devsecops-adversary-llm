@@ -1,0 +1,64 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-04-27 17:57:16 INFO] Validating the experiment's syntax
+[32m[2026-04-27 17:57:17 INFO] Experiment looks valid
+[32m[2026-04-27 17:57:17 INFO] Running experiment: SCE 1.8 - Detect Malicious Build Start
+[32m[2026-04-27 17:57:17 INFO] Steady-state strategy: after-method-only
+[32m[2026-04-27 17:57:17 INFO] Rollbacks strategy: default
+[32m[2026-04-27 17:57:17 INFO] Playing your experiment's method now...
+[32m[2026-04-27 17:57:17 INFO] Action: establish-detective-controls
+2026-04-27 17:57:17,078 - INFO - Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-27 17:57:17,708 - INFO - AWS Account ID: 941377112071
+2026-04-27 17:57:17,708 - INFO - AWS Region: us-east-1
+2026-04-27 17:57:17,710 - INFO - Creating CloudFormation stack: sce-malicious-build-detect-1777330637
+2026-04-27 17:57:18,471 - INFO - Stack creation initiated: arn:aws:cloudformation:us-east-1:941377112071:stack/sce-malicious-build-detect-1777330637/70f75cb0-428c-11f1-af05-1218d0d3139b
+2026-04-27 17:57:18,600 - INFO - Stack status: CREATE_IN_PROGRESS
+2026-04-27 17:57:23,718 - INFO - Stack status: CREATE_IN_PROGRESS
+2026-04-27 17:57:31,668 - INFO - Stack status: CREATE_IN_PROGRESS
+2026-04-27 17:57:43,376 - INFO - Stack status: CREATE_IN_PROGRESS
+2026-04-27 17:58:00,670 - INFO - Stack status: CREATE_IN_PROGRESS
+2026-04-27 17:58:26,420 - INFO - Stack status: CREATE_IN_PROGRESS
+2026-04-27 17:58:56,881 - INFO - Stack status: CREATE_COMPLETE
+2026-04-27 17:58:57,010 - INFO - CodeBuild project created: sce-malicious-build-detect-1777330637-malicious-project
+2026-04-27 17:58:57,586 - INFO - Project ARN: arn:aws:codebuild:us-east-1:941377112071:project/sce-malicious-build-detect-1777330637-malicious-project
+2026-04-27 17:58:58,121 - INFO - EventBridge rule state: ENABLED
+2026-04-27 17:58:58,121 - INFO - EventBridge rule ARN: arn:aws:events:us-east-1:941377112071:rule/sce-malicious-build-detect-1777330637-build-state-rule
+2026-04-27 17:58:58,121 - INFO - Steady state established successfully
+[32m[2026-04-27 17:58:58 INFO] Action: start-malicious-build
+2026-04-27 17:58:58,131 - INFO - Starting malicious build on project: sce-malicious-build-detect-1777330637-malicious-project
+2026-04-27 17:58:58,747 - INFO - Attack executed - Build started:
+2026-04-27 17:58:58,747 - INFO -   Build ID: sce-malicious-build-detect-1777330637-malicious-project:3ac3e656-3d4d-4e14-b9f4-31857a33908e
+2026-04-27 17:58:58,747 - INFO -   Build ARN: arn:aws:codebuild:us-east-1:941377112071:build/sce-malicious-build-detect-1777330637-malicious-project:3ac3e656-3d4d-4e14-b9f4-31857a33908e
+2026-04-27 17:58:58,747 - INFO -   Initial Status: IN_PROGRESS
+2026-04-27 17:58:58,747 - INFO -   Start Time: 2026-04-27 17:58:58.664000-05:00
+2026-04-27 17:59:03,877 - INFO - Build current status: IN_PROGRESS
+[32m[2026-04-27 17:59:03 INFO] Steady state hypothesis: Detective controls should detect malicious build starts
+[32m[2026-04-27 17:59:03 INFO] Probe: verify-malicious-build-detected
+2026-04-27 17:59:04,424 - INFO - EventBridge rule state: ENABLED
+2026-04-27 17:59:04,530 - INFO - EventBridge rule targets: 1
+2026-04-27 17:59:04,530 - INFO - Waiting for events to propagate to CloudWatch Logs...
+2026-04-27 17:59:05,135 - INFO - Found build event in logs: {"version":"0","id":"78c79d9c-5185-f930-ed5b-da403d0d6086","detail-type":"CodeBuild Build State Change","source":"aws.codebuild","account":"941377112071","time":"2026-04-27T22:58:58Z","region":"us-eas...
+2026-04-27 17:59:05,562 - INFO - Metric datapoints: [{'Timestamp': datetime.datetime(2026, 4, 27, 22, 58, tzinfo=tzutc()), 'Sum': 1.0, 'Unit': 'None'}]
+2026-04-27 17:59:05,562 - INFO - Total malicious build starts recorded: 1.0
+2026-04-27 17:59:05,694 - INFO - CloudWatch Alarm state: OK
+2026-04-27 17:59:05,694 - INFO - Detection evidence summary: {'eventbridge_rule_active': True, 'logs_contain_build_event': True, 'metric_recorded': True}
+2026-04-27 17:59:05,694 - INFO - HYPOTHESIS VERIFIED: Detective control successfully detected the malicious build
+[32m[2026-04-27 17:59:05 INFO] Steady state hypothesis is met!
+[32m[2026-04-27 17:59:05 INFO] Let's rollback...
+[32m[2026-04-27 17:59:05 INFO] Rollback: cleanup-experiment-resources
+[32m[2026-04-27 17:59:05 INFO] Action: cleanup-experiment-resources
+2026-04-27 17:59:06,106 - INFO - Stopped build: sce-malicious-build-detect-1777330637-malicious-project:3ac3e656-3d4d-4e14-b9f4-31857a33908e
+2026-04-27 17:59:06,106 - INFO - Deleting CloudFormation stack: sce-malicious-build-detect-1777330637
+2026-04-27 17:59:06,673 - INFO - Stack deletion initiated
+2026-04-27 17:59:06,792 - INFO - Stack deletion status: DELETE_IN_PROGRESS
+2026-04-27 17:59:11,906 - INFO - Stack deletion status: DELETE_IN_PROGRESS
+2026-04-27 17:59:19,842 - INFO - Stack deletion status: DELETE_IN_PROGRESS
+2026-04-27 17:59:31,512 - INFO - Stack deletion status: DELETE_IN_PROGRESS
+2026-04-27 17:59:48,822 - INFO - Stack deletion status: DELETE_IN_PROGRESS
+2026-04-27 18:00:14,551 - INFO - Rollback completed successfully
+[32m[2026-04-27 18:00:14 INFO] Experiment ended with status: completed
+
+
+RETURN CODE: 0

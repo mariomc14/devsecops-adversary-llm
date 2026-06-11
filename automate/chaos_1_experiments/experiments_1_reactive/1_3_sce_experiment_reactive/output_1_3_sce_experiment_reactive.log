@@ -1,0 +1,27 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-04-08 22:07:30 INFO] Validating the experiment's syntax
+[32m[2026-04-08 22:07:30 INFO] Experiment looks valid
+[32m[2026-04-08 22:07:30 INFO] Running experiment: CodeBuild Project Creation Security Control
+[32m[2026-04-08 22:07:30 INFO] Steady-state strategy: after-method-only
+[32m[2026-04-08 22:07:30 INFO] Rollbacks strategy: default
+[32m[2026-04-08 22:07:30 INFO] Playing your experiment's method now...
+[32m[2026-04-08 22:07:30 INFO] Action: Create Secure CodeBuild Infrastructure
+2026-04-08 22:07:30,665 - INFO - Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-08 22:08:02,103 - INFO - Successfully created stack: sce-codebuild-experiment-1775704050
+[32m[2026-04-08 22:08:02 INFO] Action: Simulate Malicious CodeBuild Project Creation
+2026-04-08 22:08:33,393 - INFO - Successfully created stack: sce-codebuild-experiment-1775704082
+2026-04-08 22:08:34,558 - INFO - Created potentially malicious project: sce-malicious-project-1775704082
+[32m[2026-04-08 22:08:34 INFO] Steady state hypothesis: No Unauthorized CodeBuild Projects
+[32m[2026-04-08 22:08:34 INFO] Probe: Verify No Unauthorized Projects
+2026-04-08 22:08:34,974 - INFO - No unauthorized projects detected
+[32m[2026-04-08 22:08:34 INFO] Steady state hypothesis is met!
+[32m[2026-04-08 22:08:34 INFO] Let's rollback...
+[32m[2026-04-08 22:08:34 INFO] Rollback: Remove Experimental Resources
+[32m[2026-04-08 22:08:34 INFO] Action: Remove Experimental Resources
+[32m[2026-04-08 22:08:34 INFO] Experiment ended with status: completed
+
+
+RETURN CODE: 0

@@ -1,0 +1,92 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-04-11 19:15:30 INFO] Validating the experiment's syntax
+2026-04-11 19:15:31,024 - botocore.credentials - INFO - Found credentials in shared credentials file: ~/.aws/credentials
+[32m[2026-04-11 19:15:31 INFO] Experiment looks valid
+[32m[2026-04-11 19:15:31 INFO] Running experiment: SCE 1.3 - Reactive Probe for Malicious CodeBuild Detection
+[32m[2026-04-11 19:15:31 INFO] Steady-state strategy: after-method-only
+[32m[2026-04-11 19:15:31 INFO] Rollbacks strategy: default
+[32m[2026-04-11 19:15:31 INFO] Playing your experiment's method now...
+[32m[2026-04-11 19:15:31 INFO] Action: Deploy Detection Infrastructure (EventBridge, SNS, IAM)
+2026-04-11 19:15:31,100 - chaosaws.ec2.1_3_sce_experiment_reactive - INFO - === STEADY STATE: Deploying detection infrastructure ===
+2026-04-11 19:15:31,581 - chaosaws.ec2.1_3_sce_experiment_reactive - INFO - Account ID: 941377112071, Region: us-east-1
+2026-04-11 19:15:31,581 - chaosaws.ec2.1_3_sce_experiment_reactive - INFO - Creating IAM role: sce-codebuild-role-1775952931
+2026-04-11 19:15:32,153 - chaosaws.ec2.1_3_sce_experiment_reactive - INFO - Created IAM role: arn:aws:iam::941377112071:role/sce-codebuild-role-1775952931
+2026-04-11 19:15:32,287 - chaosaws.ec2.1_3_sce_experiment_reactive - INFO - Attached inline policy to role
+2026-04-11 19:15:34,287 - chaosaws.ec2.1_3_sce_experiment_reactive - INFO - Creating SNS topic: sce-codebuild-alerts-1775952931
+2026-04-11 19:15:34,851 - chaosaws.ec2.1_3_sce_experiment_reactive - INFO - Created SNS topic: arn:aws:sns:us-east-1:941377112071:sce-codebuild-alerts-1775952931
+2026-04-11 19:15:34,851 - chaosaws.ec2.1_3_sce_experiment_reactive - INFO - Creating EventBridge rule: sce-codebuild-detection-1775952931
+2026-04-11 19:15:35,484 - chaosaws.ec2.1_3_sce_experiment_reactive - INFO - Created EventBridge rule: sce-codebuild-detection-1775952931
+2026-04-11 19:15:35,484 - chaosaws.ec2.1_3_sce_experiment_reactive - INFO - Adding SNS topic as target to rule
+2026-04-11 19:15:35,667 - chaosaws.ec2.1_3_sce_experiment_reactive - INFO - Added SNS topic as target to EventBridge rule
+2026-04-11 19:15:35,667 - chaosaws.ec2.1_3_sce_experiment_reactive - INFO - Setting SNS resource policy for EventBridge
+2026-04-11 19:15:35,784 - chaosaws.ec2.1_3_sce_experiment_reactive - INFO - SNS resource policy set successfully
+2026-04-11 19:15:35,784 - chaosaws.ec2.1_3_sce_experiment_reactive - INFO - Checkpoint 1: Verifying EventBridge rule status...
+2026-04-11 19:15:35,888 - chaosaws.ec2.1_3_sce_experiment_reactive - INFO - ✓ Checkpoint 1: EventBridge rule is ENABLED
+2026-04-11 19:15:35,888 - chaosaws.ec2.1_3_sce_experiment_reactive - INFO - Checkpoint 2: Verifying event pattern configuration...
+2026-04-11 19:15:35,888 - chaosaws.ec2.1_3_sce_experiment_reactive - INFO - ✓ Checkpoint 2: Event pattern correctly configured
+2026-04-11 19:15:35,888 - chaosaws.ec2.1_3_sce_experiment_reactive - INFO - Checkpoint 3: Verifying SNS topic accessibility...
+2026-04-11 19:15:35,993 - chaosaws.ec2.1_3_sce_experiment_reactive - INFO - ✓ Checkpoint 3: SNS topic is accessible and operational
+2026-04-11 19:15:35,993 - chaosaws.ec2.1_3_sce_experiment_reactive - INFO - Checkpoint 4: Verifying EventBridge-to-SNS integration...
+2026-04-11 19:15:36,116 - chaosaws.ec2.1_3_sce_experiment_reactive - INFO - ✓ Checkpoint 4: EventBridge rule correctly targets SNS topic
+2026-04-11 19:15:36,116 - chaosaws.ec2.1_3_sce_experiment_reactive - INFO - === All infrastructure checkpoints passed ===
+2026-04-11 19:15:36,116 - chaosaws.ec2.1_3_sce_experiment_reactive - INFO - === Steady state deployment completed successfully ===
+[32m[2026-04-11 19:15:36 INFO] Action: Execute Attack: Create Malicious CodeBuild Project with Credential Exfiltration
+2026-04-11 19:15:36,116 - chaosaws.ec2.1_3_sce_experiment_reactive - INFO - === ATTACK: Creating malicious CodeBuild project ===
+2026-04-11 19:15:36,116 - chaosaws.ec2.1_3_sce_experiment_reactive - INFO - Creating malicious CodeBuild project: sce-malicious-project-1775952931
+2026-04-11 19:15:36,117 - chaosaws.ec2.1_3_sce_experiment_reactive - ERROR - Unexpected error during attack: Parameter validation failed:
+Unknown parameter in input: "buildspec", must be one of: name, description, source, secondarySources, sourceVersion, secondarySourceVersions, artifacts, secondaryArtifacts, cache, environment, serviceRole, timeoutInMinutes, queuedTimeoutInMinutes, encryptionKey, tags, vpcConfig, badgeEnabled, logsConfig, fileSystemLocations, buildBatchConfig, concurrentBuildLimit, autoRetryLimit
+Traceback (most recent call last):
+  File "/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaosaws/ec2/1_3_sce_experiment_reactive.py", line 311, in attack
+    response = codebuild_client.create_project(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/client.py", line 569, in _api_call
+    return self._make_api_call(operation_name, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/client.py", line 980, in _make_api_call
+    request_dict = self._convert_to_request_dict(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/client.py", line 1047, in _convert_to_request_dict
+    request_dict = self._serializer.serialize_to_request(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/validate.py", line 381, in serialize_to_request
+    raise ParamValidationError(report=report.generate_report())
+botocore.exceptions.ParamValidationError: Parameter validation failed:
+Unknown parameter in input: "buildspec", must be one of: name, description, source, secondarySources, sourceVersion, secondarySourceVersions, artifacts, secondaryArtifacts, cache, environment, serviceRole, timeoutInMinutes, queuedTimeoutInMinutes, encryptionKey, tags, vpcConfig, badgeEnabled, logsConfig, fileSystemLocations, buildBatchConfig, concurrentBuildLimit, autoRetryLimit
+[32m[2026-04-11 19:15:36 INFO] Steady state hypothesis: Reactive Control for Malicious CodeBuild Detection is Configured
+[32m[2026-04-11 19:15:36 INFO] Probe: Verify EventBridge Rule and SNS Topic Configuration
+2026-04-11 19:15:36,122 - chaosaws.ec2.1_3_sce_experiment_reactive - INFO - === HYPOTHESIS VERIFICATION: Checking reactive control ===
+2026-04-11 19:15:36,122 - chaosaws.ec2.1_3_sce_experiment_reactive - INFO - Checkpoint 1: Verifying EventBridge rule status...
+2026-04-11 19:15:36,222 - chaosaws.ec2.1_3_sce_experiment_reactive - INFO - ✓ Checkpoint 1: EventBridge rule is ENABLED
+2026-04-11 19:15:36,222 - chaosaws.ec2.1_3_sce_experiment_reactive - INFO - Checkpoint 2: Verifying event pattern configuration...
+2026-04-11 19:15:36,222 - chaosaws.ec2.1_3_sce_experiment_reactive - INFO - ✓ Checkpoint 2: Event pattern correctly configured
+2026-04-11 19:15:36,223 - chaosaws.ec2.1_3_sce_experiment_reactive - INFO - Checkpoint 3: Verifying SNS topic accessibility...
+2026-04-11 19:15:36,315 - chaosaws.ec2.1_3_sce_experiment_reactive - INFO - ✓ Checkpoint 3: SNS topic is accessible and operational
+2026-04-11 19:15:36,315 - chaosaws.ec2.1_3_sce_experiment_reactive - INFO - Checkpoint 4: Verifying EventBridge-to-SNS integration...
+2026-04-11 19:15:36,448 - chaosaws.ec2.1_3_sce_experiment_reactive - INFO - ✓ Checkpoint 4: EventBridge rule correctly targets SNS topic
+2026-04-11 19:15:36,448 - chaosaws.ec2.1_3_sce_experiment_reactive - INFO - === All hypothesis checkpoints passed ===
+2026-04-11 19:15:36,448 - chaosaws.ec2.1_3_sce_experiment_reactive - INFO - Conclusion: Reactive detection infrastructure is properly configured
+[32m[2026-04-11 19:15:36 INFO] Steady state hypothesis is met!
+[32m[2026-04-11 19:15:36 INFO] Let's rollback...
+[32m[2026-04-11 19:15:36 INFO] Rollback: Delete EventBridge Rule, SNS Topic, and IAM Role
+[32m[2026-04-11 19:15:36 INFO] Action: Delete EventBridge Rule, SNS Topic, and IAM Role
+2026-04-11 19:15:36,448 - chaosaws.ec2.1_3_sce_experiment_reactive - INFO - === ROLLBACK: Cleaning up experimental infrastructure ===
+2026-04-11 19:15:36,448 - chaosaws.ec2.1_3_sce_experiment_reactive - INFO - Deleting malicious CodeBuild project: sce-malicious-project-1775952931
+2026-04-11 19:15:36,945 - chaosaws.ec2.1_3_sce_experiment_reactive - INFO - Deleted CodeBuild project: sce-malicious-project-1775952931
+2026-04-11 19:15:36,945 - chaosaws.ec2.1_3_sce_experiment_reactive - INFO - Removing targets from EventBridge rule: sce-codebuild-detection-1775952931
+2026-04-11 19:15:37,163 - chaosaws.ec2.1_3_sce_experiment_reactive - INFO - Removed targets from EventBridge rule
+2026-04-11 19:15:37,163 - chaosaws.ec2.1_3_sce_experiment_reactive - INFO - Deleting EventBridge rule: sce-codebuild-detection-1775952931
+2026-04-11 19:15:37,317 - chaosaws.ec2.1_3_sce_experiment_reactive - INFO - Deleted EventBridge rule: sce-codebuild-detection-1775952931
+2026-04-11 19:15:37,317 - chaosaws.ec2.1_3_sce_experiment_reactive - INFO - Deleting SNS topic: arn:aws:sns:us-east-1:941377112071:sce-codebuild-alerts-1775952931
+2026-04-11 19:15:37,511 - chaosaws.ec2.1_3_sce_experiment_reactive - INFO - Deleted SNS topic: arn:aws:sns:us-east-1:941377112071:sce-codebuild-alerts-1775952931
+2026-04-11 19:15:37,511 - chaosaws.ec2.1_3_sce_experiment_reactive - INFO - Deleting inline policies from role: sce-codebuild-role-1775952931
+2026-04-11 19:15:37,783 - chaosaws.ec2.1_3_sce_experiment_reactive - INFO - Deleted inline policy: sce-codebuild-role-1775952931-policy
+2026-04-11 19:15:37,783 - chaosaws.ec2.1_3_sce_experiment_reactive - INFO - Deleting IAM role: sce-codebuild-role-1775952931
+2026-04-11 19:15:37,957 - chaosaws.ec2.1_3_sce_experiment_reactive - INFO - Deleted IAM role: sce-codebuild-role-1775952931
+2026-04-11 19:15:37,957 - chaosaws.ec2.1_3_sce_experiment_reactive - INFO - === Rollback completed ===
+[32m[2026-04-11 19:15:37 INFO] Experiment ended with status: completed
+
+
+RETURN CODE: 0

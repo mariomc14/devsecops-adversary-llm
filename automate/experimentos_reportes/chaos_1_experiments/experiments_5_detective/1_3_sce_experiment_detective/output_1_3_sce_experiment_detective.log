@@ -1,0 +1,53 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-04-08 21:23:00 INFO] Validating the experiment's syntax
+[32m[2026-04-08 21:23:00 INFO] Experiment looks valid
+[32m[2026-04-08 21:23:00 INFO] Running experiment: Detect Malicious CodeBuild Project Creation
+[32m[2026-04-08 21:23:00 INFO] Steady-state strategy: after-method-only
+[32m[2026-04-08 21:23:00 INFO] Rollbacks strategy: default
+[32m[2026-04-08 21:23:00 INFO] Playing your experiment's method now...
+[32m[2026-04-08 21:23:00 INFO] Action: Deploy detection infrastructure and establish steady state
+2026-04-08 21:23:00,656 - INFO - Starting steady_state with stack: sce-codebuild-detect-1775701380
+2026-04-08 21:23:00,672 - INFO - Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-08 21:23:01,177 - INFO - Using AWS Account: 941377112071, Region: us-east-1
+2026-04-08 21:23:01,653 - INFO - Creating CloudFormation stack: sce-codebuild-detect-1775701380
+2026-04-08 21:23:02,007 - INFO - Stack creation initiated: arn:aws:cloudformation:us-east-1:941377112071:stack/sce-codebuild-detect-1775701380/08dedc00-33bb-11f1-828b-1253e92658ad
+2026-04-08 21:23:02,159 - INFO - Stack status: CREATE_IN_PROGRESS
+2026-04-08 21:24:25,361 - INFO - Stack status: CREATE_COMPLETE
+2026-04-08 21:24:25,474 - INFO - Stack outputs: {'CodeBuildRoleArn': 'arn:aws:iam::941377112071:role/sce-codebuild-role-1775701380', 'DetectionRuleName': 'detect-codebuild-create-1775701380', 'LogGroupName': '/aws/events/codebuild-detection-1775701380'}
+[32m[2026-04-08 21:24:35 INFO] Action: Create malicious CodeBuild project to trigger detection
+2026-04-08 21:24:35,481 - INFO - Executing attack: Creating malicious CodeBuild project
+2026-04-08 21:24:36,017 - INFO - Using AWS Account: 941377112071, Region: us-east-1
+2026-04-08 21:24:36,420 - INFO - Using CodeBuild role: arn:aws:iam::941377112071:role/sce-codebuild-role-1775701380
+2026-04-08 21:24:36,420 - INFO - Creating malicious CodeBuild project: malicious-project-1775701380
+2026-04-08 21:24:37,088 - INFO - Successfully created malicious CodeBuild project: arn:aws:codebuild:us-east-1:941377112071:project/malicious-project-1775701380
+2026-04-08 21:24:37,088 - INFO - Waiting for event propagation (60 seconds)...
+[32m[2026-04-08 21:25:37 INFO] Steady state hypothesis: Detective controls should detect CodeBuild project creation events
+[32m[2026-04-08 21:25:37 INFO] Probe: Verify detection of malicious CodeBuild project creation
+2026-04-08 21:25:37,103 - INFO - Starting hypothesis verification
+2026-04-08 21:25:37,605 - INFO - Using AWS Account: 941377112071, Region: us-east-1
+2026-04-08 21:25:37,605 - INFO - Looking for detection of project: malicious-project-1775701380
+2026-04-08 21:25:37,605 - INFO - Checking log group: /aws/events/codebuild-detection-1775701380
+2026-04-08 21:25:38,094 - INFO - EventBridge rule state: ENABLED
+2026-04-08 21:25:38,094 - INFO - Checking for detection events (attempt 1/12)...
+2026-04-08 21:25:38,575 - INFO - Found 1 log streams
+2026-04-08 21:25:38,707 - INFO - Found CreateProject event for: arn:aws:codebuild:us-east-1:941377112071:project/malicious-project-1775701380
+2026-04-08 21:25:38,708 - INFO - SUCCESS: Detected our malicious CodeBuild project creation!
+2026-04-08 21:25:38,708 - INFO - HYPOTHESIS VERIFIED: Detective controls successfully detected malicious CodeBuild project creation
+[32m[2026-04-08 21:25:38 INFO] Steady state hypothesis is met!
+[32m[2026-04-08 21:25:38 INFO] Let's rollback...
+[32m[2026-04-08 21:25:38 INFO] Rollback: Delete all experiment resources including CodeBuild project and CloudFormation stack
+[32m[2026-04-08 21:25:38 INFO] Action: Delete all experiment resources including CodeBuild project and CloudFormation stack
+2026-04-08 21:25:38,719 - INFO - Starting rollback for stack: sce-codebuild-detect-1775701380
+2026-04-08 21:25:39,143 - INFO - Using AWS Account: 941377112071, Region: us-east-1
+2026-04-08 21:25:39,143 - INFO - Deleting CodeBuild project: malicious-project-1775701380
+2026-04-08 21:25:39,835 - INFO - CodeBuild project deleted successfully
+2026-04-08 21:25:40,323 - INFO - Deleting CloudFormation stack: sce-codebuild-detect-1775701380
+2026-04-08 21:25:40,769 - INFO - Stack status: DELETE_IN_PROGRESS
+2026-04-08 21:26:22,474 - INFO - Stack deleted successfully
+[32m[2026-04-08 21:26:22 INFO] Experiment ended with status: completed
+
+
+RETURN CODE: 0

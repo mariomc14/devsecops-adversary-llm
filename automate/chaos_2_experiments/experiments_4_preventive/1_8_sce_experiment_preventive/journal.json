@@ -1,0 +1,151 @@
+{
+  "chaoslib-version": "1.44.0",
+  "platform": "Linux-6.17.0-20-generic-x86_64-with-glibc2.39",
+  "node": "sce-user-VirtualBox",
+  "experiment": {
+    "title": "SCE 1.8 — Prevent Malicious CodeBuild Execution (Node 1.7: Start Malicious Build)",
+    "description": "Validates that an explicit IAM Deny policy prevents an adversary from invoking codebuild:StartBuild against a targeted CodeBuild project. The experiment deploys a CodeBuild project and an attack-simulation IAM role carrying a Deny guardrail, attempts to start a malicious build through the restricted role, and then verifies via IAM policy inspection, IAM Policy Simulator, and CodeBuild build-history queries that the preventive control blocked the attack at the AWS authorization layer.",
+    "tags": [
+      "sce",
+      "codebuild",
+      "supply-chain",
+      "malicious-build",
+      "preventive",
+      "iam",
+      "ci-poisoning",
+      "node-1-7",
+      "node-1-8"
+    ],
+    "steady-state-hypothesis": {
+      "title": "An explicit IAM Deny policy blocks codebuild:StartBuild for the attack-simulation role",
+      "probes": [
+        {
+          "type": "probe",
+          "name": "verify-startbuild-is-denied-by-iam-policy",
+          "tolerance": true,
+          "provider": {
+            "type": "python",
+            "module": "chaosaws.ec2.1_8_sce_experiment_preventive",
+            "func": "hypothesis_verification"
+          }
+        }
+      ]
+    },
+    "method": [
+      {
+        "type": "action",
+        "name": "deploy-malicious-build-experiment-stack",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_preventive",
+          "func": "steady_state"
+        }
+      },
+      {
+        "type": "action",
+        "name": "attempt-start-malicious-build-via-restricted-role",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_preventive",
+          "func": "attack"
+        }
+      }
+    ],
+    "rollbacks": [
+      {
+        "type": "action",
+        "name": "teardown-malicious-build-experiment-stack",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_preventive",
+          "func": "rollback"
+        }
+      }
+    ],
+    "dry": null
+  },
+  "start": "2026-04-12T02:46:19.418971+00:00",
+  "status": "completed",
+  "deviated": false,
+  "steady_states": {
+    "before": null,
+    "after": {
+      "steady_state_met": true,
+      "probes": [
+        {
+          "activity": {
+            "type": "probe",
+            "name": "verify-startbuild-is-denied-by-iam-policy",
+            "tolerance": true,
+            "provider": {
+              "type": "python",
+              "module": "chaosaws.ec2.1_8_sce_experiment_preventive",
+              "func": "hypothesis_verification"
+            }
+          },
+          "output": true,
+          "start": "2026-04-12T02:46:52.997183+00:00",
+          "status": "succeeded",
+          "end": "2026-04-12T02:46:54.574323+00:00",
+          "duration": 1.57714,
+          "tolerance_met": true
+        }
+      ]
+    },
+    "during": []
+  },
+  "run": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "deploy-malicious-build-experiment-stack",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_preventive",
+          "func": "steady_state"
+        }
+      },
+      "output": null,
+      "start": "2026-04-12T02:46:19.420782+00:00",
+      "status": "succeeded",
+      "end": "2026-04-12T02:46:51.761190+00:00",
+      "duration": 32.340408
+    },
+    {
+      "activity": {
+        "type": "action",
+        "name": "attempt-start-malicious-build-via-restricted-role",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_preventive",
+          "func": "attack"
+        }
+      },
+      "output": true,
+      "start": "2026-04-12T02:46:51.762052+00:00",
+      "status": "succeeded",
+      "end": "2026-04-12T02:46:52.996251+00:00",
+      "duration": 1.234199
+    }
+  ],
+  "rollbacks": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "teardown-malicious-build-experiment-stack",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_preventive",
+          "func": "rollback"
+        }
+      },
+      "output": null,
+      "start": "2026-04-12T02:46:54.575162+00:00",
+      "status": "succeeded",
+      "end": "2026-04-12T02:47:11.835830+00:00",
+      "duration": 17.260668
+    }
+  ],
+  "end": "2026-04-12T02:47:11.836295+00:00",
+  "duration": 52.42164468765259
+}

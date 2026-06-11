@@ -1,0 +1,51 @@
+{
+    "title": "SCE 1.3: Detective Control for Malicious CodeBuild Project Creation",
+    "description": "Validates that EventBridge detective controls successfully detect and log the creation of malicious CodeBuild projects. The experiment creates a CodeBuild project with suspicious characteristics and verifies that EventBridge rules capture the CreateProject API call, forwarding alerts to SNS and CloudWatch Logs.",
+    "tags": ["detective", "codebuild", "eventbridge", "cloudwatch", "security", "sce-1.3"],
+    "steady-state-hypothesis": {
+        "title": "Detective control detects malicious CodeBuild project creation",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "verify-detective-control-detected-malicious-project",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.1_3_sce_experiment_detective",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "deploy-detective-infrastructure",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_3_sce_experiment_detective",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "create-malicious-codebuild-project",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_3_sce_experiment_detective",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "cleanup-all-experiment-resources",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_3_sce_experiment_detective",
+                "func": "rollback"
+            }
+        }
+    ]
+}

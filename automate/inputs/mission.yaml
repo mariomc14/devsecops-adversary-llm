@@ -32,7 +32,7 @@ core_technologies:
 
   - name: "AWS CodeBuild"
     purpose: "Execute isolated CI jobs for compilation, SAST, dependency scanning/SCA, container build and vulnerability scanning, and release pipeline enforcement."
-
+3
 safeguard_logic:
 
   - name: "Preventive Safeguards"

@@ -1,0 +1,49 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-04-08 21:50:21 INFO] Validating the experiment's syntax
+[32m[2026-04-08 21:50:21 INFO] Experiment looks valid
+[32m[2026-04-08 21:50:21 INFO] Running experiment: SCE 1.3 — Detect Malicious CodeBuild Project Creation
+[32m[2026-04-08 21:50:21 INFO] Steady-state strategy: after-method-only
+[32m[2026-04-08 21:50:21 INFO] Rollbacks strategy: default
+[32m[2026-04-08 21:50:21 INFO] Playing your experiment's method now...
+[32m[2026-04-08 21:50:21 INFO] Action: Deploy detective control stack — EventBridge rule, CloudWatch Logs group, malicious IAM role, S3 artefact bucket
+2026-04-08 21:50:21,475 [INFO] Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-08 21:50:22,109 [INFO] Deploying CloudFormation stack: sce-experiment-1775703021
+2026-04-08 21:50:22,844 [INFO] Stack creation initiated.
+2026-04-08 21:50:22,962 [INFO] Stack sce-experiment-1775703021 status: CREATE_IN_PROGRESS
+2026-04-08 21:50:28,082 [INFO] Stack sce-experiment-1775703021 status: CREATE_IN_PROGRESS
+2026-04-08 21:50:35,500 [INFO] Stack sce-experiment-1775703021 status: CREATE_IN_PROGRESS
+2026-04-08 21:50:45,916 [INFO] Stack sce-experiment-1775703021 status: CREATE_IN_PROGRESS
+2026-04-08 21:51:01,436 [INFO] Stack sce-experiment-1775703021 status: CREATE_IN_PROGRESS
+2026-04-08 21:51:23,922 [INFO] Stack sce-experiment-1775703021 status: CREATE_IN_PROGRESS
+2026-04-08 21:51:54,356 [INFO] Stack sce-experiment-1775703021 status: CREATE_COMPLETE
+2026-04-08 21:51:54,468 [INFO] steady_state outputs: {'malicious_role_arn': 'arn:aws:iam::941377112071:role/sce-malicious-cb-role-1775703021', 'artefact_bucket': 'sce-cb-artefacts-1775703021', 'log_group_name': '/sce/codebuild-detective/1775703021', 'event_rule_name': 'sce-detect-cb-create-1775703021', 'account_id': '941377112071', 'region': 'us-east-1'}
+[32m[2026-04-08 21:51:54 INFO] Action: Create malicious CodeBuild project with overly-permissive role and exfiltration environment variable
+2026-04-08 21:51:54,484 [INFO] Creating malicious CodeBuild project: sce-malicious-project-1775703021
+2026-04-08 21:51:55,212 [INFO] Attack evidence — CodeBuild project ARN: arn:aws:codebuild:us-east-1:941377112071:project/sce-malicious-project-1775703021
+2026-04-08 21:51:55,417 [INFO] Malicious CodeBuild project deleted post-evidence capture.
+[32m[2026-04-08 21:51:55 INFO] Steady state hypothesis: EventBridge rule exists and CloudWatch Logs group is ready to receive CodeBuild CreateProject events
+[32m[2026-04-08 21:51:55 INFO] Probe: codebuild-create-project-detected-in-cloudwatch-logs
+2026-04-08 21:51:55,437 [INFO] Polling CloudWatch Logs group '/sce/codebuild-detective/1775703021' for evidence of project 'sce-malicious-project-1775703021' creation...
+2026-04-08 21:51:55,953 [INFO] No matching log event yet (299 s remaining). Retrying in 10 s...
+2026-04-08 21:52:06,364 [INFO] No matching log event yet (289 s remaining). Retrying in 13 s...
+2026-04-08 21:52:20,157 [INFO] Detective control CONFIRMED — found project name in log event. Stream: 62566a13-4c79-3fdb-9829-f80fcf485f4a | Preview: {"version":"0","id":"6516b79f-6ccb-27ff-e5e1-dde67812ecfd","detail-type":"AWS API Call via CloudTrail","source":"aws.codebuild","account":"941377112071","time":"2026-04-09T02:51:55Z","region":"us-east
+[32m[2026-04-08 21:52:20 INFO] Steady state hypothesis is met!
+[32m[2026-04-08 21:52:20 INFO] Let's rollback...
+[32m[2026-04-08 21:52:20 INFO] Rollback: Delete CloudFormation stack and all provisioned resources
+[32m[2026-04-08 21:52:20 INFO] Action: Delete CloudFormation stack and all provisioned resources
+2026-04-08 21:52:20,833 [INFO] Deleted lingering CodeBuild project: sce-malicious-project-1775703021
+2026-04-08 21:52:22,467 [INFO] Emptied S3 bucket: sce-cb-artefacts-1775703021
+2026-04-08 21:52:23,299 [INFO] Stack deletion initiated: sce-experiment-1775703021
+2026-04-08 21:52:23,429 [INFO] Stack sce-experiment-1775703021 status: DELETE_IN_PROGRESS
+2026-04-08 21:52:28,552 [INFO] Stack sce-experiment-1775703021 status: DELETE_IN_PROGRESS
+2026-04-08 21:52:36,150 [INFO] Stack sce-experiment-1775703021 status: DELETE_IN_PROGRESS
+2026-04-08 21:52:46,629 [INFO] Stack sce-experiment-1775703021 status: DELETE_IN_PROGRESS
+2026-04-08 21:53:02,144 [INFO] Stack sce-experiment-1775703021 no longer exists — treating as DELETE_COMPLETE.
+2026-04-08 21:53:02,146 [INFO] Stack sce-experiment-1775703021 deleted successfully.
+[32m[2026-04-08 21:53:02 INFO] Experiment ended with status: completed
+
+
+RETURN CODE: 0

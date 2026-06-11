@@ -1,0 +1,51 @@
+{
+    "title": "CodeBuild Project Creation Security Control",
+    "description": "Validate detection and prevention of unauthorized CodeBuild project creation",
+    "tags": ["aws", "codebuild", "security", "iam"],
+    "steady-state-hypothesis": {
+        "title": "No Unauthorized CodeBuild Projects",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "Verify No Unauthorized Projects",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.1_3_sce_experiment_reactive",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "Create Secure CodeBuild Infrastructure",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_3_sce_experiment_reactive",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "Simulate Malicious CodeBuild Project Creation",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_3_sce_experiment_reactive",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "Remove Experimental Resources",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_3_sce_experiment_reactive",
+                "func": "rollback"
+            }
+        }
+    ]
+}

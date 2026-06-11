@@ -1,0 +1,68 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-04-08 21:35:29 INFO] Validating the experiment's syntax
+[32m[2026-04-08 21:35:29 INFO] Experiment looks valid
+[32m[2026-04-08 21:35:29 INFO] Running experiment: SCE 1.3 - Detect Malicious CodeBuild Project Creation
+[32m[2026-04-08 21:35:29 INFO] Steady-state strategy: after-method-only
+[32m[2026-04-08 21:35:29 INFO] Rollbacks strategy: default
+[32m[2026-04-08 21:35:29 INFO] Playing your experiment's method now...
+[32m[2026-04-08 21:35:29 INFO] Action: deploy-detective-control-infrastructure
+2026-04-08 21:35:29,365 [INFO] === steady_state() - Deploying stack: sce-experiment-1775702129 ===
+2026-04-08 21:35:29,376 [INFO] Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-08 21:35:30,540 [INFO] Resolved AWS Account ID: 941377112071
+2026-04-08 21:35:30,542 [INFO] Creating CloudFormation stack: sce-experiment-1775702129
+2026-04-08 21:35:30,996 [INFO] Stack sce-experiment-1775702129 status: CREATE_IN_PROGRESS (elapsed 0s)
+2026-04-08 21:35:46,419 [INFO] Stack sce-experiment-1775702129 status: CREATE_IN_PROGRESS (elapsed 15s)
+2026-04-08 21:36:01,837 [INFO] Stack sce-experiment-1775702129 status: CREATE_IN_PROGRESS (elapsed 31s)
+2026-04-08 21:36:17,248 [INFO] Stack sce-experiment-1775702129 status: CREATE_IN_PROGRESS (elapsed 46s)
+2026-04-08 21:36:32,744 [INFO] Stack sce-experiment-1775702129 status: CREATE_IN_PROGRESS (elapsed 61s)
+2026-04-08 21:36:48,165 [INFO] Stack sce-experiment-1775702129 status: CREATE_COMPLETE (elapsed 77s)
+2026-04-08 21:36:48,166 [INFO] Stack sce-experiment-1775702129 deployed successfully.
+2026-04-08 21:36:48,166 [INFO] Waiting 15s for EventBridge rule to become fully active...
+[32m[2026-04-08 21:37:03 INFO] Action: create-malicious-codebuild-project
+2026-04-08 21:37:03,171 [INFO] === attack() - Creating malicious CodeBuild project: malicious-codebuild-1775702129 ===
+2026-04-08 21:37:03,598 [INFO] Using CodeBuild service role: arn:aws:iam::941377112071:role/sce-codebuild-role-1775702129
+2026-04-08 21:37:04,413 [INFO] Malicious CodeBuild project created successfully!
+2026-04-08 21:37:04,414 [INFO]   Project ARN: arn:aws:codebuild:us-east-1:941377112071:project/malicious-codebuild-1775702129
+2026-04-08 21:37:04,414 [INFO]   Project Name: malicious-codebuild-1775702129
+2026-04-08 21:37:04,414 [INFO]   HTTP Status: 200
+[32m[2026-04-08 21:37:04 INFO] Steady state hypothesis: Malicious CodeBuild project creation is detected by EventBridge rule via CloudTrail
+[32m[2026-04-08 21:37:04 INFO] Probe: verify-codebuild-creation-detected
+2026-04-08 21:37:04,420 [INFO] === hypothesis_verification() - Checking detective control ===
+2026-04-08 21:37:04,920 [INFO] EventBridge rule 'sce-detect-codebuild-1775702129' state: ENABLED
+2026-04-08 21:37:04,937 [INFO] Polling CloudWatch Log Group '/sce/codebuild-detective-1775702129' for detection evidence (max 360s, polling every 20s)...
+2026-04-08 21:37:05,347 [INFO] No log streams yet (0s elapsed). Waiting...
+2026-04-08 21:37:25,823 [INFO] Found 1 log stream(s). Checking for CreateProject events...
+2026-04-08 21:37:26,004 [INFO] DETECTION CONFIRMED: Found CreateProject event in log stream '69ed4be7-cdf1-3675-9085-5591e6645dea'
+2026-04-08 21:37:26,004 [INFO]   Event Name: CreateProject
+2026-04-08 21:37:26,004 [INFO]   Project Name in Event: arn:aws:codebuild:us-east-1:941377112071:project/malicious-codebuild-1775702129
+2026-04-08 21:37:26,004 [INFO]   Event Source: codebuild.amazonaws.com
+2026-04-08 21:37:26,004 [INFO]   Event Time: 2026-04-09T02:37:04Z
+2026-04-08 21:37:26,004 [INFO]   User Identity: {
+  "type": "IAMUser",
+  "principalId": "AIDA5WLTSZADR57FVL7I4",
+  "arn": "arn:aws:iam::941377112071:user/sce_user",
+  "accountId": "941377112071",
+  "accessKeyId": "AKIA5WLTSZADV4FB6UI2",
+  "userName
+2026-04-08 21:37:26,004 [INFO] FULL MATCH: Detected creation of our specific malicious project!
+[32m[2026-04-08 21:37:26 INFO] Steady state hypothesis is met!
+[32m[2026-04-08 21:37:26 INFO] Let's rollback...
+[32m[2026-04-08 21:37:26 INFO] Rollback: cleanup-experiment-resources
+[32m[2026-04-08 21:37:26 INFO] Action: cleanup-experiment-resources
+2026-04-08 21:37:26,012 [INFO] === rollback() - Cleaning up resources ===
+2026-04-08 21:37:26,510 [INFO] Deleted CodeBuild project: malicious-codebuild-1775702129
+2026-04-08 21:37:26,514 [INFO] Deleting CloudFormation stack: sce-experiment-1775702129
+2026-04-08 21:37:27,271 [INFO] Stack sce-experiment-1775702129 status: DELETE_IN_PROGRESS (elapsed 0s)
+2026-04-08 21:37:42,758 [INFO] Stack sce-experiment-1775702129 status: DELETE_IN_PROGRESS (elapsed 15s)
+2026-04-08 21:37:58,238 [INFO] Stack sce-experiment-1775702129 status: DELETE_IN_PROGRESS (elapsed 31s)
+2026-04-08 21:38:13,665 [INFO] Stack sce-experiment-1775702129 confirmed deleted.
+2026-04-08 21:38:13,665 [INFO] Stack sce-experiment-1775702129 deleted successfully.
+2026-04-08 21:38:14,139 [INFO] Log group /sce/codebuild-detective-1775702129 already deleted
+2026-04-08 21:38:14,139 [INFO] Rollback complete.
+[32m[2026-04-08 21:38:14 INFO] Experiment ended with status: completed
+
+
+RETURN CODE: 0

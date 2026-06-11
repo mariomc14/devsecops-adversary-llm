@@ -1,0 +1,100 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-04-27 17:41:45 INFO] Validating the experiment's syntax
+[32m[2026-04-27 17:41:45 INFO] Experiment looks valid
+[32m[2026-04-27 17:41:45 INFO] Running experiment: SCE Experiment 1.8 - Reactive Probe for Malicious Build Detection
+[32m[2026-04-27 17:41:45 INFO] Steady-state strategy: after-method-only
+[32m[2026-04-27 17:41:45 INFO] Rollbacks strategy: default
+[32m[2026-04-27 17:41:45 INFO] Playing your experiment's method now...
+[32m[2026-04-27 17:41:45 INFO] Action: deploy-codebuild-project-and-reactive-controls
+2026-04-27 17:41:45,804 - INFO - === Starting steady_state phase ===
+2026-04-27 17:41:45,811 - INFO - Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-27 17:41:46,454 - INFO - AWS Account ID: 941377112071
+2026-04-27 17:41:46,454 - INFO - Creating stack: sce-experiment-1777329706
+2026-04-27 17:41:47,203 - INFO - Stack creation initiated: sce-experiment-1777329706
+2026-04-27 17:41:47,327 - INFO - Stack sce-experiment-1777329706 status: CREATE_IN_PROGRESS
+2026-04-27 17:41:57,758 - INFO - Stack sce-experiment-1777329706 status: CREATE_IN_PROGRESS
+2026-04-27 17:42:08,198 - INFO - Stack sce-experiment-1777329706 status: CREATE_IN_PROGRESS
+2026-04-27 17:42:18,678 - INFO - Stack sce-experiment-1777329706 status: CREATE_IN_PROGRESS
+2026-04-27 17:42:29,224 - INFO - Stack sce-experiment-1777329706 status: CREATE_IN_PROGRESS
+2026-04-27 17:42:39,692 - INFO - Stack sce-experiment-1777329706 status: CREATE_IN_PROGRESS
+2026-04-27 17:42:50,178 - INFO - Stack sce-experiment-1777329706 status: CREATE_IN_PROGRESS
+2026-04-27 17:43:00,640 - INFO - Stack sce-experiment-1777329706 status: CREATE_COMPLETE
+2026-04-27 17:43:00,752 - INFO - Stack outputs: {
+  "AlarmName": "sce-malicious-build-alarm-1777329706",
+  "ProjectName": "sce-malicious-project-1777329706",
+  "EventRuleName": "sce-build-event-rule-1777329706",
+  "SNSTopicArn": "arn:aws:sns:us-east-1:941377112071:sce-malicious-build-alerts-1777329706",
+  "LogGroupName": "/aws/codebuild/sce-malicious-project-1777329706"
+}
+2026-04-27 17:43:01,280 - INFO - CodeBuild project verified: sce-malicious-project-1777329706
+2026-04-27 17:43:01,821 - INFO - EventBridge rule verified: sce-build-event-rule-1777329706, State: ENABLED
+2026-04-27 17:43:01,821 - INFO - === steady_state phase completed successfully ===
+[32m[2026-04-27 17:43:01 INFO] Action: execute-malicious-build-attack
+2026-04-27 17:43:01,827 - INFO - === Starting attack phase ===
+2026-04-27 17:43:01,833 - INFO - Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-27 17:43:01,961 - INFO - Starting malicious build on project: sce-malicious-project-1777329706
+2026-04-27 17:43:02,720 - INFO - Build started - ID: sce-malicious-project-1777329706:604ff34f-1315-4658-a38f-4892b4d5fb5b
+2026-04-27 17:43:02,721 - INFO - Build ARN: arn:aws:codebuild:us-east-1:941377112071:build/sce-malicious-project-1777329706:604ff34f-1315-4658-a38f-4892b4d5fb5b
+2026-04-27 17:43:02,721 - INFO - Initial build status: IN_PROGRESS
+2026-04-27 17:43:02,721 - INFO - Waiting for build to execute and generate events...
+2026-04-27 17:43:02,846 - INFO - Build status: IN_PROGRESS
+2026-04-27 17:43:17,978 - INFO - Build status: SUCCEEDED
+2026-04-27 17:43:17,978 - INFO - Build completed with status: SUCCEEDED
+2026-04-27 17:43:18,098 - INFO - Final build status: SUCCEEDED
+2026-04-27 17:43:18,099 - INFO - Build start time: 2026-04-27 17:43:02.664000-05:00
+2026-04-27 17:43:18,099 - INFO - Build end time: 2026-04-27 17:43:09.399000-05:00
+2026-04-27 17:43:18,099 - INFO - === attack phase completed successfully ===
+[32m[2026-04-27 17:43:18 INFO] Steady state hypothesis: Reactive controls should detect malicious CodeBuild execution
+[32m[2026-04-27 17:43:18 INFO] Probe: verify-reactive-controls-detected-malicious-build
+2026-04-27 17:43:18,102 - INFO - === Starting hypothesis_verification phase ===
+2026-04-27 17:43:18,109 - INFO - Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-27 17:43:18,196 - INFO - Checking if build was recorded...
+2026-04-27 17:43:18,647 - INFO - Build recorded: sce-malicious-project-1777329706:604ff34f-1315-4658-a38f-4892b4d5fb5b, Status: SUCCEEDED
+2026-04-27 17:43:18,647 - INFO - Checking EventBridge rule status...
+2026-04-27 17:43:19,167 - INFO - EventBridge rule is ENABLED: sce-build-event-rule-1777329706
+2026-04-27 17:43:19,278 - INFO - EventBridge rule has 1 target(s)
+2026-04-27 17:43:19,278 - INFO - Target: SNSTarget -> arn:aws:sns:us-east-1:941377112071:sce-malicious-build-alerts-1777329706
+2026-04-27 17:43:19,278 - INFO - Checking CloudWatch logs...
+2026-04-27 17:43:29,705 - INFO - Found log stream: 604ff34f-1315-4658-a38f-4892b4d5fb5b
+2026-04-27 17:43:29,841 - INFO - Found 48 log events
+2026-04-27 17:43:29,841 - INFO - MALICIOUS_INDICATOR found in logs!
+2026-04-27 17:43:29,841 - INFO - Checking CloudWatch alarm...
+2026-04-27 17:43:30,292 - INFO - Alarm found: sce-malicious-build-alarm-1777329706
+2026-04-27 17:43:30,292 - INFO - Alarm state: OK
+2026-04-27 17:43:30,292 - INFO - Alarm threshold: 1.0
+2026-04-27 17:43:30,389 - INFO - Found 1 alarm history items
+2026-04-27 17:43:30,389 - INFO - Alarm history: 2026-04-27 22:42:54.150000+00:00 - Alarm updated from INSUFFICIENT_DATA to OK
+2026-04-27 17:43:30,389 - INFO - Checking SNS topic...
+2026-04-27 17:43:30,829 - INFO - SNS topic found: arn:aws:sns:us-east-1:941377112071:sce-malicious-build-alerts-1777329706
+2026-04-27 17:43:30,829 - INFO - === Verification Results ===
+2026-04-27 17:43:30,829 - INFO - build_recorded: True
+2026-04-27 17:43:30,829 - INFO - eventbridge_detected: True
+2026-04-27 17:43:30,829 - INFO - cloudwatch_logs_captured: True
+2026-04-27 17:43:30,829 - INFO - alarm_configured: True
+2026-04-27 17:43:30,829 - INFO - sns_topic_exists: True
+2026-04-27 17:43:30,829 - INFO - === Reactive controls verified: True ===
+[32m[2026-04-27 17:43:30 INFO] Steady state hypothesis is met!
+[32m[2026-04-27 17:43:30 INFO] Let's rollback...
+[32m[2026-04-27 17:43:30 INFO] Rollback: cleanup-experiment-resources
+[32m[2026-04-27 17:43:30 INFO] Action: cleanup-experiment-resources
+2026-04-27 17:43:30,837 - INFO - === Starting rollback phase ===
+2026-04-27 17:43:30,843 - INFO - Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-27 17:43:30,934 - INFO - Emptying S3 bucket: sce-artifacts-1777329706
+2026-04-27 17:43:31,468 - INFO - Deleting stack: sce-experiment-1777329706
+2026-04-27 17:43:32,091 - INFO - Stack deletion initiated
+2026-04-27 17:43:32,212 - INFO - Stack sce-experiment-1777329706 status: DELETE_IN_PROGRESS
+2026-04-27 17:43:42,667 - INFO - Stack sce-experiment-1777329706 status: DELETE_IN_PROGRESS
+2026-04-27 17:43:53,107 - INFO - Stack sce-experiment-1777329706 status: DELETE_IN_PROGRESS
+2026-04-27 17:44:03,615 - INFO - Stack sce-experiment-1777329706 status: DELETE_IN_PROGRESS
+2026-04-27 17:44:14,116 - INFO - Stack sce-experiment-1777329706 status: DELETE_IN_PROGRESS
+2026-04-27 17:44:24,583 - INFO - Stack sce-experiment-1777329706 status: DELETE_IN_PROGRESS
+2026-04-27 17:44:35,065 - INFO - Stack sce-experiment-1777329706 status: DELETE_IN_PROGRESS
+2026-04-27 17:44:45,493 - INFO - Stack sce-experiment-1777329706 status: DELETE_IN_PROGRESS
+2026-04-27 17:44:55,938 - INFO - === rollback phase completed successfully ===
+[32m[2026-04-27 17:44:55 INFO] Experiment ended with status: completed
+
+
+RETURN CODE: 0

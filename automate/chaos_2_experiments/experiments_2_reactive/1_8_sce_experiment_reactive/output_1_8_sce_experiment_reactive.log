@@ -1,0 +1,60 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-04-19 22:21:08 INFO] Validating the experiment's syntax
+2026-04-19 22:21:08,617 - botocore.credentials - INFO - Found credentials in shared credentials file: ~/.aws/credentials
+[32m[2026-04-19 22:21:08 INFO] Experiment looks valid
+[32m[2026-04-19 22:21:08 INFO] Running experiment: SCE 1.8 - Reactive Detection of CodeBuild Credential Exfiltration
+[32m[2026-04-19 22:21:08 INFO] Steady-state strategy: after-method-only
+[32m[2026-04-19 22:21:08 INFO] Rollbacks strategy: default
+[32m[2026-04-19 22:21:08 INFO] Playing your experiment's method now...
+[32m[2026-04-19 22:21:08 INFO] Action: deploy-codebuild-infrastructure
+2026-04-19 22:21:08,822 - chaosaws.ec2.1_8_sce_experiment_reactive - INFO - ================================================================================
+2026-04-19 22:21:08,823 - chaosaws.ec2.1_8_sce_experiment_reactive - INFO - SCE 1.8 STEADY STATE - Experiment Initialization
+2026-04-19 22:21:08,823 - chaosaws.ec2.1_8_sce_experiment_reactive - INFO - Timestamp: 1776655268
+2026-04-19 22:21:08,823 - chaosaws.ec2.1_8_sce_experiment_reactive - INFO - Stack: sce-experiment-codebuild-1776655268
+2026-04-19 22:21:08,835 - chaosaws.ec2.1_8_sce_experiment_reactive - INFO - Region: us-east-1
+2026-04-19 22:21:09,338 - chaosaws.ec2.1_8_sce_experiment_reactive - INFO - Account: 941377112071
+2026-04-19 22:21:09,338 - chaosaws.ec2.1_8_sce_experiment_reactive - INFO - ================================================================================
+2026-04-19 22:21:09,879 - chaosaws.ec2.1_8_sce_experiment_reactive - INFO - ✓ Created CloudWatch Logs group: /aws/codebuild/sce-experiment-1776655268
+2026-04-19 22:21:10,456 - chaosaws.ec2.1_8_sce_experiment_reactive - INFO - ✓ Created IAM role: arn:aws:iam::941377112071:role/sce-codebuild-role-1776655268
+2026-04-19 22:21:10,589 - chaosaws.ec2.1_8_sce_experiment_reactive - INFO - ✓ Attached CloudWatch Logs policy to role
+2026-04-19 22:21:11,062 - chaosaws.ec2.1_8_sce_experiment_reactive - ERROR - ✗ Failed to create CodeBuild project: An error occurred (InvalidInputException) when calling the CreateProject operation: CodeBuild is not authorized to perform: sts:AssumeRole on service role. Please verify that: 1) The provided service role exists, 2) The role name is case-sensitive and matches exactly, and 3) The role has the necessary trust policy configured.
+2026-04-19 22:21:11,062 - chaosaws.ec2.1_8_sce_experiment_reactive - ERROR - ✗ STEADY STATE FAILED: An error occurred (InvalidInputException) when calling the CreateProject operation: CodeBuild is not authorized to perform: sts:AssumeRole on service role. Please verify that: 1) The provided service role exists, 2) The role name is case-sensitive and matches exactly, and 3) The role has the necessary trust policy configured.
+Traceback (most recent call last):
+  File "/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaosaws/ec2/1_8_sce_experiment_reactive.py", line 301, in steady_state
+    CODEBUILD_PROJECT_NAME = create_codebuild_project(ROLE_ARN)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/chaosaws/ec2/1_8_sce_experiment_reactive.py", line 160, in create_codebuild_project
+    response = codebuild_client.create_project(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/client.py", line 569, in _api_call
+    return self._make_api_call(operation_name, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/sce-user/Descargas/EXPERIMENTOS/devsecops-adversary-llm/chaostk/lib/python3.12/site-packages/botocore/client.py", line 1023, in _make_api_call
+    raise error_class(parsed_response, operation_name)
+botocore.errorfactory.InvalidInputException: An error occurred (InvalidInputException) when calling the CreateProject operation: CodeBuild is not authorized to perform: sts:AssumeRole on service role. Please verify that: 1) The provided service role exists, 2) The role name is case-sensitive and matches exactly, and 3) The role has the necessary trust policy configured.
+[32m[2026-04-19 22:21:11 INFO] Action: execute-malicious-codebuild-with-credential-exfiltration
+2026-04-19 22:21:11,071 - chaosaws.ec2.1_8_sce_experiment_reactive - ERROR - ✗ CodeBuild project not initialized. Run steady_state() first.
+[32m[2026-04-19 22:21:11 INFO] Steady state hypothesis: Reactive controls for CodeBuild credential exfiltration detection are active
+[32m[2026-04-19 22:21:11 INFO] Probe: verify-reactive-detection-infrastructure
+2026-04-19 22:21:11,073 - chaosaws.ec2.1_8_sce_experiment_reactive - ERROR - ✗ Build or log group not initialized
+[31m[2026-04-19 22:21:11 CRITICAL] Steady state probe 'verify-reactive-detection-infrastructure' is not in the given tolerance so failing this experiment
+[32m[2026-04-19 22:21:11 INFO] Let's rollback...
+[32m[2026-04-19 22:21:11 INFO] Rollback: cleanup-all-resources
+[32m[2026-04-19 22:21:11 INFO] Action: cleanup-all-resources
+2026-04-19 22:21:11,075 - chaosaws.ec2.1_8_sce_experiment_reactive - INFO - ================================================================================
+2026-04-19 22:21:11,075 - chaosaws.ec2.1_8_sce_experiment_reactive - INFO - SCE 1.8 ROLLBACK - Cleaning Up Resources
+2026-04-19 22:21:11,075 - chaosaws.ec2.1_8_sce_experiment_reactive - INFO - ================================================================================
+2026-04-19 22:21:11,340 - chaosaws.ec2.1_8_sce_experiment_reactive - INFO -   ✓ Deleted inline policy: CodeBuildLogsPolicy
+2026-04-19 22:21:11,495 - chaosaws.ec2.1_8_sce_experiment_reactive - INFO - ✓ Deleted IAM role: sce-codebuild-role-1776655268
+2026-04-19 22:21:12,327 - chaosaws.ec2.1_8_sce_experiment_reactive - INFO - ✓ Deleted CloudWatch Logs group: /aws/codebuild/sce-experiment-1776655268
+2026-04-19 22:21:12,327 - chaosaws.ec2.1_8_sce_experiment_reactive - INFO - ================================================================================
+2026-04-19 22:21:12,327 - chaosaws.ec2.1_8_sce_experiment_reactive - INFO - ✓ ROLLBACK COMPLETE - All resources cleaned up
+2026-04-19 22:21:12,327 - chaosaws.ec2.1_8_sce_experiment_reactive - INFO - ================================================================================
+[32m[2026-04-19 22:21:12 INFO] Experiment ended with status: deviated
+[32m[2026-04-19 22:21:12 INFO] The steady-state has deviated, a weakness may have been discovered
+
+
+RETURN CODE: 1

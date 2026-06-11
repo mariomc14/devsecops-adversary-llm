@@ -1,0 +1,148 @@
+{
+  "chaoslib-version": "1.44.0",
+  "platform": "Linux-6.17.0-20-generic-x86_64-with-glibc2.39",
+  "node": "sce-user-VirtualBox",
+  "experiment": {
+    "title": "SCE 1.8 Detective Probe: Malicious Build Detection",
+    "description": "Validates that detective controls (CloudWatch Logs, Metrics, CodeBuild monitoring) detect unauthorized CodeBuild execution attempting credential extraction via SSRF/credential misuse attacks.",
+    "tags": [
+      "sce-1.8",
+      "detective",
+      "malicious-build",
+      "credential-extraction",
+      "cloudwatch-monitoring",
+      "codebuild-detection"
+    ],
+    "steady-state-hypothesis": {
+      "title": "Detective control captures all CodeBuild executions",
+      "probes": [
+        {
+          "type": "probe",
+          "name": "verify-build-detection",
+          "tolerance": true,
+          "provider": {
+            "type": "python",
+            "module": "chaosaws.ec2.1_8_sce_experiment_detective",
+            "func": "hypothesis_verification"
+          }
+        }
+      ]
+    },
+    "method": [
+      {
+        "type": "action",
+        "name": "setup-detective-infrastructure",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_detective",
+          "func": "steady_state"
+        }
+      },
+      {
+        "type": "action",
+        "name": "initiate-malicious-build",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_detective",
+          "func": "attack"
+        }
+      }
+    ],
+    "rollbacks": [
+      {
+        "type": "action",
+        "name": "cleanup-experiment-resources",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_detective",
+          "func": "rollback"
+        }
+      }
+    ],
+    "dry": null
+  },
+  "start": "2026-04-13T04:04:58.987173+00:00",
+  "status": "completed",
+  "deviated": false,
+  "steady_states": {
+    "before": null,
+    "after": {
+      "steady_state_met": true,
+      "probes": [
+        {
+          "activity": {
+            "type": "probe",
+            "name": "verify-build-detection",
+            "tolerance": true,
+            "provider": {
+              "type": "python",
+              "module": "chaosaws.ec2.1_8_sce_experiment_detective",
+              "func": "hypothesis_verification"
+            }
+          },
+          "output": true,
+          "start": "2026-04-13T04:05:28.586601+00:00",
+          "status": "succeeded",
+          "end": "2026-04-13T04:05:30.394805+00:00",
+          "duration": 1.808204,
+          "tolerance_met": true
+        }
+      ]
+    },
+    "during": []
+  },
+  "run": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "setup-detective-infrastructure",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_detective",
+          "func": "steady_state"
+        }
+      },
+      "output": true,
+      "start": "2026-04-13T04:04:58.988472+00:00",
+      "status": "succeeded",
+      "end": "2026-04-13T04:05:24.396879+00:00",
+      "duration": 25.408407
+    },
+    {
+      "activity": {
+        "type": "action",
+        "name": "initiate-malicious-build",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_detective",
+          "func": "attack"
+        }
+      },
+      "output": true,
+      "start": "2026-04-13T04:05:24.397894+00:00",
+      "status": "succeeded",
+      "end": "2026-04-13T04:05:28.585078+00:00",
+      "duration": 4.187184
+    }
+  ],
+  "rollbacks": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "cleanup-experiment-resources",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_detective",
+          "func": "rollback"
+        }
+      },
+      "output": null,
+      "start": "2026-04-13T04:05:30.395626+00:00",
+      "status": "succeeded",
+      "end": "2026-04-13T04:05:48.467702+00:00",
+      "duration": 18.072076
+    }
+  ],
+  "end": "2026-04-13T04:05:48.467915+00:00",
+  "duration": 49.484323024749756
+}

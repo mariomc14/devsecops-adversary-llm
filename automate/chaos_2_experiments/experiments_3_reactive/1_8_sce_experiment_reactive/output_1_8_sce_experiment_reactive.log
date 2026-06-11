@@ -1,0 +1,63 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-04-16 21:50:17 INFO] Validating the experiment's syntax
+[32m[2026-04-16 21:50:17 INFO] Experiment looks valid
+[32m[2026-04-16 21:50:17 INFO] Running experiment: SCE 1.8 - Reactive Security Control for Malicious Build Detection
+[32m[2026-04-16 21:50:17 INFO] Steady-state strategy: after-method-only
+[32m[2026-04-16 21:50:17 INFO] Rollbacks strategy: default
+[32m[2026-04-16 21:50:17 INFO] Playing your experiment's method now...
+[32m[2026-04-16 21:50:17 INFO] Action: deploy-codebuild-with-logging
+2026-04-16 21:50:17,211 - INFO - Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-16 21:50:17,815 - INFO - Deploying CloudFormation stack: sce-experiment-1776394217
+2026-04-16 21:50:18,593 - INFO - Stack creation initiated, waiting for completion...
+2026-04-16 21:50:18,714 - INFO - Stack status: CREATE_IN_PROGRESS
+2026-04-16 21:50:20,827 - INFO - Stack status: CREATE_IN_PROGRESS
+2026-04-16 21:50:23,939 - INFO - Stack status: CREATE_IN_PROGRESS
+2026-04-16 21:50:28,552 - INFO - Stack status: CREATE_IN_PROGRESS
+2026-04-16 21:50:35,718 - INFO - Stack status: CREATE_IN_PROGRESS
+2026-04-16 21:50:46,349 - INFO - Stack status: CREATE_COMPLETE
+2026-04-16 21:50:46,349 - INFO - Stack sce-experiment-1776394217 created successfully
+2026-04-16 21:50:46,461 - INFO - Output: ProjectName = malicious-build-1776394217
+2026-04-16 21:50:46,461 - INFO - Output: LogGroupName = /aws/codebuild/malicious-build-1776394217
+[32m[2026-04-16 21:50:46 INFO] Action: start-malicious-build
+2026-04-16 21:50:46,470 - INFO - Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-16 21:50:47,073 - INFO - Executing attack: Starting malicious build
+2026-04-16 21:50:47,486 - INFO - Starting build for project: malicious-build-1776394217
+2026-04-16 21:50:48,013 - INFO - Build started successfully:
+2026-04-16 21:50:48,013 - INFO -   Build ID: malicious-build-1776394217:55f7e7c4-a416-4b5a-9ba3-82f6905a2e8d
+2026-04-16 21:50:48,013 - INFO -   Build ARN: arn:aws:codebuild:us-east-1:941377112071:build/malicious-build-1776394217:55f7e7c4-a416-4b5a-9ba3-82f6905a2e8d
+2026-04-16 21:50:48,013 - INFO -   Initial Status: IN_PROGRESS
+2026-04-16 21:50:53,130 - INFO - Build status: IN_PROGRESS
+2026-04-16 21:50:53,241 - INFO - Attack executed successfully. Build final status: IN_PROGRESS
+[32m[2026-04-16 21:50:53 INFO] Steady state hypothesis: CloudWatch Logs must capture malicious build activity
+[32m[2026-04-16 21:50:53 INFO] Probe: verify-reactive-logging-control
+2026-04-16 21:50:53,254 - INFO - Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-16 21:50:53,884 - INFO - Verifying reactive security control: CloudWatch Logs capture
+2026-04-16 21:50:54,302 - INFO - Checking log group: /aws/codebuild/malicious-build-1776394217
+2026-04-16 21:50:54,772 - INFO - Log group /aws/codebuild/malicious-build-1776394217 exists
+2026-04-16 21:51:05,202 - INFO - Found 1 log stream(s)
+2026-04-16 21:51:05,300 - INFO - Examining log stream: 55f7e7c4-a416-4b5a-9ba3-82f6905a2e8d
+2026-04-16 21:51:05,473 - INFO - Retrieved 36 log events from stream 55f7e7c4-a416-4b5a-9ba3-82f6905a2e8d
+2026-04-16 21:51:05,474 - INFO - EVIDENCE FOUND: 'malicious build' in log message
+2026-04-16 21:51:05,474 - INFO -   Message: [Container] 2026/04/17 02:50:54.777366 Running command echo 'Starting malicious build simulation'
+
+2026-04-16 21:51:05,474 - INFO - SUCCESS: Reactive control verified - malicious activity logged to CloudWatch
+[32m[2026-04-16 21:51:05 INFO] Steady state hypothesis is met!
+[32m[2026-04-16 21:51:05 INFO] Let's rollback...
+[32m[2026-04-16 21:51:05 INFO] Rollback: cleanup-experiment-resources
+[32m[2026-04-16 21:51:05 INFO] Action: cleanup-experiment-resources
+2026-04-16 21:51:05,483 - INFO - Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-16 21:51:05,999 - INFO - Rolling back: Deleting stack sce-experiment-1776394217
+2026-04-16 21:51:06,682 - INFO - Stack deletion initiated
+2026-04-16 21:51:06,808 - INFO - Stack status: DELETE_IN_PROGRESS
+2026-04-16 21:51:08,920 - INFO - Stack status: DELETE_IN_PROGRESS
+2026-04-16 21:51:12,033 - INFO - Stack status: DELETE_IN_PROGRESS
+2026-04-16 21:51:16,642 - INFO - Stack status: DELETE_IN_PROGRESS
+2026-04-16 21:51:23,872 - INFO - Stack deleted successfully
+2026-04-16 21:51:23,872 - INFO - Stack sce-experiment-1776394217 deleted successfully
+[32m[2026-04-16 21:51:23 INFO] Experiment ended with status: completed
+
+
+RETURN CODE: 0

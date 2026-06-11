@@ -1,0 +1,148 @@
+{
+  "chaoslib-version": "1.44.0",
+  "platform": "Linux-6.17.0-20-generic-x86_64-with-glibc2.39",
+  "node": "sce-user-VirtualBox",
+  "experiment": {
+    "title": "SCE 1.3 Reactive Control - Malicious CodeBuild Project Remediation",
+    "description": "Validates that a reactive control (EventBridge + Lambda) detects and automatically deletes a malicious CodeBuild project created by an attacker attempting credential exfiltration. The experiment creates the reactive infrastructure, simulates the attack by creating a malicious CodeBuild project with exfiltration commands in its buildspec, and verifies that the Lambda function successfully remediates the threat by deleting the project.",
+    "tags": [
+      "sce",
+      "reactive",
+      "codebuild",
+      "eventbridge",
+      "lambda",
+      "remediation"
+    ],
+    "steady-state-hypothesis": {
+      "title": "Malicious CodeBuild project is automatically deleted by reactive control",
+      "probes": [
+        {
+          "type": "probe",
+          "name": "verify-reactive-control-deleted-malicious-codebuild-project",
+          "tolerance": true,
+          "provider": {
+            "type": "python",
+            "module": "chaosaws.ec2.1_3_sce_experiment_reactive",
+            "func": "hypothesis_verification"
+          }
+        }
+      ]
+    },
+    "method": [
+      {
+        "type": "action",
+        "name": "deploy-reactive-control-infrastructure",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_sce_experiment_reactive",
+          "func": "steady_state"
+        }
+      },
+      {
+        "type": "action",
+        "name": "create-malicious-codebuild-project",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_sce_experiment_reactive",
+          "func": "attack"
+        }
+      }
+    ],
+    "rollbacks": [
+      {
+        "type": "action",
+        "name": "delete-experiment-stack-and-resources",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_sce_experiment_reactive",
+          "func": "rollback"
+        }
+      }
+    ],
+    "dry": null
+  },
+  "start": "2026-04-12T01:38:38.178622+00:00",
+  "status": "completed",
+  "deviated": false,
+  "steady_states": {
+    "before": null,
+    "after": {
+      "steady_state_met": true,
+      "probes": [
+        {
+          "activity": {
+            "type": "probe",
+            "name": "verify-reactive-control-deleted-malicious-codebuild-project",
+            "tolerance": true,
+            "provider": {
+              "type": "python",
+              "module": "chaosaws.ec2.1_3_sce_experiment_reactive",
+              "func": "hypothesis_verification"
+            }
+          },
+          "output": true,
+          "start": "2026-04-12T01:40:43.851892+00:00",
+          "status": "succeeded",
+          "end": "2026-04-12T01:40:52.680154+00:00",
+          "duration": 8.828262,
+          "tolerance_met": true
+        }
+      ]
+    },
+    "during": []
+  },
+  "run": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "deploy-reactive-control-infrastructure",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_sce_experiment_reactive",
+          "func": "steady_state"
+        }
+      },
+      "output": true,
+      "start": "2026-04-12T01:38:38.179048+00:00",
+      "status": "succeeded",
+      "end": "2026-04-12T01:40:42.689170+00:00",
+      "duration": 124.510122
+    },
+    {
+      "activity": {
+        "type": "action",
+        "name": "create-malicious-codebuild-project",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_sce_experiment_reactive",
+          "func": "attack"
+        }
+      },
+      "output": true,
+      "start": "2026-04-12T01:40:42.689440+00:00",
+      "status": "succeeded",
+      "end": "2026-04-12T01:40:43.851415+00:00",
+      "duration": 1.161975
+    }
+  ],
+  "rollbacks": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "delete-experiment-stack-and-resources",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_sce_experiment_reactive",
+          "func": "rollback"
+        }
+      },
+      "output": null,
+      "start": "2026-04-12T01:40:52.680638+00:00",
+      "status": "succeeded",
+      "end": "2026-04-12T01:41:55.574279+00:00",
+      "duration": 62.893641
+    }
+  ],
+  "end": "2026-04-12T01:41:55.574746+00:00",
+  "duration": 197.39962553977966
+}

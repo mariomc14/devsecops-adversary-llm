@@ -1,0 +1,51 @@
+{
+    "title": "SCE 1.8 - Preventive Control: Block Malicious CodeBuild Start",
+    "description": "Validates that an IAM-based preventive control denies attempts to start a CodeBuild build with an overridden malicious source (attack node 1.7 - Start Malicious Build). The experiment deploys a CodeBuild project and a constrained attacker role, then attempts to invoke StartBuild with a malicious source override. The hypothesis is that the explicit Deny policy prevents the build from starting.",
+    "tags": ["sce", "preventive", "codebuild", "iam", "malicious-build", "1.8"],
+    "steady-state-hypothesis": {
+        "title": "Malicious build start is blocked by preventive IAM policy",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "verify-malicious-build-was-prevented",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.1_8_sce_experiment_preventive",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "deploy-codebuild-project-and-preventive-iam-policy",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_8_sce_experiment_preventive",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "attempt-start-malicious-build-with-source-override",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_8_sce_experiment_preventive",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "delete-cloudformation-stack-and-all-resources",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_8_sce_experiment_preventive",
+                "func": "rollback"
+            }
+        }
+    ]
+}

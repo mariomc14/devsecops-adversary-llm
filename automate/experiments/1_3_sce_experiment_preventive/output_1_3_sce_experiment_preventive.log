@@ -1,0 +1,29 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-04-27 23:20:58 INFO] Validating the experiment's syntax
+[32m[2026-04-27 23:20:58 INFO] Experiment looks valid
+[32m[2026-04-27 23:20:58 INFO] Running experiment: CodeBuild Project Security Preventive Control Test
+[32m[2026-04-27 23:20:58 INFO] Steady-state strategy: after-method-only
+[32m[2026-04-27 23:20:58 INFO] Rollbacks strategy: default
+[32m[2026-04-27 23:20:58 INFO] Playing your experiment's method now...
+[32m[2026-04-27 23:20:58 INFO] Action: Create Initial CodeBuild Project
+2026-04-27 23:20:58,695 - INFO - Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-27 23:21:32,122 - ERROR - Failed to create steady state: Waiter StackCreateComplete failed: Waiter encountered a terminal failure state: For expression "Stacks[].StackStatus" we matched expected path: "ROLLBACK_COMPLETE" at least once
+[31m[2026-04-27 23:21:32 ERROR]   => failed: botocore.exceptions.WaiterError: Waiter StackCreateComplete failed: Waiter encountered a terminal failure state: For expression "Stacks[].StackStatus" we matched expected path: "ROLLBACK_COMPLETE" at least once
+[32m[2026-04-27 23:21:32 INFO] Action: Attempt Malicious Project Modification
+2026-04-27 23:21:32,174 - ERROR - No context provided for attack
+[32m[2026-04-27 23:21:32 INFO] Steady state hypothesis: CodeBuild Project Should Resist Malicious Modifications
+[32m[2026-04-27 23:21:32 INFO] Probe: Verify Preventive Controls
+2026-04-27 23:21:32,175 - ERROR - No context for verification
+[31m[2026-04-27 23:21:32 CRITICAL] Steady state probe 'Verify Preventive Controls' is not in the given tolerance so failing this experiment
+[32m[2026-04-27 23:21:32 INFO] Let's rollback...
+[32m[2026-04-27 23:21:32 INFO] Rollback: Delete Test Resources
+[32m[2026-04-27 23:21:32 INFO] Action: Delete Test Resources
+2026-04-27 23:21:32,176 - WARNING - No context for rollback
+[32m[2026-04-27 23:21:32 INFO] Experiment ended with status: deviated
+[32m[2026-04-27 23:21:32 INFO] The steady-state has deviated, a weakness may have been discovered
+
+
+RETURN CODE: 1

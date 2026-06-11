@@ -1,0 +1,77 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-04-27 18:47:39 INFO] Validating the experiment's syntax
+[32m[2026-04-27 18:47:39 INFO] Experiment looks valid
+[32m[2026-04-27 18:47:39 INFO] Running experiment: SCE 1.3 Reactive Control - Malicious CodeBuild Project Detection and Removal
+[32m[2026-04-27 18:47:39 INFO] Steady-state strategy: after-method-only
+[32m[2026-04-27 18:47:39 INFO] Rollbacks strategy: default
+[32m[2026-04-27 18:47:39 INFO] Playing your experiment's method now...
+[32m[2026-04-27 18:47:39 INFO] Action: deploy-reactive-control-infrastructure
+2026-04-27 18:47:39,240 - INFO - ============================================================
+2026-04-27 18:47:39,240 - INFO - STEADY STATE: Deploying reactive control infrastructure
+2026-04-27 18:47:39,240 - INFO - ============================================================
+2026-04-27 18:47:39,250 - INFO - Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-27 18:47:39,850 - INFO - Operating in account 941377112071, region us-east-1
+2026-04-27 18:47:40,327 - INFO - Creating CloudFormation stack: sce-experiment-1777333659
+2026-04-27 18:47:40,631 - INFO - Stack creation initiated: arn:aws:cloudformation:us-east-1:941377112071:stack/sce-experiment-1777333659/7a576690-4293-11f1-abae-12cadd56dc2d
+2026-04-27 18:47:40,749 - INFO - Stack sce-experiment-1777333659 status: CREATE_IN_PROGRESS
+2026-04-27 18:47:45,865 - INFO - Stack sce-experiment-1777333659 status: CREATE_IN_PROGRESS
+2026-04-27 18:47:53,848 - INFO - Stack sce-experiment-1777333659 status: CREATE_IN_PROGRESS
+2026-04-27 18:48:05,566 - INFO - Stack sce-experiment-1777333659 status: CREATE_IN_PROGRESS
+2026-04-27 18:48:22,891 - INFO - Stack sce-experiment-1777333659 status: CREATE_IN_PROGRESS
+2026-04-27 18:48:48,654 - INFO - Stack sce-experiment-1777333659 status: CREATE_IN_PROGRESS
+2026-04-27 18:49:19,112 - INFO - Stack sce-experiment-1777333659 status: CREATE_COMPLETE
+2026-04-27 18:49:19,242 - INFO - Stack outputs: {
+  "ArtifactBucketName": "sce-artifacts-1777333659-941377112071",
+  "CodeBuildServiceRoleArn": "arn:aws:iam::941377112071:role/sce-codebuild-role-1777333659",
+  "ReactiveControlLambdaArn": "arn:aws:lambda:us-east-1:941377112071:function:sce-reactive-codebuild-1777333659"
+}
+2026-04-27 18:49:19,243 - INFO - Steady state established successfully
+2026-04-27 18:49:19,243 - INFO - Waiting 15 seconds for IAM role propagation...
+[32m[2026-04-27 18:49:34 INFO] Action: create-malicious-codebuild-project
+2026-04-27 18:49:34,246 - INFO - ============================================================
+2026-04-27 18:49:34,246 - INFO - ATTACK: Creating malicious CodeBuild project
+2026-04-27 18:49:34,246 - INFO - ============================================================
+2026-04-27 18:49:34,709 - INFO - Creating malicious CodeBuild project: malicious-exfil-project-1777333659
+2026-04-27 18:49:35,347 - INFO - Malicious project created with ARN: arn:aws:codebuild:us-east-1:941377112071:project/malicious-exfil-project-1777333659
+2026-04-27 18:49:35,347 - INFO - Attack executed successfully - waiting for reactive control to respond...
+[32m[2026-04-27 18:49:35 INFO] Steady state hypothesis: Reactive control should automatically delete malicious CodeBuild projects
+[32m[2026-04-27 18:49:35 INFO] Probe: verify-malicious-codebuild-project-deleted
+2026-04-27 18:49:35,350 - INFO - ============================================================
+2026-04-27 18:49:35,350 - INFO - HYPOTHESIS VERIFICATION: Checking if reactive control worked
+2026-04-27 18:49:35,350 - INFO - ============================================================
+2026-04-27 18:49:35,375 - INFO - Waiting for CloudTrail event propagation and Lambda execution...
+2026-04-27 18:49:35,834 - INFO - Project malicious-exfil-project-1777333659 still exists, waiting for reactive control...
+2026-04-27 18:49:50,951 - INFO - Malicious project malicious-exfil-project-1777333659 NOT FOUND - reactive control worked!
+2026-04-27 18:49:51,479 - INFO - Lambda function exists: arn:aws:lambda:us-east-1:941377112071:function:sce-reactive-codebuild-1777333659
+2026-04-27 18:49:51,900 - INFO - Found 1 log streams for Lambda
+2026-04-27 18:49:52,062 - INFO - Lambda log evidence: [INFO]	2026-04-27T23:49:42.942Z	621449a5-2c2b-422c-b10f-bfcd2c7597a0	Received event: {"version": "0", "id": "e1a482c1-0634-5c89-b0f4-49e0ec9f5871", "detail-type": "AWS API Call via CloudTrail", "sourc
+2026-04-27 18:49:52,063 - INFO - Lambda log evidence: [WARNING]	2026-04-27T23:49:44.720Z	621449a5-2c2b-422c-b10f-bfcd2c7597a0	Detected potentially malicious CodeBuild project: arn:aws:codebuild:us-east-1:941377112071:project/malicious-exfil-project-17773
+2026-04-27 18:49:52,063 - INFO - Lambda log evidence: [INFO]	2026-04-27T23:49:45.045Z	621449a5-2c2b-422c-b10f-bfcd2c7597a0	Successfully deleted malicious project: arn:aws:codebuild:us-east-1:941377112071:project/malicious-exfil-project-1777333659
+
+2026-04-27 18:49:52,063 - INFO - ============================================================
+2026-04-27 18:49:52,063 - INFO - HYPOTHESIS VERIFIED: Reactive control successfully deleted malicious project
+2026-04-27 18:49:52,063 - INFO - ============================================================
+[32m[2026-04-27 18:49:52 INFO] Steady state hypothesis is met!
+[32m[2026-04-27 18:49:52 INFO] Let's rollback...
+[32m[2026-04-27 18:49:52 INFO] Rollback: cleanup-experiment-resources
+[32m[2026-04-27 18:49:52 INFO] Action: cleanup-experiment-resources
+2026-04-27 18:49:52,067 - INFO - ============================================================
+2026-04-27 18:49:52,067 - INFO - ROLLBACK: Cleaning up experiment resources
+2026-04-27 18:49:52,067 - INFO - ============================================================
+2026-04-27 18:49:52,606 - INFO - Deleted CodeBuild project: malicious-exfil-project-1777333659
+2026-04-27 18:49:53,271 - INFO - S3 bucket sce-artifacts-1777333659-941377112071 emptied
+2026-04-27 18:49:53,888 - INFO - Stack deletion initiated: sce-experiment-1777333659
+2026-04-27 18:49:54,037 - INFO - Stack sce-experiment-1777333659 status: DELETE_IN_PROGRESS
+2026-04-27 18:49:59,151 - INFO - Stack sce-experiment-1777333659 status: DELETE_IN_PROGRESS
+2026-04-27 18:50:07,087 - INFO - Stack sce-experiment-1777333659 status: DELETE_IN_PROGRESS
+2026-04-27 18:50:18,788 - INFO - Stack sce-experiment-1777333659 status: DELETE_IN_PROGRESS
+2026-04-27 18:50:36,099 - INFO - Stack sce-experiment-1777333659 status: DELETE_IN_PROGRESS
+2026-04-27 18:51:01,898 - INFO - Stack sce-experiment-1777333659 deleted successfully
+2026-04-27 18:51:01,898 - INFO - Rollback completed
+[32m[2026-04-27 18:51:01 INFO] Experiment ended with status: completed
+
+
+RETURN CODE: 0

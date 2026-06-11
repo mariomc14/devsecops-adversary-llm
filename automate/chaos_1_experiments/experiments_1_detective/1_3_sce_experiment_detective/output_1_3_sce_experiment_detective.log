@@ -1,0 +1,9 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-04-04 23:05:30 INFO] Validating the experiment's syntax
+[31m[2026-04-04 23:05:30 ERROR] could not find Python module 'chaosaws.ec2.sce_1_3_experiment_detective' in activity 'Check for existing security risks'
+
+
+RETURN CODE: 1

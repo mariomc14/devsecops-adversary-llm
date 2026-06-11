@@ -1,0 +1,150 @@
+{
+  "chaoslib-version": "1.44.0",
+  "platform": "Linux-6.17.0-20-generic-x86_64-with-glibc2.39",
+  "node": "sce-user-VirtualBox",
+  "experiment": {
+    "title": "SCE 1.8 – Reactive Probe: Detect and Stop Malicious CodeBuild Build",
+    "description": "Validates that when an attacker starts an unauthorized AWS CodeBuild build (attack node 1.7 Start Malicious Build), the reactive control — an EventBridge rule backed by a Lambda function — automatically detects the IN_PROGRESS state change event, calls StopBuild to terminate the malicious execution, and publishes an SNS alert. The hypothesis confirms the build reaches STOPPED status and the Lambda invocation metric is non-zero, proving the reactive control fired without human intervention.",
+    "tags": [
+      "sce",
+      "codebuild",
+      "reactive",
+      "malicious-build",
+      "supply-chain",
+      "eventbridge",
+      "lambda",
+      "1.8"
+    ],
+    "steady-state-hypothesis": {
+      "title": "Reactive control stops the malicious CodeBuild build automatically",
+      "probes": [
+        {
+          "type": "probe",
+          "name": "malicious-build-is-stopped-by-reactive-control",
+          "tolerance": true,
+          "provider": {
+            "type": "python",
+            "module": "chaosaws.ec2.1_8_sce_experiment_reactive",
+            "func": "hypothesis_verification"
+          }
+        }
+      ]
+    },
+    "method": [
+      {
+        "type": "action",
+        "name": "deploy-experiment-infrastructure-codebuild-eventbridge-lambda",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_reactive",
+          "func": "steady_state"
+        }
+      },
+      {
+        "type": "action",
+        "name": "start-malicious-codebuild-build-as-attacker",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_reactive",
+          "func": "attack"
+        }
+      }
+    ],
+    "rollbacks": [
+      {
+        "type": "action",
+        "name": "delete-cloudformation-stack-and-all-experiment-resources",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_reactive",
+          "func": "rollback"
+        }
+      }
+    ],
+    "dry": null
+  },
+  "start": "2026-04-17T03:23:00.617047+00:00",
+  "status": "completed",
+  "deviated": false,
+  "steady_states": {
+    "before": null,
+    "after": {
+      "steady_state_met": true,
+      "probes": [
+        {
+          "activity": {
+            "type": "probe",
+            "name": "malicious-build-is-stopped-by-reactive-control",
+            "tolerance": true,
+            "provider": {
+              "type": "python",
+              "module": "chaosaws.ec2.1_8_sce_experiment_reactive",
+              "func": "hypothesis_verification"
+            }
+          },
+          "output": true,
+          "start": "2026-04-17T03:24:52.891489+00:00",
+          "status": "succeeded",
+          "end": "2026-04-17T03:25:45.815792+00:00",
+          "duration": 52.924303,
+          "tolerance_met": true
+        }
+      ]
+    },
+    "during": []
+  },
+  "run": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "deploy-experiment-infrastructure-codebuild-eventbridge-lambda",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_reactive",
+          "func": "steady_state"
+        }
+      },
+      "output": null,
+      "start": "2026-04-17T03:23:00.617910+00:00",
+      "status": "succeeded",
+      "end": "2026-04-17T03:24:52.112551+00:00",
+      "duration": 111.494641
+    },
+    {
+      "activity": {
+        "type": "action",
+        "name": "start-malicious-codebuild-build-as-attacker",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_reactive",
+          "func": "attack"
+        }
+      },
+      "output": true,
+      "start": "2026-04-17T03:24:52.112923+00:00",
+      "status": "succeeded",
+      "end": "2026-04-17T03:24:52.886000+00:00",
+      "duration": 0.773077
+    }
+  ],
+  "rollbacks": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "delete-cloudformation-stack-and-all-experiment-resources",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_reactive",
+          "func": "rollback"
+        }
+      },
+      "output": null,
+      "start": "2026-04-17T03:25:45.818931+00:00",
+      "status": "succeeded",
+      "end": "2026-04-17T03:27:37.643515+00:00",
+      "duration": 111.824584
+    }
+  ],
+  "end": "2026-04-17T03:27:37.643895+00:00",
+  "duration": 277.0354473590851
+}

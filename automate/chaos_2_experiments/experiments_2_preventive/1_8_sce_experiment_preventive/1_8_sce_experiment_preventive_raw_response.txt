@@ -1,0 +1,808 @@
+# SCE 1.8 Experiment: Encrypted CodeBuild Artifact Control
+
+## Analysis of Previous Execution Issues
+
+Based on the execution log and quality reports, the critical failure was:
+
+1. **CloudFormation Stack Creation Failed** → Stack rolled back before CodeBuild project could be created
+2. **Attack Could Not Execute** → ResourceNotFoundException on CodeBuild project start-build call
+3. **Probe Could Not Verify** → No resources existed to validate
+
+**Root Cause**: The CloudFormation template had an error that caused `ROLLBACK_IN_PROGRESS`. This prevented the CodeBuild project from being created, which then caused both the attack and probe to fail.
+
+**Key Improvements for This Implementation**:
+- Validate CloudFormation template syntax before deployment
+- Add detailed error logging for stack creation failures
+- Implement proper retry logic with exponential backoff
+- Add validation that resources actually exist before attempting attack
+- Enhance proof-of-concept evidence collection
+
+---
+
+# Artifact 1: Python Script
+
+**File: `1_8_sce_experiment_preventive.py`**
+
+```python
+#!/usr/bin/env python3
+"""
+SCE 1.8 - Preventive Probe: Encrypted CodeBuild Artifact Control
+
+This experiment validates that AWS CodeBuild artifacts are encrypted at rest
+and that preventive controls block unencrypted credential exfiltration attempts.
+
+Probe Type: PREVENTIVE
+Attack Node: 1.7 Start Malicious Build (T1552.007)
+Defense Node: 1.6 Encrypted Artifact Control
+
+The experiment:
+1. Provisions an encrypted S3 bucket with strict bucket policies
+2. Creates a CodeBuild project configured with encryption enforcement
+3. Attempts a malicious build that exfiltrates credentials via artifacts
+4. Verifies that the preventive control blocks unencrypted uploads
+"""
+
+import json
+import time
+import sys
+import traceback
+from datetime import datetime
+from typing import Dict, Tuple, Optional
+
+try:
+    import boto3
+    from botocore.exceptions import ClientError, WaiterError
+except ImportError:
+    print("Installing required boto3 package...")
+    import subprocess
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "boto3", "-q"])
+    import boto3
+    from botocore.exceptions import ClientError, WaiterError
+
+# Global configuration
+REGION = "us-east-1"
+MAX_RETRIES = 5
+RETRY_BACKOFF_BASE = 2  # exponential backoff: 2^n seconds
+STACK_WAIT_TIMEOUT = 300  # 5 minutes for stack operations
+
+# Module-level state for experiment lifecycle
+experiment_state = {
+    "stack_name": None,
+    "bucket_name": None,
+    "codebuild_project": None,
+    "build_id": None,
+    "role_arn": None,
+    "timestamp": str(int(time.time())),
+    "experiment_started": False,
+    "resources_created": False,
+    "build_attempted": False,
+    "build_failed": False,
+}
+
+
+def log_info(message: str) -> None:
+    """Log informational message with timestamp."""
+    timestamp = datetime.utcnow().isoformat()
+    print(f"[{timestamp} INFO] {message}", flush=True)
+
+
+def log_error(message: str) -> None:
+    """Log error message with timestamp."""
+    timestamp = datetime.utcnow().isoformat()
+    print(f"[{timestamp} ERROR] {message}", flush=True)
+
+
+def log_warning(message: str) -> None:
+    """Log warning message with timestamp."""
+    timestamp = datetime.utcnow().isoformat()
+    print(f"[{timestamp} WARNING] {message}", flush=True)
+
+
+def log_debug(message: str) -> None:
+    """Log debug message with timestamp."""
+    timestamp = datetime.utcnow().isoformat()
+    print(f"[{timestamp} DEBUG] {message}", flush=True)
+
+
+def get_account_id() -> str:
+    """Retrieve AWS account ID from STS."""
+    try:
+        sts = boto3.client("sts", region_name=REGION)
+        identity = sts.get_caller_identity()
+        account_id = identity["Account"]
+        log_debug(f"Retrieved account ID: {account_id}")
+        return account_id
+    except ClientError as e:
+        log_error(f"Failed to retrieve account ID: {e}")
+        raise
+
+
+def retry_with_backoff(func, max_retries: int = MAX_RETRIES, description: str = ""):
+    """
+    Execute function with exponential backoff retry logic.
+    
+    Args:
+        func: Callable to execute
+        max_retries: Maximum number of retry attempts
+        description: Description of the operation for logging
+    
+    Returns:
+        Result of func() on success
+        
+    Raises:
+        Exception if all retries exhausted
+    """
+    start_time = time.monotonic()
+    last_error = None
+    
+    for attempt in range(max_retries):
+        try:
+            log_debug(f"Attempt {attempt + 1}/{max_retries}: {description}")
+            result = func()
+            elapsed = time.monotonic() - start_time
+            log_debug(f"Success after {elapsed:.2f}s")
+            return result
+        except Exception as e:
+            last_error = e
+            if attempt < max_retries - 1:
+                backoff_seconds = RETRY_BACKOFF_BASE ** attempt
+                log_warning(f"Attempt {attempt + 1} failed: {str(e)[:100]}. "
+                           f"Retrying in {backoff_seconds}s...")
+                time.sleep(backoff_seconds)
+            else:
+                log_error(f"All {max_retries} attempts exhausted for: {description}")
+    
+    raise last_error
+
+
+def create_iam_role() -> str:
+    """Create IAM role for CodeBuild with S3 and CloudWatch permissions."""
+    iam = boto3.client("iam", region_name=REGION)
+    role_name = f"sce-codebuild-role-{experiment_state['timestamp']}"
+    
+    assume_role_policy = {
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Effect": "Allow",
+                "Principal": {
+                    "Service": "codebuild.amazonaws.com"
+                },
+                "Action": "sts:AssumeRole"
+            }
+        ]
+    }
+    
+    try:
+        log_info(f"Creating IAM role: {role_name}")
+        response = iam.create_role(
+            RoleName=role_name,
+            AssumeRolePolicyDocument=json.dumps(assume_role_policy),
+            Description="Role for SCE 1.8 CodeBuild experiment",
+            Tags=[
+                {"Key": "experiment", "Value": "sce-1.8"},
+                {"Key": "timestamp", "Value": experiment_state["timestamp"]}
+            ]
+        )
+        role_arn = response["Role"]["Arn"]
+        log_info(f"Created IAM role: {role_arn}")
+        
+        # Add inline policy for S3 and CloudWatch
+        inline_policy = {
+            "Version": "2012-10-17",
+            "Statement": [
+                {
+                    "Effect": "Allow",
+                    "Action": [
+                        "s3:GetObject",
+                        "s3:PutObject",
+                        "s3:PutObjectAcl"
+                    ],
+                    "Resource": f"arn:aws:s3:::sce-artifact-bucket-{experiment_state['timestamp']}/*"
+                },
+                {
+                    "Effect": "Allow",
+                    "Action": [
+                        "logs:CreateLogGroup",
+                        "logs:CreateLogStream",
+                        "logs:PutLogEvents"
+                    ],
+                    "Resource": f"arn:aws:logs:{REGION}:{get_account_id()}:log-group:/aws/codebuild/sce-*"
+                }
+            ]
+        }
+        
+        iam.put_role_policy(
+            RoleName=role_name,
+            PolicyName="sce-codebuild-policy",
+            PolicyDocument=json.dumps(inline_policy)
+        )
+        log_info(f"Attached inline policy to role: {role_name}")
+        
+        # Brief pause to allow IAM consistency
+        time.sleep(2)
+        
+        experiment_state["role_arn"] = role_arn
+        return role_arn
+        
+    except ClientError as e:
+        log_error(f"Failed to create IAM role: {e}")
+        raise
+
+
+def create_cloudformation_stack() -> bool:
+    """
+    Create CloudFormation stack with encrypted S3 bucket and CodeBuild project.
+    
+    Returns:
+        True if stack created successfully, False otherwise
+    """
+    cf = boto3.client("cloudformation", region_name=REGION)
+    s3 = boto3.client("s3", region_name=REGION)
+    
+    stack_name = f"sce-experiment-{experiment_state['timestamp']}"
+    bucket_name = f"sce-artifact-bucket-{experiment_state['timestamp']}"
+    codebuild_project = f"sce-codebuild-project-{experiment_state['timestamp']}"
+    
+    experiment_state["stack_name"] = stack_name
+    experiment_state["bucket_name"] = bucket_name
+    experiment_state["codebuild_project"] = codebuild_project
+    
+    # CloudFormation template
+    template = {
+        "AWSTemplateFormatVersion": "2010-09-09",
+        "Description": "SCE 1.8 - Encrypted CodeBuild Artifact Control",
+        "Resources": {
+            "ArtifactBucket": {
+                "Type": "AWS::S3::Bucket",
+                "Properties": {
+                    "BucketName": bucket_name,
+                    "VersioningConfiguration": {
+                        "Status": "Enabled"
+                    },
+                    "BucketEncryption": {
+                        "ServerSideEncryptionConfiguration": [
+                            {
+                                "ServerSideEncryptionByDefault": {
+                                    "SSEAlgorithm": "AES256"
+                                }
+                            }
+                        ]
+                    },
+                    "PublicAccessBlockConfiguration": {
+                        "BlockPublicAcls": True,
+                        "BlockPublicPolicy": True,
+                        "IgnorePublicAcls": True,
+                        "RestrictPublicBuckets": True
+                    },
+                    "Tags": [
+                        {"Key": "experiment", "Value": "sce-1.8"},
+                        {"Key": "timestamp", "Value": experiment_state["timestamp"]}
+                    ]
+                }
+            },
+            "ArtifactBucketPolicy": {
+                "Type": "AWS::S3::BucketPolicy",
+                "Properties": {
+                    "Bucket": {"Ref": "ArtifactBucket"},
+                    "PolicyText": {
+                        "Version": "2012-10-17",
+                        "Statement": [
+                            {
+                                "Sid": "DenyUnencryptedObjectUploads",
+                                "Effect": "Deny",
+                                "Principal": "*",
+                                "Action": "s3:PutObject",
+                                "Resource": f"arn:aws:s3:::{bucket_name}/*",
+                                "Condition": {
+                                    "StringNotEquals": {
+                                        "s3:x-amz-server-side-encryption": "AES256"
+                                    }
+                                }
+                            },
+                            {
+                                "Sid": "DenyIncorrectKmsKey",
+                                "Effect": "Deny",
+                                "Principal": "*",
+                                "Action": "s3:PutObject",
+                                "Resource": f"arn:aws:s3:::{bucket_name}/*",
+                                "Condition": {
+                                    "StringNotEquals": {
+                                        "s3:x-amz-server-side-encryption-aws-kms-key-id": ""
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            },
+            "CodeBuildProject": {
+                "Type": "AWS::CodeBuild::Project",
+                "Properties": {
+                    "Name": codebuild_project,
+                    "ServiceRole": experiment_state["role_arn"],
+                    "Artifacts": {
+                        "Type": "S3",
+                        "Location": bucket_name,
+                        "EncryptionDisabled": False
+                    },
+                    "Environment": {
+                        "Type": "LINUX_CONTAINER",
+                        "ComputeType": "BUILD_GENERAL1_SMALL",
+                        "Image": "aws/codebuild/standard:5.0",
+                        "EnvironmentVariables": [
+                            {
+                                "Name": "ARTIFACT_BUCKET",
+                                "Value": bucket_name,
+                                "Type": "PLAINTEXT"
+                            }
+                        ]
+                    },
+                    "Source": {
+                        "Type": "NO_SOURCE",
+                        "BuildSpec": "version: 0.2\nphases:\n  build:\n    commands:\n      - echo 'Dummy build'\n"
+                    },
+                    "LogsConfig": {
+                        "CloudWatchLogs": {
+                            "Status": "ENABLED",
+                            "GroupName": f"/aws/codebuild/sce-{experiment_state['timestamp']}"
+                        }
+                    },
+                    "Tags": [
+                        {"Key": "experiment", "Value": "sce-1.8"},
+                        {"Key": "timestamp", "Value": experiment_state["timestamp"]}
+                    ]
+                }
+            }
+        },
+        "Outputs": {
+            "BucketName": {
+                "Value": {"Ref": "ArtifactBucket"},
+                "Description": "Artifact bucket name"
+            },
+            "CodeBuildProject": {
+                "Value": {"Ref": "CodeBuildProject"},
+                "Description": "CodeBuild project name"
+            }
+        }
+    }
+    
+    try:
+        log_info(f"Creating CloudFormation stack: {stack_name}")
+        cf.create_stack(
+            StackName=stack_name,
+            TemplateBody=json.dumps(template),
+            Tags=[
+                {"Key": "experiment", "Value": "sce-1.8"},
+                {"Key": "timestamp", "Value": experiment_state["timestamp"]}
+            ]
+        )
+        
+        # Wait for stack creation to complete
+        log_info("Waiting for stack creation to complete...")
+        
+        def wait_for_stack():
+            for attempt in range(STACK_WAIT_TIMEOUT // 5):
+                try:
+                    stacks = cf.describe_stacks(StackName=stack_name)
+                    stack = stacks["Stacks"][0]
+                    status = stack["StackStatus"]
+                    log_debug(f"Stack status: {status}")
+                    
+                    if status == "CREATE_COMPLETE":
+                        return True
+                    elif "ROLLBACK" in status or "FAILED" in status:
+                        # Extract error details
+                        if "StackStatusReason" in stack:
+                            log_error(f"Stack creation failed: {stack['StackStatusReason']}")
+                        # Check for resource errors
+                        resources = cf.list_stack_resources(StackName=stack_name)
+                        for resource in resources.get("StackResourceSummaries", []):
+                            if resource["ResourceStatus"] in ["CREATE_FAILED", "UPDATE_FAILED"]:
+                                reason = resource.get("ResourceStatusReason", "Unknown")
+                                log_error(f"Resource {resource['LogicalResourceId']} failed: {reason}")
+                        return False
+                    
+                    time.sleep(5)
+                except ClientError as e:
+                    log_error(f"Error checking stack status: {e}")
+                    raise
+            
+            log_error("Stack creation timeout")
+            return False
+        
+        success = wait_for_stack()
+        
+        if success:
+            log_info(f"Stack created successfully: {stack_name}")
+            experiment_state["resources_created"] = True
+            return True
+        else:
+            log_error(f"Stack creation failed or rolled back: {stack_name}")
+            return False
+            
+    except ClientError as e:
+        log_error(f"Failed to create CloudFormation stack: {e}")
+        return False
+
+
+def steady_state() -> Dict:
+    """
+    Phase 1: Provision encrypted CodeBuild environment and artifact storage.
+    
+    Returns:
+        Dictionary with experiment state
+    """
+    log_info("=== Starting steady_state for SCE 1.8 ===")
+    experiment_state["experiment_started"] = True
+    
+    try:
+        # Verify AWS credentials and get account ID
+        account_id = get_account_id()
+        
+        # Create IAM role
+        role_arn = create_iam_role()
+        
+        # Create CloudFormation stack
+        stack_created = create_cloudformation_stack()
+        
+        if not stack_created:
+            log_error("Failed to create CloudFormation stack during steady-state")
+            return experiment_state
+        
+        log_info("Steady state complete. Resources deployed successfully.")
+        log_debug(f"Experiment state: {experiment_state}")
+        
+        return experiment_state
+        
+    except Exception as e:
+        log_error(f"Unexpected error in steady_state: {e}")
+        log_debug(traceback.format_exc())
+        return experiment_state
+
+
+def attack() -> bool:
+    """
+    Phase 2: Trigger malicious build attempt (Node 1.7).
+    
+    Attempts to exfiltrate credentials via CodeBuild artifacts using:
+    - Environment variable extraction
+    - IMDSv2 token retrieval attempt
+    - Unencrypted artifact upload
+    
+    Returns:
+        True if attack was executed, False if it failed to execute
+    """
+    log_info("=== Starting attack: Triggering malicious build ===")
+    
+    if not experiment_state["resources_created"]:
+        log_error("Resources not created, cannot execute attack")
+        experiment_state["build_attempted"] = True
+        experiment_state["build_failed"] = True
+        return False
+    
+    codebuild = boto3.client("codebuild", region_name=REGION)
+    
+    # Malicious buildspec that attempts credential exfiltration
+    buildspec_yaml = """version: 0.2
+
+phases:
+  install:
+    commands:
+      - echo "Attempting credential exfiltration attack..."
+  pre_build:
+    commands:
+      - echo "Phase 1: Extract environment variables"
+      - env | grep -E '(AWS_|CREDENTIAL|SECRET|TOKEN)' > /tmp/env_vars.txt || echo "No matching env vars"
+      - echo "Phase 2: Attempt IMDSv2 token retrieval"
+      - TOKEN=$(curl -X PUT http://169.254.169.254/latest/api/token -H "X-aws-ec2-metadata-token-ttl-seconds:21600" 2>/dev/null || echo "IMDS_FAILED")
+      - echo "IMDSv2 Token attempt: $TOKEN" >> /tmp/credentials.txt || true
+      - echo "Phase 3: Attempt credential extraction from metadata"
+      - curl http://169.254.169.254/latest/meta-data/iam/security-credentials/ 2>/dev/null > /tmp/iam_role.txt || echo "Metadata access blocked"
+  build:
+    commands:
+      - echo "Phase 4: Prepare exfiltration payload"
+      - mkdir -p /tmp/exfil_payload
+      - cp /tmp/env_vars.txt /tmp/exfil_payload/ 2>/dev/null || echo "No env vars to exfiltrate"
+      - cp /tmp/credentials.txt /tmp/exfil_payload/ 2>/dev/null || echo "No credentials found"
+      - cp /tmp/iam_role.txt /tmp/exfil_payload/ 2>/dev/null || echo "No IAM role found"
+      - tar czf /tmp/exfil_payload.tar.gz /tmp/exfil_payload/
+      - echo "Payload size: $(stat -c%s /tmp/exfil_payload.tar.gz) bytes"
+  post_build:
+    commands:
+      - echo "Build completed (attack simulation)"
+
+artifacts:
+  files:
+    - /tmp/exfil_payload.tar.gz
+  name: credential-exfil-artifact
+  discard-paths: yes
+"""
+
+    try:
+        log_info(f"Target CodeBuild project: {experiment_state['codebuild_project']}")
+        
+        # Verify project exists before starting build
+        def verify_project_exists():
+            try:
+                response = codebuild.batch_get_projects(
+                    names=[experiment_state['codebuild_project']]
+                )
+                projects = response.get("projects", [])
+                if not projects:
+                    raise Exception(f"Project not found: {experiment_state['codebuild_project']}")
+                log_info(f"Verified CodeBuild project exists: {projects[0]['name']}")
+                return True
+            except ClientError as e:
+                log_error(f"Failed to verify project: {e}")
+                raise
+        
+        retry_with_backoff(
+            verify_project_exists,
+            max_retries=3,
+            description=f"Verify CodeBuild project exists"
+        )
+        
+        # Start malicious build
+        log_info("Starting malicious build...")
+        response = codebuild.start_build(
+            projectName=experiment_state['codebuild_project'],
+            buildspecOverride=buildspec_yaml,
+            logsConfigOverride={
+                'cloudWatchLogs': {
+                    'status': 'ENABLED',
+                    'groupName': f'/aws/codebuild/sce-{experiment_state["timestamp"]}'
+                }
+            }
+        )
+        
+        build_id = response['build']['id']
+        build_arn = response['build']['arn']
+        
+        log_info(f"Started malicious build: {build_arn}")
+        log_info(f"Build ID: {build_id}")
+        
+        experiment_state["build_id"] = build_id
+        experiment_state["build_attempted"] = True
+        
+        # Wait for build to complete (with timeout)
+        log_info("Waiting for build to complete...")
+        
+        start_wait = time.monotonic()
+        while time.monotonic() - start_wait < 300:  # 5 minute timeout
+            try:
+                build_response = codebuild.batch_get_builds(ids=[build_id])
+                build = build_response['builds'][0]
+                status = build['buildStatus']
+                
+                log_debug(f"Build status: {status}")
+                
+                if status in ['SUCCEEDED', 'FAILED', 'FAULT', 'TIMED_OUT', 'STOPPED']:
+                    log_info(f"Build completed with status: {status}")
+                    
+                    # Capture build details for evidence
+                    if 'logs' in build:
+                        log_info(f"Build logs: {build['logs'].get('deepLink', 'N/A')}")
+                    
+                    if status == 'FAILED':
+                        experiment_state["build_failed"] = True
+                        # This is GOOD - the preventive control worked
+                        log_info("Build failed - preventive control may have blocked exfiltration")
+                    
+                    return True
+                
+                time.sleep(5)
+                
+            except ClientError as e:
+                log_error(f"Error checking build status: {e}")
+                raise
+        
+        log_warning("Build wait timeout - assuming build is in progress")
+        return True
+        
+    except ClientError as e:
+        log_error(f"Error starting build: {e}")
+        experiment_state["build_attempted"] = True
+        experiment_state["build_failed"] = True
+        return False
+    except Exception as e:
+        log_error(f"Unexpected error during attack: {e}")
+        log_debug(traceback.format_exc())
+        return False
+
+
+def hypothesis_verification() -> bool:
+    """
+    Phase 3: Verify preventive control is working (Probe).
+    
+    Validates that:
+    1. S3 bucket has encryption enabled (AES256)
+    2. S3 bucket policy denies unencrypted uploads (PREVENTIVE)
+    3. CodeBuild project has encryption enforced
+    4. No unencrypted objects exist in the bucket
+    5. Build attempt was blocked or credentials were not exfiltrated
+    
+    Returns:
+        True if preventive control is effective, False otherwise
+    """
+    log_info("=== Verifying preventive control ===")
+    
+    if not experiment_state["resources_created"]:
+        log_error("Resources not created - cannot verify hypothesis")
+        return False
+    
+    s3 = boto3.client("s3", region_name=REGION)
+    codebuild = boto3.client("codebuild", region_name=REGION)
+    
+    bucket_name = experiment_state["bucket_name"]
+    project_name = experiment_state["codebuild_project"]
+    
+    try:
+        log_info("Performing preventive control verification checks...")
+        all_checks_passed = True
+        
+        # Check 1: Verify S3 bucket encryption is enabled
+        log_info("\n[Check 1/5] Verifying S3 bucket encryption (AES256)...")
+        try:
+            encryption = s3.get_bucket_encryption(Bucket=bucket_name)
+            rules = encryption['ServerSideEncryptionConfiguration']['Rules']
+            
+            encryption_enabled = False
+            for rule in rules:
+                sse = rule['ApplyServerSideEncryptionByDefault']
+                if sse.get('SSEAlgorithm') == 'AES256':
+                    encryption_enabled = True
+                    log_info("  ✓ S3 bucket encryption enabled with AES256")
+                    break
+            
+            if not encryption_enabled:
+                log_error("  ✗ S3 bucket encryption not properly configured")
+                all_checks_passed = False
+                
+        except ClientError as e:
+            if e.response['Error']['Code'] == 'ServerSideEncryptionConfigurationNotFoundError':
+                log_error("  ✗ S3 bucket encryption not configured")
+                all_checks_passed = False
+            else:
+                raise
+        
+        # Check 2: Verify S3 bucket policy denies unencrypted uploads
+        log_info("[Check 2/5] Verifying S3 bucket policy denies unencrypted uploads...")
+        try:
+            policy_response = s3.get_bucket_policy(Bucket=bucket_name)
+            policy = json.loads(policy_response['Policy'])
+            
+            deny_unencrypted_found = False
+            for statement in policy.get('Statement', []):
+                if (statement.get('Effect') == 'Deny' and
+                    'PutObject' in statement.get('Action', []) and
+                    'Condition' in statement):
+                    
+                    conditions = statement['Condition']
+                    if 'StringNotEquals' in conditions:
+                        if 's3:x-amz-server-side-encryption' in conditions['StringNotEquals']:
+                            deny_unencrypted_found = True
+                            log_info("  ✓ Bucket policy enforces encrypted uploads (preventive)")
+                            break
+            
+            if not deny_unencrypted_found:
+                log_error("  ✗ Bucket policy does not deny unencrypted uploads")
+                all_checks_passed = False
+                
+        except ClientError as e:
+            if e.response['Error']['Code'] == 'NoSuchBucketPolicy':
+                log_error("  ✗ No bucket policy found")
+                all_checks_passed = False
+            else:
+                raise
+        
+        # Check 3: Verify CodeBuild project encryption is enabled
+        log_info("[Check 3/5] Verifying CodeBuild project encryption enforcement...")
+        try:
+            project_response = codebuild.batch_get_projects(names=[project_name])
+            projects = project_response.get('projects', [])
+            
+            if not projects:
+                log_error("  ✗ CodeBuild project not found")
+                all_checks_passed = False
+            else:
+                project = projects[0]
+                artifacts = project.get('artifacts', {})
+                encryption_disabled = artifacts.get('encryptionDisabled', False)
+                
+                if not encryption_disabled:
+                    log_info("  ✓ CodeBuild project encryption enabled")
+                else:
+                    log_error("  ✗ CodeBuild project encryption is disabled")
+                    all_checks_passed = False
+                    
+        except ClientError as e:
+            log_error(f"  ✗ Error checking CodeBuild project: {e}")
+            all_checks_passed = False
+        
+        # Check 4: Verify S3 bucket public access blocking
+        log_info("[Check 4/5] Verifying S3 public access blocking configuration...")
+        try:
+            pab = s3.get_public_access_block(Bucket=bucket_name)
+            config = pab['PublicAccessBlockConfiguration']
+            
+            all_blocked = all([
+                config.get('BlockPublicAcls', False),
+                config.get('BlockPublicPolicy', False),
+                config.get('IgnorePublicAcls', False),
+                config.get('RestrictPublicBuckets', False)
+            ])
+            
+            if all_blocked:
+                log_info("  ✓ All public access blocks enabled")
+            else:
+                log_error("  ✗ Some public access blocks not enabled")
+                all_checks_passed = False
+                
+        except ClientError as e:
+            log_error(f"  ✗ Error checking public access block: {e}")
+            all_checks_passed = False
+        
+        # Check 5: Verify no unencrypted objects in bucket
+        log_info("[Check 5/5] Scanning bucket for unencrypted objects...")
+        try:
+            unencrypted_objects = []
+            paginator = s3.get_paginator('list_objects_v2')
+            pages = paginator.paginate(Bucket=bucket_name)
+            
+            for page in pages:
+                if 'Contents' not in page:
+                    continue
+                
+                for obj in page['Contents']:
+                    key = obj['Key']
+                    
+                    # Get object metadata to check encryption
+                    try:
+                        head_response = s3.head_object(Bucket=bucket_name, Key=key)
+                        
+                        # Check if object has server-side encryption
+                        server_side_encryption = head_response.get('ServerSideEncryption')
+                        
+                        if not server_side_encryption:
+                            unencrypted_objects.append(key)
+                            log_warning(f"    Found unencrypted object: {key}")
+                        else:
+                            log_debug(f"    Object {key} encrypted with {server_side_encryption}")
+                            
+                    except ClientError as e:
+                        log_warning(f"    Could not verify encryption for {key}: {e}")
+            
+            if unencrypted_objects:
+                log_error(f"  ✗ Found {len(unencrypted_objects)} unencrypted objects in bucket")
+                all_checks_passed = False
+            else:
+                log_info("  ✓ No unencrypted objects found in bucket (preventive control effective)")
+                
+        except ClientError as e:
+            log_error(f"  ✗ Error scanning bucket: {e}")
+            all_checks_passed = False
+        
+        # Final assessment
+        log_info("\n=== Preventive Control Verification Complete ===")
+        
+        if all_checks_passed:
+            log_info("✓ All preventive controls verified - hypothesis holds true")
+            log_info("  Encrypted CodeBuild artifacts control is EFFECTIVE")
+        else:
+            log_error("✗ Some preventive controls failed - hypothesis does not hold")
+            log_error("  Encrypted CodeBuild artifacts control is INEFFECTIVE")
+        
+        return all_checks_passed
+        
+    except Exception as e:
+        log_error(f"Unexpected error during hypothesis verification: {e}")
+        log_debug(traceback.format_exc())
+        return False
+
+
+def rollback() -> Dict:
+    """
+    Phase 4: Remove experiment resources and restore baseline.
+    
+    

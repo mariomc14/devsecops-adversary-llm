@@ -1,0 +1,58 @@
+{
+    "title": "SCE 1.3 Preventive Control - Block Malicious CodeBuild Project Creation",
+    "description": "This Security Chaos Engineering experiment validates that preventive IAM controls successfully block the creation of malicious CodeBuild projects. The attack attempts to create a CodeBuild project with a name matching malicious patterns (containing 'malicious', 'exfil', or 'attack') and suspicious buildspec commands designed for data exfiltration. The preventive control is an IAM policy with explicit deny statements that blocks such project creation attempts.",
+    "tags": [
+        "security-chaos-engineering",
+        "codebuild",
+        "preventive-control",
+        "iam",
+        "sce-1.3",
+        "attack-1.2"
+    ],
+    "steady-state-hypothesis": {
+        "title": "Malicious CodeBuild project creation should be denied by preventive control",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "verify-preventive-control-blocks-malicious-codebuild",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.1_3_sce_experiment_preventive",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "deploy-preventive-control-infrastructure",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_3_sce_experiment_preventive",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "attempt-malicious-codebuild-project-creation",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_3_sce_experiment_preventive",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "cleanup-experiment-resources",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_3_sce_experiment_preventive",
+                "func": "rollback"
+            }
+        }
+    ]
+}

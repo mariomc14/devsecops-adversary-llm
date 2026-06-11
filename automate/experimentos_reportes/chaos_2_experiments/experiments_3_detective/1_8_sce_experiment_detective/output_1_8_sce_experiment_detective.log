@@ -1,0 +1,79 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-04-13 00:02:54 INFO] Validating the experiment's syntax
+[32m[2026-04-13 00:02:54 INFO] Experiment looks valid
+[32m[2026-04-13 00:02:54 INFO] Running experiment: SCE 1.8 - Detective Control for Malicious CodeBuild Activity
+[32m[2026-04-13 00:02:54 INFO] Steady-state strategy: after-method-only
+[32m[2026-04-13 00:02:54 INFO] Rollbacks strategy: default
+[32m[2026-04-13 00:02:54 INFO] Playing your experiment's method now...
+[32m[2026-04-13 00:02:54 INFO] Action: Deploy CodeBuild infrastructure with detective controls
+2026-04-13 00:02:54,662 - INFO - Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13 00:02:54,944 - INFO - Deploying CloudFormation stack: sce-experiment-1-8-1776056574
+2026-04-13 00:02:55,807 - INFO - Stack creation initiated: arn:aws:cloudformation:us-east-1:941377112071:stack/sce-experiment-1-8-1776056574/08681690-36f6-11f1-8a14-0e7042fdcd5b
+2026-04-13 00:02:55,935 - INFO - Stack status: CREATE_IN_PROGRESS
+2026-04-13 00:03:06,362 - INFO - Stack status: CREATE_IN_PROGRESS
+2026-04-13 00:03:17,102 - INFO - Stack status: CREATE_IN_PROGRESS
+2026-04-13 00:03:27,756 - INFO - Stack status: CREATE_COMPLETE
+2026-04-13 00:03:27,757 - INFO - Stack creation completed successfully
+[32m[2026-04-13 00:03:27 INFO] Action: Execute malicious build with credential exfiltration attempt
+2026-04-13 00:03:27,824 - INFO - Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13 00:03:28,331 - INFO - Executing malicious build with credential exfiltration attempt...
+2026-04-13 00:03:28,910 - INFO - Starting malicious build in project: sce-malicious-build-sce-experiment-1-8-1776056574
+2026-04-13 00:03:29,609 - INFO - Build started: sce-malicious-build-sce-experiment-1-8-1776056574:acac57a6-2b92-48fb-8428-2fd5ef80c5ec
+2026-04-13 00:03:29,610 - INFO - Build ARN: arn:aws:codebuild:us-east-1:941377112071:build/sce-malicious-build-sce-experiment-1-8-1776056574:acac57a6-2b92-48fb-8428-2fd5ef80c5ec
+2026-04-13 00:03:29,740 - INFO - Build status: IN_PROGRESS
+2026-04-13 00:03:39,880 - INFO - Build status: IN_PROGRESS
+2026-04-13 00:03:50,018 - INFO - Build status: IN_PROGRESS
+2026-04-13 00:04:00,158 - INFO - Build status: IN_PROGRESS
+2026-04-13 00:04:10,290 - INFO - Build status: IN_PROGRESS
+2026-04-13 00:04:20,420 - INFO - Build status: IN_PROGRESS
+2026-04-13 00:04:30,545 - INFO - Build status: IN_PROGRESS
+2026-04-13 00:04:40,684 - INFO - Build status: IN_PROGRESS
+2026-04-13 00:04:50,844 - INFO - Build status: IN_PROGRESS
+2026-04-13 00:05:00,968 - INFO - Build status: IN_PROGRESS
+2026-04-13 00:05:11,104 - INFO - Build status: IN_PROGRESS
+2026-04-13 00:05:21,279 - INFO - Build status: IN_PROGRESS
+2026-04-13 00:05:31,410 - INFO - Build status: IN_PROGRESS
+2026-04-13 00:05:41,540 - INFO - Build status: IN_PROGRESS
+2026-04-13 00:05:51,685 - INFO - Build status: IN_PROGRESS
+2026-04-13 00:06:01,813 - INFO - Build status: IN_PROGRESS
+2026-04-13 00:06:11,942 - INFO - Build status: IN_PROGRESS
+2026-04-13 00:06:22,075 - INFO - Build status: IN_PROGRESS
+2026-04-13 00:06:32,194 - INFO - Build status: IN_PROGRESS
+2026-04-13 00:06:42,321 - INFO - Build status: IN_PROGRESS
+2026-04-13 00:06:52,475 - INFO - Build status: IN_PROGRESS
+2026-04-13 00:07:02,624 - INFO - Build status: IN_PROGRESS
+2026-04-13 00:07:12,754 - INFO - Build status: IN_PROGRESS
+2026-04-13 00:07:22,940 - INFO - Build status: IN_PROGRESS
+2026-04-13 00:07:33,506 - INFO - Build status: IN_PROGRESS
+2026-04-13 00:07:43,626 - INFO - Build status: IN_PROGRESS
+2026-04-13 00:07:53,746 - INFO - Build status: IN_PROGRESS
+2026-04-13 00:08:03,865 - INFO - Build status: IN_PROGRESS
+2026-04-13 00:08:13,990 - INFO - Build status: IN_PROGRESS
+2026-04-13 00:08:24,111 - INFO - Build status: IN_PROGRESS
+2026-04-13 00:08:34,114 - WARNING - Build timed out after 300 seconds
+[32m[2026-04-13 00:08:34 INFO] Steady state hypothesis: Detective control detects malicious build activity
+[32m[2026-04-13 00:08:34 INFO] Probe: Verify CloudWatch alarm detects malicious build indicators
+2026-04-13 00:08:34,260 - INFO - Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13 00:08:35,278 - INFO - Verifying detective control detected malicious activity...
+2026-04-13 00:08:35,750 - INFO - Checking alarm: SCE-CodeBuild-MaliciousActivity-sce-experiment-1-8-1776056574
+2026-04-13 00:08:35,750 - INFO - Log group: /aws/codebuild/sce-malicious-build-sce-experiment-1-8-1776056574
+2026-04-13 00:08:35,750 - INFO - Waiting 90 seconds for metric propagation...
+2026-04-13 00:10:06,881 - INFO - Alarm state: ALARM
+2026-04-13 00:10:06,885 - INFO - ✓ Detective control DETECTED malicious activity (alarm in ALARM state)
+[32m[2026-04-13 00:10:07 INFO] Steady state hypothesis is met!
+[32m[2026-04-13 00:10:07 INFO] Let's rollback...
+[32m[2026-04-13 00:10:07 INFO] Rollback: Delete CloudFormation stack and all resources
+[32m[2026-04-13 00:10:07 INFO] Action: Delete CloudFormation stack and all resources
+2026-04-13 00:10:07,196 - INFO - Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13 00:10:07,953 - INFO - Rolling back: Deleting stack sce-experiment-1-8-1776056574
+2026-04-13 00:10:08,616 - INFO - Stack deletion initiated
+2026-04-13 00:10:08,735 - INFO - Stack deletion status: DELETE_IN_PROGRESS
+2026-04-13 00:10:19,308 - INFO - Stack deletion status: DELETE_IN_PROGRESS
+2026-04-13 00:10:29,807 - INFO - Stack sce-experiment-1-8-1776056574 does not exist (already deleted)
+[32m[2026-04-13 00:10:29 INFO] Experiment ended with status: completed
+
+
+RETURN CODE: 0

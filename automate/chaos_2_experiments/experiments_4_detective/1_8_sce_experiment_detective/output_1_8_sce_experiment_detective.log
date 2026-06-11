@@ -1,0 +1,84 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-04-15 21:01:07 INFO] Validating the experiment's syntax
+[32m[2026-04-15 21:01:07 INFO] Experiment looks valid
+[32m[2026-04-15 21:01:07 INFO] Running experiment: SCE 1.8 – Detect Malicious CodeBuild Invocation (Attack Node 1.7: Start Malicious Build)
+[32m[2026-04-15 21:01:07 INFO] Steady-state strategy: after-method-only
+[32m[2026-04-15 21:01:07 INFO] Rollbacks strategy: default
+[32m[2026-04-15 21:01:07 INFO] Playing your experiment's method now...
+[32m[2026-04-15 21:01:07 INFO] Action: Deploy CloudFormation stack with CodeBuild project, EventBridge rule, CloudWatch log group and alarm
+2026-04-15T21:01:07  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-15T21:01:07  INFO      === STEADY STATE  stack=sce-experiment-1776304867  account=941377112071  region=us-east-1 ===
+2026-04-15T21:01:08  INFO      Stack creation initiated: sce-experiment-1776304867
+2026-04-15T21:01:08  INFO      Stack sce-experiment-1776304867 → CREATE_IN_PROGRESS
+2026-04-15T21:01:19  INFO      Stack sce-experiment-1776304867 → CREATE_IN_PROGRESS
+2026-04-15T21:01:34  INFO      Stack sce-experiment-1776304867 → CREATE_IN_PROGRESS
+2026-04-15T21:01:57  INFO      Stack sce-experiment-1776304867 → CREATE_IN_PROGRESS
+2026-04-15T21:02:31  INFO      Stack sce-experiment-1776304867 → CREATE_IN_PROGRESS
+2026-04-15T21:03:22  INFO      Stack sce-experiment-1776304867 → CREATE_COMPLETE
+2026-04-15T21:03:22  INFO      Resources ready → project=sce-experiment-1776304867-malicious-build  log_group=/sce/sce-experiment-1776304867/malicious-build-events  alarm=sce-experiment-1776304867-malicious-build-alarm
+[32m[2026-04-15 21:03:22 INFO] Action: Start malicious CodeBuild build (Attack Node 1.7)
+2026-04-15T21:03:22  INFO      === ATTACK  project=sce-experiment-1776304867-malicious-build ===
+2026-04-15T21:03:38  INFO      Malicious build started  arn=arn:aws:codebuild:us-east-1:941377112071:build/sce-experiment-1776304867-malicious-build:4335e2e9-b934-48be-b5df-b23378630efe  status=IN_PROGRESS
+[32m[2026-04-15 21:03:38 INFO] Steady state hypothesis: CloudWatch Alarm or Log Group captures malicious CodeBuild StartBuild event
+[32m[2026-04-15 21:03:38 INFO] Probe: Verify detective control detected the malicious build invocation
+2026-04-15T21:03:38  INFO      === HYPOTHESIS VERIFICATION  alarm=sce-experiment-1776304867-malicious-build-alarm  log_group=/sce/sce-experiment-1776304867/malicious-build-events ===
+2026-04-15T21:03:38  INFO      Verification attempt #1 …
+2026-04-15T21:03:39  INFO      Alarm sce-experiment-1776304867-malicious-build-alarm → OK
+2026-04-15T21:03:39  INFO      No log streams in /sce/sce-experiment-1776304867/malicious-build-events yet.
+2026-04-15T21:03:39  INFO      Sleeping 20s before next check …
+2026-04-15T21:03:59  INFO      Verification attempt #2 …
+2026-04-15T21:04:00  INFO      Alarm sce-experiment-1776304867-malicious-build-alarm → OK
+2026-04-15T21:04:00  INFO      No log streams in /sce/sce-experiment-1776304867/malicious-build-events yet.
+2026-04-15T21:04:00  INFO      Sleeping 28s before next check …
+2026-04-15T21:04:28  INFO      Verification attempt #3 …
+2026-04-15T21:04:29  INFO      Alarm sce-experiment-1776304867-malicious-build-alarm → OK
+2026-04-15T21:04:29  INFO      No log streams in /sce/sce-experiment-1776304867/malicious-build-events yet.
+2026-04-15T21:04:29  INFO      Sleeping 39s before next check …
+2026-04-15T21:05:08  INFO      Verification attempt #4 …
+2026-04-15T21:05:09  INFO      Alarm sce-experiment-1776304867-malicious-build-alarm → OK
+2026-04-15T21:05:09  INFO      No log streams in /sce/sce-experiment-1776304867/malicious-build-events yet.
+2026-04-15T21:05:09  INFO      Sleeping 54s before next check …
+2026-04-15T21:06:04  INFO      Verification attempt #5 …
+2026-04-15T21:06:05  INFO      Alarm sce-experiment-1776304867-malicious-build-alarm → OK
+2026-04-15T21:06:05  INFO      No log streams in /sce/sce-experiment-1776304867/malicious-build-events yet.
+2026-04-15T21:06:05  INFO      Sleeping 76s before next check …
+2026-04-15T21:07:22  INFO      Verification attempt #6 …
+2026-04-15T21:07:23  INFO      Alarm sce-experiment-1776304867-malicious-build-alarm → OK
+2026-04-15T21:07:23  INFO      No log streams in /sce/sce-experiment-1776304867/malicious-build-events yet.
+2026-04-15T21:07:23  INFO      Sleeping 90s before next check …
+2026-04-15T21:08:53  INFO      Verification attempt #7 …
+2026-04-15T21:08:54  INFO      Alarm sce-experiment-1776304867-malicious-build-alarm → OK
+2026-04-15T21:08:54  INFO      No log streams in /sce/sce-experiment-1776304867/malicious-build-events yet.
+2026-04-15T21:08:54  INFO      Sleeping 90s before next check …
+2026-04-15T21:10:24  INFO      Verification attempt #8 …
+2026-04-15T21:10:25  INFO      Alarm sce-experiment-1776304867-malicious-build-alarm → OK
+2026-04-15T21:10:25  INFO      No log streams in /sce/sce-experiment-1776304867/malicious-build-events yet.
+2026-04-15T21:10:25  INFO      Sleeping 90s before next check …
+2026-04-15T21:11:55  INFO      Verification attempt #9 …
+2026-04-15T21:11:55  INFO      Alarm sce-experiment-1776304867-malicious-build-alarm → OK
+2026-04-15T21:11:56  INFO      No log streams in /sce/sce-experiment-1776304867/malicious-build-events yet.
+2026-04-15T21:11:56  INFO      Sleeping 90s before next check …
+2026-04-15T21:13:26  INFO      Verification attempt #10 …
+2026-04-15T21:13:26  INFO      Alarm sce-experiment-1776304867-malicious-build-alarm → OK
+2026-04-15T21:13:27  INFO      No log streams in /sce/sce-experiment-1776304867/malicious-build-events yet.
+2026-04-15T21:13:27  INFO      Sleeping 90s before next check …
+2026-04-15T21:14:57  ERROR     Hypothesis verification timed out – detective control did NOT fire.
+[31m[2026-04-15 21:14:57 CRITICAL] Steady state probe 'Verify detective control detected the malicious build invocation' is not in the given tolerance so failing this experiment
+[32m[2026-04-15 21:14:57 INFO] Let's rollback...
+[32m[2026-04-15 21:14:57 INFO] Rollback: Delete CloudFormation stack and all provisioned resources
+[32m[2026-04-15 21:14:57 INFO] Action: Delete CloudFormation stack and all provisioned resources
+2026-04-15T21:14:57  INFO      === ROLLBACK  stack=sce-experiment-1776304867 ===
+2026-04-15T21:14:57  INFO      Stopped build sce-experiment-1776304867-malicious-build:4335e2e9-b934-48be-b5df-b23378630efe.
+2026-04-15T21:14:58  INFO      delete_stack called for sce-experiment-1776304867.
+2026-04-15T21:14:58  INFO      Stack sce-experiment-1776304867 → DELETE_IN_PROGRESS
+2026-04-15T21:15:09  INFO      Stack sce-experiment-1776304867 → DELETE_IN_PROGRESS
+2026-04-15T21:15:24  INFO      Stack sce-experiment-1776304867 → DELETE_IN_PROGRESS
+2026-04-15T21:15:47  INFO      Stack sce-experiment-1776304867 deleted successfully.
+[32m[2026-04-15 21:15:47 INFO] Experiment ended with status: deviated
+[32m[2026-04-15 21:15:47 INFO] The steady-state has deviated, a weakness may have been discovered
+
+
+RETURN CODE: 1

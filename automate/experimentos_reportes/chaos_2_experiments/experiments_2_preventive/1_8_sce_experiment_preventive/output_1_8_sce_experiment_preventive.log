@@ -1,0 +1,64 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-04-25 00:13:27 INFO] Validating the experiment's syntax
+2026-04-25 00:13:27,554 - INFO - Found credentials in shared credentials file: ~/.aws/credentials
+[32m[2026-04-25 00:13:27 INFO] Experiment looks valid
+[32m[2026-04-25 00:13:27 INFO] Running experiment: SCE 1.8: Encrypted CodeBuild Artifact Control
+[32m[2026-04-25 00:13:27 INFO] Steady-state strategy: after-method-only
+[32m[2026-04-25 00:13:27 INFO] Rollbacks strategy: default
+[32m[2026-04-25 00:13:27 INFO] Playing your experiment's method now...
+[32m[2026-04-25 00:13:27 INFO] Action: Deploy preventive controls: S3 encryption enforcement and CodeBuild project
+2026-04-25 00:13:27,697 - INFO - === STEADY STATE: Deploying preventive controls ===
+2026-04-25 00:13:28,669 - INFO - Creating CloudFormation stack: sce-1-8-experiment-1777094008
+2026-04-25 00:13:28,974 - INFO - Stack creation initiated: arn:aws:cloudformation:us-east-1:941377112071:stack/sce-1-8-experiment-1777094008/8ced9110-4065-11f1-a374-0e96b6cb2abb
+2026-04-25 00:13:29,092 - INFO - Stack status: CREATE_IN_PROGRESS (attempt 1/30)
+2026-04-25 00:13:31,206 - ERROR - Stack creation failed with status: ROLLBACK_IN_PROGRESS
+2026-04-25 00:13:31,321 - INFO - Stack deployment successful
+2026-04-25 00:13:31,321 - INFO -   Artifact Bucket: sce-artifact-bucket-1777094008
+2026-04-25 00:13:31,321 - INFO -   CodeBuild Project: sce-codebuild-project-1777094008
+2026-04-25 00:13:31,321 - INFO -   IAM Role ARN: None
+2026-04-25 00:13:31,321 - INFO - Verifying S3 encryption configuration...
+2026-04-25 00:13:31,744 - ERROR - Steady state failed: An error occurred (NoSuchBucket) when calling the GetBucketEncryption operation: The specified bucket does not exist
+[31m[2026-04-25 00:13:31 ERROR]   => failed: botocore.errorfactory.NoSuchBucket: An error occurred (NoSuchBucket) when calling the GetBucketEncryption operation: The specified bucket does not exist
+[32m[2026-04-25 00:13:31 INFO] Action: Execute attack node 1.7: Trigger malicious CodeBuild build attempting credential exfiltration
+2026-04-25 00:13:31,755 - INFO - === ATTACK: Triggering malicious CodeBuild execution ===
+2026-04-25 00:13:31,755 - INFO - Starting build on project: sce-codebuild-project-1777094008
+2026-04-25 00:13:32,243 - ERROR - Failed to start build: An error occurred (ResourceNotFoundException) when calling the StartBuild operation: Project cannot be found: arn:aws:codebuild:us-east-1:941377112071:project/sce-codebuild-project-1777094008
+[32m[2026-04-25 00:13:32 INFO] Steady state hypothesis: CodeBuild artifacts are encrypted at rest and unencrypted credential exfiltration is blocked
+[32m[2026-04-25 00:13:32 INFO] Probe: Verify artifact encryption control is active
+2026-04-25 00:13:32,245 - INFO - === PROBE: Verifying preventive control effectiveness ===
+2026-04-25 00:13:32,245 - INFO - Check 1: Verifying S3 default encryption...
+2026-04-25 00:13:32,340 - WARNING -   ✗ Failed to retrieve bucket encryption: An error occurred (NoSuchBucket) when calling the GetBucketEncryption operation: The specified bucket does not exist
+2026-04-25 00:13:32,341 - INFO - Check 2: Verifying S3 bucket policy (deny unencrypted uploads)...
+2026-04-25 00:13:32,435 - WARNING -   ✗ Failed to retrieve bucket policy: An error occurred (NoSuchBucket) when calling the GetBucketPolicy operation: The specified bucket does not exist
+2026-04-25 00:13:32,436 - INFO - Check 3: Verifying CodeBuild project encryption setting...
+2026-04-25 00:13:32,846 - WARNING -   ✗ CodeBuild project not found
+2026-04-25 00:13:32,847 - INFO - Check 4: Verifying S3 public access blocking...
+2026-04-25 00:13:32,948 - WARNING -   ✗ Failed to retrieve public access blocking: An error occurred (NoSuchBucket) when calling the GetPublicAccessBlock operation: The specified bucket does not exist
+2026-04-25 00:13:32,948 - INFO - Check 5: Verifying bucket contains only encrypted objects...
+2026-04-25 00:13:33,046 - WARNING -   ✗ Failed to verify bucket objects: An error occurred (NoSuchBucket) when calling the ListObjectsV2 operation: The specified bucket does not exist
+2026-04-25 00:13:33,047 - INFO - 
+=== PROBE RESULTS ===
+2026-04-25 00:13:33,047 - INFO - Check 1 (S3 Encryption):            ✗ FAIL
+2026-04-25 00:13:33,047 - INFO - Check 2 (Preventive Policy):       ✗ FAIL
+2026-04-25 00:13:33,047 - INFO - Check 3 (CodeBuild Encryption):    ✗ FAIL
+2026-04-25 00:13:33,047 - INFO - Check 4 (Public Access Blocking):  ✗ FAIL
+2026-04-25 00:13:33,047 - INFO - Check 5 (Encrypted Objects Only):  ✗ FAIL
+2026-04-25 00:13:33,047 - INFO - 
+Overall: ✗ CONTROL BYPASSED
+[31m[2026-04-25 00:13:33 CRITICAL] Steady state probe 'Verify artifact encryption control is active' is not in the given tolerance so failing this experiment
+[32m[2026-04-25 00:13:33 INFO] Let's rollback...
+[32m[2026-04-25 00:13:33 INFO] Rollback: Rollback: Delete CloudFormation stack and all experiment resources
+[32m[2026-04-25 00:13:33 INFO] Action: Rollback: Delete CloudFormation stack and all experiment resources
+2026-04-25 00:13:33,048 - INFO - === ROLLBACK: Cleaning up experiment resources ===
+2026-04-25 00:13:33,173 - INFO - Deleting stack: sce-1-8-experiment-1777094008
+2026-04-25 00:13:33,598 - INFO - Stack deletion in progress (status: DELETE_IN_PROGRESS) - attempt 1/30
+2026-04-25 00:13:35,707 - INFO - Stack deleted successfully
+2026-04-25 00:13:35,707 - INFO - ✓ Rollback complete
+[32m[2026-04-25 00:13:35 INFO] Experiment ended with status: deviated
+[32m[2026-04-25 00:13:35 INFO] The steady-state has deviated, a weakness may have been discovered
+
+
+RETURN CODE: 1

@@ -1,0 +1,60 @@
+{
+    "title": "SCE 1.8 – Reactive Probe: Detect and Stop Malicious CodeBuild Build",
+    "description": "Validates that when an attacker starts an unauthorized AWS CodeBuild build (attack node 1.7 Start Malicious Build), the reactive control — an EventBridge rule backed by a Lambda function — automatically detects the IN_PROGRESS state change event, calls StopBuild to terminate the malicious execution, and publishes an SNS alert. The hypothesis confirms the build reaches STOPPED status and the Lambda invocation metric is non-zero, proving the reactive control fired without human intervention.",
+    "tags": [
+        "sce",
+        "codebuild",
+        "reactive",
+        "malicious-build",
+        "supply-chain",
+        "eventbridge",
+        "lambda",
+        "1.8"
+    ],
+    "steady-state-hypothesis": {
+        "title": "Reactive control stops the malicious CodeBuild build automatically",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "malicious-build-is-stopped-by-reactive-control",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.1_8_sce_experiment_reactive",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "deploy-experiment-infrastructure-codebuild-eventbridge-lambda",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_8_sce_experiment_reactive",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "start-malicious-codebuild-build-as-attacker",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_8_sce_experiment_reactive",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "delete-cloudformation-stack-and-all-experiment-resources",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_8_sce_experiment_reactive",
+                "func": "rollback"
+            }
+        }
+    ]
+}

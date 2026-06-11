@@ -1,0 +1,160 @@
+{
+  "chaoslib-version": "1.44.0",
+  "platform": "Linux-6.17.0-20-generic-x86_64-with-glibc2.39",
+  "node": "sce-user-VirtualBox",
+  "experiment": {
+    "title": "Detect Malicious CodeBuild Project Creation",
+    "description": "Security Chaos Engineering experiment to validate that detective controls can detect the creation of malicious CodeBuild projects that could be used for credential harvesting via IMDS",
+    "tags": [
+      "codebuild",
+      "detective",
+      "cloudtrail",
+      "eventbridge",
+      "credential-harvesting",
+      "T1552.005"
+    ],
+    "steady-state-hypothesis": {
+      "title": "Detective controls should detect CodeBuild project creation events",
+      "probes": [
+        {
+          "type": "probe",
+          "name": "Verify detection of malicious CodeBuild project creation",
+          "tolerance": true,
+          "provider": {
+            "type": "python",
+            "module": "chaosaws.ec2.1_3_sce_experiment_detective",
+            "func": "hypothesis_verification"
+          }
+        }
+      ]
+    },
+    "method": [
+      {
+        "type": "action",
+        "name": "Deploy detection infrastructure and establish steady state",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_sce_experiment_detective",
+          "func": "steady_state"
+        }
+      },
+      {
+        "type": "action",
+        "name": "Create malicious CodeBuild project to trigger detection",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_sce_experiment_detective",
+          "func": "attack"
+        }
+      }
+    ],
+    "rollbacks": [
+      {
+        "type": "action",
+        "name": "Delete all experiment resources including CodeBuild project and CloudFormation stack",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_sce_experiment_detective",
+          "func": "rollback"
+        }
+      }
+    ],
+    "dry": null
+  },
+  "start": "2026-04-09T02:23:00.656415+00:00",
+  "status": "completed",
+  "deviated": false,
+  "steady_states": {
+    "before": null,
+    "after": {
+      "steady_state_met": true,
+      "probes": [
+        {
+          "activity": {
+            "type": "probe",
+            "name": "Verify detection of malicious CodeBuild project creation",
+            "tolerance": true,
+            "provider": {
+              "type": "python",
+              "module": "chaosaws.ec2.1_3_sce_experiment_detective",
+              "func": "hypothesis_verification"
+            }
+          },
+          "output": true,
+          "start": "2026-04-09T02:25:37.103478+00:00",
+          "status": "succeeded",
+          "end": "2026-04-09T02:25:38.717375+00:00",
+          "duration": 1.613897,
+          "tolerance_met": true
+        }
+      ]
+    },
+    "during": []
+  },
+  "run": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "Deploy detection infrastructure and establish steady state",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_sce_experiment_detective",
+          "func": "steady_state"
+        }
+      },
+      "output": {
+        "stack_name": "sce-codebuild-detect-1775701380",
+        "status": "created",
+        "outputs": {
+          "CodeBuildRoleArn": "arn:aws:iam::941377112071:role/sce-codebuild-role-1775701380",
+          "DetectionRuleName": "detect-codebuild-create-1775701380",
+          "LogGroupName": "/aws/events/codebuild-detection-1775701380"
+        }
+      },
+      "start": "2026-04-09T02:23:00.656837+00:00",
+      "status": "succeeded",
+      "end": "2026-04-09T02:24:35.480217+00:00",
+      "duration": 94.82338
+    },
+    {
+      "activity": {
+        "type": "action",
+        "name": "Create malicious CodeBuild project to trigger detection",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_sce_experiment_detective",
+          "func": "attack"
+        }
+      },
+      "output": true,
+      "start": "2026-04-09T02:24:35.481742+00:00",
+      "status": "succeeded",
+      "end": "2026-04-09T02:25:37.101974+00:00",
+      "duration": 61.620232
+    }
+  ],
+  "rollbacks": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "Delete all experiment resources including CodeBuild project and CloudFormation stack",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_sce_experiment_detective",
+          "func": "rollback"
+        }
+      },
+      "output": {
+        "codebuild_deleted": true,
+        "stack_deleted": true,
+        "errors": []
+      },
+      "start": "2026-04-09T02:25:38.718897+00:00",
+      "status": "succeeded",
+      "end": "2026-04-09T02:26:22.480906+00:00",
+      "duration": 43.762009
+    }
+  ],
+  "end": "2026-04-09T02:26:22.481392+00:00",
+  "duration": 201.84451055526733
+}

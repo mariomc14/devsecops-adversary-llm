@@ -1,0 +1,9 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-04-25 00:50:12 INFO] Validating the experiment's syntax
+[31m[2026-04-25 00:50:12 ERROR] required argument 'stack_name' is missing from activity 'hypothesis_verification'
+
+
+RETURN CODE: 1

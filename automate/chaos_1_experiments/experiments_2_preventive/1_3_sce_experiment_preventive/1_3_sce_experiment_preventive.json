@@ -1,0 +1,63 @@
+{
+    "title": "SCE 1.3: Preventive Probe - Malicious CodeBuild Project Prevention",
+    "description": "Validates that IAM preventive controls (explicit deny policies) block attackers from creating a malicious CodeBuild project with privileged mode enabled for credential exfiltration. Tests defense against T1552.005 (Unsecured Credentials in CodeBuild environment).",
+    "tags": [
+        "aws",
+        "iam",
+        "codebuild",
+        "preventive-control",
+        "least-privilege",
+        "credential-exfiltration",
+        "t1552.005"
+    ],
+    "steady-state-hypothesis": {
+        "title": "CodeBuild Malicious Project Creation is Blocked by IAM Preventive Controls",
+        "description": "When explicit deny policies are in place, an attacker cannot create a CodeBuild project with privileged mode enabled to exfiltrate credentials.",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "verify-preventive-control-blocks-malicious-codebuild",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.1_3_sce_experiment_preventive",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "deploy-preventive-control-infrastructure",
+            "description": "Deploy CloudFormation stack with IAM role, explicit deny policies, and S3 artifact bucket",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_3_sce_experiment_preventive",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "execute-malicious-codebuild-creation-attack",
+            "description": "Attempt to create a CodeBuild project with privileged mode=True and credential exfiltration buildspec",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_3_sce_experiment_preventive",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "cleanup-experiment-resources",
+            "description": "Delete CloudFormation stack and all provisioned resources",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_3_sce_experiment_preventive",
+                "func": "rollback"
+            }
+        }
+    ]
+}

@@ -1,0 +1,149 @@
+{
+  "chaoslib-version": "1.44.0",
+  "platform": "Linux-6.17.0-20-generic-x86_64-with-glibc2.39",
+  "node": "sce-user-VirtualBox",
+  "experiment": {
+    "title": "SCE 1.8 – Detect Malicious CodeBuild Invocation (Attack Node 1.7: Start Malicious Build)",
+    "description": "Validates the detective control for unauthorised / malicious CodeBuild project execution. A rogue CodeBuild project is created and a build is deliberately triggered (StartBuild). An EventBridge rule captures the build-state-change event and routes it to a CloudWatch Logs group. A CloudWatch metric filter increments a counter, and a CloudWatch Alarm transitions to ALARM state. The hypothesis verifies – via real AWS API calls – that either the alarm fired or log events are present in the detective log group, confirming the control observed the malicious build invocation.",
+    "tags": [
+      "sce",
+      "detective",
+      "codebuild",
+      "malicious-build",
+      "eventbridge",
+      "cloudwatch",
+      "supply-chain"
+    ],
+    "steady-state-hypothesis": {
+      "title": "CloudWatch Alarm or Log Group captures malicious CodeBuild StartBuild event",
+      "probes": [
+        {
+          "type": "probe",
+          "name": "Verify detective control detected the malicious build invocation",
+          "tolerance": true,
+          "provider": {
+            "type": "python",
+            "module": "chaosaws.ec2.1_8_sce_experiment_detective",
+            "func": "hypothesis_verification"
+          }
+        }
+      ]
+    },
+    "method": [
+      {
+        "type": "action",
+        "name": "Deploy CloudFormation stack with CodeBuild project, EventBridge rule, CloudWatch log group and alarm",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_detective",
+          "func": "steady_state"
+        }
+      },
+      {
+        "type": "action",
+        "name": "Start malicious CodeBuild build (Attack Node 1.7)",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_detective",
+          "func": "attack"
+        }
+      }
+    ],
+    "rollbacks": [
+      {
+        "type": "action",
+        "name": "Delete CloudFormation stack and all provisioned resources",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_detective",
+          "func": "rollback"
+        }
+      }
+    ],
+    "dry": null
+  },
+  "start": "2026-04-16T02:01:07.242726+00:00",
+  "status": "completed",
+  "deviated": true,
+  "steady_states": {
+    "before": null,
+    "after": {
+      "steady_state_met": false,
+      "probes": [
+        {
+          "activity": {
+            "type": "probe",
+            "name": "Verify detective control detected the malicious build invocation",
+            "tolerance": true,
+            "provider": {
+              "type": "python",
+              "module": "chaosaws.ec2.1_8_sce_experiment_detective",
+              "func": "hypothesis_verification"
+            }
+          },
+          "output": false,
+          "start": "2026-04-16T02:03:38.623102+00:00",
+          "status": "succeeded",
+          "end": "2026-04-16T02:14:57.344814+00:00",
+          "duration": 678.721712,
+          "tolerance_met": false
+        }
+      ]
+    },
+    "during": []
+  },
+  "run": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "Deploy CloudFormation stack with CodeBuild project, EventBridge rule, CloudWatch log group and alarm",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_detective",
+          "func": "steady_state"
+        }
+      },
+      "output": true,
+      "start": "2026-04-16T02:01:07.243407+00:00",
+      "status": "succeeded",
+      "end": "2026-04-16T02:03:22.997294+00:00",
+      "duration": 135.753887
+    },
+    {
+      "activity": {
+        "type": "action",
+        "name": "Start malicious CodeBuild build (Attack Node 1.7)",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_detective",
+          "func": "attack"
+        }
+      },
+      "output": true,
+      "start": "2026-04-16T02:03:22.997667+00:00",
+      "status": "succeeded",
+      "end": "2026-04-16T02:03:38.622543+00:00",
+      "duration": 15.624876
+    }
+  ],
+  "rollbacks": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "Delete CloudFormation stack and all provisioned resources",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_detective",
+          "func": "rollback"
+        }
+      },
+      "output": true,
+      "start": "2026-04-16T02:14:57.357315+00:00",
+      "status": "succeeded",
+      "end": "2026-04-16T02:15:47.479704+00:00",
+      "duration": 50.122389
+    }
+  ],
+  "end": "2026-04-16T02:15:47.480279+00:00",
+  "duration": 880.2442376613617
+}

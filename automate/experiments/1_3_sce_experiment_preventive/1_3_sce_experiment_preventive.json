@@ -1,0 +1,51 @@
+{
+    "title": "CodeBuild Project Security Preventive Control Test",
+    "description": "Validate CodeBuild project's resistance to malicious buildspec modifications",
+    "tags": ["aws", "codebuild", "security", "preventive"],
+    "steady-state-hypothesis": {
+        "title": "CodeBuild Project Should Resist Malicious Modifications",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "Verify Preventive Controls",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.1_3_sce_experiment_preventive",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "Create Initial CodeBuild Project",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_3_sce_experiment_preventive",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "Attempt Malicious Project Modification",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_3_sce_experiment_preventive",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "Delete Test Resources",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_3_sce_experiment_preventive",
+                "func": "rollback"
+            }
+        }
+    ]
+}

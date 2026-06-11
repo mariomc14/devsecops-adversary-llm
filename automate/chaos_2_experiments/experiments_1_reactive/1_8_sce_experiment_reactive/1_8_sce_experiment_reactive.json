@@ -1,0 +1,51 @@
+{
+    "title": "CodeBuild Privilege Escalation Detection",
+    "description": "Detect and prevent unauthorized CodeBuild project configuration modifications",
+    "tags": ["codebuild", "iam", "security"],
+    "steady-state-hypothesis": {
+        "title": "CodeBuild project remains securely configured",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "Verify project configuration security",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.sce_1_8_sce_experiment_reactive",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "Create isolated CodeBuild environment",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.sce_1_8_sce_experiment_reactive",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "Attempt privileged mode escalation",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.sce_1_8_sce_experiment_reactive",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "Clean up experiment resources",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.sce_1_8_sce_experiment_reactive",
+                "func": "rollback"
+            }
+        }
+    ]
+}

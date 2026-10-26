@@ -1,7 +1,7 @@
 # Consolidated Experimental Campaign: LLM-Driven Chaos Attack–Defense Trees (IJIS)
 
 [![Status](https://img.shields.io/badge/Branch-IJIS%20Experiments%20Consolidated-orange.svg)](#)
-[![Journal](https://img.shields.io/badge/Journal-IJIS-blue.svg)](https://www.springer.com/journal/10207)
+[![Status](https://img.shields.io/badge/Status-Under_Review_at_IJIS-informational.svg)](#)
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 
 > [!NOTE]

@@ -45,7 +45,7 @@ flowchart TD
 |---|---|---|---|
 | **[`main`](https://github.com/mariomc14/devsecops-adversary-llm/tree/main)** | — | **Repository Portal** | Central index, global roadmap, comparative synthesis, and bibliographic metadata. |
 | **[`jnic`](https://github.com/mariomc14/devsecops-adversary-llm/tree/jnic)** | [`v1.0-jnic`](https://github.com/mariomc14/devsecops-adversary-llm/releases/tag/v1.0-jnic) | **JNIC 2026 Paper** | Attack tree generation prompts, QwQ-32B vs GPT-4 trees, and single-scenario SCE experiment (Spot EC2 privilege escalation). |
-| **[`ijis-experiments`](https://github.com/mariomc14/devsecops-adversary-llm/tree/ijis-experiments)** | — | **IJIS Consolidated History** | Combined commit history (`experiments-Mario`, `experimentos-miguel`, `feat_addMetrics`), reference Bedrock orchestrator, and all model-organized raw experimental outputs. |
+| **[`ijis-experiments`](https://github.com/mariomc14/devsecops-adversary-llm/tree/ijis-experiments)** | — | **IJIS Consolidated Experiments** | Complete experimental campaign codebase, reference Bedrock orchestrator, iterative refinement loops, and all model-organized experimental outputs. |
 | **[`reproducibility/ijis-paper`](https://github.com/mariomc14/devsecops-adversary-llm/tree/reproducibility/ijis-paper)** | [`v2.0-ijis-reproducibility`](https://github.com/mariomc14/devsecops-adversary-llm/releases/tag/v2.0-ijis-reproducibility) | **IJIS Reproducibility Package** | Frozen, peer-review package: sanitized experiment artifacts, SHA256 checksums, normalized input DAGs, execution logs, and validation scripts. |
 
 ---

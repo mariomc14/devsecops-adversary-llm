@@ -2,15 +2,15 @@
 
 [![Status](https://img.shields.io/badge/Branch-Reproducibility%20IJIS-success.svg)](#)
 [![Release](https://img.shields.io/badge/Release-v2.0--ijis--reproducibility-blue.svg)](#)
-[![Journal](https://img.shields.io/badge/Journal-IJIS-blue.svg)](https://www.springer.com/journal/10207)
+[![Status](https://img.shields.io/badge/Status-Under_Review_at_IJIS-informational.svg)](#)
 [![Integrity](https://img.shields.io/badge/Checksums-SHA256%20Verified-brightgreen.svg)](#)
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 
 > [!IMPORTANT]
-> **Artifact for Peer Review:** This branch (`reproducibility/ijis-paper`) contains the formal, frozen reproducibility package supporting the research article:
+> **Artifact for Peer Review:** This branch (`reproducibility/ijis-paper`) contains the formal, frozen reproducibility package supporting the research manuscript:
 > 
 > **“LLM-Driven Chaos Attack–Defense Trees for Empirical Security Validation in DevSecOps Scenarios”**  
-> *Submitted to the International Journal of Information Security (IJIS).*
+> *(Currently under review at the International Journal of Information Security - IJIS)*
 > 
 > To cite an immutable snapshot of this package in the manuscript, reference the release tag:
 > `v2.0-ijis-reproducibility`

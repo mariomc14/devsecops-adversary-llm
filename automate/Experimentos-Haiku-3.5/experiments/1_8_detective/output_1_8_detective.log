@@ -1,0 +1,28 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-03-29 13:04:48 INFO] Validating the experiment's syntax
+[32m[2026-03-29 13:04:48 INFO] Experiment looks valid
+[32m[2026-03-29 13:04:48 INFO] Running experiment: EC2 IMDS Configuration Change Detection Experiment
+[32m[2026-03-29 13:04:48 INFO] Steady-state strategy: after-method-only
+[32m[2026-03-29 13:04:48 INFO] Rollbacks strategy: default
+[32m[2026-03-29 13:04:48 INFO] Playing your experiment's method now...
+[32m[2026-03-29 13:04:48 INFO] Action: Prepare IMDS Monitoring Environment
+2026-03-29 13:04:48,975 - INFO: Found credentials in shared credentials file: ~/.aws/credentials
+2026-03-29 13:07:53,085 - ERROR: Steady state preparation failed: Waiter StackCreateComplete failed: Waiter encountered a terminal failure state: For expression "Stacks[].StackStatus" we matched expected path: "ROLLBACK_COMPLETE" at least once
+[32m[2026-03-29 13:07:53 INFO] Action: Simulate IMDS Configuration Modification
+2026-03-29 13:07:53,628 - ERROR: No instances found matching experiment tag
+[32m[2026-03-29 13:07:53 INFO] Steady state hypothesis: IMDS Configuration Changes Should Be Detectable
+[32m[2026-03-29 13:07:53 INFO] Probe: IMDS Configuration Change Detection
+2026-03-29 13:07:54,314 - INFO: IMDS configuration change detected!
+[32m[2026-03-29 13:07:54 INFO] Steady state hypothesis is met!
+[32m[2026-03-29 13:07:54 INFO] Let's rollback...
+[32m[2026-03-29 13:07:54 INFO] Rollback: Clean Up Experiment Resources
+[32m[2026-03-29 13:07:54 INFO] Action: Clean Up Experiment Resources
+2026-03-29 13:07:54,764 - WARNING: CloudTrail deletion failed: An error occurred (TrailNotFoundException) when calling the DeleteTrail operation: Unknown trail: arn:aws:cloudtrail:us-east-1:396608802942:trail/sce-imds-detective-1774782288-trail-1774782288 for the user: 396608802942
+2026-03-29 13:08:26,582 - INFO: Rollback completed successfully
+[32m[2026-03-29 13:08:26 INFO] Experiment ended with status: completed
+
+
+RETURN CODE: 0

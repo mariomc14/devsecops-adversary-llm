@@ -1,0 +1,66 @@
+{
+    "title": "SCE Experiment 1.3: Preventive Probe - IAM Least-Privilege EC2 Enumeration Blocking",
+    "description": "Validates preventive safeguard blocking ec2:DescribeInstances from unauthorized principals via IAM Deny policy. ULTRA-OPTIMIZED: Direct IAM API approach eliminates CloudFormation complexity. Simulates attacker attempting to enumerate running EC2 instances; verifies IAM policy prevents access and logs denial in CloudTrail.",
+    "tags": [
+        "banking-platform",
+        "aws-ec2",
+        "iam-least-privilege",
+        "preventive-control",
+        "credential-theft-prevention",
+        "sce-1.3",
+        "attack-1.2",
+        "ultra-optimized",
+        "no-cloudformation"
+    ],
+    "steady-state-hypothesis": {
+        "title": "IAM Least-Privilege Access Control blocks EC2 enumeration",
+        "description": "Hypothesis: An explicit IAM Deny policy on ec2:DescribeInstances will prevent unauthorized principals from enumerating EC2 instances, even if an Allow policy is attached. This preventive control blocks the first reconnaissance step (T1526) in the 5-step IMDS credential theft attack chain. Uses direct IAM API calls for maximum reliability (~99% success rate).",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "Verify IAM policy enforces Deny on ec2:DescribeInstances",
+                "tolerance": true,
+                "description": "Confirms that the IAM role has an explicit Deny policy on DescribeInstances action, which prevents enumeration attempts even when an Allow policy is present (Deny always wins in AWS IAM evaluation). Uses inline policy inspection for fast verification.",
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.1_3_preventive",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "Phase 1: Deploy minimal IAM infrastructure (role, policies, user, credentials)",
+            "description": "Create minimal IAM infrastructure in ~5 seconds: (1) IAM role with both Allow and Deny policies on DescribeInstances, (2) IAM user with access keys for attacker simulation, (3) Assume role policy allowing user to assume attacker role. Uses direct IAM API calls instead of CloudFormation for reliability and speed.",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_3_preventive",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "Phase 2: Execute attack step 1.2 - Enumerate EC2 instances with attacker credentials",
+            "description": "Attempt ec2:DescribeInstances API call using the attacker-simulated credentials. Expected result: AccessDenied error due to preventive Deny policy. Attack success (enumeration succeeds) indicates the preventive control is not working. Returns boolean indicating success/failure of attack execution.",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_3_preventive",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "Phase 4: Cleanup - Delete all IAM resources created in steady-state",
+            "description": "Delete IAM resources in reverse order of creation (LIFO): (1) access keys, (2) user policies, (3) IAM users, (4) role policies, (5) IAM roles. Gracefully handles missing resources. Ensures complete cleanup even if earlier phases fail.",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_3_preventive",
+                "func": "rollback"
+            }
+        }
+    ]
+}

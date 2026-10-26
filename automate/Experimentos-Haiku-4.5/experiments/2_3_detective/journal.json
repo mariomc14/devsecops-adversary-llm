@@ -1,0 +1,213 @@
+{
+  "chaoslib-version": "1.44.0",
+  "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.41",
+  "node": "DESKTOP-R7NS3KO",
+  "experiment": {
+    "title": "SCE 2.3 Detective Probe - IMDS Modification Detection (Production Ready)",
+    "description": "Security Chaos Engineering experiment validating detective controls for unauthorized EC2 Instance Metadata Service (IMDS) modifications. Executes attack steps 1.2 (enumerate IMDS) and 2.2 (weaken IMDS security) on a test EC2 instance, then verifies CloudTrail detects the unauthorized modifications within 30-minute SLA. Production-ready version includes improved error handling, diagnostics, and reliability for real AWS environments.",
+    "tags": [
+      "aws",
+      "ec2",
+      "security",
+      "detective",
+      "imds",
+      "cloudtrail",
+      "chaos-engineering",
+      "sce-2.3",
+      "production"
+    ],
+    "configuration": {
+      "aws_region": "us-east-1",
+      "instance_type": "t3.micro",
+      "sla_seconds": 1800,
+      "poll_interval": 20,
+      "stack_timeout": 1200
+    },
+    "steady-state-hypothesis": {
+      "title": "CloudTrail Successfully Detects IMDS Modifications",
+      "description": "Before and after attack execution, verify that detective controls (CloudTrail API event logging) can detect and alert on unauthorized ec2:ModifyInstanceMetadataOptions API calls that weaken IMDS security posture. The system should detect modification attempts with security-weakening parameters (HttpTokens=optional, HopLimit≥2) within 30 minutes (AWS eventual consistency SLA).",
+      "probes": [
+        {
+          "type": "probe",
+          "name": "Verify Detective Controls Detect IMDS Modification",
+          "tolerance": true,
+          "provider": {
+            "type": "python",
+            "module": "chaosaws.ec2.2_3_detective",
+            "func": "hypothesis_verification"
+          }
+        }
+      ]
+    },
+    "method": [
+      {
+        "type": "action",
+        "name": "Prepare Test Infrastructure",
+        "description": "Deploy CloudFormation stack with EC2 instance (hardened IMDS baseline), CloudTrail trail for API logging, S3 bucket for logs, IAM roles for test instance and attacker simulation. All resources tagged with experiment identifiers for tracking and cleanup. Waits for eventual consistency before proceeding to attack phase.",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.2_3_detective",
+          "func": "steady_state"
+        }
+      },
+      {
+        "type": "action",
+        "name": "Execute Attack Steps 1.2 & 2.2",
+        "description": "Assume attacker role and execute: (1) Enumerate IMDS configuration via describe-instances (T1526), (2) Modify IMDS to weaken security with ModifyInstanceMetadataOptions: set HttpTokens=optional and HopLimit=2 (T1578.001). Both actions recorded in CloudTrail for detective validation.",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.2_3_detective",
+          "func": "attack"
+        }
+      }
+    ],
+    "rollbacks": [
+      {
+        "type": "action",
+        "name": "Cleanup Test Infrastructure",
+        "description": "Delete CloudFormation stack to cascade-delete all test resources (EC2 instance, security group, CloudTrail, S3 bucket, IAM roles). Handles partial stack creation gracefully. Ensures no resource leakage.",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.2_3_detective",
+          "func": "rollback"
+        }
+      }
+    ],
+    "insights": [
+      {
+        "name": "CloudTrail Event Detection",
+        "description": "Validates CloudTrail captures ec2:ModifyInstanceMetadataOptions API calls in real-time, including requestParameters (HttpTokens, HopLimit) and caller identity. Demonstrates detective effectiveness for infrastructure modification tracking."
+      },
+      {
+        "name": "IMDS Configuration Change Detection",
+        "description": "Verifies detective controls identify specific security-weakening parameters (HttpTokens=optional, HopLimit>1) in modification events. Ensures alerts trigger for configurations that enable credential exfiltration."
+      },
+      {
+        "name": "Detective SLA Compliance",
+        "description": "Measures time-to-detection from attack execution to CloudTrail event availability. Validates compliance with 30-minute SLA for AWS eventual consistency. Typical detection occurs within 1-2 minutes."
+      },
+      {
+        "name": "STRIDE Threat Coverage",
+        "description": "Probe validates detection of threats aligned to STRIDE: Information Disclosure (credential theft via IMDSv1), Elevation of Privilege (IAM role assumption), Tampering (infrastructure modification). Multi-layered threat detection."
+      },
+      {
+        "name": "Production Reliability Enhancements",
+        "description": "Improvements in this version: Better CloudFormation diagnostics with event logging on failure, simplified resource dependencies to reduce failure surface, adaptive timeouts and exponential backoff, comprehensive error handling for edge cases, detailed logging for troubleshooting."
+      }
+    ],
+    "environment_requirements": {
+      "aws_credentials": "Standard AWS credential chain (~/.aws/credentials or environment variables)",
+      "aws_permissions": [
+        "cloudformation:*",
+        "ec2:*",
+        "iam:*",
+        "cloudtrail:*",
+        "s3:*",
+        "sts:AssumeRole"
+      ],
+      "aws_account_status": "Clean AWS account (no conflicting resources)",
+      "estimated_runtime": "8-12 minutes (4-6 minutes typical, up to 30 minutes worst-case)",
+      "estimated_cost": "$0.05-0.20 (single t3.micro instance + CloudTrail logs)"
+    },
+    "troubleshooting": {
+      "ROLLBACK_COMPLETE": "CloudFormation resource creation failed. Check CloudTrail events in logs for specific resource failure.",
+      "Timeout": "Stack creation took >20 minutes. May indicate AWS capacity constraints. Retry with different instance type.",
+      "Missing outputs": "Stack created but outputs not found. Verify CloudFormation template syntax and resource naming.",
+      "No CloudTrail events": "Events may be delayed. Increase SLA window or check CloudTrail trail status manually."
+    },
+    "dry": null
+  },
+  "start": "2026-03-29T17:52:07.247135+00:00",
+  "status": "failed",
+  "deviated": true,
+  "steady_states": {
+    "before": null,
+    "after": {
+      "steady_state_met": false,
+      "probes": [
+        {
+          "activity": {
+            "type": "probe",
+            "name": "Verify Detective Controls Detect IMDS Modification",
+            "tolerance": true,
+            "provider": {
+              "type": "python",
+              "module": "chaosaws.ec2.2_3_detective",
+              "func": "hypothesis_verification"
+            }
+          },
+          "output": null,
+          "start": "2026-03-29T17:52:24.467013+00:00",
+          "status": "failed",
+          "exception": [
+            "Traceback (most recent call last):\n",
+            "  File \"/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py\", line 56, in run_python_activity\n    return func(**arguments)\n",
+            "  File \"/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_3_detective.py\", line 571, in hypothesis_verification\n    raise RuntimeError(\"Instance ID not available\")\n",
+            "RuntimeError: Instance ID not available\n",
+            "\nDuring handling of the above exception, another exception occurred:\n\n",
+            "chaoslib.exceptions.ActivityFailed: RuntimeError: Instance ID not available\n"
+          ],
+          "end": "2026-03-29T17:52:24.467863+00:00",
+          "duration": 0.00085,
+          "tolerance_met": false
+        }
+      ]
+    },
+    "during": []
+  },
+  "run": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "Prepare Test Infrastructure",
+        "description": "Deploy CloudFormation stack with EC2 instance (hardened IMDS baseline), CloudTrail trail for API logging, S3 bucket for logs, IAM roles for test instance and attacker simulation. All resources tagged with experiment identifiers for tracking and cleanup. Waits for eventual consistency before proceeding to attack phase.",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.2_3_detective",
+          "func": "steady_state"
+        }
+      },
+      "output": null,
+      "start": "2026-03-29T17:52:07.247419+00:00",
+      "status": "failed",
+      "exception": [
+        "Traceback (most recent call last):\n",
+        "  File \"/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py\", line 56, in run_python_activity\n    return func(**arguments)\n",
+        "  File \"/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_3_detective.py\", line 449, in steady_state\n    raise RuntimeError(\"Stack creation failed or timed out\")\n",
+        "RuntimeError: Stack creation failed or timed out\n",
+        "\nDuring handling of the above exception, another exception occurred:\n\n",
+        "chaoslib.exceptions.ActivityFailed: RuntimeError: Stack creation failed or timed out\n"
+      ],
+      "end": "2026-03-29T17:52:24.465019+00:00",
+      "duration": 17.2176
+    },
+    {
+      "activity": {
+        "type": "action",
+        "name": "Execute Attack Steps 1.2 & 2.2",
+        "description": "Assume attacker role and execute: (1) Enumerate IMDS configuration via describe-instances (T1526), (2) Modify IMDS to weaken security with ModifyInstanceMetadataOptions: set HttpTokens=optional and HopLimit=2 (T1578.001). Both actions recorded in CloudTrail for detective validation.",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.2_3_detective",
+          "func": "attack"
+        }
+      },
+      "output": null,
+      "start": "2026-03-29T17:52:24.465805+00:00",
+      "status": "failed",
+      "exception": [
+        "Traceback (most recent call last):\n",
+        "  File \"/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py\", line 56, in run_python_activity\n    return func(**arguments)\n",
+        "  File \"/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_3_detective.py\", line 499, in attack\n    raise RuntimeError(\"Steady state must complete first\")\n",
+        "RuntimeError: Steady state must complete first\n",
+        "\nDuring handling of the above exception, another exception occurred:\n\n",
+        "chaoslib.exceptions.ActivityFailed: RuntimeError: Steady state must complete first\n"
+      ],
+      "end": "2026-03-29T17:52:24.466766+00:00",
+      "duration": 0.000961
+    }
+  ],
+  "rollbacks": [],
+  "end": "2026-03-29T17:52:24.467999+00:00",
+  "duration": 17.22197198867798
+}

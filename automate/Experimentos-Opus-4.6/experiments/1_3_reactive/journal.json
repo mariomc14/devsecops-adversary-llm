@@ -1,0 +1,155 @@
+{
+  "chaoslib-version": "1.44.0",
+  "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.41",
+  "node": "PC-INF-MAMA",
+  "experiment": {
+    "title": "SCE 1.3 Reactive Probe: Validate Automated Credential Revocation on EC2 Reconnaissance Detection",
+    "description": "Security Chaos Engineering experiment that validates reactive controls automatically respond to unauthorized EC2 reconnaissance (T1580 - Cloud Infrastructure Discovery). The reactive pipeline consists of CloudTrail capturing the DescribeInstances API call, EventBridge matching the event pattern from the attacker role, and a Lambda function that applies a deny-all inline IAM policy to the compromised role. The experiment verifies that after the attack, the attacker role is effectively revoked and subsequent API calls are blocked, confirming the automated incident response chain operates end-to-end as designed for the banking platform.",
+    "tags": [
+      "sce-1.3",
+      "reactive",
+      "ec2",
+      "iam",
+      "eventbridge",
+      "lambda",
+      "cloudtrail",
+      "credential-revocation",
+      "T1580",
+      "reconnaissance",
+      "banking",
+      "imds",
+      "incident-response"
+    ],
+    "steady-state-hypothesis": {
+      "title": "Reactive controls automatically revoke attacker credentials after EC2 reconnaissance detection",
+      "probes": [
+        {
+          "type": "probe",
+          "name": "verify-reactive-credential-revocation",
+          "tolerance": true,
+          "provider": {
+            "type": "python",
+            "module": "chaosaws.ec2.1_3_reactive",
+            "func": "hypothesis_verification"
+          }
+        }
+      ]
+    },
+    "method": [
+      {
+        "type": "action",
+        "name": "deploy-reactive-control-infrastructure",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_reactive",
+          "func": "steady_state"
+        }
+      },
+      {
+        "type": "action",
+        "name": "execute-ec2-reconnaissance-attack",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_reactive",
+          "func": "attack"
+        }
+      }
+    ],
+    "rollbacks": [
+      {
+        "type": "action",
+        "name": "cleanup-experiment-resources",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_reactive",
+          "func": "rollback"
+        }
+      }
+    ],
+    "dry": null
+  },
+  "start": "2026-04-17T11:48:25.716506+00:00",
+  "status": "completed",
+  "deviated": true,
+  "steady_states": {
+    "before": null,
+    "after": {
+      "steady_state_met": false,
+      "probes": [
+        {
+          "activity": {
+            "type": "probe",
+            "name": "verify-reactive-credential-revocation",
+            "tolerance": true,
+            "provider": {
+              "type": "python",
+              "module": "chaosaws.ec2.1_3_reactive",
+              "func": "hypothesis_verification"
+            }
+          },
+          "output": false,
+          "start": "2026-04-17T11:50:52.607581+00:00",
+          "status": "succeeded",
+          "end": "2026-04-17T12:21:02.011819+00:00",
+          "duration": 1809.404238,
+          "tolerance_met": false
+        }
+      ]
+    },
+    "during": []
+  },
+  "run": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "deploy-reactive-control-infrastructure",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_reactive",
+          "func": "steady_state"
+        }
+      },
+      "output": null,
+      "start": "2026-04-17T11:48:25.716755+00:00",
+      "status": "succeeded",
+      "end": "2026-04-17T11:50:44.745801+00:00",
+      "duration": 139.029046
+    },
+    {
+      "activity": {
+        "type": "action",
+        "name": "execute-ec2-reconnaissance-attack",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_reactive",
+          "func": "attack"
+        }
+      },
+      "output": true,
+      "start": "2026-04-17T11:50:44.746025+00:00",
+      "status": "succeeded",
+      "end": "2026-04-17T11:50:52.607274+00:00",
+      "duration": 7.861249
+    }
+  ],
+  "rollbacks": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "cleanup-experiment-resources",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_reactive",
+          "func": "rollback"
+        }
+      },
+      "output": null,
+      "start": "2026-04-17T12:21:02.012235+00:00",
+      "status": "succeeded",
+      "end": "2026-04-17T12:22:07.328435+00:00",
+      "duration": 65.3162
+    }
+  ],
+  "end": "2026-04-17T12:22:07.328562+00:00",
+  "duration": 2021.6140236854553
+}

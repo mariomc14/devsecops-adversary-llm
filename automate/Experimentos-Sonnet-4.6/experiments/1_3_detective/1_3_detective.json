@@ -1,0 +1,63 @@
+{
+    "title": "SCE Experiment 1.3 — Detective Probe: Detect IMDS Weakening via ModifyInstanceMetadataOptions",
+    "description": "Validates that the detective controls for Attack Node 1.2 (T1578 — Modify Cloud Compute Infrastructure) correctly detect when an adversary downgrades IMDS protection on a banking-platform EC2 instance by setting HttpTokens=optional and HttpPutResponseHopLimit=2. The experiment provisions a clean EC2 instance with IMDSv2 enforced as the steady state, executes the attack API call scoped strictly to that instance, and then verifies three detection signals within a 30-minute SLA: (A) CloudTrail captures the ModifyInstanceMetadataOptions event in CloudWatch Logs with an instance-scoped structured filter, (B) the EventBridge rule matching that API call registers at least one invocation in the AWS/Events Invocations metric, and (C) the CloudWatch metric-filter alarm transitions to ALARM state. MTTD is measured from attack completion to first signal confirmation for each channel. All infrastructure is created and destroyed by the experiment via CloudFormation using the correct boto3 service name 'cloudformation'.",
+    "tags": [
+        "sce",
+        "detective",
+        "imds",
+        "ec2",
+        "cloudtrail",
+        "eventbridge",
+        "cloudwatch",
+        "pci-dss",
+        "t1578",
+        "banking-platform",
+        "1_3"
+    ],
+    "steady-state-hypothesis": {
+        "title": "EC2 instance exists with IMDSv2 enforced, CloudTrail trail is active, EventBridge rule is ENABLED, and all three detective signals confirm the ModifyInstanceMetadataOptions event within the 30-minute SLA window",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "detective-signals-confirmed-within-sla",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.1_3_detective",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "provision-experiment-infrastructure-via-cloudformation",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_3_detective",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "attack-step-1.2-weaken-imds-configuration-on-target-ec2-instance",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_3_detective",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "teardown-all-experiment-resources-via-cloudformation-stack-deletion",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_3_detective",
+                "func": "rollback"
+            }
+        }
+    ]
+}

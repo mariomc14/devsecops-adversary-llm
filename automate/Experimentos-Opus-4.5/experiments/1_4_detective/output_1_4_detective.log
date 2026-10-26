@@ -1,0 +1,157 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-04-14 13:19:11 INFO] Validating the experiment's syntax
+[32m[2026-04-14 13:19:11 INFO] Experiment looks valid
+[32m[2026-04-14 13:19:11 INFO] Running experiment: SCE 1.4 Detective Probe: CloudTrail Detection of IMDS Modification
+[32m[2026-04-14 13:19:11 INFO] Steady-state strategy: after-method-only
+[32m[2026-04-14 13:19:11 INFO] Rollbacks strategy: default
+[32m[2026-04-14 13:19:11 INFO] Playing your experiment's method now...
+[32m[2026-04-14 13:19:11 INFO] Action: establish-steady-state-with-ec2-cloudtrail-infrastructure
+2026-04-14 13:19:11,956 - INFO - ============================================================
+2026-04-14 13:19:11,956 - INFO - SCE EXPERIMENT 1.4 - DETECTIVE PROBE
+2026-04-14 13:19:11,956 - INFO - Validating CloudTrail detection of IMDS modification
+2026-04-14 13:19:11,956 - INFO - ============================================================
+2026-04-14 13:19:11,977 - INFO - Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-14 13:19:12,732 - INFO - Stack sce-experiment-1-4-1776165551 does not exist. Creating...
+2026-04-14 13:19:12,732 - INFO - Creating CloudFormation stack: sce-experiment-1-4-1776165551
+2026-04-14 13:19:13,568 - INFO - Waiting for stack creation to complete...
+2026-04-14 13:19:13,717 - INFO - Stack status: CREATE_IN_PROGRESS
+2026-04-14 13:19:13,717 - INFO - Stack creation: Waiting 5s before retry (elapsed: 0s, remaining: 899s)
+2026-04-14 13:19:18,856 - INFO - Stack status: CREATE_IN_PROGRESS
+2026-04-14 13:19:18,856 - INFO - Stack creation: Waiting 10s before retry (elapsed: 5s, remaining: 894s)
+2026-04-14 13:19:29,387 - INFO - Stack status: CREATE_IN_PROGRESS
+2026-04-14 13:19:29,387 - INFO - Stack creation: Waiting 20s before retry (elapsed: 15s, remaining: 884s)
+2026-04-14 13:19:49,991 - INFO - Stack status: CREATE_IN_PROGRESS
+2026-04-14 13:19:49,991 - INFO - Stack creation: Waiting 40s before retry (elapsed: 35s, remaining: 863s)
+2026-04-14 13:20:30,529 - INFO - Stack creation: SUCCESS after 76s (attempt 5)
+2026-04-14 13:20:30,681 - INFO - S3 Bucket Name: sce-1-4-cloudtrail-1776165551
+2026-04-14 13:20:30,681 - INFO - EC2 Instance ID: i-0341a6d5e996d36f9
+2026-04-14 13:20:30,681 - INFO - CloudTrail Name: sce-1-4-trail-1776165551
+2026-04-14 13:20:30,729 - INFO - Waiting for EC2 instance to be in running state...
+2026-04-14 13:20:31,334 - INFO - Instance running: SUCCESS after 0s (attempt 1)
+2026-04-14 13:20:31,347 - INFO - Verifying CloudTrail is actively logging...
+2026-04-14 13:20:31,946 - INFO - CloudTrail logging: SUCCESS after 0s (attempt 1)
+2026-04-14 13:20:32,205 - INFO - Baseline IMDS Configuration:
+2026-04-14 13:20:32,205 - INFO -   HttpTokens: required
+2026-04-14 13:20:32,205 - INFO -   HttpPutResponseHopLimit: 1
+2026-04-14 13:20:32,205 - INFO - Steady state established successfully
+[32m[2026-04-14 13:20:32 INFO] Action: execute-imds-weakening-attack-modify-instance-metadata-options
+2026-04-14 13:20:32,208 - INFO - ============================================================
+2026-04-14 13:20:32,208 - INFO - EXECUTING ATTACK: Weaken IMDS Security Configuration
+2026-04-14 13:20:32,208 - INFO - ============================================================
+2026-04-14 13:20:32,220 - INFO - Attack timestamp: 2026-04-14T11:20:32Z
+2026-04-14 13:20:32,220 - INFO - Target instance: i-0341a6d5e996d36f9
+2026-04-14 13:20:32,220 - INFO - Executing: aws ec2 modify-instance-metadata-options
+2026-04-14 13:20:32,220 - INFO -   --http-tokens optional
+2026-04-14 13:20:32,220 - INFO -   --http-endpoint enabled
+2026-04-14 13:20:32,220 - INFO -   --http-put-response-hop-limit 2
+2026-04-14 13:20:33,186 - INFO - Attack executed. New IMDS configuration:
+2026-04-14 13:20:33,186 - INFO -   HttpTokens: optional
+2026-04-14 13:20:33,186 - INFO -   HttpPutResponseHopLimit: 2
+2026-04-14 13:20:33,186 - INFO - IMDS security successfully weakened (attack successful)
+[32m[2026-04-14 13:20:33 INFO] Steady state hypothesis: CloudTrail detects ModifyInstanceMetadataOptions API calls within 30-minute SLA
+[32m[2026-04-14 13:20:33 INFO] Probe: verify-cloudtrail-captured-imds-modification-event
+2026-04-14 13:20:33,188 - INFO - ============================================================
+2026-04-14 13:20:33,188 - INFO - HYPOTHESIS VERIFICATION: CloudTrail Detection
+2026-04-14 13:20:33,188 - INFO - ============================================================
+2026-04-14 13:20:33,193 - INFO - Searching for ModifyInstanceMetadataOptions event...
+2026-04-14 13:20:33,193 - INFO - Instance ID: i-0341a6d5e996d36f9
+2026-04-14 13:20:33,193 - INFO - Trail: sce-1-4-trail-1776165551
+2026-04-14 13:20:33,193 - INFO - SLA: 1800 seconds (30 minutes)
+2026-04-14 13:20:33,731 - INFO - Found 0 ModifyInstanceMetadataOptions events
+2026-04-14 13:20:33,731 - INFO - CloudTrail detection: Waiting 5s before retry (elapsed: 0s, remaining: 1799s)
+2026-04-14 13:20:38,861 - INFO - Found 0 ModifyInstanceMetadataOptions events
+2026-04-14 13:20:38,861 - INFO - CloudTrail detection: Waiting 10s before retry (elapsed: 5s, remaining: 1794s)
+2026-04-14 13:20:48,997 - INFO - Found 0 ModifyInstanceMetadataOptions events
+2026-04-14 13:20:48,997 - INFO - CloudTrail detection: Waiting 20s before retry (elapsed: 15s, remaining: 1784s)
+2026-04-14 13:21:09,135 - INFO - Found 0 ModifyInstanceMetadataOptions events
+2026-04-14 13:21:09,135 - INFO - CloudTrail detection: Waiting 40s before retry (elapsed: 35s, remaining: 1764s)
+2026-04-14 13:21:49,272 - INFO - Found 0 ModifyInstanceMetadataOptions events
+2026-04-14 13:21:49,272 - INFO - CloudTrail detection: Waiting 60s before retry (elapsed: 75s, remaining: 1723s)
+2026-04-14 13:22:49,492 - INFO - Found 1 ModifyInstanceMetadataOptions events
+2026-04-14 13:22:49,492 - INFO - CloudTrail detection: Waiting 60s before retry (elapsed: 136s, remaining: 1663s)
+2026-04-14 13:23:49,658 - INFO - Found 1 ModifyInstanceMetadataOptions events
+2026-04-14 13:23:49,658 - INFO - CloudTrail detection: Waiting 60s before retry (elapsed: 196s, remaining: 1603s)
+2026-04-14 13:24:49,824 - INFO - Found 1 ModifyInstanceMetadataOptions events
+2026-04-14 13:24:49,824 - INFO - CloudTrail detection: Waiting 60s before retry (elapsed: 256s, remaining: 1543s)
+2026-04-14 13:25:50,547 - INFO - Found 1 ModifyInstanceMetadataOptions events
+2026-04-14 13:25:50,547 - INFO - CloudTrail detection: Waiting 60s before retry (elapsed: 316s, remaining: 1482s)
+2026-04-14 13:26:50,726 - INFO - Found 1 ModifyInstanceMetadataOptions events
+2026-04-14 13:26:50,726 - INFO - CloudTrail detection: Waiting 60s before retry (elapsed: 377s, remaining: 1422s)
+2026-04-14 13:27:50,893 - INFO - Found 1 ModifyInstanceMetadataOptions events
+2026-04-14 13:27:50,893 - INFO - CloudTrail detection: Waiting 60s before retry (elapsed: 437s, remaining: 1362s)
+2026-04-14 13:28:51,074 - INFO - Found 1 ModifyInstanceMetadataOptions events
+2026-04-14 13:28:51,075 - INFO - CloudTrail detection: Waiting 60s before retry (elapsed: 497s, remaining: 1302s)
+2026-04-14 13:29:51,248 - INFO - Found 1 ModifyInstanceMetadataOptions events
+2026-04-14 13:29:51,248 - INFO - CloudTrail detection: Waiting 60s before retry (elapsed: 557s, remaining: 1241s)
+2026-04-14 13:30:51,856 - INFO - Found 1 ModifyInstanceMetadataOptions events
+2026-04-14 13:30:51,856 - INFO - CloudTrail detection: Waiting 60s before retry (elapsed: 618s, remaining: 1181s)
+2026-04-14 13:31:52,023 - INFO - Found 1 ModifyInstanceMetadataOptions events
+2026-04-14 13:31:52,023 - INFO - CloudTrail detection: Waiting 60s before retry (elapsed: 678s, remaining: 1121s)
+2026-04-14 13:32:52,184 - INFO - Found 1 ModifyInstanceMetadataOptions events
+2026-04-14 13:32:52,184 - INFO - CloudTrail detection: Waiting 60s before retry (elapsed: 738s, remaining: 1061s)
+2026-04-14 13:33:52,346 - INFO - Found 1 ModifyInstanceMetadataOptions events
+2026-04-14 13:33:52,346 - INFO - CloudTrail detection: Waiting 60s before retry (elapsed: 798s, remaining: 1000s)
+2026-04-14 13:34:52,507 - INFO - Found 1 ModifyInstanceMetadataOptions events
+2026-04-14 13:34:52,507 - INFO - CloudTrail detection: Waiting 60s before retry (elapsed: 859s, remaining: 940s)
+2026-04-14 13:35:53,487 - INFO - Found 1 ModifyInstanceMetadataOptions events
+2026-04-14 13:35:53,488 - INFO - CloudTrail detection: Waiting 60s before retry (elapsed: 919s, remaining: 879s)
+2026-04-14 13:36:53,692 - INFO - Found 1 ModifyInstanceMetadataOptions events
+2026-04-14 13:36:53,692 - INFO - CloudTrail detection: Waiting 60s before retry (elapsed: 980s, remaining: 819s)
+2026-04-14 13:37:53,904 - INFO - Found 1 ModifyInstanceMetadataOptions events
+2026-04-14 13:37:53,904 - INFO - CloudTrail detection: Waiting 60s before retry (elapsed: 1040s, remaining: 759s)
+2026-04-14 13:38:54,117 - INFO - Found 1 ModifyInstanceMetadataOptions events
+2026-04-14 13:38:54,117 - INFO - CloudTrail detection: Waiting 60s before retry (elapsed: 1100s, remaining: 699s)
+2026-04-14 13:39:54,298 - INFO - Found 1 ModifyInstanceMetadataOptions events
+2026-04-14 13:39:54,300 - INFO - CloudTrail detection: Waiting 60s before retry (elapsed: 1160s, remaining: 638s)
+2026-04-14 13:40:55,258 - INFO - Found 1 ModifyInstanceMetadataOptions events
+2026-04-14 13:40:55,259 - INFO - CloudTrail detection: Waiting 60s before retry (elapsed: 1221s, remaining: 577s)
+2026-04-14 13:41:55,471 - INFO - Found 1 ModifyInstanceMetadataOptions events
+2026-04-14 13:41:55,471 - INFO - CloudTrail detection: Waiting 60s before retry (elapsed: 1282s, remaining: 517s)
+2026-04-14 13:42:55,684 - INFO - Found 1 ModifyInstanceMetadataOptions events
+2026-04-14 13:42:55,684 - INFO - CloudTrail detection: Waiting 60s before retry (elapsed: 1342s, remaining: 457s)
+2026-04-14 13:43:55,901 - INFO - Found 1 ModifyInstanceMetadataOptions events
+2026-04-14 13:43:55,903 - INFO - CloudTrail detection: Waiting 60s before retry (elapsed: 1402s, remaining: 397s)
+2026-04-14 13:44:56,108 - INFO - Found 1 ModifyInstanceMetadataOptions events
+2026-04-14 13:44:56,108 - INFO - CloudTrail detection: Waiting 60s before retry (elapsed: 1462s, remaining: 337s)
+2026-04-14 13:45:57,025 - INFO - Found 1 ModifyInstanceMetadataOptions events
+2026-04-14 13:45:57,025 - INFO - CloudTrail detection: Waiting 60s before retry (elapsed: 1522s, remaining: 276s)
+2026-04-14 13:47:58,401 - INFO - Found 1 ModifyInstanceMetadataOptions events
+2026-04-14 13:47:58,401 - INFO - CloudTrail detection: Waiting 60s before retry (elapsed: 1583s, remaining: 154s)
+2026-04-14 13:48:58,560 - INFO - Found 1 ModifyInstanceMetadataOptions events
+2026-04-14 13:48:58,561 - INFO - CloudTrail detection: Waiting 60s before retry (elapsed: 1705s, remaining: 94s)
+2026-04-14 13:49:58,724 - INFO - Found 1 ModifyInstanceMetadataOptions events
+2026-04-14 13:49:58,724 - ERROR - CloudTrail detection: TIMEOUT after 1800s
+2026-04-14 13:49:58,724 - ERROR - ============================================================
+2026-04-14 13:49:58,724 - ERROR - HYPOTHESIS FAILED: Detective control did not detect the event
+2026-04-14 13:49:58,724 - ERROR - CloudTrail did not capture the event within 1800s SLA
+2026-04-14 13:49:58,724 - ERROR - ============================================================
+[31m[2026-04-14 13:49:58 CRITICAL] Steady state probe 'verify-cloudtrail-captured-imds-modification-event' is not in the given tolerance so failing this experiment
+[32m[2026-04-14 13:49:58 INFO] Let's rollback...
+[32m[2026-04-14 13:49:58 INFO] Rollback: cleanup-cloudformation-stack-and-all-experiment-resources
+[32m[2026-04-14 13:49:58 INFO] Action: cleanup-cloudformation-stack-and-all-experiment-resources
+2026-04-14 13:49:58,726 - INFO - ============================================================
+2026-04-14 13:49:58,726 - INFO - ROLLBACK: Cleaning up experiment resources
+2026-04-14 13:49:58,726 - INFO - ============================================================
+2026-04-14 13:49:58,742 - INFO - Reverting IMDS settings on instance i-0341a6d5e996d36f9...
+2026-04-14 13:50:00,194 - INFO - IMDS settings reverted to secure configuration
+2026-04-14 13:50:00,629 - INFO - Emptying S3 bucket sce-1-4-cloudtrail-1776165551...
+2026-04-14 13:50:01,543 - INFO - S3 bucket emptied
+2026-04-14 13:50:01,543 - INFO - Deleting CloudFormation stack: sce-experiment-1-4-1776165551
+2026-04-14 13:50:02,427 - INFO - Stack deletion in progress. Status: DELETE_IN_PROGRESS
+2026-04-14 13:50:02,427 - INFO - Stack deletion: Waiting 5s before retry (elapsed: 0s, remaining: 899s)
+2026-04-14 13:50:07,579 - INFO - Stack deletion in progress. Status: DELETE_IN_PROGRESS
+2026-04-14 13:50:07,579 - INFO - Stack deletion: Waiting 10s before retry (elapsed: 5s, remaining: 894s)
+2026-04-14 13:50:18,129 - INFO - Stack deletion in progress. Status: DELETE_IN_PROGRESS
+2026-04-14 13:50:18,129 - INFO - Stack deletion: Waiting 20s before retry (elapsed: 15s, remaining: 884s)
+2026-04-14 13:50:38,695 - INFO - Stack deletion in progress. Status: DELETE_IN_PROGRESS
+2026-04-14 13:50:38,695 - INFO - Stack deletion: Waiting 40s before retry (elapsed: 35s, remaining: 863s)
+2026-04-14 13:51:19,277 - INFO - Stack deletion: SUCCESS after 76s (attempt 5)
+2026-04-14 13:51:19,277 - INFO - Stack deleted successfully
+[32m[2026-04-14 13:51:19 INFO] Experiment ended with status: deviated
+[32m[2026-04-14 13:51:19 INFO] The steady-state has deviated, a weakness may have been discovered
+
+
+RETURN CODE: 1

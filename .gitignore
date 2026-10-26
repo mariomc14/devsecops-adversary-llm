@@ -4,4 +4,9 @@ SCE_Experiment/Runner/journal.json
 SCE_Experiment/Runner/remote_output.json
 automate/.venv/
 automate/.vscode/
-chaostk/lib/python3.12/site-packages/awscli/examples/greengrass/create-connector-definition-version.rst
+chaostk/
+*.pdf
+*.zip
+*:Zone.Identifier
+__pycache__/
+*.pyc

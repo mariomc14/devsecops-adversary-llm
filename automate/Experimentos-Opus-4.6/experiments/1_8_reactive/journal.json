@@ -1,0 +1,225 @@
+{
+  "chaoslib-version": "1.44.0",
+  "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.41",
+  "node": "PC-INF-MAMA",
+  "experiment": {
+    "title": "SCE 1.8 Reactive Probe: Validate Automated Remediation of IMDS Downgrade Attack (v2)",
+    "description": "Security Chaos Engineering experiment validating that reactive controls automatically respond to attack steps 1.2 (ec2:DescribeInstances for IMDS enumeration - T1580) and 1.7 (ec2:ModifyInstanceMetadataOptions to downgrade IMDSv2 to IMDSv1 and increase hop limit - T1562.001). Provisions a banking-tier EC2 instance with IMDSv2, CloudTrail, EventBridge rule, Lambda remediation function, and SNS-to-SQS pipeline. Both attacks succeed via attacker role; the experiment verifies within a 30-minute SLA that Lambda: (1) re-enforces IMDSv2 with hop-limit=1, (2) attaches deny-all policy to attacker role, (3) publishes remediation confirmation. v2 fixes: robust retry/backoff on transient network errors, pre-flight Lambda and EventBridge validation, extended stabilisation window, diagnostic Lambda log and EventBridge metric inspection during polling.",
+    "tags": [
+      "sce-1-8",
+      "reactive",
+      "imds",
+      "ec2",
+      "lambda",
+      "eventbridge",
+      "auto-remediation",
+      "T1580",
+      "T1562.001",
+      "credential-theft",
+      "defense-evasion",
+      "incident-response"
+    ],
+    "steady-state-hypothesis": {
+      "title": "Reactive Lambda automatically remediates IMDS downgrade and revokes attacker permissions within SLA",
+      "probes": [
+        {
+          "type": "probe",
+          "name": "Verify IMDS restored to required and hop-limit 1, attacker role denied, and remediation notification received on SQS",
+          "tolerance": true,
+          "provider": {
+            "type": "python",
+            "module": "chaosaws.ec2.1_8_reactive",
+            "func": "hypothesis_verification"
+          }
+        }
+      ]
+    },
+    "method": [
+      {
+        "type": "action",
+        "name": "Provision EC2 instance with IMDSv2, CloudTrail, EventBridge rule, Lambda remediation function, SNS-SQS pipeline, and attacker IAM role via CloudFormation",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_reactive",
+          "func": "steady_state"
+        }
+      },
+      {
+        "type": "action",
+        "name": "Execute attack steps 1.2 (DescribeInstances IMDS enumeration) and 1.7 (ModifyInstanceMetadataOptions IMDS downgrade to IMDSv1 with hop-limit 2) using attacker role",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_reactive",
+          "func": "attack"
+        }
+      }
+    ],
+    "rollbacks": [
+      {
+        "type": "action",
+        "name": "Remove reactive inline policy from attacker role, revert IMDS, empty S3 buckets, terminate instance, and delete CloudFormation stack with all experiment resources",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_reactive",
+          "func": "rollback"
+        }
+      }
+    ],
+    "dry": null
+  },
+  "start": "2026-04-20T14:27:23.118929+00:00",
+  "status": "completed",
+  "deviated": true,
+  "steady_states": {
+    "before": null,
+    "after": {
+      "steady_state_met": false,
+      "probes": [
+        {
+          "activity": {
+            "type": "probe",
+            "name": "Verify IMDS restored to required and hop-limit 1, attacker role denied, and remediation notification received on SQS",
+            "tolerance": true,
+            "provider": {
+              "type": "python",
+              "module": "chaosaws.ec2.1_8_reactive",
+              "func": "hypothesis_verification"
+            }
+          },
+          "output": false,
+          "start": "2026-04-20T14:30:32.381509+00:00",
+          "status": "succeeded",
+          "end": "2026-04-20T15:00:32.430988+00:00",
+          "duration": 1800.049479,
+          "tolerance_met": false
+        }
+      ]
+    },
+    "during": []
+  },
+  "run": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "Provision EC2 instance with IMDSv2, CloudTrail, EventBridge rule, Lambda remediation function, SNS-SQS pipeline, and attacker IAM role via CloudFormation",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_reactive",
+          "func": "steady_state"
+        }
+      },
+      "output": null,
+      "start": "2026-04-20T14:27:23.119270+00:00",
+      "status": "failed",
+      "exception": [
+        "Traceback (most recent call last):\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/urllib3/connection.py\", line 199, in _new_conn\n    sock = connection.create_connection(\n        (self._dns_host, self.port),\n    ...<2 lines>...\n        socket_options=self.socket_options,\n    )\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/urllib3/util/connection.py\", line 85, in create_connection\n    raise err\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/urllib3/util/connection.py\", line 73, in create_connection\n    sock.connect(sa)\n    ~~~~~~~~~~~~^^^^\n",
+        "TimeoutError: timed out\n",
+        "\nThe above exception was the direct cause of the following exception:\n\n",
+        "Traceback (most recent call last):\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/httpsession.py\", line 464, in send\n    urllib_response = conn.urlopen(\n        method=request.method,\n    ...<7 lines>...\n        chunked=self._chunked(request.headers),\n    )\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/urllib3/connectionpool.py\", line 843, in urlopen\n    retries = retries.increment(\n        method, url, error=new_e, _pool=self, _stacktrace=sys.exc_info()[2]\n    )\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/urllib3/util/retry.py\", line 449, in increment\n    raise reraise(type(error), error, _stacktrace)\n          ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/urllib3/util/util.py\", line 39, in reraise\n    raise value\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/urllib3/connectionpool.py\", line 789, in urlopen\n    response = self._make_request(\n        conn,\n    ...<10 lines>...\n        **response_kw,\n    )\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/urllib3/connectionpool.py\", line 490, in _make_request\n    raise new_e\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/urllib3/connectionpool.py\", line 466, in _make_request\n    self._validate_conn(conn)\n    ~~~~~~~~~~~~~~~~~~~^^^^^^\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/urllib3/connectionpool.py\", line 1095, in _validate_conn\n    conn.connect()\n    ~~~~~~~~~~~~^^\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/urllib3/connection.py\", line 693, in connect\n    self.sock = sock = self._new_conn()\n                       ~~~~~~~~~~~~~~^^\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/urllib3/connection.py\", line 208, in _new_conn\n    raise ConnectTimeoutError(\n    ...<2 lines>...\n    ) from e\n",
+        "urllib3.exceptions.ConnectTimeoutError: (<botocore.awsrequest.AWSHTTPSConnection object at 0x7b13b1765810>, 'Connection to sts.amazonaws.com timed out. (connect timeout=30)')\n",
+        "\nDuring handling of the above exception, another exception occurred:\n\n",
+        "Traceback (most recent call last):\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py\", line 56, in run_python_activity\n    return func(**arguments)\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_reactive.py\", line 756, in steady_state\n    acct = _account_id()\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_reactive.py\", line 114, in _account_id\n    return _sts().get_caller_identity()[\"Account\"]\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~^^\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/client.py\", line 569, in _api_call\n    return self._make_api_call(operation_name, kwargs)\n           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/client.py\", line 1005, in _make_api_call\n    http, parsed_response = self._make_request(\n                            ~~~~~~~~~~~~~~~~~~^\n        operation_model, request_dict, request_context\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/client.py\", line 1029, in _make_request\n    return self._endpoint.make_request(operation_model, request_dict)\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/endpoint.py\", line 119, in make_request\n    return self._send_request(request_dict, operation_model)\n           ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/endpoint.py\", line 229, in _send_request\n    raise exception\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/endpoint.py\", line 279, in _do_get_response\n    http_response = self._send(request)\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/endpoint.py\", line 383, in _send\n    return self.http_session.send(request)\n           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/httpsession.py\", line 499, in send\n    raise ConnectTimeoutError(endpoint_url=request.url, error=e)\n",
+        "botocore.exceptions.ConnectTimeoutError: Connect timeout on endpoint URL: \"https://sts.amazonaws.com/\"\n",
+        "\nDuring handling of the above exception, another exception occurred:\n\n",
+        "chaoslib.exceptions.ActivityFailed: botocore.exceptions.ConnectTimeoutError: Connect timeout on endpoint URL: \"https://sts.amazonaws.com/\"\n"
+      ],
+      "end": "2026-04-20T14:30:32.380672+00:00",
+      "duration": 189.261402
+    },
+    {
+      "activity": {
+        "type": "action",
+        "name": "Execute attack steps 1.2 (DescribeInstances IMDS enumeration) and 1.7 (ModifyInstanceMetadataOptions IMDS downgrade to IMDSv1 with hop-limit 2) using attacker role",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_reactive",
+          "func": "attack"
+        }
+      },
+      "output": true,
+      "start": "2026-04-20T14:30:32.380789+00:00",
+      "status": "succeeded",
+      "end": "2026-04-20T14:30:32.381218+00:00",
+      "duration": 0.000429
+    }
+  ],
+  "rollbacks": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "Remove reactive inline policy from attacker role, revert IMDS, empty S3 buckets, terminate instance, and delete CloudFormation stack with all experiment resources",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_reactive",
+          "func": "rollback"
+        }
+      },
+      "output": null,
+      "start": "2026-04-20T15:00:32.431350+00:00",
+      "status": "failed",
+      "exception": [
+        "Traceback (most recent call last):\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/urllib3/connection.py\", line 199, in _new_conn\n    sock = connection.create_connection(\n        (self._dns_host, self.port),\n    ...<2 lines>...\n        socket_options=self.socket_options,\n    )\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/urllib3/util/connection.py\", line 85, in create_connection\n    raise err\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/urllib3/util/connection.py\", line 73, in create_connection\n    sock.connect(sa)\n    ~~~~~~~~~~~~^^^^\n",
+        "TimeoutError: timed out\n",
+        "\nThe above exception was the direct cause of the following exception:\n\n",
+        "Traceback (most recent call last):\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/httpsession.py\", line 464, in send\n    urllib_response = conn.urlopen(\n        method=request.method,\n    ...<7 lines>...\n        chunked=self._chunked(request.headers),\n    )\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/urllib3/connectionpool.py\", line 843, in urlopen\n    retries = retries.increment(\n        method, url, error=new_e, _pool=self, _stacktrace=sys.exc_info()[2]\n    )\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/urllib3/util/retry.py\", line 449, in increment\n    raise reraise(type(error), error, _stacktrace)\n          ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/urllib3/util/util.py\", line 39, in reraise\n    raise value\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/urllib3/connectionpool.py\", line 789, in urlopen\n    response = self._make_request(\n        conn,\n    ...<10 lines>...\n        **response_kw,\n    )\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/urllib3/connectionpool.py\", line 490, in _make_request\n    raise new_e\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/urllib3/connectionpool.py\", line 466, in _make_request\n    self._validate_conn(conn)\n    ~~~~~~~~~~~~~~~~~~~^^^^^^\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/urllib3/connectionpool.py\", line 1095, in _validate_conn\n    conn.connect()\n    ~~~~~~~~~~~~^^\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/urllib3/connection.py\", line 693, in connect\n    self.sock = sock = self._new_conn()\n                       ~~~~~~~~~~~~~~^^\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/urllib3/connection.py\", line 208, in _new_conn\n    raise ConnectTimeoutError(\n    ...<2 lines>...\n    ) from e\n",
+        "urllib3.exceptions.ConnectTimeoutError: (<botocore.awsrequest.AWSHTTPSConnection object at 0x7b13b18407d0>, 'Connection to cloudformation.us-east-1.amazonaws.com timed out. (connect timeout=30)')\n",
+        "\nDuring handling of the above exception, another exception occurred:\n\n",
+        "Traceback (most recent call last):\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py\", line 56, in run_python_activity\n    return func(**arguments)\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_8_reactive.py\", line 1209, in rollback\n    cfn.delete_stack(StackName=_STACK_NAME)\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/client.py\", line 569, in _api_call\n    return self._make_api_call(operation_name, kwargs)\n           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/client.py\", line 1005, in _make_api_call\n    http, parsed_response = self._make_request(\n                            ~~~~~~~~~~~~~~~~~~^\n        operation_model, request_dict, request_context\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/client.py\", line 1029, in _make_request\n    return self._endpoint.make_request(operation_model, request_dict)\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/endpoint.py\", line 119, in make_request\n    return self._send_request(request_dict, operation_model)\n           ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/endpoint.py\", line 229, in _send_request\n    raise exception\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/endpoint.py\", line 279, in _do_get_response\n    http_response = self._send(request)\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/endpoint.py\", line 383, in _send\n    return self.http_session.send(request)\n           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^\n",
+        "  File \"/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/httpsession.py\", line 499, in send\n    raise ConnectTimeoutError(endpoint_url=request.url, error=e)\n",
+        "botocore.exceptions.ConnectTimeoutError: Connect timeout on endpoint URL: \"https://cloudformation.us-east-1.amazonaws.com/\"\n",
+        "\nDuring handling of the above exception, another exception occurred:\n\n",
+        "chaoslib.exceptions.ActivityFailed: botocore.exceptions.ConnectTimeoutError: Connect timeout on endpoint URL: \"https://cloudformation.us-east-1.amazonaws.com/\"\n"
+      ],
+      "end": "2026-04-20T15:03:52.836516+00:00",
+      "duration": 200.405166
+    }
+  ],
+  "end": "2026-04-20T15:03:52.836603+00:00",
+  "duration": 2189.7188532352448
+}

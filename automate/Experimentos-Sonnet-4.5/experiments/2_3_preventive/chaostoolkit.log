@@ -1,0 +1,63 @@
+[36m[2026-04-03 17:59:57 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-04-03 17:59:57 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-04-03 17:59:57 DEBUG] [__init__:106] Using settings file '/home/debian/.chaostoolkit/settings.yaml'
+[36m[2026-04-03 17:59:57 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/debian/.chaostoolkit/settings.yaml'.
+[36m[2026-04-03 17:59:57 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-03 17:59:57 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-03 17:59:57 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-03 17:59:57 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-04-03 17:59:57 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-04-03 17:59:57 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-03 17:59:57 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-03 17:59:57 DEBUG] [secret:104] Done loading secrets
+[32m[2026-04-03 17:59:57 INFO] [experiment:112] Experiment looks valid
+[36m[2026-04-03 17:59:57 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-03 17:59:57 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-04-03 17:59:57 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-03 17:59:57 DEBUG] [caching:35] Cached 3 activities
+[36m[2026-04-03 17:59:57 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-03 17:59:57 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-03 17:59:57 DEBUG] [secret:104] Done loading secrets
+[36m[2026-04-03 17:59:57 DEBUG] [configuration:161] Loading dynamic configuration...
+[32m[2026-04-03 17:59:57 INFO] [run:440] Running experiment: SCE 2.3 Preventive - Container Network Isolation Prevents IMDS Access
+[36m[2026-04-03 17:59:57 DEBUG] [__init__:67] Initializing controls
+[32m[2026-04-03 17:59:57 INFO] [run:471] Steady-state strategy: after-method-only
+[32m[2026-04-03 17:59:57 INFO] [run:477] Rollbacks strategy: default
+[36m[2026-04-03 17:59:57 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[32m[2026-04-03 17:59:57 INFO] [run:778] Playing your experiment's method now...
+[36m[2026-04-03 17:59:57 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-03 17:59:57 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-03 17:59:57 INFO] [activity:232] Action: provision-ec2-with-container-isolation
+[36m[2026-04-03 17:59:57 DEBUG] [python:33] Activity 'provision-ec2-with-container-isolation' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_3_preventive.py'
+[36m[2026-04-03 18:02:39 DEBUG] [activity:262]   => succeeded without any result value
+[36m[2026-04-03 18:02:39 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-03 18:02:39 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-03 18:02:39 INFO] [activity:232] Action: execute-imds-weakening-and-container-access-attack
+[36m[2026-04-03 18:02:39 DEBUG] [python:33] Activity 'execute-imds-weakening-and-container-access-attack' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_3_preventive.py'
+[36m[2026-04-03 18:03:11 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-04-03 18:03:11 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-03 18:03:11 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-03 18:03:11 DEBUG] [run:696] Running steady-state hypothesis after the method
+[32m[2026-04-03 18:03:11 INFO] [hypothesis:205] Steady state hypothesis: Container network isolation blocks IMDS access from container namespace
+[36m[2026-04-03 18:03:11 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[36m[2026-04-03 18:03:11 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-03 18:03:11 INFO] [activity:232] Probe: verify-container-imds-blocking
+[36m[2026-04-03 18:03:11 DEBUG] [python:33] Activity 'verify-container-imds-blocking' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_3_preventive.py'
+[36m[2026-04-03 18:03:37 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-04-03 18:03:37 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-03 18:03:37 DEBUG] [hypothesis:247] allowed tolerance is True
+[32m[2026-04-03 18:03:37 INFO] [hypothesis:260] Steady state hypothesis is met!
+[36m[2026-04-03 18:03:37 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[32m[2026-04-03 18:03:37 INFO] [run:1072] Let's rollback...
+[36m[2026-04-03 18:03:37 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-03 18:03:37 INFO] [rollback:36] Rollback: cleanup-all-experiment-resources
+[36m[2026-04-03 18:03:37 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-03 18:03:37 INFO] [activity:232] Action: cleanup-all-experiment-resources
+[36m[2026-04-03 18:03:37 DEBUG] [python:33] Activity 'cleanup-all-experiment-resources' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_3_preventive.py'
+[36m[2026-04-03 18:04:39 DEBUG] [activity:262]   => succeeded without any result value
+[36m[2026-04-03 18:04:39 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-03 18:04:39 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-03 18:04:39 INFO] [run:598] Experiment ended with status: completed
+[36m[2026-04-03 18:04:39 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[36m[2026-04-03 18:04:39 DEBUG] [__init__:106] Cleaning up controls
+[36m[2026-04-03 18:04:39 DEBUG] [caching:42] Clearing activities cache

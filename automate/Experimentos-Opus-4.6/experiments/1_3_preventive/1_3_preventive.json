@@ -1,0 +1,61 @@
+{
+    "title": "SCE 1.3 Preventive Probe: Validate IAM Permission Boundary Blocks EC2 Reconnaissance",
+    "description": "Security Chaos Engineering experiment that validates preventive controls (IAM Permission Boundary and least-privilege policies) effectively block unauthorized EC2 reconnaissance (T1580 - Cloud Infrastructure Discovery). A simulated CI/CD role is granted ec2:DescribeInstances but bounded by a Permission Boundary that explicitly denies EC2 discovery actions. The experiment verifies that the boundary overrides the allow, returning UnauthorizedOperation and preventing disclosure of banking EC2 instance metadata configurations.",
+    "tags": [
+        "sce-1.3",
+        "preventive",
+        "ec2",
+        "iam",
+        "permission-boundary",
+        "T1580",
+        "reconnaissance",
+        "banking",
+        "imds"
+    ],
+    "steady-state-hypothesis": {
+        "title": "Least-privilege IAM permission boundary blocks EC2 reconnaissance",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "verify-preventive-control-blocks-reconnaissance",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.1_3_preventive",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "deploy-preventive-control-infrastructure",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_3_preventive",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "execute-ec2-reconnaissance-attack",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_3_preventive",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "cleanup-experiment-resources",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_3_preventive",
+                "func": "rollback"
+            }
+        }
+    ]
+}

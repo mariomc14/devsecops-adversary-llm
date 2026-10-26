@@ -1,0 +1,64 @@
+[36m[2026-04-03 17:12:24 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-04-03 17:12:24 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-04-03 17:12:24 DEBUG] [__init__:106] Using settings file '/home/debian/.chaostoolkit/settings.yaml'
+[36m[2026-04-03 17:12:24 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/debian/.chaostoolkit/settings.yaml'.
+[36m[2026-04-03 17:12:24 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-03 17:12:24 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-03 17:12:24 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-03 17:12:24 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-04-03 17:12:24 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-04-03 17:12:24 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-03 17:12:24 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-03 17:12:24 DEBUG] [secret:104] Done loading secrets
+[32m[2026-04-03 17:12:24 INFO] [experiment:112] Experiment looks valid
+[36m[2026-04-03 17:12:24 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-03 17:12:24 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-04-03 17:12:24 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-03 17:12:24 DEBUG] [caching:35] Cached 3 activities
+[36m[2026-04-03 17:12:24 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-03 17:12:24 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-03 17:12:24 DEBUG] [secret:104] Done loading secrets
+[36m[2026-04-03 17:12:24 DEBUG] [configuration:161] Loading dynamic configuration...
+[32m[2026-04-03 17:12:24 INFO] [run:440] Running experiment: SCE Experiment 1.34 - IMDS Reactive Remediation Validation
+[36m[2026-04-03 17:12:24 DEBUG] [__init__:67] Initializing controls
+[32m[2026-04-03 17:12:24 INFO] [run:471] Steady-state strategy: after-method-only
+[32m[2026-04-03 17:12:24 INFO] [run:477] Rollbacks strategy: default
+[36m[2026-04-03 17:12:24 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[32m[2026-04-03 17:12:24 INFO] [run:778] Playing your experiment's method now...
+[36m[2026-04-03 17:12:24 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-03 17:12:24 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-03 17:12:24 INFO] [activity:232] Action: deploy-reactive-control-infrastructure
+[36m[2026-04-03 17:12:24 DEBUG] [python:33] Activity 'deploy-reactive-control-infrastructure' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_34_reactive.py'
+[36m[2026-04-03 17:15:47 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-04-03 17:15:47 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-03 17:15:47 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-03 17:15:47 INFO] [activity:232] Action: execute-imds-weakening-attack
+[36m[2026-04-03 17:15:47 DEBUG] [python:33] Activity 'execute-imds-weakening-attack' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_34_reactive.py'
+[36m[2026-04-03 17:15:53 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-04-03 17:15:53 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-03 17:15:53 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-03 17:15:53 DEBUG] [run:696] Running steady-state hypothesis after the method
+[32m[2026-04-03 17:15:53 INFO] [hypothesis:205] Steady state hypothesis: Reactive IMDS remediation controls function within SLA
+[36m[2026-04-03 17:15:53 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[36m[2026-04-03 17:15:53 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-03 17:15:53 INFO] [activity:232] Probe: verify-automated-imds-remediation
+[36m[2026-04-03 17:15:53 DEBUG] [python:33] Activity 'verify-automated-imds-remediation' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_34_reactive.py'
+[36m[2026-04-03 17:46:02 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-04-03 17:46:02 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-03 17:46:02 DEBUG] [hypothesis:247] allowed tolerance is True
+[36m[2026-04-03 17:46:02 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[31m[2026-04-03 17:46:02 CRITICAL] [run:716] Steady state probe 'verify-automated-imds-remediation' is not in the given tolerance so failing this experiment
+[32m[2026-04-03 17:46:02 INFO] [run:1072] Let's rollback...
+[36m[2026-04-03 17:46:02 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-03 17:46:02 INFO] [rollback:36] Rollback: teardown-experiment-infrastructure
+[36m[2026-04-03 17:46:02 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-03 17:46:02 INFO] [activity:232] Action: teardown-experiment-infrastructure
+[36m[2026-04-03 17:46:02 DEBUG] [python:33] Activity 'teardown-experiment-infrastructure' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_34_reactive.py'
+[36m[2026-04-03 17:47:05 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-04-03 17:47:05 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-03 17:47:05 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-03 17:47:05 INFO] [run:598] Experiment ended with status: deviated
+[32m[2026-04-03 17:47:05 INFO] [run:600] The steady-state has deviated, a weakness may have been discovered
+[36m[2026-04-03 17:47:05 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[36m[2026-04-03 17:47:05 DEBUG] [__init__:106] Cleaning up controls
+[36m[2026-04-03 17:47:05 DEBUG] [caching:42] Clearing activities cache

@@ -1,0 +1,64 @@
+[36m[2026-04-13 15:27:44 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-04-13 15:27:44 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-04-13 15:27:44 DEBUG] [__init__:106] Using settings file '/home/mmc/.chaostoolkit/settings.yaml'
+[36m[2026-04-13 15:28:04 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/mmc/.chaostoolkit/settings.yaml'.
+[36m[2026-04-13 15:28:04 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-13 15:28:04 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-13 15:28:04 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-13 15:28:04 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-04-13 15:28:04 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-04-13 15:28:04 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-13 15:28:04 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-13 15:28:04 DEBUG] [secret:104] Done loading secrets
+[32m[2026-04-13 15:28:04 INFO] [experiment:112] Experiment looks valid
+[36m[2026-04-13 15:28:04 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-13 15:28:04 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-04-13 15:28:04 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-13 15:28:04 DEBUG] [caching:35] Cached 3 activities
+[36m[2026-04-13 15:28:04 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-13 15:28:04 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-13 15:28:04 DEBUG] [secret:104] Done loading secrets
+[36m[2026-04-13 15:28:04 DEBUG] [configuration:161] Loading dynamic configuration...
+[32m[2026-04-13 15:28:04 INFO] [run:440] Running experiment: SCE Experiment 3.5 - Reactive Probe: Stolen Credential Automated Incident Response Validation
+[36m[2026-04-13 15:28:04 DEBUG] [__init__:67] Initializing controls
+[32m[2026-04-13 15:28:04 INFO] [run:471] Steady-state strategy: after-method-only
+[32m[2026-04-13 15:28:04 INFO] [run:477] Rollbacks strategy: default
+[36m[2026-04-13 15:28:04 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[32m[2026-04-13 15:28:04 INFO] [run:778] Playing your experiment's method now...
+[36m[2026-04-13 15:28:04 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-13 15:28:04 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-13 15:28:04 INFO] [activity:232] Action: Get-or-create GuardDuty detector; create IAM roles (CloudTrail CW delivery, instance-simulation, SSM Automation) via boto3 (no Description field); deploy CloudFormation stack with CloudTrail trail, S3 CT bucket, S3 Object Lock evidence bucket, CloudWatch Log Group, SSM pipeline gate parameter (initial OK), and SSM Automation document; wait for CloudTrail IsLogging=True; assert pipeline gate is OK and no revocation policy on instance role
+[36m[2026-04-13 15:28:04 DEBUG] [python:33] Activity 'Get-or-create GuardDuty detector; create IAM roles (CloudTrail CW delivery, instance-simulation, SSM Automation) via boto3 (no Description field); deploy CloudFormation stack with CloudTrail trail, S3 CT bucket, S3 Object Lock evidence bucket, CloudWatch Log Group, SSM pipeline gate parameter (initial OK), and SSM Automation document; wait for CloudTrail IsLogging=True; assert pipeline gate is OK and no revocation policy on instance role' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/3_5_reactive.py'
+[36m[2026-04-13 15:29:39 DEBUG] [activity:262]   => succeeded without any result value
+[36m[2026-04-13 15:29:39 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-13 15:29:39 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-13 15:29:39 INFO] [activity:232] Action: Node 1.2: sts:AssumeRole on instance-simulation role to obtain stolen credentials (T1562.008 proxy); Node 2.2: sts:GetCallerIdentity to verify credential validity (T1552.005); Node 3.2: iam:ListAttachedRolePolicies and s3:ListAllMyBuckets for lateral movement enumeration (T1078.004); trigger SSM Automation reactive playbook to revoke credentials and block deployment pipeline
+[36m[2026-04-13 15:29:39 DEBUG] [python:33] Activity 'Node 1.2: sts:AssumeRole on instance-simulation role to obtain stolen credentials (T1562.008 proxy); Node 2.2: sts:GetCallerIdentity to verify credential validity (T1552.005); Node 3.2: iam:ListAttachedRolePolicies and s3:ListAllMyBuckets for lateral movement enumeration (T1078.004); trigger SSM Automation reactive playbook to revoke credentials and block deployment pipeline' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/3_5_reactive.py'
+[36m[2026-04-13 15:29:48 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-04-13 15:29:48 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-13 15:29:48 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-13 15:29:48 DEBUG] [run:696] Running steady-state hypothesis after the method
+[32m[2026-04-13 15:29:48 INFO] [hypothesis:205] Steady state hypothesis: All five reactive signals confirmed within 30-minute SLA: SSM Automation success, IAM Deny-all revocation, stolen credentials return AccessDenied, pipeline gate BLOCKED, and CloudTrail evidence in Object Lock bucket
+[36m[2026-04-13 15:29:48 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[36m[2026-04-13 15:29:48 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-13 15:29:48 INFO] [activity:232] Probe: Verify SSM Automation execution success, SCEDenyAllRevocation policy on instance role, stolen credentials returning AccessDenied, pipeline gate parameter set to BLOCKED, and CloudTrail log file present in Object Lock evidence bucket - all confirmed within 30-minute SLA after attack nodes 1.2, 2.2, and 3.2
+[36m[2026-04-13 15:29:48 DEBUG] [python:33] Activity 'Verify SSM Automation execution success, SCEDenyAllRevocation policy on instance role, stolen credentials returning AccessDenied, pipeline gate parameter set to BLOCKED, and CloudTrail log file present in Object Lock evidence bucket - all confirmed within 30-minute SLA after attack nodes 1.2, 2.2, and 3.2' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/3_5_reactive.py'
+[36m[2026-04-13 16:00:17 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-04-13 16:00:17 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-13 16:00:17 DEBUG] [hypothesis:247] allowed tolerance is True
+[36m[2026-04-13 16:00:17 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[31m[2026-04-13 16:00:17 CRITICAL] [run:716] Steady state probe 'Verify SSM Automation execution success, SCEDenyAllRevocation policy on instance role, stolen credentials returning AccessDenied, pipeline gate parameter set to BLOCKED, and CloudTrail log file present in Object Lock evidence bucket - all confirmed within 30-minute SLA after attack nodes 1.2, 2.2, and 3.2' is not in the given tolerance so failing this experiment
+[32m[2026-04-13 16:00:17 INFO] [run:1072] Let's rollback...
+[36m[2026-04-13 16:00:17 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-13 16:00:17 INFO] [rollback:36] Rollback: Restore pipeline gate to OK; remove Deny-all revocation policy from instance role; stop CloudTrail trail; empty CT and Object Lock evidence buckets (with BypassGovernanceRetention); delete CloudFormation stack; delete boto3-created IAM roles; delete GuardDuty detector only if experiment-owned; tolerant of missing resources
+[36m[2026-04-13 16:00:17 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-13 16:00:17 INFO] [activity:232] Action: Restore pipeline gate to OK; remove Deny-all revocation policy from instance role; stop CloudTrail trail; empty CT and Object Lock evidence buckets (with BypassGovernanceRetention); delete CloudFormation stack; delete boto3-created IAM roles; delete GuardDuty detector only if experiment-owned; tolerant of missing resources
+[36m[2026-04-13 16:00:17 DEBUG] [python:33] Activity 'Restore pipeline gate to OK; remove Deny-all revocation policy from instance role; stop CloudTrail trail; empty CT and Object Lock evidence buckets (with BypassGovernanceRetention); delete CloudFormation stack; delete boto3-created IAM roles; delete GuardDuty detector only if experiment-owned; tolerant of missing resources' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/3_5_reactive.py'
+[36m[2026-04-13 16:01:12 DEBUG] [activity:262]   => succeeded without any result value
+[36m[2026-04-13 16:01:12 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-13 16:01:12 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-13 16:01:12 INFO] [run:598] Experiment ended with status: deviated
+[32m[2026-04-13 16:01:12 INFO] [run:600] The steady-state has deviated, a weakness may have been discovered
+[36m[2026-04-13 16:01:12 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[36m[2026-04-13 16:01:12 DEBUG] [__init__:106] Cleaning up controls
+[36m[2026-04-13 16:01:12 DEBUG] [caching:42] Clearing activities cache

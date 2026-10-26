@@ -1,0 +1,502 @@
+[36m[2026-04-08 10:22:11 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-04-08 10:22:11 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-04-08 10:22:11 DEBUG] [__init__:106] Using settings file '/home/mmc/.chaostoolkit/settings.yaml'
+[36m[2026-04-08 10:22:11 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/mmc/.chaostoolkit/settings.yaml'.
+[36m[2026-04-08 10:22:11 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-08 10:22:11 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-08 10:22:11 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-08 10:22:11 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-04-08 10:22:11 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-04-08 10:22:11 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-08 10:22:11 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-08 10:22:11 DEBUG] [secret:104] Done loading secrets
+[32m[2026-04-08 10:22:11 INFO] [experiment:112] Experiment looks valid
+[36m[2026-04-08 10:22:11 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-08 10:22:11 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-04-08 10:22:11 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-08 10:22:11 DEBUG] [caching:35] Cached 3 activities
+[36m[2026-04-08 10:22:11 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-08 10:22:11 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-08 10:22:11 DEBUG] [secret:104] Done loading secrets
+[36m[2026-04-08 10:22:11 DEBUG] [configuration:161] Loading dynamic configuration...
+[32m[2026-04-08 10:22:11 INFO] [run:440] Running experiment: SCE 1.5 Detective Probe — IMDS Protection Weakening Detection via ModifyInstanceMetadataOptions
+[36m[2026-04-08 10:22:11 DEBUG] [__init__:67] Initializing controls
+[32m[2026-04-08 10:22:11 INFO] [run:471] Steady-state strategy: after-method-only
+[32m[2026-04-08 10:22:11 INFO] [run:477] Rollbacks strategy: default
+[36m[2026-04-08 10:22:11 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[32m[2026-04-08 10:22:11 INFO] [run:778] Playing your experiment's method now...
+[36m[2026-04-08 10:22:11 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-08 10:22:11 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-08 10:22:11 INFO] [activity:232] Action: Provision experiment infrastructure — deploy timestamped CloudFormation stack with EC2 instance (IMDSv2 enforced), EventBridge rule, SNS topic, SQS queue, Config Rule, and CloudWatch Alarm
+[36m[2026-04-08 10:22:11 DEBUG] [python:33] Activity 'Provision experiment infrastructure — deploy timestamped CloudFormation stack with EC2 instance (IMDSv2 enforced), EventBridge rule, SNS topic, SQS queue, Config Rule, and CloudWatch Alarm' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_5_detective.py'
+[36m[2026-04-08 10:22:11 DEBUG] [activity:317] Activity failed
+    Traceback (most recent call last):
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_5_detective.py", line 482, in steady_state
+        cfn = _boto("cfn_client_placeholder")  # placeholder; real call below
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_5_detective.py", line 396, in _boto
+        return boto3.client(service, region_name=region, **kwargs)
+               ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/boto3/__init__.py", line 92, in client
+        return _get_default_session().client(*args, **kwargs)
+               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/boto3/session.py", line 297, in client
+        return self._session.create_client(
+               ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+            service_name,
+            ^^^^^^^^^^^^^
+        ...<8 lines>...
+            config=config,
+            ^^^^^^^^^^^^^^
+        )
+        ^
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/session.py", line 997, in create_client
+        client = client_creator.create_client(
+            service_name=service_name,
+        ...<8 lines>...
+            auth_token=auth_token,
+        )
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/client.py", line 132, in create_client
+        service_model = self._load_service_model(service_name, api_version)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/client.py", line 239, in _load_service_model
+        json_model = self._loader.load_service_model(
+            service_name, 'service-2', api_version=api_version
+        )
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/loaders.py", line 143, in _wrapper
+        data = func(self, *args, **kwargs)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/loaders.py", line 409, in load_service_model
+        raise UnknownServiceError(
+        ...<2 lines>...
+        )
+    botocore.exceptions.UnknownServiceError: Unknown service: 'cfn_client_placeholder'. Valid service names are: accessanalyzer, account, acm, acm-pca, amp, amplify, amplifybackend, amplifyuibuilder, apigateway, apigatewaymanagementapi, apigatewayv2, appconfig, appconfigdata, appfabric, appflow, appintegrations, application-autoscaling, application-insights, application-signals, applicationcostprofiler, appmesh, apprunner, appstream, appsync, apptest, arc-zonal-shift, artifact, athena, auditmanager, autoscaling, autoscaling-plans, b2bi, backup, backup-gateway, batch, bcm-data-exports, bedrock, bedrock-agent, bedrock-agent-runtime, bedrock-runtime, billingconductor, braket, budgets, ce, chatbot, chime, chime-sdk-identity, chime-sdk-media-pipelines, chime-sdk-meetings, chime-sdk-messaging, chime-sdk-voice, cleanrooms, cleanroomsml, cloud9, cloudcontrol, clouddirectory, cloudformation, cloudfront, cloudfront-keyvaluestore, cloudhsm, cloudhsmv2, cloudsearch, cloudsearchdomain, cloudtrail, cloudtrail-data, cloudwatch, codeartifact, codebuild, codecatalyst, codecommit, codeconnections, codedeploy, codeguru-reviewer, codeguru-security, codeguruprofiler, codepipeline, codestar-connections, codestar-notifications, cognito-identity, cognito-idp, cognito-sync, comprehend, comprehendmedical, compute-optimizer, config, connect, connect-contact-lens, connectcampaigns, connectcases, connectparticipant, controlcatalog, controltower, cost-optimization-hub, cur, customer-profiles, databrew, dataexchange, datapipeline, datasync, datazone, dax, deadline, detective, devicefarm, devops-guru, directconnect, discovery, dlm, dms, docdb, docdb-elastic, drs, ds, ds-data, dynamodb, dynamodbstreams, ebs, ec2, ec2-instance-connect, ecr, ecr-public, ecs, efs, eks, eks-auth, elastic-inference, elasticache, elasticbeanstalk, elastictranscoder, elb, elbv2, emr, emr-containers, emr-serverless, entityresolution, es, events, evidently, finspace, finspace-data, firehose, fis, fms, forecast, forecastquery, frauddetector, freetier, fsx, gamelift, geo-maps, geo-places, geo-routes, glacier, globalaccelerator, glue, grafana, greengrass, greengrassv2, groundstation, guardduty, health, healthlake, iam, identitystore, imagebuilder, importexport, inspector, inspector-scan, inspector2, internetmonitor, iot, iot-data, iot-jobs-data, iot1click-devices, iot1click-projects, iotanalytics, iotdeviceadvisor, iotevents, iotevents-data, iotfleethub, iotfleetwise, iotsecuretunneling, iotsitewise, iotthingsgraph, iottwinmaker, iotwireless, ivs, ivs-realtime, ivschat, kafka, kafkaconnect, kendra, kendra-ranking, keyspaces, kinesis, kinesis-video-archived-media, kinesis-video-media, kinesis-video-signaling, kinesis-video-webrtc-storage, kinesisanalytics, kinesisanalyticsv2, kinesisvideo, kms, lakeformation, lambda, launch-wizard, lex-models, lex-runtime, lexv2-models, lexv2-runtime, license-manager, license-manager-linux-subscriptions, license-manager-user-subscriptions, lightsail, location, logs, lookoutequipment, lookoutmetrics, lookoutvision, m2, machinelearning, macie2, mailmanager, managedblockchain, managedblockchain-query, marketplace-agreement, marketplace-catalog, marketplace-deployment, marketplace-entitlement, marketplace-reporting, marketplacecommerceanalytics, mediaconnect, mediaconvert, medialive, mediapackage, mediapackage-vod, mediapackagev2, mediastore, mediastore-data, mediatailor, medical-imaging, memorydb, meteringmarketplace, mgh, mgn, migration-hub-refactor-spaces, migrationhub-config, migrationhuborchestrator, migrationhubstrategy, mq, mturk, mwaa, neptune, neptune-graph, neptunedata, network-firewall, networkmanager, networkmonitor, oam, omics, opensearch, opensearchserverless, opsworks, opsworkscm, organizations, osis, outposts, panorama, payment-cryptography, payment-cryptography-data, pca-connector-ad, pca-connector-scep, pcs, personalize, personalize-events, personalize-runtime, pi, pinpoint, pinpoint-email, pinpoint-sms-voice, pinpoint-sms-voice-v2, pipes, polly, pricing, privatenetworks, proton, qapps, qbusiness, qconnect, qldb, qldb-session, quicksight, ram, rbin, rds, rds-data, redshift, redshift-data, redshift-serverless, rekognition, repostspace, resiliencehub, resource-explorer-2, resource-groups, resourcegroupstaggingapi, robomaker, rolesanywhere, route53, route53-recovery-cluster, route53-recovery-control-config, route53-recovery-readiness, route53domains, route53profiles, route53resolver, rum, s3, s3control, s3outposts, sagemaker, sagemaker-a2i-runtime, sagemaker-edge, sagemaker-featurestore-runtime, sagemaker-geospatial, sagemaker-metrics, sagemaker-runtime, savingsplans, scheduler, schemas, sdb, secretsmanager, securityhub, securitylake, serverlessrepo, service-quotas, servicecatalog, servicecatalog-appregistry, servicediscovery, ses, sesv2, shield, signer, simspaceweaver, sms, sms-voice, snow-device-management, snowball, sns, socialmessaging, sqs, ssm, ssm-contacts, ssm-incidents, ssm-quicksetup, ssm-sap, sso, sso-admin, sso-oidc, stepfunctions, storagegateway, sts, supplychain, support, support-app, swf, synthetics, taxsettings, textract, timestream-influxdb, timestream-query, timestream-write, tnb, transcribe, transfer, translate, trustedadvisor, verifiedpermissions, voice-id, vpc-lattice, waf, waf-regional, wafv2, wellarchitected, wisdom, workdocs, workmail, workmailmessageflow, workspaces, workspaces-thin-client, workspaces-web, xray
+    
+    During handling of the above exception, another exception occurred:
+    
+    Traceback (most recent call last):
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/activity.py", line 310, in run_activity
+        result = run_python_activity(activity, configuration, secrets)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 58, in run_python_activity
+        raise ActivityFailed(
+            traceback.format_exception_only(type(x), x)[0].strip()
+        ).with_traceback(sys.exc_info()[2])
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_5_detective.py", line 482, in steady_state
+        cfn = _boto("cfn_client_placeholder")  # placeholder; real call below
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_5_detective.py", line 396, in _boto
+        return boto3.client(service, region_name=region, **kwargs)
+               ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/boto3/__init__.py", line 92, in client
+        return _get_default_session().client(*args, **kwargs)
+               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/boto3/session.py", line 297, in client
+        return self._session.create_client(
+               ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+            service_name,
+            ^^^^^^^^^^^^^
+        ...<8 lines>...
+            config=config,
+            ^^^^^^^^^^^^^^
+        )
+        ^
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/session.py", line 997, in create_client
+        client = client_creator.create_client(
+            service_name=service_name,
+        ...<8 lines>...
+            auth_token=auth_token,
+        )
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/client.py", line 132, in create_client
+        service_model = self._load_service_model(service_name, api_version)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/client.py", line 239, in _load_service_model
+        json_model = self._loader.load_service_model(
+            service_name, 'service-2', api_version=api_version
+        )
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/loaders.py", line 143, in _wrapper
+        data = func(self, *args, **kwargs)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/loaders.py", line 409, in load_service_model
+        raise UnknownServiceError(
+        ...<2 lines>...
+        )
+    chaoslib.exceptions.ActivityFailed: botocore.exceptions.UnknownServiceError: Unknown service: 'cfn_client_placeholder'. Valid service names are: accessanalyzer, account, acm, acm-pca, amp, amplify, amplifybackend, amplifyuibuilder, apigateway, apigatewaymanagementapi, apigatewayv2, appconfig, appconfigdata, appfabric, appflow, appintegrations, application-autoscaling, application-insights, application-signals, applicationcostprofiler, appmesh, apprunner, appstream, appsync, apptest, arc-zonal-shift, artifact, athena, auditmanager, autoscaling, autoscaling-plans, b2bi, backup, backup-gateway, batch, bcm-data-exports, bedrock, bedrock-agent, bedrock-agent-runtime, bedrock-runtime, billingconductor, braket, budgets, ce, chatbot, chime, chime-sdk-identity, chime-sdk-media-pipelines, chime-sdk-meetings, chime-sdk-messaging, chime-sdk-voice, cleanrooms, cleanroomsml, cloud9, cloudcontrol, clouddirectory, cloudformation, cloudfront, cloudfront-keyvaluestore, cloudhsm, cloudhsmv2, cloudsearch, cloudsearchdomain, cloudtrail, cloudtrail-data, cloudwatch, codeartifact, codebuild, codecatalyst, codecommit, codeconnections, codedeploy, codeguru-reviewer, codeguru-security, codeguruprofiler, codepipeline, codestar-connections, codestar-notifications, cognito-identity, cognito-idp, cognito-sync, comprehend, comprehendmedical, compute-optimizer, config, connect, connect-contact-lens, connectcampaigns, connectcases, connectparticipant, controlcatalog, controltower, cost-optimization-hub, cur, customer-profiles, databrew, dataexchange, datapipeline, datasync, datazone, dax, deadline, detective, devicefarm, devops-guru, directconnect, discovery, dlm, dms, docdb, docdb-elastic, drs, ds, ds-data, dynamodb, dynamodbstreams, ebs, ec2, ec2-instance-connect, ecr, ecr-public, ecs, efs, eks, eks-auth, elastic-inference, elasticache, elasticbeanstalk, elastictranscoder, elb, elbv2, emr, emr-containers, emr-serverless, entityresolution, es, events, evidently, finspace, finspace-data, firehose, fis, fms, forecast, forecastquery, frauddetector, freetier, fsx, gamelift, geo-maps, geo-places, geo-routes, glacier, globalaccelerator, glue, grafana, greengrass, greengrassv2, groundstation, guardduty, health, healthlake, iam, identitystore, imagebuilder, importexport, inspector, inspector-scan, inspector2, internetmonitor, iot, iot-data, iot-jobs-data, iot1click-devices, iot1click-projects, iotanalytics, iotdeviceadvisor, iotevents, iotevents-data, iotfleethub, iotfleetwise, iotsecuretunneling, iotsitewise, iotthingsgraph, iottwinmaker, iotwireless, ivs, ivs-realtime, ivschat, kafka, kafkaconnect, kendra, kendra-ranking, keyspaces, kinesis, kinesis-video-archived-media, kinesis-video-media, kinesis-video-signaling, kinesis-video-webrtc-storage, kinesisanalytics, kinesisanalyticsv2, kinesisvideo, kms, lakeformation, lambda, launch-wizard, lex-models, lex-runtime, lexv2-models, lexv2-runtime, license-manager, license-manager-linux-subscriptions, license-manager-user-subscriptions, lightsail, location, logs, lookoutequipment, lookoutmetrics, lookoutvision, m2, machinelearning, macie2, mailmanager, managedblockchain, managedblockchain-query, marketplace-agreement, marketplace-catalog, marketplace-deployment, marketplace-entitlement, marketplace-reporting, marketplacecommerceanalytics, mediaconnect, mediaconvert, medialive, mediapackage, mediapackage-vod, mediapackagev2, mediastore, mediastore-data, mediatailor, medical-imaging, memorydb, meteringmarketplace, mgh, mgn, migration-hub-refactor-spaces, migrationhub-config, migrationhuborchestrator, migrationhubstrategy, mq, mturk, mwaa, neptune, neptune-graph, neptunedata, network-firewall, networkmanager, networkmonitor, oam, omics, opensearch, opensearchserverless, opsworks, opsworkscm, organizations, osis, outposts, panorama, payment-cryptography, payment-cryptography-data, pca-connector-ad, pca-connector-scep, pcs, personalize, personalize-events, personalize-runtime, pi, pinpoint, pinpoint-email, pinpoint-sms-voice, pinpoint-sms-voice-v2, pipes, polly, pricing, privatenetworks, proton, qapps, qbusiness, qconnect, qldb, qldb-session, quicksight, ram, rbin, rds, rds-data, redshift, redshift-data, redshift-serverless, rekognition, repostspace, resiliencehub, resource-explorer-2, resource-groups, resourcegroupstaggingapi, robomaker, rolesanywhere, route53, route53-recovery-cluster, route53-recovery-control-config, route53-recovery-readiness, route53domains, route53profiles, route53resolver, rum, s3, s3control, s3outposts, sagemaker, sagemaker-a2i-runtime, sagemaker-edge, sagemaker-featurestore-runtime, sagemaker-geospatial, sagemaker-metrics, sagemaker-runtime, savingsplans, scheduler, schemas, sdb, secretsmanager, securityhub, securitylake, serverlessrepo, service-quotas, servicecatalog, servicecatalog-appregistry, servicediscovery, ses, sesv2, shield, signer, simspaceweaver, sms, sms-voice, snow-device-management, snowball, sns, socialmessaging, sqs, ssm, ssm-contacts, ssm-incidents, ssm-quicksetup, ssm-sap, sso, sso-admin, sso-oidc, stepfunctions, storagegateway, sts, supplychain, support, support-app, swf, synthetics, taxsettings, textract, timestream-influxdb, timestream-query, timestream-write, tnb, transcribe, transfer, translate, trustedadvisor, verifiedpermissions, voice-id, vpc-lattice, waf, waf-regional, wafv2, wellarchitected, wisdom, workdocs, workmail, workmailmessageflow, workspaces, workspaces-thin-client, workspaces-web, xray
+[31m[2026-04-08 10:22:11 ERROR] [activity:268]   => failed: botocore.exceptions.UnknownServiceError: Unknown service: 'cfn_client_placeholder'. Valid service names are: accessanalyzer, account, acm, acm-pca, amp, amplify, amplifybackend, amplifyuibuilder, apigateway, apigatewaymanagementapi, apigatewayv2, appconfig, appconfigdata, appfabric, appflow, appintegrations, application-autoscaling, application-insights, application-signals, applicationcostprofiler, appmesh, apprunner, appstream, appsync, apptest, arc-zonal-shift, artifact, athena, auditmanager, autoscaling, autoscaling-plans, b2bi, backup, backup-gateway, batch, bcm-data-exports, bedrock, bedrock-agent, bedrock-agent-runtime, bedrock-runtime, billingconductor, braket, budgets, ce, chatbot, chime, chime-sdk-identity, chime-sdk-media-pipelines, chime-sdk-meetings, chime-sdk-messaging, chime-sdk-voice, cleanrooms, cleanroomsml, cloud9, cloudcontrol, clouddirectory, cloudformation, cloudfront, cloudfront-keyvaluestore, cloudhsm, cloudhsmv2, cloudsearch, cloudsearchdomain, cloudtrail, cloudtrail-data, cloudwatch, codeartifact, codebuild, codecatalyst, codecommit, codeconnections, codedeploy, codeguru-reviewer, codeguru-security, codeguruprofiler, codepipeline, codestar-connections, codestar-notifications, cognito-identity, cognito-idp, cognito-sync, comprehend, comprehendmedical, compute-optimizer, config, connect, connect-contact-lens, connectcampaigns, connectcases, connectparticipant, controlcatalog, controltower, cost-optimization-hub, cur, customer-profiles, databrew, dataexchange, datapipeline, datasync, datazone, dax, deadline, detective, devicefarm, devops-guru, directconnect, discovery, dlm, dms, docdb, docdb-elastic, drs, ds, ds-data, dynamodb, dynamodbstreams, ebs, ec2, ec2-instance-connect, ecr, ecr-public, ecs, efs, eks, eks-auth, elastic-inference, elasticache, elasticbeanstalk, elastictranscoder, elb, elbv2, emr, emr-containers, emr-serverless, entityresolution, es, events, evidently, finspace, finspace-data, firehose, fis, fms, forecast, forecastquery, frauddetector, freetier, fsx, gamelift, geo-maps, geo-places, geo-routes, glacier, globalaccelerator, glue, grafana, greengrass, greengrassv2, groundstation, guardduty, health, healthlake, iam, identitystore, imagebuilder, importexport, inspector, inspector-scan, inspector2, internetmonitor, iot, iot-data, iot-jobs-data, iot1click-devices, iot1click-projects, iotanalytics, iotdeviceadvisor, iotevents, iotevents-data, iotfleethub, iotfleetwise, iotsecuretunneling, iotsitewise, iotthingsgraph, iottwinmaker, iotwireless, ivs, ivs-realtime, ivschat, kafka, kafkaconnect, kendra, kendra-ranking, keyspaces, kinesis, kinesis-video-archived-media, kinesis-video-media, kinesis-video-signaling, kinesis-video-webrtc-storage, kinesisanalytics, kinesisanalyticsv2, kinesisvideo, kms, lakeformation, lambda, launch-wizard, lex-models, lex-runtime, lexv2-models, lexv2-runtime, license-manager, license-manager-linux-subscriptions, license-manager-user-subscriptions, lightsail, location, logs, lookoutequipment, lookoutmetrics, lookoutvision, m2, machinelearning, macie2, mailmanager, managedblockchain, managedblockchain-query, marketplace-agreement, marketplace-catalog, marketplace-deployment, marketplace-entitlement, marketplace-reporting, marketplacecommerceanalytics, mediaconnect, mediaconvert, medialive, mediapackage, mediapackage-vod, mediapackagev2, mediastore, mediastore-data, mediatailor, medical-imaging, memorydb, meteringmarketplace, mgh, mgn, migration-hub-refactor-spaces, migrationhub-config, migrationhuborchestrator, migrationhubstrategy, mq, mturk, mwaa, neptune, neptune-graph, neptunedata, network-firewall, networkmanager, networkmonitor, oam, omics, opensearch, opensearchserverless, opsworks, opsworkscm, organizations, osis, outposts, panorama, payment-cryptography, payment-cryptography-data, pca-connector-ad, pca-connector-scep, pcs, personalize, personalize-events, personalize-runtime, pi, pinpoint, pinpoint-email, pinpoint-sms-voice, pinpoint-sms-voice-v2, pipes, polly, pricing, privatenetworks, proton, qapps, qbusiness, qconnect, qldb, qldb-session, quicksight, ram, rbin, rds, rds-data, redshift, redshift-data, redshift-serverless, rekognition, repostspace, resiliencehub, resource-explorer-2, resource-groups, resourcegroupstaggingapi, robomaker, rolesanywhere, route53, route53-recovery-cluster, route53-recovery-control-config, route53-recovery-readiness, route53domains, route53profiles, route53resolver, rum, s3, s3control, s3outposts, sagemaker, sagemaker-a2i-runtime, sagemaker-edge, sagemaker-featurestore-runtime, sagemaker-geospatial, sagemaker-metrics, sagemaker-runtime, savingsplans, scheduler, schemas, sdb, secretsmanager, securityhub, securitylake, serverlessrepo, service-quotas, servicecatalog, servicecatalog-appregistry, servicediscovery, ses, sesv2, shield, signer, simspaceweaver, sms, sms-voice, snow-device-management, snowball, sns, socialmessaging, sqs, ssm, ssm-contacts, ssm-incidents, ssm-quicksetup, ssm-sap, sso, sso-admin, sso-oidc, stepfunctions, storagegateway, sts, supplychain, support, support-app, swf, synthetics, taxsettings, textract, timestream-influxdb, timestream-query, timestream-write, tnb, transcribe, transfer, translate, trustedadvisor, verifiedpermissions, voice-id, vpc-lattice, waf, waf-regional, wafv2, wellarchitected, wisdom, workdocs, workmail, workmailmessageflow, workspaces, workspaces-thin-client, workspaces-web, xray
+[36m[2026-04-08 10:22:11 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-08 10:22:11 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-08 10:22:11 INFO] [activity:232] Action: Execute Attack Step 1.2 — call ModifyInstanceMetadataOptions with HttpTokens=optional and HttpPutResponseHopLimit=2 on the experiment EC2 instance to re-enable IMDSv1 and expand IMDS reachability to containers
+[36m[2026-04-08 10:22:11 DEBUG] [python:33] Activity 'Execute Attack Step 1.2 — call ModifyInstanceMetadataOptions with HttpTokens=optional and HttpPutResponseHopLimit=2 on the experiment EC2 instance to re-enable IMDSv1 and expand IMDS reachability to containers' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_5_detective.py'
+[36m[2026-04-08 10:22:11 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-04-08 10:22:11 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-08 10:22:11 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-08 10:22:11 DEBUG] [run:696] Running steady-state hypothesis after the method
+[32m[2026-04-08 10:22:11 INFO] [hypothesis:205] Steady state hypothesis: Detective controls for IMDS weakening are armed and operational before the attack executes
+[36m[2026-04-08 10:22:11 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[36m[2026-04-08 10:22:11 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-08 10:22:11 INFO] [activity:232] Probe: Verify detective control chain responds to IMDS weakening within SLA
+[36m[2026-04-08 10:22:11 DEBUG] [python:33] Activity 'Verify detective control chain responds to IMDS weakening within SLA' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_5_detective.py'
+[36m[2026-04-08 10:22:11 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-04-08 10:22:11 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-08 10:22:11 DEBUG] [hypothesis:247] allowed tolerance is True
+[36m[2026-04-08 10:22:11 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[31m[2026-04-08 10:22:11 CRITICAL] [run:716] Steady state probe 'Verify detective control chain responds to IMDS weakening within SLA' is not in the given tolerance so failing this experiment
+[32m[2026-04-08 10:22:11 INFO] [run:1072] Let's rollback...
+[36m[2026-04-08 10:22:11 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-08 10:22:11 INFO] [rollback:36] Rollback: Teardown — delete the timestamped CloudFormation stack and wait for DELETE_COMPLETE to ensure all experiment resources (EC2, IAM, VPC, SNS, SQS, Config Rule, EventBridge, CloudWatch Alarm) are fully removed
+[36m[2026-04-08 10:22:11 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-08 10:22:11 INFO] [activity:232] Action: Teardown — delete the timestamped CloudFormation stack and wait for DELETE_COMPLETE to ensure all experiment resources (EC2, IAM, VPC, SNS, SQS, Config Rule, EventBridge, CloudWatch Alarm) are fully removed
+[36m[2026-04-08 10:22:11 DEBUG] [python:33] Activity 'Teardown — delete the timestamped CloudFormation stack and wait for DELETE_COMPLETE to ensure all experiment resources (EC2, IAM, VPC, SNS, SQS, Config Rule, EventBridge, CloudWatch Alarm) are fully removed' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_5_detective.py'
+[36m[2026-04-08 10:22:12 DEBUG] [activity:262]   => succeeded without any result value
+[36m[2026-04-08 10:22:12 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-08 10:22:12 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-08 10:22:12 INFO] [run:598] Experiment ended with status: deviated
+[32m[2026-04-08 10:22:12 INFO] [run:600] The steady-state has deviated, a weakness may have been discovered
+[36m[2026-04-08 10:22:12 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[36m[2026-04-08 10:22:12 DEBUG] [__init__:106] Cleaning up controls
+[36m[2026-04-08 10:22:12 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-08 11:47:42 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-04-08 11:47:42 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-04-08 11:47:42 DEBUG] [__init__:106] Using settings file '/home/mmc/.chaostoolkit/settings.yaml'
+[36m[2026-04-08 11:47:42 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/mmc/.chaostoolkit/settings.yaml'.
+[36m[2026-04-08 11:47:42 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-08 11:47:42 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-08 11:47:42 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-08 11:47:42 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-04-08 11:47:42 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-04-08 11:47:42 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-08 11:47:42 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-08 11:47:42 DEBUG] [secret:104] Done loading secrets
+[32m[2026-04-08 11:47:42 INFO] [experiment:112] Experiment looks valid
+[36m[2026-04-08 11:47:42 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-08 11:47:42 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-04-08 11:47:42 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-08 11:47:42 DEBUG] [caching:35] Cached 3 activities
+[36m[2026-04-08 11:47:42 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-08 11:47:42 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-08 11:47:42 DEBUG] [secret:104] Done loading secrets
+[36m[2026-04-08 11:47:42 DEBUG] [configuration:161] Loading dynamic configuration...
+[32m[2026-04-08 11:47:42 INFO] [run:440] Running experiment: SCE 1.5 Detective Probe — IMDS Protection Weakening Detection via ModifyInstanceMetadataOptions
+[36m[2026-04-08 11:47:42 DEBUG] [__init__:67] Initializing controls
+[32m[2026-04-08 11:47:42 INFO] [run:471] Steady-state strategy: after-method-only
+[32m[2026-04-08 11:47:42 INFO] [run:477] Rollbacks strategy: default
+[36m[2026-04-08 11:47:42 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[32m[2026-04-08 11:47:42 INFO] [run:778] Playing your experiment's method now...
+[36m[2026-04-08 11:47:42 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-08 11:47:42 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-08 11:47:42 INFO] [activity:232] Action: Provision experiment infrastructure via timestamped CloudFormation stack: EC2 instance with IMDSv2 enforced, EventBridge rule narrowed to instance ID, SNS topic, SQS queue, CloudTrail trail, CloudWatch Logs log group, metric filter, CloudWatch Alarm, and AWS Config Rule EC2_IMDSV2_REQUIRED
+[36m[2026-04-08 11:47:42 DEBUG] [python:33] Activity 'Provision experiment infrastructure via timestamped CloudFormation stack: EC2 instance with IMDSv2 enforced, EventBridge rule narrowed to instance ID, SNS topic, SQS queue, CloudTrail trail, CloudWatch Logs log group, metric filter, CloudWatch Alarm, and AWS Config Rule EC2_IMDSV2_REQUIRED' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_5_detective.py'
+[36m[2026-04-08 11:49:06 DEBUG] [activity:317] Activity failed
+    Traceback (most recent call last):
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_5_detective.py", line 793, in steady_state
+        _wait_stack(cfn_client, stack_name, "stack_create_complete")
+        ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_5_detective.py", line 694, in _wait_stack
+        waiter.wait(StackName=stack_name)
+        ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/waiter.py", line 55, in wait
+        Waiter.wait(self, **kwargs)
+        ~~~~~~~~~~~^^^^^^^^^^^^^^^^
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/waiter.py", line 374, in wait
+        raise WaiterError(
+        ...<3 lines>...
+        )
+    botocore.exceptions.WaiterError: Waiter StackCreateComplete failed: Waiter encountered a terminal failure state: For expression "Stacks[].StackStatus" we matched expected path: "ROLLBACK_COMPLETE" at least once
+    
+    During handling of the above exception, another exception occurred:
+    
+    Traceback (most recent call last):
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/activity.py", line 310, in run_activity
+        result = run_python_activity(activity, configuration, secrets)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 58, in run_python_activity
+        raise ActivityFailed(
+            traceback.format_exception_only(type(x), x)[0].strip()
+        ).with_traceback(sys.exc_info()[2])
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_5_detective.py", line 793, in steady_state
+        _wait_stack(cfn_client, stack_name, "stack_create_complete")
+        ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_5_detective.py", line 694, in _wait_stack
+        waiter.wait(StackName=stack_name)
+        ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/waiter.py", line 55, in wait
+        Waiter.wait(self, **kwargs)
+        ~~~~~~~~~~~^^^^^^^^^^^^^^^^
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/waiter.py", line 374, in wait
+        raise WaiterError(
+        ...<3 lines>...
+        )
+    chaoslib.exceptions.ActivityFailed: botocore.exceptions.WaiterError: Waiter StackCreateComplete failed: Waiter encountered a terminal failure state: For expression "Stacks[].StackStatus" we matched expected path: "ROLLBACK_COMPLETE" at least once
+[31m[2026-04-08 11:49:06 ERROR] [activity:268]   => failed: botocore.exceptions.WaiterError: Waiter StackCreateComplete failed: Waiter encountered a terminal failure state: For expression "Stacks[].StackStatus" we matched expected path: "ROLLBACK_COMPLETE" at least once
+[36m[2026-04-08 11:49:06 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-08 11:49:06 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-08 11:49:06 INFO] [activity:232] Action: Execute Attack Node 1.2 — call ModifyInstanceMetadataOptions with HttpTokens=optional and HttpPutResponseHopLimit=2 on the experiment EC2 instance to re-enable IMDSv1 and expand IMDS reachability to containers and SSRF-vulnerable workloads
+[36m[2026-04-08 11:49:06 DEBUG] [python:33] Activity 'Execute Attack Node 1.2 — call ModifyInstanceMetadataOptions with HttpTokens=optional and HttpPutResponseHopLimit=2 on the experiment EC2 instance to re-enable IMDSv1 and expand IMDS reachability to containers and SSRF-vulnerable workloads' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_5_detective.py'
+[36m[2026-04-08 11:49:06 DEBUG] [activity:317] Activity failed
+    Traceback (most recent call last):
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_5_detective.py", line 1051, in attack
+        _require_state("instance_id", "region")
+        ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_5_detective.py", line 643, in _require_state
+        raise RuntimeError(
+        ...<3 lines>...
+        )
+    RuntimeError: Required experiment state keys are missing: ['instance_id']. Ensure steady_state() completed successfully before calling this function.
+    
+    During handling of the above exception, another exception occurred:
+    
+    Traceback (most recent call last):
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/activity.py", line 310, in run_activity
+        result = run_python_activity(activity, configuration, secrets)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 58, in run_python_activity
+        raise ActivityFailed(
+            traceback.format_exception_only(type(x), x)[0].strip()
+        ).with_traceback(sys.exc_info()[2])
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_5_detective.py", line 1051, in attack
+        _require_state("instance_id", "region")
+        ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_5_detective.py", line 643, in _require_state
+        raise RuntimeError(
+        ...<3 lines>...
+        )
+    chaoslib.exceptions.ActivityFailed: RuntimeError: Required experiment state keys are missing: ['instance_id']. Ensure steady_state() completed successfully before calling this function.
+[31m[2026-04-08 11:49:06 ERROR] [activity:268]   => failed: RuntimeError: Required experiment state keys are missing: ['instance_id']. Ensure steady_state() completed successfully before calling this function.
+[36m[2026-04-08 11:49:06 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-08 11:49:06 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-08 11:49:06 DEBUG] [run:696] Running steady-state hypothesis after the method
+[32m[2026-04-08 11:49:06 INFO] [hypothesis:205] Steady state hypothesis: Detective controls for IMDS weakening are armed, operational, and respond to the attack within the 30-minute SLA
+[36m[2026-04-08 11:49:06 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[36m[2026-04-08 11:49:06 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-08 11:49:06 INFO] [activity:232] Probe: Verify full detective control chain responds to IMDS weakening within 1800-second SLA: EventBridge captures ModifyInstanceMetadataOptions event to SQS, Config Rule marks instance NON_COMPLIANT, and CloudWatch Alarm enters ALARM state
+[36m[2026-04-08 11:49:06 DEBUG] [python:33] Activity 'Verify full detective control chain responds to IMDS weakening within 1800-second SLA: EventBridge captures ModifyInstanceMetadataOptions event to SQS, Config Rule marks instance NON_COMPLIANT, and CloudWatch Alarm enters ALARM state' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_5_detective.py'
+[36m[2026-04-08 11:49:06 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-04-08 11:49:06 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-08 11:49:06 DEBUG] [hypothesis:247] allowed tolerance is True
+[36m[2026-04-08 11:49:06 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[31m[2026-04-08 11:49:06 CRITICAL] [run:716] Steady state probe 'Verify full detective control chain responds to IMDS weakening within 1800-second SLA: EventBridge captures ModifyInstanceMetadataOptions event to SQS, Config Rule marks instance NON_COMPLIANT, and CloudWatch Alarm enters ALARM state' is not in the given tolerance so failing this experiment
+[32m[2026-04-08 11:49:06 INFO] [run:1072] Let's rollback...
+[36m[2026-04-08 11:49:06 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-08 11:49:06 INFO] [rollback:36] Rollback: Teardown — delete the timestamped CloudFormation stack and wait for DELETE_COMPLETE to ensure all experiment resources are removed: EC2 instance, IAM roles, VPC, SNS topic, SQS queue, EventBridge rule, CloudTrail trail, S3 bucket, CloudWatch Logs group, metric filter, CloudWatch Alarm, and Config Rule
+[36m[2026-04-08 11:49:06 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-08 11:49:06 INFO] [activity:232] Action: Teardown — delete the timestamped CloudFormation stack and wait for DELETE_COMPLETE to ensure all experiment resources are removed: EC2 instance, IAM roles, VPC, SNS topic, SQS queue, EventBridge rule, CloudTrail trail, S3 bucket, CloudWatch Logs group, metric filter, CloudWatch Alarm, and Config Rule
+[36m[2026-04-08 11:49:06 DEBUG] [python:33] Activity 'Teardown — delete the timestamped CloudFormation stack and wait for DELETE_COMPLETE to ensure all experiment resources are removed: EC2 instance, IAM roles, VPC, SNS topic, SQS queue, EventBridge rule, CloudTrail trail, S3 bucket, CloudWatch Logs group, metric filter, CloudWatch Alarm, and Config Rule' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_5_detective.py'
+[36m[2026-04-08 11:49:28 DEBUG] [activity:262]   => succeeded without any result value
+[36m[2026-04-08 11:49:28 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-08 11:49:28 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-08 11:49:28 INFO] [run:598] Experiment ended with status: deviated
+[32m[2026-04-08 11:49:28 INFO] [run:600] The steady-state has deviated, a weakness may have been discovered
+[36m[2026-04-08 11:49:28 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[36m[2026-04-08 11:49:28 DEBUG] [__init__:106] Cleaning up controls
+[36m[2026-04-08 11:49:28 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-08 12:23:58 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-04-08 12:23:58 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-04-08 12:23:58 DEBUG] [__init__:106] Using settings file '/home/mmc/.chaostoolkit/settings.yaml'
+[36m[2026-04-08 12:23:58 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/mmc/.chaostoolkit/settings.yaml'.
+[36m[2026-04-08 12:23:58 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-08 12:23:58 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-08 12:23:58 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-08 12:23:58 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-04-08 12:23:58 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-04-08 12:23:58 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-08 12:23:58 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-08 12:23:58 DEBUG] [secret:104] Done loading secrets
+[32m[2026-04-08 12:23:59 INFO] [experiment:112] Experiment looks valid
+[36m[2026-04-08 12:23:59 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-08 12:23:59 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-04-08 12:23:59 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-08 12:23:59 DEBUG] [caching:35] Cached 3 activities
+[36m[2026-04-08 12:23:59 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-08 12:23:59 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-08 12:23:59 DEBUG] [secret:104] Done loading secrets
+[36m[2026-04-08 12:23:59 DEBUG] [configuration:161] Loading dynamic configuration...
+[32m[2026-04-08 12:23:59 INFO] [run:440] Running experiment: SCE 1.5 Detective Probe — IMDS Protection Weakening Detection via ModifyInstanceMetadataOptions
+[36m[2026-04-08 12:23:59 DEBUG] [__init__:67] Initializing controls
+[32m[2026-04-08 12:23:59 INFO] [run:471] Steady-state strategy: after-method-only
+[32m[2026-04-08 12:23:59 INFO] [run:477] Rollbacks strategy: default
+[36m[2026-04-08 12:23:59 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[32m[2026-04-08 12:23:59 INFO] [run:778] Playing your experiment's method now...
+[36m[2026-04-08 12:23:59 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-08 12:23:59 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-08 12:23:59 INFO] [activity:232] Action: Provision experiment infrastructure: deploy minimal stable CloudFormation stack (EC2 with IMDSv2 enforced, EventBridge rule, SNS, SQS, CloudWatch Logs, metric filter, Alarm); then create CloudTrail trail and Config Rule via boto3 as optional components that do not block stack creation
+[36m[2026-04-08 12:23:59 DEBUG] [python:33] Activity 'Provision experiment infrastructure: deploy minimal stable CloudFormation stack (EC2 with IMDSv2 enforced, EventBridge rule, SNS, SQS, CloudWatch Logs, metric filter, Alarm); then create CloudTrail trail and Config Rule via boto3 as optional components that do not block stack creation' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_5_detective.py'
+[36m[2026-04-08 12:26:45 DEBUG] [activity:317] Activity failed
+    Traceback (most recent call last):
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_5_detective.py", line 863, in steady_state
+        _wait_stack(cfn, stack_name, "stack_create_complete",
+        ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                    delay=20, max_attempts=90)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_5_detective.py", line 490, in _wait_stack
+        w.wait(StackName=stack_name)
+        ~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/waiter.py", line 55, in wait
+        Waiter.wait(self, **kwargs)
+        ~~~~~~~~~~~^^^^^^^^^^^^^^^^
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/waiter.py", line 374, in wait
+        raise WaiterError(
+        ...<3 lines>...
+        )
+    botocore.exceptions.WaiterError: Waiter StackCreateComplete failed: Waiter encountered a terminal failure state: For expression "Stacks[].StackStatus" we matched expected path: "ROLLBACK_COMPLETE" at least once
+    
+    During handling of the above exception, another exception occurred:
+    
+    Traceback (most recent call last):
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/activity.py", line 310, in run_activity
+        result = run_python_activity(activity, configuration, secrets)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 58, in run_python_activity
+        raise ActivityFailed(
+            traceback.format_exception_only(type(x), x)[0].strip()
+        ).with_traceback(sys.exc_info()[2])
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_5_detective.py", line 863, in steady_state
+        _wait_stack(cfn, stack_name, "stack_create_complete",
+        ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                    delay=20, max_attempts=90)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_5_detective.py", line 490, in _wait_stack
+        w.wait(StackName=stack_name)
+        ~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/waiter.py", line 55, in wait
+        Waiter.wait(self, **kwargs)
+        ~~~~~~~~~~~^^^^^^^^^^^^^^^^
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/waiter.py", line 374, in wait
+        raise WaiterError(
+        ...<3 lines>...
+        )
+    chaoslib.exceptions.ActivityFailed: botocore.exceptions.WaiterError: Waiter StackCreateComplete failed: Waiter encountered a terminal failure state: For expression "Stacks[].StackStatus" we matched expected path: "ROLLBACK_COMPLETE" at least once
+[31m[2026-04-08 12:26:45 ERROR] [activity:268]   => failed: botocore.exceptions.WaiterError: Waiter StackCreateComplete failed: Waiter encountered a terminal failure state: For expression "Stacks[].StackStatus" we matched expected path: "ROLLBACK_COMPLETE" at least once
+[36m[2026-04-08 12:26:45 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-08 12:26:45 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-08 12:26:45 INFO] [activity:232] Action: Execute Attack Node 1.2 — ModifyInstanceMetadataOptions with HttpTokens=optional and HttpPutResponseHopLimit=2 on the experiment EC2 instance to re-enable IMDSv1 and expand IMDS reachability
+[36m[2026-04-08 12:26:45 DEBUG] [python:33] Activity 'Execute Attack Node 1.2 — ModifyInstanceMetadataOptions with HttpTokens=optional and HttpPutResponseHopLimit=2 on the experiment EC2 instance to re-enable IMDSv1 and expand IMDS reachability' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_5_detective.py'
+[36m[2026-04-08 12:26:45 DEBUG] [activity:317] Activity failed
+    Traceback (most recent call last):
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_5_detective.py", line 1087, in attack
+        _require_state("instance_id", "region")
+        ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_5_detective.py", line 447, in _require_state
+        raise RuntimeError(
+        ...<2 lines>...
+        )
+    RuntimeError: Required experiment state keys are missing: ['instance_id']. Ensure steady_state() completed successfully.
+    
+    During handling of the above exception, another exception occurred:
+    
+    Traceback (most recent call last):
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/activity.py", line 310, in run_activity
+        result = run_python_activity(activity, configuration, secrets)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 58, in run_python_activity
+        raise ActivityFailed(
+            traceback.format_exception_only(type(x), x)[0].strip()
+        ).with_traceback(sys.exc_info()[2])
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_5_detective.py", line 1087, in attack
+        _require_state("instance_id", "region")
+        ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+      File "/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_5_detective.py", line 447, in _require_state
+        raise RuntimeError(
+        ...<2 lines>...
+        )
+    chaoslib.exceptions.ActivityFailed: RuntimeError: Required experiment state keys are missing: ['instance_id']. Ensure steady_state() completed successfully.
+[31m[2026-04-08 12:26:45 ERROR] [activity:268]   => failed: RuntimeError: Required experiment state keys are missing: ['instance_id']. Ensure steady_state() completed successfully.
+[36m[2026-04-08 12:26:45 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-08 12:26:45 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-08 12:26:45 DEBUG] [run:696] Running steady-state hypothesis after the method
+[32m[2026-04-08 12:26:45 INFO] [hypothesis:205] Steady state hypothesis: Primary detective control (EventBridge to SQS) responds to IMDS weakening within the 1800-second SLA
+[36m[2026-04-08 12:26:45 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[36m[2026-04-08 12:26:45 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-08 12:26:45 INFO] [activity:232] Probe: Verify EventBridge captures ModifyInstanceMetadataOptions event and delivers to SQS within 1800 s; Config Rule marks instance NON_COMPLIANT if Config is active; CloudWatch Alarm enters ALARM state if CloudTrail trail was created
+[36m[2026-04-08 12:26:45 DEBUG] [python:33] Activity 'Verify EventBridge captures ModifyInstanceMetadataOptions event and delivers to SQS within 1800 s; Config Rule marks instance NON_COMPLIANT if Config is active; CloudWatch Alarm enters ALARM state if CloudTrail trail was created' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_5_detective.py'
+[36m[2026-04-08 12:26:45 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-04-08 12:26:45 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-08 12:26:45 DEBUG] [hypothesis:247] allowed tolerance is True
+[36m[2026-04-08 12:26:45 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[31m[2026-04-08 12:26:45 CRITICAL] [run:716] Steady state probe 'Verify EventBridge captures ModifyInstanceMetadataOptions event and delivers to SQS within 1800 s; Config Rule marks instance NON_COMPLIANT if Config is active; CloudWatch Alarm enters ALARM state if CloudTrail trail was created' is not in the given tolerance so failing this experiment
+[32m[2026-04-08 12:26:45 INFO] [run:1072] Let's rollback...
+[36m[2026-04-08 12:26:45 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-08 12:26:45 INFO] [rollback:36] Rollback: Teardown all experiment resources: stop and delete CloudTrail trail, delete Config Rule, empty and delete S3 trail bucket, delete CloudTrail IAM role, delete CloudFormation stack and wait for DELETE_COMPLETE
+[36m[2026-04-08 12:26:45 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-08 12:26:45 INFO] [activity:232] Action: Teardown all experiment resources: stop and delete CloudTrail trail, delete Config Rule, empty and delete S3 trail bucket, delete CloudTrail IAM role, delete CloudFormation stack and wait for DELETE_COMPLETE
+[36m[2026-04-08 12:26:45 DEBUG] [python:33] Activity 'Teardown all experiment resources: stop and delete CloudTrail trail, delete Config Rule, empty and delete S3 trail bucket, delete CloudTrail IAM role, delete CloudFormation stack and wait for DELETE_COMPLETE' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_5_detective.py'
+[36m[2026-04-08 12:27:07 DEBUG] [activity:262]   => succeeded without any result value
+[36m[2026-04-08 12:27:07 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-08 12:27:07 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-08 12:27:07 INFO] [run:598] Experiment ended with status: deviated
+[32m[2026-04-08 12:27:07 INFO] [run:600] The steady-state has deviated, a weakness may have been discovered
+[36m[2026-04-08 12:27:07 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[36m[2026-04-08 12:27:07 DEBUG] [__init__:106] Cleaning up controls
+[36m[2026-04-08 12:27:07 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-08 13:00:14 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-04-08 13:00:14 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-04-08 13:00:14 DEBUG] [__init__:106] Using settings file '/home/mmc/.chaostoolkit/settings.yaml'
+[36m[2026-04-08 13:00:15 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/mmc/.chaostoolkit/settings.yaml'.
+[36m[2026-04-08 13:00:15 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-08 13:00:15 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-08 13:00:15 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-08 13:00:15 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-04-08 13:00:15 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-04-08 13:00:15 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-08 13:00:15 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-08 13:00:15 DEBUG] [secret:104] Done loading secrets
+[32m[2026-04-08 13:00:15 INFO] [experiment:112] Experiment looks valid
+[36m[2026-04-08 13:00:15 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-08 13:00:15 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-04-08 13:00:15 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-08 13:00:15 DEBUG] [caching:35] Cached 3 activities
+[36m[2026-04-08 13:00:15 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-08 13:00:15 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-08 13:00:15 DEBUG] [secret:104] Done loading secrets
+[36m[2026-04-08 13:00:15 DEBUG] [configuration:161] Loading dynamic configuration...
+[32m[2026-04-08 13:00:15 INFO] [run:440] Running experiment: SCE 1.5 Detective Probe - IMDS Protection Weakening Detection via ModifyInstanceMetadataOptions
+[36m[2026-04-08 13:00:15 DEBUG] [__init__:67] Initializing controls
+[32m[2026-04-08 13:00:15 INFO] [run:471] Steady-state strategy: after-method-only
+[32m[2026-04-08 13:00:15 INFO] [run:477] Rollbacks strategy: default
+[36m[2026-04-08 13:00:15 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[32m[2026-04-08 13:00:15 INFO] [run:778] Playing your experiment's method now...
+[36m[2026-04-08 13:00:15 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-08 13:00:15 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-08 13:00:15 INFO] [activity:232] Action: Provision experiment infrastructure: ASCII-validate and deploy minimal stable CloudFormation stack (EC2 with IMDSv2 enforced, EventBridge rule, SNS, SQS, CW Logs, metric filter, Alarm); create CloudTrail trail and Config Rule via boto3 as optional non-blocking components; narrow EventBridge rule to specific instance ID and httpTokens=optional
+[36m[2026-04-08 13:00:15 DEBUG] [python:33] Activity 'Provision experiment infrastructure: ASCII-validate and deploy minimal stable CloudFormation stack (EC2 with IMDSv2 enforced, EventBridge rule, SNS, SQS, CW Logs, metric filter, Alarm); create CloudTrail trail and Config Rule via boto3 as optional non-blocking components; narrow EventBridge rule to specific instance ID and httpTokens=optional' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_5_detective.py'
+[36m[2026-04-08 13:03:46 DEBUG] [activity:262]   => succeeded without any result value
+[36m[2026-04-08 13:03:46 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-08 13:03:46 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-08 13:03:46 INFO] [activity:232] Action: Execute Attack Node 1.2 - ModifyInstanceMetadataOptions with HttpTokens=optional and HttpPutResponseHopLimit=2 on the experiment EC2 instance to re-enable IMDSv1 and expand IMDS reachability to containers and SSRF-vulnerable workloads
+[36m[2026-04-08 13:03:46 DEBUG] [python:33] Activity 'Execute Attack Node 1.2 - ModifyInstanceMetadataOptions with HttpTokens=optional and HttpPutResponseHopLimit=2 on the experiment EC2 instance to re-enable IMDSv1 and expand IMDS reachability to containers and SSRF-vulnerable workloads' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_5_detective.py'
+[36m[2026-04-08 13:03:47 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-04-08 13:03:47 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-08 13:03:47 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-08 13:03:47 DEBUG] [run:696] Running steady-state hypothesis after the method
+[32m[2026-04-08 13:03:47 INFO] [hypothesis:205] Steady state hypothesis: Primary detective control EventBridge to SQS responds to IMDS weakening within the 1800-second SLA
+[36m[2026-04-08 13:03:47 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[36m[2026-04-08 13:03:47 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-08 13:03:47 INFO] [activity:232] Probe: Verify EventBridge captures ModifyInstanceMetadataOptions event and delivers to SQS within 1800 s; Config Rule marks instance NON_COMPLIANT if Config recorder is active; CloudWatch Alarm enters ALARM state if CloudTrail trail was provisioned
+[36m[2026-04-08 13:03:47 DEBUG] [python:33] Activity 'Verify EventBridge captures ModifyInstanceMetadataOptions event and delivers to SQS within 1800 s; Config Rule marks instance NON_COMPLIANT if Config recorder is active; CloudWatch Alarm enters ALARM state if CloudTrail trail was provisioned' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_5_detective.py'
+[36m[2026-04-08 14:04:02 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-04-08 14:04:02 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-08 14:04:02 DEBUG] [hypothesis:247] allowed tolerance is True
+[36m[2026-04-08 14:04:02 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[31m[2026-04-08 14:04:02 CRITICAL] [run:716] Steady state probe 'Verify EventBridge captures ModifyInstanceMetadataOptions event and delivers to SQS within 1800 s; Config Rule marks instance NON_COMPLIANT if Config recorder is active; CloudWatch Alarm enters ALARM state if CloudTrail trail was provisioned' is not in the given tolerance so failing this experiment
+[32m[2026-04-08 14:04:02 INFO] [run:1072] Let's rollback...
+[36m[2026-04-08 14:04:02 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-08 14:04:02 INFO] [rollback:36] Rollback: Teardown all experiment resources in dependency order: stop and delete CloudTrail trail, delete Config Rule, empty and delete S3 trail bucket via paginator, delete CloudTrail IAM role with inline policy removal, delete CloudFormation stack and wait for DELETE_COMPLETE
+[36m[2026-04-08 14:04:02 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-08 14:04:02 INFO] [activity:232] Action: Teardown all experiment resources in dependency order: stop and delete CloudTrail trail, delete Config Rule, empty and delete S3 trail bucket via paginator, delete CloudTrail IAM role with inline policy removal, delete CloudFormation stack and wait for DELETE_COMPLETE
+[36m[2026-04-08 14:04:02 DEBUG] [python:33] Activity 'Teardown all experiment resources in dependency order: stop and delete CloudTrail trail, delete Config Rule, empty and delete S3 trail bucket via paginator, delete CloudTrail IAM role with inline policy removal, delete CloudFormation stack and wait for DELETE_COMPLETE' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_5_detective.py'
+[36m[2026-04-08 14:05:50 DEBUG] [activity:262]   => succeeded without any result value
+[36m[2026-04-08 14:05:50 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-08 14:05:50 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-08 14:05:50 INFO] [run:598] Experiment ended with status: deviated
+[32m[2026-04-08 14:05:50 INFO] [run:600] The steady-state has deviated, a weakness may have been discovered
+[36m[2026-04-08 14:05:50 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[36m[2026-04-08 14:05:50 DEBUG] [__init__:106] Cleaning up controls
+[36m[2026-04-08 14:05:50 DEBUG] [caching:42] Clearing activities cache

@@ -1,0 +1,75 @@
+STDOUT:
+[INFO] Starting steady_state setup...
+[INFO] Creating stack: sce-recon-1774979977
+[INFO] Resources: S3 bucket, IAM user, access key
+[INFO] Waiting for stack creation (up to 10 minutes)...
+[INFO] Stack status: CREATE_IN_PROGRESS (0s elapsed)
+[INFO] Stack status: CREATE_IN_PROGRESS (15s elapsed)
+[INFO] Stack status: CREATE_IN_PROGRESS (30s elapsed)
+[INFO] Stack status: CREATE_COMPLETE (45s elapsed)
+[INFO] Stack created successfully
+[INFO] Bucket: sce-ct-1774979977
+[INFO] Test user: test-user-1774979977
+[INFO] Waiting 90s for IAM propagation...
+[INFO] Creating CloudTrail: sce-trail-1774979977
+[INFO] CloudTrail logging started
+[INFO] Steady state setup complete
+[INFO] Starting attack phase...
+[INFO] Executing reconnaissance as user: test-user-1774979977
+[INFO] Command: ec2:DescribeInstances
+[INFO] Attack completed: 0 instances enumerated
+[INFO] Starting hypothesis verification...
+[INFO] Detective probe: CloudTrail event detection
+[INFO] Implementing 30-minute SLA...
+[INFO] CloudTrail: sce-trail-1774979977
+[INFO] Attack time: 1774980146
+[INFO] Test user: test-user-1774979977
+[INFO] Polling for CloudTrail events...
+[INFO] This may take several minutes due to CloudTrail delivery latency
+[DEBUG] Querying CloudTrail... (elapsed: 0s)
+[DEBUG] Found 0 DescribeInstances events
+[DEBUG] No matching events for user: test-user-1774979977
+[DEBUG] Querying CloudTrail... (elapsed: 30s)
+[DEBUG] Found 0 DescribeInstances events
+[DEBUG] No matching events for user: test-user-1774979977
+[DEBUG] Querying CloudTrail... (elapsed: 60s)
+[DEBUG] Found 1 DescribeInstances events
+[SUCCESS] CloudTrail event detected!
+[DETAIL] Event ID: 55f84822-ab6c-41e9-b471-9d2c3e17c828
+[DETAIL] Event Time: 2026-03-31 20:02:22+02:00
+[DETAIL] Username: test-user-1774979977
+[DETAIL] Source IP: 82.159.161.180
+[DETAIL] User Agent: Boto3/1.35.53 md/Botocore#1.35.53 ua/2.0 os/linux#6.6.87.2-microsoft-standard-WSL2 md/arch#x86_64 lang/python#3.13.5 md/pyimpl#CPython cfg/retry-mode#legacy Botocore/1.35.53
+[SUCCESS] Detective hypothesis verified!
+[SUCCESS] CloudTrail successfully logged reconnaissance activity
+[INFO] Starting rollback...
+[INFO] Deleting CloudTrail: sce-trail-1774979977
+[INFO] CloudTrail deleted
+[INFO] Deleting stack: sce-recon-1774979977
+[INFO] Waiting for stack deletion...
+[INFO] Deletion status: DELETE_IN_PROGRESS (0s)
+[INFO] Deletion status: DELETE_IN_PROGRESS (15s)
+[INFO] Deletion status: DELETE_IN_PROGRESS (30s)
+[INFO] Deletion status: DELETE_FAILED (45s)
+[ERROR] Deletion failed
+
+
+STDERR:
+[32m[2026-03-31 19:59:37 INFO] Validating the experiment's syntax
+[32m[2026-03-31 19:59:37 INFO] Experiment looks valid
+[32m[2026-03-31 19:59:37 INFO] Running experiment: SCE Experiment 1.3 - Detective Probe: CloudTrail EC2 Reconnaissance Detection
+[32m[2026-03-31 19:59:37 INFO] Steady-state strategy: after-method-only
+[32m[2026-03-31 19:59:37 INFO] Rollbacks strategy: default
+[32m[2026-03-31 19:59:37 INFO] Playing your experiment's method now...
+[32m[2026-03-31 19:59:37 INFO] Action: Provision CloudTrail and IAM test infrastructure
+[32m[2026-03-31 20:02:25 INFO] Action: Execute EC2 reconnaissance with test credentials
+[32m[2026-03-31 20:02:26 INFO] Steady state hypothesis: CloudTrail detects EC2 reconnaissance within 30-minute SLA
+[32m[2026-03-31 20:02:26 INFO] Probe: Verify CloudTrail logs DescribeInstances from test user
+[32m[2026-03-31 20:03:27 INFO] Steady state hypothesis is met!
+[32m[2026-03-31 20:03:27 INFO] Let's rollback...
+[32m[2026-03-31 20:03:27 INFO] Rollback: Delete CloudTrail and CloudFormation stack
+[32m[2026-03-31 20:03:27 INFO] Action: Delete CloudTrail and CloudFormation stack
+[32m[2026-03-31 20:04:14 INFO] Experiment ended with status: completed
+
+
+RETURN CODE: 0

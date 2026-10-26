@@ -1,0 +1,51 @@
+{
+    "title": "SCE 3.3 - Detective Probe: IMDS Credential Theft Detection Validation",
+    "description": "Validates detective controls for identifying IAM credential theft from EC2 Instance Metadata Service. Simulates the complete attack chain (weaken IMDS protections, access metadata from container context, exfiltrate credentials) and verifies that CloudTrail, EventBridge, CloudWatch Logs, and behavioral analysis properly detect the credential compromise within the 30-minute SLA. Tests implementation of detective safeguards including API call monitoring, real-time alerting, and security event correlation as described in the cloud-native banking platform security architecture.",
+    "tags": ["aws", "ec2", "imds", "detective", "credential-theft", "cloudtrail", "eventbridge", "banking", "sce-3.3"],
+    "steady-state-hypothesis": {
+        "title": "Detective Controls Identify IMDS Credential Compromise",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "verify-cloudtrail-logging-and-detection",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.3_3_detective",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "provision-banking-platform-test-environment",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.3_3_detective",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "execute-imds-credential-theft-attack-chain",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.3_3_detective",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "cleanup-all-experiment-resources",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.3_3_detective",
+                "func": "rollback"
+            }
+        }
+    ]
+}

@@ -1,0 +1,51 @@
+{
+    "title": "IMDS Configuration Reactive Security Probe",
+    "description": "Validate reactive controls for Instance Metadata Service configuration changes",
+    "tags": ["ec2", "imds", "security", "reactive"],
+    "steady-state-hypothesis": {
+        "title": "Initial IMDS Configuration is Secure",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "IMDS Configuration Initial Check",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.1_3_reactive",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "Prepare Experiment Environment",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_3_reactive",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "Simulate IMDS Configuration Attack",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_3_reactive",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "Clean Up Experiment Resources",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_3_reactive",
+                "func": "rollback"
+            }
+        }
+    ]
+}

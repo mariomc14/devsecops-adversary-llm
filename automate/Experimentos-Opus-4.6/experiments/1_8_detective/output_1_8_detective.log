@@ -1,0 +1,276 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-04-20 12:18:48 INFO] Validating the experiment's syntax
+[32m[2026-04-20 12:18:48 INFO] Experiment looks valid
+[32m[2026-04-20 12:18:48 INFO] Running experiment: SCE 1.8 Detective Probe: Validate Detection of IMDS Enumeration and Downgrade Attacks
+[32m[2026-04-20 12:18:48 INFO] Steady-state strategy: after-method-only
+[32m[2026-04-20 12:18:48 INFO] Rollbacks strategy: default
+[32m[2026-04-20 12:18:48 INFO] Playing your experiment's method now...
+[32m[2026-04-20 12:18:48 INFO] Action: Provision EC2 instance, CloudTrail trail, EventBridge rule with SNS-SQS pipeline, AWS Config recorder and ec2-imdsv2-check rule via CloudFormation
+2026-04-20 12:18:48,735 [INFO] ======================================================================
+2026-04-20 12:18:48,735 [INFO] STEADY STATE: Provisioning resources for SCE 1.8 Detective Probe
+2026-04-20 12:18:48,735 [INFO] Stack: sce-det-1-8-1776680328
+2026-04-20 12:18:48,735 [INFO] ======================================================================
+2026-04-20 12:18:48,741 [INFO] Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-20 12:18:51,395 [INFO] Account=396608802942  Subnet=subnet-0c49eab7705b0418e  VPC=vpc-00bd1a657644bac9b  AMI=ami-03a4de20979bca479
+2026-04-20 12:18:52,909 [INFO] Creating stack...
+2026-04-20 12:18:53,801 [INFO] Stack sce-det-1-8-1776680328 → CREATE_IN_PROGRESS
+2026-04-20 12:19:09,327 [INFO] Stack sce-det-1-8-1776680328 → CREATE_IN_PROGRESS
+2026-04-20 12:19:24,878 [INFO] Stack sce-det-1-8-1776680328 → CREATE_IN_PROGRESS
+2026-04-20 12:19:40,439 [INFO] Stack sce-det-1-8-1776680328 → CREATE_IN_PROGRESS
+2026-04-20 12:19:55,989 [INFO] Stack sce-det-1-8-1776680328 → CREATE_IN_PROGRESS
+2026-04-20 12:20:11,577 [INFO] Stack sce-det-1-8-1776680328 → CREATE_COMPLETE
+2026-04-20 12:20:12,096 [INFO] Outputs: {'AttackerRoleArn': 'arn:aws:iam::396608802942:role/sce-det-1-8-attacker-1776680328', 'InstanceId': 'i-0fff17779aa91d784', 'TrailBucket': 'sce-det-trail-229e2fc3', 'ConfigRuleName': 'sce-det-imdsv2-1776680328', 'TrailName': 'sce-det-1-8-1776680328', 'ConfigBucket': 'sce-det-config-229e2fc3', 'QueueUrl': 'https://sqs.us-east-1.amazonaws.com/396608802942/sce-det-1-8-1776680328'}
+2026-04-20 12:20:12,640 [INFO] Attacker role assumable.
+2026-04-20 12:20:12,642 [INFO] Waiting for instance i-0fff17779aa91d784 to run...
+2026-04-20 12:20:13,409 [INFO] Allowing 30s for CloudTrail/EventBridge stabilisation...
+2026-04-20 12:20:43,410 [INFO] STEADY STATE complete.
+[32m[2026-04-20 12:20:43 INFO] Action: Execute attack steps 1.2 (DescribeInstances IMDS enumeration) and 1.7 (ModifyInstanceMetadataOptions IMDS downgrade) using attacker role
+2026-04-20 12:20:43,411 [INFO] ======================================================================
+2026-04-20 12:20:43,411 [INFO] ATTACK: Steps 1.2 and 1.7 via attacker role
+2026-04-20 12:20:43,411 [INFO] ======================================================================
+2026-04-20 12:20:44,015 [INFO] STEP 1.2: ec2:DescribeInstances (T1580)
+2026-04-20 12:20:44,591 [INFO]   SUCCEEDED – IMDS config: {'HttpTokens': 'required', 'HopLimit': 1}
+2026-04-20 12:20:46,591 [INFO] STEP 1.7: ec2:ModifyInstanceMetadataOptions (T1562.001)
+2026-04-20 12:20:47,156 [INFO]   SUCCEEDED – new IMDS config: {'HttpTokens': 'optional', 'HopLimit': 2}
+2026-04-20 12:20:47,156 [INFO] ATTACK complete. Results: {
+  "step_1_2": {
+    "executed": true,
+    "success": true,
+    "error": null,
+    "data": {
+      "HttpTokens": "required",
+      "HopLimit": 1
+    }
+  },
+  "step_1_7": {
+    "executed": true,
+    "success": true,
+    "error": null,
+    "data": {
+      "HttpTokens": "optional",
+      "HopLimit": 2
+    }
+  }
+}
+[32m[2026-04-20 12:20:47 INFO] Steady state hypothesis: Detective controls detect IMDS enumeration and downgrade within 30-minute SLA
+[32m[2026-04-20 12:20:47 INFO] Probe: Verify CloudTrail records both API calls, EventBridge delivers ModifyInstanceMetadataOptions notification to SQS, and AWS Config rule flags instance as NON_COMPLIANT
+2026-04-20 12:20:47,157 [INFO] ======================================================================
+2026-04-20 12:20:47,157 [INFO] HYPOTHESIS VERIFICATION: Detective Probe SCE 1.8
+2026-04-20 12:20:47,157 [INFO] ======================================================================
+2026-04-20 12:20:47,157 [INFO] --- Poll iteration (1800s remaining) ---
+2026-04-20 12:20:47,157 [INFO]   Current: {'cloudtrail_describe': False, 'cloudtrail_modify': False, 'eventbridge_sqs': False, 'config_noncompliant': False}
+2026-04-20 12:20:47,825 [INFO]   CHECK 1 PASS: CloudTrail DescribeInstances for i-0fff17779aa91d784 found.
+2026-04-20 12:20:50,325 [INFO]   CHECK 2b PASS: EventBridge notification for ModifyInstanceMetadataOptions received on SQS.
+2026-04-20 12:21:10,995 [INFO] --- Poll iteration (1776s remaining) ---
+2026-04-20 12:21:10,995 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': False}
+2026-04-20 12:21:32,086 [INFO] --- Poll iteration (1755s remaining) ---
+2026-04-20 12:21:32,086 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': False}
+2026-04-20 12:21:53,130 [INFO] --- Poll iteration (1734s remaining) ---
+2026-04-20 12:21:53,130 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': False}
+2026-04-20 12:22:14,390 [INFO] --- Poll iteration (1713s remaining) ---
+2026-04-20 12:22:14,390 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': False}
+2026-04-20 12:22:35,523 [INFO] --- Poll iteration (1692s remaining) ---
+2026-04-20 12:22:35,523 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': False}
+2026-04-20 12:22:36,602 [INFO]   CHECK 3 PASS: AWS Config rule sce-det-imdsv2-1776680328 evaluates i-0fff17779aa91d784 as NON_COMPLIANT.
+2026-04-20 12:22:56,602 [INFO] --- Poll iteration (1671s remaining) ---
+2026-04-20 12:22:56,602 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:23:17,244 [INFO] --- Poll iteration (1650s remaining) ---
+2026-04-20 12:23:17,244 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:23:37,812 [INFO] --- Poll iteration (1629s remaining) ---
+2026-04-20 12:23:37,812 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:23:58,439 [INFO] --- Poll iteration (1609s remaining) ---
+2026-04-20 12:23:58,440 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:24:19,039 [INFO] --- Poll iteration (1588s remaining) ---
+2026-04-20 12:24:19,039 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:24:39,579 [INFO] --- Poll iteration (1568s remaining) ---
+2026-04-20 12:24:39,579 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:25:00,131 [INFO] --- Poll iteration (1547s remaining) ---
+2026-04-20 12:25:00,131 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:25:20,714 [INFO] --- Poll iteration (1526s remaining) ---
+2026-04-20 12:25:20,714 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:25:41,240 [INFO] --- Poll iteration (1506s remaining) ---
+2026-04-20 12:25:41,241 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:26:01,813 [INFO] --- Poll iteration (1485s remaining) ---
+2026-04-20 12:26:01,813 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:26:22,479 [INFO] --- Poll iteration (1465s remaining) ---
+2026-04-20 12:26:22,479 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:26:43,023 [INFO] --- Poll iteration (1444s remaining) ---
+2026-04-20 12:26:43,023 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:27:03,625 [INFO] --- Poll iteration (1424s remaining) ---
+2026-04-20 12:27:03,625 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:27:24,215 [INFO] --- Poll iteration (1403s remaining) ---
+2026-04-20 12:27:24,215 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:27:44,749 [INFO] --- Poll iteration (1382s remaining) ---
+2026-04-20 12:27:44,749 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:28:05,337 [INFO] --- Poll iteration (1362s remaining) ---
+2026-04-20 12:28:05,337 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:28:25,911 [INFO] --- Poll iteration (1341s remaining) ---
+2026-04-20 12:28:25,911 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:28:46,464 [INFO] --- Poll iteration (1321s remaining) ---
+2026-04-20 12:28:46,464 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:29:06,999 [INFO] --- Poll iteration (1300s remaining) ---
+2026-04-20 12:29:06,999 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:29:27,720 [INFO] --- Poll iteration (1279s remaining) ---
+2026-04-20 12:29:27,720 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:29:48,295 [INFO] --- Poll iteration (1259s remaining) ---
+2026-04-20 12:29:48,295 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:30:08,848 [INFO] --- Poll iteration (1238s remaining) ---
+2026-04-20 12:30:08,848 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:30:29,535 [INFO] --- Poll iteration (1218s remaining) ---
+2026-04-20 12:30:29,535 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:30:50,171 [INFO] --- Poll iteration (1197s remaining) ---
+2026-04-20 12:30:50,171 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:31:10,838 [INFO] --- Poll iteration (1176s remaining) ---
+2026-04-20 12:31:10,838 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:31:31,423 [INFO] --- Poll iteration (1156s remaining) ---
+2026-04-20 12:31:31,424 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:31:52,231 [INFO] --- Poll iteration (1135s remaining) ---
+2026-04-20 12:31:52,231 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:32:12,802 [INFO] --- Poll iteration (1114s remaining) ---
+2026-04-20 12:32:12,802 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:32:33,447 [INFO] --- Poll iteration (1094s remaining) ---
+2026-04-20 12:32:33,447 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:32:53,988 [INFO] --- Poll iteration (1073s remaining) ---
+2026-04-20 12:32:53,988 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:33:14,655 [INFO] --- Poll iteration (1053s remaining) ---
+2026-04-20 12:33:14,655 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:33:35,236 [INFO] --- Poll iteration (1032s remaining) ---
+2026-04-20 12:33:35,236 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:33:55,775 [INFO] --- Poll iteration (1011s remaining) ---
+2026-04-20 12:33:55,775 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:34:16,466 [INFO] --- Poll iteration (991s remaining) ---
+2026-04-20 12:34:16,466 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:34:37,126 [INFO] --- Poll iteration (970s remaining) ---
+2026-04-20 12:34:37,126 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:34:57,677 [INFO] --- Poll iteration (949s remaining) ---
+2026-04-20 12:34:57,677 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:35:18,213 [INFO] --- Poll iteration (929s remaining) ---
+2026-04-20 12:35:18,213 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:35:38,765 [INFO] --- Poll iteration (908s remaining) ---
+2026-04-20 12:35:38,765 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:35:59,368 [INFO] --- Poll iteration (888s remaining) ---
+2026-04-20 12:35:59,368 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:36:19,913 [INFO] --- Poll iteration (867s remaining) ---
+2026-04-20 12:36:19,913 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:36:40,520 [INFO] --- Poll iteration (847s remaining) ---
+2026-04-20 12:36:40,520 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:37:01,204 [INFO] --- Poll iteration (826s remaining) ---
+2026-04-20 12:37:01,204 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:37:21,755 [INFO] --- Poll iteration (805s remaining) ---
+2026-04-20 12:37:21,755 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:37:42,330 [INFO] --- Poll iteration (785s remaining) ---
+2026-04-20 12:37:42,330 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:38:02,890 [INFO] --- Poll iteration (764s remaining) ---
+2026-04-20 12:38:02,890 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:38:23,502 [INFO] --- Poll iteration (744s remaining) ---
+2026-04-20 12:38:23,503 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:38:44,158 [INFO] --- Poll iteration (723s remaining) ---
+2026-04-20 12:38:44,159 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:39:04,712 [INFO] --- Poll iteration (702s remaining) ---
+2026-04-20 12:39:04,712 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:39:25,278 [INFO] --- Poll iteration (682s remaining) ---
+2026-04-20 12:39:25,278 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:39:45,881 [INFO] --- Poll iteration (661s remaining) ---
+2026-04-20 12:39:45,881 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:40:06,424 [INFO] --- Poll iteration (641s remaining) ---
+2026-04-20 12:40:06,424 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:40:26,981 [INFO] --- Poll iteration (620s remaining) ---
+2026-04-20 12:40:26,981 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:40:47,560 [INFO] --- Poll iteration (600s remaining) ---
+2026-04-20 12:40:47,560 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:41:08,115 [INFO] --- Poll iteration (579s remaining) ---
+2026-04-20 12:41:08,115 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:41:28,673 [INFO] --- Poll iteration (558s remaining) ---
+2026-04-20 12:41:28,673 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:41:49,306 [INFO] --- Poll iteration (538s remaining) ---
+2026-04-20 12:41:49,306 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:42:09,859 [INFO] --- Poll iteration (517s remaining) ---
+2026-04-20 12:42:09,859 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:42:30,521 [INFO] --- Poll iteration (497s remaining) ---
+2026-04-20 12:42:30,522 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:42:51,125 [INFO] --- Poll iteration (476s remaining) ---
+2026-04-20 12:42:51,125 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:43:11,708 [INFO] --- Poll iteration (455s remaining) ---
+2026-04-20 12:43:11,708 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:43:32,237 [INFO] --- Poll iteration (435s remaining) ---
+2026-04-20 12:43:32,238 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:43:53,015 [INFO] --- Poll iteration (414s remaining) ---
+2026-04-20 12:43:53,015 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:44:13,595 [INFO] --- Poll iteration (394s remaining) ---
+2026-04-20 12:44:13,595 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:44:34,173 [INFO] --- Poll iteration (373s remaining) ---
+2026-04-20 12:44:34,175 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:44:54,757 [INFO] --- Poll iteration (352s remaining) ---
+2026-04-20 12:44:54,757 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:45:15,382 [INFO] --- Poll iteration (332s remaining) ---
+2026-04-20 12:45:15,383 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:45:35,921 [INFO] --- Poll iteration (311s remaining) ---
+2026-04-20 12:45:35,921 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:45:56,487 [INFO] --- Poll iteration (291s remaining) ---
+2026-04-20 12:45:56,487 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:46:17,269 [INFO] --- Poll iteration (270s remaining) ---
+2026-04-20 12:46:17,269 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:46:37,826 [INFO] --- Poll iteration (249s remaining) ---
+2026-04-20 12:46:37,826 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:46:58,417 [INFO] --- Poll iteration (229s remaining) ---
+2026-04-20 12:46:58,417 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:47:19,005 [INFO] --- Poll iteration (208s remaining) ---
+2026-04-20 12:47:19,005 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:47:39,584 [INFO] --- Poll iteration (188s remaining) ---
+2026-04-20 12:47:39,584 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:48:00,155 [INFO] --- Poll iteration (167s remaining) ---
+2026-04-20 12:48:00,155 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:48:20,692 [INFO] --- Poll iteration (146s remaining) ---
+2026-04-20 12:48:20,692 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:48:41,470 [INFO] --- Poll iteration (126s remaining) ---
+2026-04-20 12:48:41,470 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:49:02,037 [INFO] --- Poll iteration (105s remaining) ---
+2026-04-20 12:49:02,038 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:49:22,580 [INFO] --- Poll iteration (85s remaining) ---
+2026-04-20 12:49:22,580 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:49:43,152 [INFO] --- Poll iteration (64s remaining) ---
+2026-04-20 12:49:43,152 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:50:03,828 [INFO] --- Poll iteration (43s remaining) ---
+2026-04-20 12:50:03,829 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:50:24,461 [INFO] --- Poll iteration (23s remaining) ---
+2026-04-20 12:50:24,461 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:50:45,028 [INFO] --- Poll iteration (2s remaining) ---
+2026-04-20 12:50:45,029 [INFO]   Current: {'cloudtrail_describe': True, 'cloudtrail_modify': False, 'eventbridge_sqs': True, 'config_noncompliant': True}
+2026-04-20 12:51:05,606 [INFO] ======================================================================
+2026-04-20 12:51:05,606 [INFO] VERIFICATION RESULTS:
+2026-04-20 12:51:05,606 [INFO]   cloudtrail_describe: PASS
+2026-04-20 12:51:05,606 [INFO]   cloudtrail_modify: FAIL
+2026-04-20 12:51:05,606 [INFO]   eventbridge_sqs: PASS
+2026-04-20 12:51:05,606 [INFO]   config_noncompliant: PASS
+2026-04-20 12:51:05,606 [ERROR] CloudTrail did NOT record ModifyInstanceMetadataOptions for i-0fff17779aa91d784 within SLA.
+2026-04-20 12:51:05,606 [INFO] OVERALL: FAIL
+2026-04-20 12:51:05,606 [INFO] ======================================================================
+[31m[2026-04-20 12:51:05 CRITICAL] Steady state probe 'Verify CloudTrail records both API calls, EventBridge delivers ModifyInstanceMetadataOptions notification to SQS, and AWS Config rule flags instance as NON_COMPLIANT' is not in the given tolerance so failing this experiment
+[32m[2026-04-20 12:51:05 INFO] Let's rollback...
+[32m[2026-04-20 12:51:05 INFO] Rollback: Revert IMDS settings, empty S3 buckets, stop Config recorder, and delete CloudFormation stack with all experiment resources
+[32m[2026-04-20 12:51:05 INFO] Action: Revert IMDS settings, empty S3 buckets, stop Config recorder, and delete CloudFormation stack with all experiment resources
+2026-04-20 12:51:05,610 [INFO] ======================================================================
+2026-04-20 12:51:05,610 [INFO] ROLLBACK: Tearing down sce-det-1-8-1776680328
+2026-04-20 12:51:05,610 [INFO] ======================================================================
+2026-04-20 12:51:06,791 [INFO] Reverted IMDS on i-0fff17779aa91d784.
+2026-04-20 12:51:07,738 [INFO] Terminated i-0fff17779aa91d784.
+2026-04-20 12:51:09,874 [INFO] Emptied bucket sce-det-trail-229e2fc3.
+2026-04-20 12:51:11,433 [INFO] Emptied bucket sce-det-config-229e2fc3.
+2026-04-20 12:51:12,222 [INFO] Stopped Config recorder sce-det-1-8-1776680328.
+2026-04-20 12:51:13,035 [INFO] Stack deletion initiated.
+2026-04-20 12:51:13,579 [INFO] Stack sce-det-1-8-1776680328 → DELETE_IN_PROGRESS
+2026-04-20 12:51:29,121 [INFO] Stack sce-det-1-8-1776680328 → DELETE_IN_PROGRESS
+2026-04-20 12:51:44,671 [INFO] Stack sce-det-1-8-1776680328 → DELETE_IN_PROGRESS
+2026-04-20 12:52:00,267 [INFO] Stack sce-det-1-8-1776680328 → DELETE_IN_PROGRESS
+2026-04-20 12:52:15,901 [INFO] Stack sce-det-1-8-1776680328 → DELETE_IN_PROGRESS
+2026-04-20 12:52:31,578 [INFO] Stack sce-det-1-8-1776680328 → DELETE_IN_PROGRESS
+2026-04-20 12:52:47,196 [INFO] Stack sce-det-1-8-1776680328 → DELETE_IN_PROGRESS
+2026-04-20 12:53:02,761 [INFO] ROLLBACK complete.
+[32m[2026-04-20 12:53:02 INFO] Experiment ended with status: deviated
+[32m[2026-04-20 12:53:02 INFO] The steady-state has deviated, a weakness may have been discovered
+
+
+RETURN CODE: 1

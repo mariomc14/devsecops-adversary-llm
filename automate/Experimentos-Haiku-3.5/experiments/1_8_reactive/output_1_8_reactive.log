@@ -1,0 +1,27 @@
+STDOUT:
+2026-03-29 14:06:39,439 - INFO: [SCE-IMDS-REACTIVE] Found credentials in shared credentials file: ~/.aws/credentials
+2026-03-29 14:06:42,669 - INFO: [SCE-IMDS-REACTIVE] Steady state preparation completed successfully
+2026-03-29 14:06:43,263 - ERROR: [SCE-IMDS-REACTIVE] Attack simulation failed: An error occurred (InvalidAMIID.NotFound) when calling the RunInstances operation: The image id '[ami-0c55b159cbfafe1f0]' does not exist
+2026-03-29 14:06:43,891 - INFO: [SCE-IMDS-REACTIVE] Reactive control detected IMDS configuration change!
+2026-03-29 14:06:47,386 - INFO: [SCE-IMDS-REACTIVE] Rollback completed successfully
+
+
+STDERR:
+[32m[2026-03-29 14:06:39 INFO] Validating the experiment's syntax
+[32m[2026-03-29 14:06:39 INFO] Experiment looks valid
+[32m[2026-03-29 14:06:39 INFO] Running experiment: EC2 IMDS Configuration Change Reactive Response Experiment
+[32m[2026-03-29 14:06:39 INFO] Steady-state strategy: after-method-only
+[32m[2026-03-29 14:06:39 INFO] Rollbacks strategy: default
+[32m[2026-03-29 14:06:39 INFO] Playing your experiment's method now...
+[32m[2026-03-29 14:06:39 INFO] Action: Prepare IMDS Reactive Environment
+[32m[2026-03-29 14:06:42 INFO] Action: Simulate IMDS Configuration Modification
+[32m[2026-03-29 14:06:43 INFO] Steady state hypothesis: IMDS Configuration Changes Trigger Automated Response
+[32m[2026-03-29 14:06:43 INFO] Probe: IMDS Reactive Control Verification
+[32m[2026-03-29 14:06:43 INFO] Steady state hypothesis is met!
+[32m[2026-03-29 14:06:43 INFO] Let's rollback...
+[32m[2026-03-29 14:06:43 INFO] Rollback: Clean Up Experiment Resources
+[32m[2026-03-29 14:06:43 INFO] Action: Clean Up Experiment Resources
+[32m[2026-03-29 14:06:47 INFO] Experiment ended with status: completed
+
+
+RETURN CODE: 0

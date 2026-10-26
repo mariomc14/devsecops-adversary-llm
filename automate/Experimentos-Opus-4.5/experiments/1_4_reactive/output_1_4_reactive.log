@@ -1,0 +1,166 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-04-14 15:57:04 INFO] Validating the experiment's syntax
+[32m[2026-04-14 15:57:04 INFO] Experiment looks valid
+[32m[2026-04-14 15:57:04 INFO] Running experiment: SCE 1.4 Reactive Probe: Auto-Remediation Lambda for IMDS Weakening
+[32m[2026-04-14 15:57:04 INFO] Steady-state strategy: after-method-only
+[32m[2026-04-14 15:57:04 INFO] Rollbacks strategy: default
+[32m[2026-04-14 15:57:04 INFO] Playing your experiment's method now...
+[32m[2026-04-14 15:57:04 INFO] Action: establish-steady-state-with-ec2-lambda-eventbridge-infrastructure
+2026-04-14 15:57:04,907 - INFO - ============================================================
+2026-04-14 15:57:04,907 - INFO - SCE EXPERIMENT 1.4 - REACTIVE PROBE
+2026-04-14 15:57:04,907 - INFO - Validating Auto-Remediation Lambda for IMDS Weakening
+2026-04-14 15:57:04,907 - INFO - ============================================================
+2026-04-14 15:57:04,916 - INFO - Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-14 15:57:06,052 - INFO - Stack sce-experiment-1-4-reactive-1776175024 does not exist. Creating...
+2026-04-14 15:57:06,053 - INFO - Creating CloudFormation stack: sce-experiment-1-4-reactive-1776175024
+2026-04-14 15:57:07,130 - INFO - Waiting for stack creation to complete...
+2026-04-14 15:57:07,288 - INFO - Stack status: CREATE_IN_PROGRESS
+2026-04-14 15:57:07,289 - INFO - Stack creation: Waiting 5s before retry (elapsed: 0s, remaining: 1199s)
+2026-04-14 15:57:12,429 - INFO - Stack status: CREATE_IN_PROGRESS
+2026-04-14 15:57:12,429 - INFO - Stack creation: Waiting 10s before retry (elapsed: 5s, remaining: 1194s)
+2026-04-14 15:57:23,058 - INFO - Stack status: CREATE_IN_PROGRESS
+2026-04-14 15:57:23,058 - INFO - Stack creation: Waiting 20s before retry (elapsed: 15s, remaining: 1184s)
+2026-04-14 15:57:43,589 - INFO - Stack status: CREATE_IN_PROGRESS
+2026-04-14 15:57:43,589 - INFO - Stack creation: Waiting 40s before retry (elapsed: 35s, remaining: 1163s)
+2026-04-14 15:58:24,375 - INFO - Stack status: CREATE_IN_PROGRESS
+2026-04-14 15:58:24,375 - INFO - Stack creation: Waiting 60s before retry (elapsed: 76s, remaining: 1122s)
+2026-04-14 15:59:24,948 - INFO - Stack creation: SUCCESS after 137s (attempt 6)
+2026-04-14 15:59:25,096 - INFO - S3 Bucket: sce-1-4-reactive-trail-1776175024
+2026-04-14 15:59:25,097 - INFO - EC2 Instance ID: i-0c748aede4186acd8
+2026-04-14 15:59:25,097 - INFO - EventBridge Rule: sce-1-4-reactive-imds-rule-1776175024
+2026-04-14 15:59:25,097 - INFO - Lambda Function: sce-1-4-reactive-remediation-1776175024
+2026-04-14 15:59:25,153 - INFO - Waiting for EC2 instance to be in running state...
+2026-04-14 15:59:26,136 - INFO - Instance running: SUCCESS after 0s (attempt 1)
+2026-04-14 15:59:26,173 - INFO - Verifying Lambda function is active...
+2026-04-14 15:59:26,918 - INFO - Lambda active: SUCCESS after 0s (attempt 1)
+2026-04-14 15:59:26,930 - INFO - Verifying EventBridge rule is enabled...
+2026-04-14 15:59:27,843 - INFO - EventBridge rule enabled: SUCCESS after 0s (attempt 1)
+2026-04-14 15:59:28,039 - INFO - Baseline IMDS Configuration:
+2026-04-14 15:59:28,039 - INFO -   HttpTokens: required
+2026-04-14 15:59:28,039 - INFO -   HttpPutResponseHopLimit: 1
+2026-04-14 15:59:28,039 - INFO - Steady state established successfully
+2026-04-14 15:59:28,039 - INFO - Reactive control chain: EventBridge -> Lambda -> EC2 ModifyInstanceMetadataOptions
+[32m[2026-04-14 15:59:28 INFO] Action: execute-imds-weakening-attack-to-trigger-remediation
+2026-04-14 15:59:28,053 - INFO - ============================================================
+2026-04-14 15:59:28,053 - INFO - EXECUTING ATTACK: Weaken IMDS Security Configuration
+2026-04-14 15:59:28,053 - INFO - ============================================================
+2026-04-14 15:59:28,059 - INFO - Attack timestamp: 2026-04-14T13:59:28Z
+2026-04-14 15:59:28,059 - INFO - Target instance: i-0c748aede4186acd8
+2026-04-14 15:59:28,059 - INFO - Executing: aws ec2 modify-instance-metadata-options
+2026-04-14 15:59:28,059 - INFO -   --http-tokens optional
+2026-04-14 15:59:28,059 - INFO -   --http-endpoint enabled
+2026-04-14 15:59:28,059 - INFO -   --http-put-response-hop-limit 2
+2026-04-14 15:59:29,086 - INFO - Attack executed. Immediate IMDS configuration:
+2026-04-14 15:59:29,086 - INFO -   HttpTokens: optional
+2026-04-14 15:59:29,086 - INFO -   HttpPutResponseHopLimit: 2
+2026-04-14 15:59:29,086 - INFO - IMDS security successfully weakened (attack successful)
+2026-04-14 15:59:29,086 - INFO - Now waiting for reactive control to trigger remediation...
+[32m[2026-04-14 15:59:29 INFO] Steady state hypothesis: Auto-Remediation Lambda reverts IMDS to secure configuration within 30-minute SLA
+[32m[2026-04-14 15:59:29 INFO] Probe: verify-lambda-remediated-imds-configuration
+2026-04-14 15:59:29,087 - INFO - ============================================================
+2026-04-14 15:59:29,087 - INFO - HYPOTHESIS VERIFICATION: Reactive Control Remediation
+2026-04-14 15:59:29,087 - INFO - ============================================================
+2026-04-14 15:59:29,103 - INFO - Verifying IMDS remediation on instance: i-0c748aede4186acd8
+2026-04-14 15:59:29,103 - INFO - Lambda function: sce-1-4-reactive-remediation-1776175024
+2026-04-14 15:59:29,103 - INFO - SLA: 1800 seconds (30 minutes)
+2026-04-14 15:59:29,710 - INFO - Current IMDS config - HttpTokens: optional, HopLimit: 2
+2026-04-14 15:59:30,725 - INFO - Lambda log group not yet available
+2026-04-14 15:59:30,725 - INFO - IMDS remediation: Waiting 5s before retry (elapsed: 0s, remaining: 1798s)
+2026-04-14 15:59:35,933 - INFO - Current IMDS config - HttpTokens: optional, HopLimit: 2
+2026-04-14 15:59:36,499 - INFO - IMDS remediation: Waiting 10s before retry (elapsed: 6s, remaining: 1792s)
+2026-04-14 15:59:46,696 - INFO - Current IMDS config - HttpTokens: optional, HopLimit: 2
+2026-04-14 15:59:47,983 - INFO - IMDS remediation: Waiting 20s before retry (elapsed: 17s, remaining: 1781s)
+2026-04-14 16:00:08,188 - INFO - Current IMDS config - HttpTokens: optional, HopLimit: 2
+2026-04-14 16:00:09,442 - INFO - IMDS remediation: Waiting 40s before retry (elapsed: 38s, remaining: 1759s)
+2026-04-14 16:00:49,699 - INFO - Current IMDS config - HttpTokens: optional, HopLimit: 2
+2026-04-14 16:00:50,939 - INFO - IMDS remediation: Waiting 60s before retry (elapsed: 80s, remaining: 1718s)
+2026-04-14 16:01:51,138 - INFO - Current IMDS config - HttpTokens: optional, HopLimit: 2
+2026-04-14 16:01:52,415 - INFO - IMDS remediation: Waiting 60s before retry (elapsed: 141s, remaining: 1656s)
+2026-04-14 16:02:52,633 - INFO - Current IMDS config - HttpTokens: optional, HopLimit: 2
+2026-04-14 16:02:53,887 - INFO - IMDS remediation: Waiting 60s before retry (elapsed: 203s, remaining: 1595s)
+2026-04-14 16:03:54,142 - INFO - Current IMDS config - HttpTokens: optional, HopLimit: 2
+2026-04-14 16:03:55,461 - INFO - IMDS remediation: Waiting 60s before retry (elapsed: 264s, remaining: 1533s)
+2026-04-14 16:04:56,240 - INFO - Current IMDS config - HttpTokens: optional, HopLimit: 2
+2026-04-14 16:04:57,840 - INFO - IMDS remediation: Waiting 60s before retry (elapsed: 326s, remaining: 1471s)
+2026-04-14 16:05:58,046 - INFO - Current IMDS config - HttpTokens: optional, HopLimit: 2
+2026-04-14 16:05:59,400 - INFO - IMDS remediation: Waiting 60s before retry (elapsed: 388s, remaining: 1409s)
+2026-04-14 16:06:59,646 - INFO - Current IMDS config - HttpTokens: optional, HopLimit: 2
+2026-04-14 16:07:02,269 - INFO - IMDS remediation: Waiting 60s before retry (elapsed: 450s, remaining: 1346s)
+2026-04-14 16:08:02,476 - INFO - Current IMDS config - HttpTokens: optional, HopLimit: 2
+2026-04-14 16:08:03,889 - INFO - IMDS remediation: Waiting 60s before retry (elapsed: 513s, remaining: 1285s)
+2026-04-14 16:09:04,113 - INFO - Current IMDS config - HttpTokens: optional, HopLimit: 2
+2026-04-14 16:09:05,667 - INFO - IMDS remediation: Waiting 60s before retry (elapsed: 574s, remaining: 1223s)
+2026-04-14 16:10:06,381 - INFO - Current IMDS config - HttpTokens: optional, HopLimit: 2
+2026-04-14 16:10:08,096 - INFO - IMDS remediation: Waiting 60s before retry (elapsed: 636s, remaining: 1161s)
+2026-04-14 16:11:08,456 - INFO - Current IMDS config - HttpTokens: optional, HopLimit: 2
+2026-04-14 16:11:10,098 - INFO - IMDS remediation: Waiting 60s before retry (elapsed: 698s, remaining: 1099s)
+2026-04-14 16:12:10,316 - INFO - Current IMDS config - HttpTokens: optional, HopLimit: 2
+2026-04-14 16:12:12,636 - INFO - IMDS remediation: Waiting 60s before retry (elapsed: 760s, remaining: 1036s)
+2026-04-14 16:13:12,889 - INFO - Current IMDS config - HttpTokens: optional, HopLimit: 2
+2026-04-14 16:13:15,326 - INFO - IMDS remediation: Waiting 60s before retry (elapsed: 823s, remaining: 973s)
+2026-04-14 16:14:15,635 - INFO - Current IMDS config - HttpTokens: optional, HopLimit: 2
+2026-04-14 16:14:16,910 - INFO - IMDS remediation: Waiting 60s before retry (elapsed: 886s, remaining: 912s)
+2026-04-14 16:15:18,589 - INFO - Current IMDS config - HttpTokens: optional, HopLimit: 2
+2026-04-14 16:15:19,836 - INFO - IMDS remediation: Waiting 60s before retry (elapsed: 947s, remaining: 849s)
+2026-04-14 16:16:20,094 - INFO - Current IMDS config - HttpTokens: optional, HopLimit: 2
+2026-04-14 16:16:21,354 - INFO - IMDS remediation: Waiting 60s before retry (elapsed: 1010s, remaining: 787s)
+2026-04-14 16:17:21,561 - INFO - Current IMDS config - HttpTokens: optional, HopLimit: 2
+2026-04-14 16:17:22,807 - INFO - IMDS remediation: Waiting 60s before retry (elapsed: 1072s, remaining: 726s)
+2026-04-14 16:18:23,014 - INFO - Current IMDS config - HttpTokens: optional, HopLimit: 2
+2026-04-14 16:18:24,282 - INFO - IMDS remediation: Waiting 60s before retry (elapsed: 1133s, remaining: 664s)
+2026-04-14 16:19:24,536 - INFO - Current IMDS config - HttpTokens: optional, HopLimit: 2
+2026-04-14 16:19:25,822 - INFO - IMDS remediation: Waiting 60s before retry (elapsed: 1195s, remaining: 603s)
+2026-04-14 16:20:27,516 - INFO - Current IMDS config - HttpTokens: optional, HopLimit: 2
+2026-04-14 16:20:28,958 - INFO - IMDS remediation: Waiting 60s before retry (elapsed: 1256s, remaining: 540s)
+2026-04-14 16:21:29,172 - INFO - Current IMDS config - HttpTokens: optional, HopLimit: 2
+2026-04-14 16:21:30,678 - INFO - IMDS remediation: Waiting 60s before retry (elapsed: 1319s, remaining: 478s)
+2026-04-14 16:22:30,929 - INFO - Current IMDS config - HttpTokens: optional, HopLimit: 2
+2026-04-14 16:22:32,306 - INFO - IMDS remediation: Waiting 60s before retry (elapsed: 1381s, remaining: 416s)
+2026-04-14 16:23:32,514 - INFO - Current IMDS config - HttpTokens: optional, HopLimit: 2
+2026-04-14 16:23:33,897 - INFO - IMDS remediation: Waiting 60s before retry (elapsed: 1443s, remaining: 355s)
+2026-04-14 16:24:34,130 - INFO - Current IMDS config - HttpTokens: optional, HopLimit: 2
+2026-04-14 16:24:35,420 - INFO - IMDS remediation: Waiting 60s before retry (elapsed: 1504s, remaining: 293s)
+2026-04-14 16:25:36,103 - INFO - Current IMDS config - HttpTokens: optional, HopLimit: 2
+2026-04-14 16:25:37,334 - INFO - IMDS remediation: Waiting 60s before retry (elapsed: 1566s, remaining: 231s)
+2026-04-14 16:26:37,542 - INFO - Current IMDS config - HttpTokens: optional, HopLimit: 2
+2026-04-14 16:26:38,486 - INFO - IMDS remediation: Waiting 60s before retry (elapsed: 1628s, remaining: 170s)
+2026-04-14 16:27:38,712 - INFO - Current IMDS config - HttpTokens: optional, HopLimit: 2
+2026-04-14 16:27:40,996 - INFO - IMDS remediation: Waiting 60s before retry (elapsed: 1689s, remaining: 108s)
+2026-04-14 16:28:41,246 - INFO - Current IMDS config - HttpTokens: optional, HopLimit: 2
+2026-04-14 16:28:42,534 - ERROR - IMDS remediation: TIMEOUT after 1800s
+2026-04-14 16:28:42,731 - ERROR - ============================================================
+2026-04-14 16:28:42,731 - ERROR - HYPOTHESIS FAILED: Reactive control did not remediate in time
+2026-04-14 16:28:42,731 - ERROR - ============================================================
+2026-04-14 16:28:42,731 - ERROR - Final IMDS state - HttpTokens: optional, HopLimit: 2
+2026-04-14 16:28:42,731 - ERROR - Expected - HttpTokens: required, HopLimit: 1
+[31m[2026-04-14 16:28:42 CRITICAL] Steady state probe 'verify-lambda-remediated-imds-configuration' is not in the given tolerance so failing this experiment
+[32m[2026-04-14 16:28:42 INFO] Let's rollback...
+[32m[2026-04-14 16:28:42 INFO] Rollback: cleanup-cloudformation-stack-and-all-experiment-resources
+[32m[2026-04-14 16:28:42 INFO] Action: cleanup-cloudformation-stack-and-all-experiment-resources
+2026-04-14 16:28:42,735 - INFO - ============================================================
+2026-04-14 16:28:42,735 - INFO - ROLLBACK: Cleaning up experiment resources
+2026-04-14 16:28:42,735 - INFO - ============================================================
+2026-04-14 16:28:42,752 - INFO - Ensuring IMDS is in secure state on instance i-0c748aede4186acd8...
+2026-04-14 16:28:43,840 - INFO - IMDS settings confirmed secure
+2026-04-14 16:28:43,987 - INFO - Emptying S3 bucket sce-1-4-reactive-trail-1776175024...
+2026-04-14 16:28:45,684 - INFO - S3 bucket emptied
+2026-04-14 16:28:46,617 - INFO - Deleted Lambda log group: /aws/lambda/sce-1-4-reactive-remediation-1776175024
+2026-04-14 16:28:46,617 - INFO - Deleting CloudFormation stack: sce-experiment-1-4-reactive-1776175024
+2026-04-14 16:28:47,536 - INFO - Stack deletion in progress. Status: DELETE_IN_PROGRESS
+2026-04-14 16:28:47,536 - INFO - Stack deletion: Waiting 5s before retry (elapsed: 0s, remaining: 899s)
+2026-04-14 16:28:52,682 - INFO - Stack deletion in progress. Status: DELETE_IN_PROGRESS
+2026-04-14 16:28:52,682 - INFO - Stack deletion: Waiting 10s before retry (elapsed: 5s, remaining: 894s)
+2026-04-14 16:29:03,209 - INFO - Stack deletion in progress. Status: DELETE_IN_PROGRESS
+2026-04-14 16:29:03,209 - INFO - Stack deletion: Waiting 20s before retry (elapsed: 15s, remaining: 884s)
+2026-04-14 16:29:23,736 - INFO - Stack deletion in progress. Status: DELETE_IN_PROGRESS
+2026-04-14 16:29:23,736 - INFO - Stack deletion: Waiting 40s before retry (elapsed: 35s, remaining: 863s)
+2026-04-14 16:30:04,343 - INFO - Stack deletion: SUCCESS after 76s (attempt 5)
+2026-04-14 16:30:04,343 - INFO - Stack deleted successfully
+[32m[2026-04-14 16:30:04 INFO] Experiment ended with status: deviated
+[32m[2026-04-14 16:30:04 INFO] The steady-state has deviated, a weakness may have been discovered
+
+
+RETURN CODE: 1

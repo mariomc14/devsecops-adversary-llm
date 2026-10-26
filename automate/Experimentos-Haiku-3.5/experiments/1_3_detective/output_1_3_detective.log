@@ -1,0 +1,29 @@
+STDOUT:
+2026-03-28 20:54:26,650 - INFO - Found credentials in shared credentials file: ~/.aws/credentials
+2026-03-28 20:54:27,627 - ERROR - Error retrieving AMI: No Amazon Linux 2 AMI found
+2026-03-28 20:54:27,628 - ERROR - Error in steady_state: No Amazon Linux 2 AMI found
+2026-03-28 20:54:28,104 - ERROR - Error retrieving stack resources: An error occurred (ValidationError) when calling the DescribeStackResources operation: Stack with id sce-experiment-imds-detective-1774727666 does not exist
+2026-03-28 21:24:38,009 - WARNING - Error deleting CloudTrail trail: An error occurred (TrailNotFoundException) when calling the DeleteTrail operation: Unknown trail: arn:aws:cloudtrail:us-east-1:396608802942:trail/sce-imds-detective-trail-1774727666 for the user: 396608802942
+2026-03-28 21:24:38,977 - WARNING - Error deleting S3 bucket: An error occurred (NoSuchBucket) when calling the DeleteBucket operation: The specified bucket does not exist
+2026-03-28 21:24:38,977 - INFO - Stack sce-experiment-imds-detective-1774727666 and associated resources deleted successfully
+
+
+STDERR:
+[32m[2026-03-28 20:54:26 INFO] Validating the experiment's syntax
+[32m[2026-03-28 20:54:26 INFO] Experiment looks valid
+[32m[2026-03-28 20:54:26 INFO] Running experiment: AWS EC2 IMDS Protection Detective Probe
+[32m[2026-03-28 20:54:26 INFO] Steady-state strategy: after-method-only
+[32m[2026-03-28 20:54:26 INFO] Rollbacks strategy: default
+[32m[2026-03-28 20:54:26 INFO] Playing your experiment's method now...
+[32m[2026-03-28 20:54:26 INFO] Action: Prepare IMDS Detection Environment
+[32m[2026-03-28 20:54:27 INFO] Action: Simulate IMDS Configuration Attack
+[32m[2026-03-28 20:54:28 INFO] Steady state hypothesis: IMDS Configuration Monitoring
+[32m[2026-03-28 20:54:28 INFO] Probe: Detect IMDS Protection Violations
+[32m[2026-03-28 21:24:37 INFO] Steady state hypothesis is met!
+[32m[2026-03-28 21:24:37 INFO] Let's rollback...
+[32m[2026-03-28 21:24:37 INFO] Rollback: Clean Up Experiment Resources
+[32m[2026-03-28 21:24:37 INFO] Action: Clean Up Experiment Resources
+[32m[2026-03-28 21:24:38 INFO] Experiment ended with status: completed
+
+
+RETURN CODE: 0

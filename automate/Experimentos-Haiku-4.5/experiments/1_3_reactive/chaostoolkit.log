@@ -1,0 +1,264 @@
+[36m[2026-03-29 18:02:35 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-03-29 18:02:35 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-03-29 18:02:35 DEBUG] [__init__:106] Using settings file '/home/debian/.chaostoolkit/settings.yaml'
+[36m[2026-03-29 18:02:36 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/debian/.chaostoolkit/settings.yaml'.
+[36m[2026-03-29 18:02:36 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-03-29 18:02:36 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-03-29 18:02:36 DEBUG] [caching:24] Building activity cache...
+[36m[2026-03-29 18:02:36 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-03-29 18:02:36 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-03-29 18:02:36 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-03-29 18:02:36 DEBUG] [secret:79] Loading secrets...
+[36m[2026-03-29 18:02:36 DEBUG] [secret:104] Done loading secrets
+[36m[2026-03-29 18:02:36 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-03-29 18:07:00 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-03-29 18:07:00 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-03-29 18:07:00 DEBUG] [__init__:106] Using settings file '/home/debian/.chaostoolkit/settings.yaml'
+[36m[2026-03-29 18:07:00 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/debian/.chaostoolkit/settings.yaml'.
+[36m[2026-03-29 18:07:00 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-03-29 18:07:00 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-03-29 18:07:00 DEBUG] [caching:24] Building activity cache...
+[36m[2026-03-29 18:07:00 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-03-29 18:07:00 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-03-29 18:07:00 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-03-29 18:07:00 DEBUG] [secret:79] Loading secrets...
+[36m[2026-03-29 18:07:00 DEBUG] [secret:104] Done loading secrets
+[32m[2026-03-29 18:07:00 INFO] [experiment:112] Experiment looks valid
+[36m[2026-03-29 18:07:00 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-03-29 18:07:00 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-03-29 18:07:00 DEBUG] [caching:24] Building activity cache...
+[36m[2026-03-29 18:07:00 DEBUG] [caching:35] Cached 3 activities
+[36m[2026-03-29 18:07:00 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-03-29 18:07:00 DEBUG] [secret:79] Loading secrets...
+[36m[2026-03-29 18:07:00 DEBUG] [secret:104] Done loading secrets
+[36m[2026-03-29 18:07:00 DEBUG] [configuration:161] Loading dynamic configuration...
+[32m[2026-03-29 18:07:00 INFO] [run:440] Running experiment: SCE 1.3: Reactive Probe - EC2 IMDS Unauthorized Operation Detection & Response (FIXED)
+[36m[2026-03-29 18:07:00 DEBUG] [__init__:67] Initializing controls
+[32m[2026-03-29 18:07:00 INFO] [run:471] Steady-state strategy: after-method-only
+[32m[2026-03-29 18:07:00 INFO] [run:477] Rollbacks strategy: default
+[36m[2026-03-29 18:07:00 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[32m[2026-03-29 18:07:00 INFO] [run:778] Playing your experiment's method now...
+[36m[2026-03-29 18:07:00 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-03-29 18:07:00 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-29 18:07:00 INFO] [activity:232] Action: Establish steady state: Provision EC2, CloudTrail, EventBridge, Lambda, SNS infrastructure
+[36m[2026-03-29 18:07:00 DEBUG] [python:33] Activity 'Establish steady state: Provision EC2, CloudTrail, EventBridge, Lambda, SNS infrastructure' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_reactive.py'
+[36m[2026-03-29 18:37:10 DEBUG] [activity:317] Activity failed
+    Traceback (most recent call last):
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_reactive.py", line 480, in steady_state
+        raise Exception(f"Stack creation timeout after {sla_timeout}s")
+    Exception: Stack creation timeout after 1800s
+    
+    During handling of the above exception, another exception occurred:
+    
+    Traceback (most recent call last):
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/activity.py", line 310, in run_activity
+        result = run_python_activity(activity, configuration, secrets)
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 58, in run_python_activity
+        raise ActivityFailed(
+            traceback.format_exception_only(type(x), x)[0].strip()
+        ).with_traceback(sys.exc_info()[2])
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_reactive.py", line 480, in steady_state
+        raise Exception(f"Stack creation timeout after {sla_timeout}s")
+    chaoslib.exceptions.ActivityFailed: Exception: Stack creation timeout after 1800s
+[31m[2026-03-29 18:37:10 ERROR] [activity:268]   => failed: Exception: Stack creation timeout after 1800s
+[36m[2026-03-29 18:37:10 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-29 18:37:10 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-29 18:37:10 INFO] [activity:232] Action: Execute Attack Step 1.2: DescribeInstances reconnaissance with compromised attacker credentials (T1087 Account Discovery)
+[36m[2026-03-29 18:37:10 DEBUG] [python:33] Activity 'Execute Attack Step 1.2: DescribeInstances reconnaissance with compromised attacker credentials (T1087 Account Discovery)' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_reactive.py'
+[36m[2026-03-29 18:37:10 DEBUG] [activity:317] Activity failed
+    Traceback (most recent call last):
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_reactive.py", line 548, in attack
+        raise Exception("Attacker credentials not available")
+    Exception: Attacker credentials not available
+    
+    During handling of the above exception, another exception occurred:
+    
+    Traceback (most recent call last):
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/activity.py", line 310, in run_activity
+        result = run_python_activity(activity, configuration, secrets)
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 58, in run_python_activity
+        raise ActivityFailed(
+            traceback.format_exception_only(type(x), x)[0].strip()
+        ).with_traceback(sys.exc_info()[2])
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_reactive.py", line 548, in attack
+        raise Exception("Attacker credentials not available")
+    chaoslib.exceptions.ActivityFailed: Exception: Attacker credentials not available
+[31m[2026-03-29 18:37:10 ERROR] [activity:268]   => failed: Exception: Attacker credentials not available
+[36m[2026-03-29 18:37:10 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-29 18:37:10 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-03-29 18:37:10 DEBUG] [run:696] Running steady-state hypothesis after the method
+[32m[2026-03-29 18:37:10 INFO] [hypothesis:205] Steady state hypothesis: Reactive incident response chain successfully detects and responds to unauthorized EC2 API operations via EventBridge automation
+[36m[2026-03-29 18:37:10 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[36m[2026-03-29 18:37:10 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-29 18:37:10 INFO] [activity:232] Probe: Verify EventBridge + Lambda + SNS incident response automation completes within SLA
+[36m[2026-03-29 18:37:10 DEBUG] [python:33] Activity 'Verify EventBridge + Lambda + SNS incident response automation completes within SLA' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_reactive.py'
+[36m[2026-03-29 18:37:10 DEBUG] [activity:317] Activity failed
+    Traceback (most recent call last):
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_reactive.py", line 624, in hypothesis_verification
+        "eventTime": EXPERIMENT_STATE['attack_execution_time'].isoformat() + 'Z',
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    AttributeError: 'NoneType' object has no attribute 'isoformat'
+    
+    During handling of the above exception, another exception occurred:
+    
+    Traceback (most recent call last):
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/activity.py", line 310, in run_activity
+        result = run_python_activity(activity, configuration, secrets)
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 58, in run_python_activity
+        raise ActivityFailed(
+            traceback.format_exception_only(type(x), x)[0].strip()
+        ).with_traceback(sys.exc_info()[2])
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_reactive.py", line 624, in hypothesis_verification
+        "eventTime": EXPERIMENT_STATE['attack_execution_time'].isoformat() + 'Z',
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    chaoslib.exceptions.ActivityFailed: AttributeError: 'NoneType' object has no attribute 'isoformat'
+[31m[2026-03-29 18:37:10 ERROR] [activity:268]   => failed: AttributeError: 'NoneType' object has no attribute 'isoformat'
+[36m[2026-03-29 18:37:10 DEBUG] [__init__:472] No controls to apply on 'activity'
+[33m[2026-03-29 18:37:10 WARNING] [hypothesis:232] Probe terminated unexpectedly, so its tolerance could not be validated
+[36m[2026-03-29 18:37:10 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[31m[2026-03-29 18:37:10 CRITICAL] [run:716] Steady state probe 'Verify EventBridge + Lambda + SNS incident response automation completes within SLA' is not in the given tolerance so failing this experiment
+[32m[2026-03-29 18:37:10 INFO] [run:598] Experiment ended with status: deviated
+[32m[2026-03-29 18:37:10 INFO] [run:600] The steady-state has deviated, a weakness may have been discovered
+[36m[2026-03-29 18:37:10 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[36m[2026-03-29 18:37:10 DEBUG] [__init__:106] Cleaning up controls
+[36m[2026-03-29 18:37:10 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-03-29 18:46:29 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-03-29 18:46:29 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-03-29 18:46:29 DEBUG] [__init__:106] Using settings file '/home/debian/.chaostoolkit/settings.yaml'
+[36m[2026-03-29 18:46:29 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/debian/.chaostoolkit/settings.yaml'.
+[36m[2026-03-29 18:46:29 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-03-29 18:46:29 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-03-29 18:46:29 DEBUG] [caching:24] Building activity cache...
+[36m[2026-03-29 18:46:29 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-03-29 18:46:29 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-03-29 18:46:29 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-03-29 18:46:29 DEBUG] [secret:79] Loading secrets...
+[36m[2026-03-29 18:46:29 DEBUG] [secret:104] Done loading secrets
+[32m[2026-03-29 18:46:29 INFO] [experiment:112] Experiment looks valid
+[36m[2026-03-29 18:46:29 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-03-29 18:46:29 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-03-29 18:46:29 DEBUG] [caching:24] Building activity cache...
+[36m[2026-03-29 18:46:29 DEBUG] [caching:35] Cached 3 activities
+[36m[2026-03-29 18:46:29 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-03-29 18:46:29 DEBUG] [secret:79] Loading secrets...
+[36m[2026-03-29 18:46:29 DEBUG] [secret:104] Done loading secrets
+[36m[2026-03-29 18:46:29 DEBUG] [configuration:161] Loading dynamic configuration...
+[32m[2026-03-29 18:46:29 INFO] [run:440] Running experiment: SCE 1.3: Reactive Probe - EC2 IMDS Unauthorized Operation Detection & Response (PRODUCTION-READY)
+[36m[2026-03-29 18:46:29 DEBUG] [__init__:67] Initializing controls
+[32m[2026-03-29 18:46:29 INFO] [run:471] Steady-state strategy: after-method-only
+[32m[2026-03-29 18:46:29 INFO] [run:477] Rollbacks strategy: default
+[36m[2026-03-29 18:46:29 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[32m[2026-03-29 18:46:29 INFO] [run:778] Playing your experiment's method now...
+[36m[2026-03-29 18:46:29 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-03-29 18:46:29 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-29 18:46:29 INFO] [activity:232] Action: Establish steady state: Provision CloudTrail, EC2, EventBridge, Lambda, SNS, Security Hub infrastructure with proper dependency ordering
+[36m[2026-03-29 18:46:29 DEBUG] [python:33] Activity 'Establish steady state: Provision CloudTrail, EC2, EventBridge, Lambda, SNS, Security Hub infrastructure with proper dependency ordering' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_reactive.py'
+[36m[2026-03-29 18:47:01 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-03-29 18:47:01 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-29 18:47:01 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-29 18:47:01 INFO] [activity:232] Action: Execute Attack Chain: Phase 1.2 DescribeInstances reconnaissance (T1087) + Phase 2 preview ModifyInstanceMetadataOptions attempt (T1578.001) to demonstrate preventive defense
+[36m[2026-03-29 18:47:01 DEBUG] [python:33] Activity 'Execute Attack Chain: Phase 1.2 DescribeInstances reconnaissance (T1087) + Phase 2 preview ModifyInstanceMetadataOptions attempt (T1578.001) to demonstrate preventive defense' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_reactive.py'
+[36m[2026-03-29 18:47:01 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-03-29 18:47:01 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-29 18:47:01 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-03-29 18:47:01 DEBUG] [run:696] Running steady-state hypothesis after the method
+[32m[2026-03-29 18:47:01 INFO] [hypothesis:205] Steady state hypothesis: Reactive incident response chain successfully detects, processes, and responds to unauthorized EC2 API operations via complete EventBridge → Lambda → SNS → Security Hub automation
+[36m[2026-03-29 18:47:01 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[36m[2026-03-29 18:47:01 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-29 18:47:01 INFO] [activity:232] Probe: Verify full reactive countermeasure chain: EventBridge injection → Lambda invocation → SNS alert → Security Hub finding within SLA
+[36m[2026-03-29 18:47:01 DEBUG] [python:33] Activity 'Verify full reactive countermeasure chain: EventBridge injection → Lambda invocation → SNS alert → Security Hub finding within SLA' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_reactive.py'
+[36m[2026-03-29 18:47:01 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-03-29 18:47:01 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-29 18:47:01 DEBUG] [hypothesis:247] allowed tolerance is True
+[36m[2026-03-29 18:47:01 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[31m[2026-03-29 18:47:01 CRITICAL] [run:716] Steady state probe 'Verify full reactive countermeasure chain: EventBridge injection → Lambda invocation → SNS alert → Security Hub finding within SLA' is not in the given tolerance so failing this experiment
+[32m[2026-03-29 18:47:01 INFO] [run:1072] Let's rollback...
+[36m[2026-03-29 18:47:01 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-03-29 18:47:01 INFO] [rollback:36] Rollback: Teardown: Delete CloudFormation stack and cascade resource cleanup (IAM keys, SNS subscriptions, S3 CloudTrail bucket, EC2 instances, Lambda, EventBridge)
+[36m[2026-03-29 18:47:01 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-29 18:47:01 INFO] [activity:232] Action: Teardown: Delete CloudFormation stack and cascade resource cleanup (IAM keys, SNS subscriptions, S3 CloudTrail bucket, EC2 instances, Lambda, EventBridge)
+[36m[2026-03-29 18:47:01 DEBUG] [python:33] Activity 'Teardown: Delete CloudFormation stack and cascade resource cleanup (IAM keys, SNS subscriptions, S3 CloudTrail bucket, EC2 instances, Lambda, EventBridge)' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_reactive.py'
+[36m[2026-03-29 18:47:17 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-03-29 18:47:17 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-29 18:47:17 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-03-29 18:47:17 INFO] [run:598] Experiment ended with status: deviated
+[32m[2026-03-29 18:47:17 INFO] [run:600] The steady-state has deviated, a weakness may have been discovered
+[36m[2026-03-29 18:47:17 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[36m[2026-03-29 18:47:17 DEBUG] [__init__:106] Cleaning up controls
+[36m[2026-03-29 18:47:17 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-03-29 18:52:33 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-03-29 18:52:33 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-03-29 18:52:33 DEBUG] [__init__:106] Using settings file '/home/debian/.chaostoolkit/settings.yaml'
+[36m[2026-03-29 18:52:34 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/debian/.chaostoolkit/settings.yaml'.
+[36m[2026-03-29 18:52:34 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-03-29 18:52:34 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-03-29 18:52:34 DEBUG] [caching:24] Building activity cache...
+[36m[2026-03-29 18:52:34 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-03-29 18:52:34 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-03-29 18:52:34 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-03-29 18:52:34 DEBUG] [secret:79] Loading secrets...
+[36m[2026-03-29 18:52:34 DEBUG] [secret:104] Done loading secrets
+[32m[2026-03-29 18:52:34 INFO] [experiment:112] Experiment looks valid
+[36m[2026-03-29 18:52:34 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-03-29 18:52:34 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-03-29 18:52:34 DEBUG] [caching:24] Building activity cache...
+[36m[2026-03-29 18:52:34 DEBUG] [caching:35] Cached 3 activities
+[36m[2026-03-29 18:52:34 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-03-29 18:52:34 DEBUG] [secret:79] Loading secrets...
+[36m[2026-03-29 18:52:34 DEBUG] [secret:104] Done loading secrets
+[36m[2026-03-29 18:52:34 DEBUG] [configuration:161] Loading dynamic configuration...
+[32m[2026-03-29 18:52:34 INFO] [run:440] Running experiment: SCE 1.3: Reactive Probe - EC2 IMDS Unauthorized Operation Detection (EXECUTION FIXED)
+[36m[2026-03-29 18:52:34 DEBUG] [__init__:67] Initializing controls
+[32m[2026-03-29 18:52:34 INFO] [run:471] Steady-state strategy: after-method-only
+[32m[2026-03-29 18:52:34 INFO] [run:477] Rollbacks strategy: default
+[36m[2026-03-29 18:52:34 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[32m[2026-03-29 18:52:34 INFO] [run:778] Playing your experiment's method now...
+[36m[2026-03-29 18:52:34 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-03-29 18:52:34 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-29 18:52:34 INFO] [activity:232] Action: Establish steady state: Provision EC2, EventBridge, Lambda, SNS, Security Hub infrastructure
+[36m[2026-03-29 18:52:34 DEBUG] [python:33] Activity 'Establish steady state: Provision EC2, EventBridge, Lambda, SNS, Security Hub infrastructure' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_reactive.py'
+[36m[2026-03-29 18:54:55 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-03-29 18:54:55 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-29 18:54:55 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-29 18:54:55 INFO] [activity:232] Action: Execute Attack Step 1.2: DescribeInstances reconnaissance (T1087 Account Discovery)
+[36m[2026-03-29 18:54:55 DEBUG] [python:33] Activity 'Execute Attack Step 1.2: DescribeInstances reconnaissance (T1087 Account Discovery)' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_reactive.py'
+[36m[2026-03-29 18:54:55 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-03-29 18:54:55 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-29 18:54:55 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-03-29 18:54:55 DEBUG] [run:696] Running steady-state hypothesis after the method
+[32m[2026-03-29 18:54:55 INFO] [hypothesis:205] Steady state hypothesis: Reactive incident response chain successfully detects and responds to unauthorized EC2 API operations via EventBridge → Lambda → SNS → Security Hub automation
+[36m[2026-03-29 18:54:55 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[36m[2026-03-29 18:54:55 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-29 18:54:55 INFO] [activity:232] Probe: Verify reactive countermeasure chain: EventBridge injection → Lambda invocation → SNS alert → Security Hub finding
+[36m[2026-03-29 18:54:55 DEBUG] [python:33] Activity 'Verify reactive countermeasure chain: EventBridge injection → Lambda invocation → SNS alert → Security Hub finding' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_reactive.py'
+[36m[2026-03-29 18:54:55 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-03-29 18:54:55 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-29 18:54:55 DEBUG] [hypothesis:247] allowed tolerance is True
+[36m[2026-03-29 18:54:55 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[31m[2026-03-29 18:54:55 CRITICAL] [run:716] Steady state probe 'Verify reactive countermeasure chain: EventBridge injection → Lambda invocation → SNS alert → Security Hub finding' is not in the given tolerance so failing this experiment
+[32m[2026-03-29 18:54:55 INFO] [run:1072] Let's rollback...
+[36m[2026-03-29 18:54:55 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-03-29 18:54:55 INFO] [rollback:36] Rollback: Teardown: Delete CloudFormation stack and all provisioned resources
+[36m[2026-03-29 18:54:55 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-29 18:54:55 INFO] [activity:232] Action: Teardown: Delete CloudFormation stack and all provisioned resources
+[36m[2026-03-29 18:54:55 DEBUG] [python:33] Activity 'Teardown: Delete CloudFormation stack and all provisioned resources' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/1_3_reactive.py'
+[36m[2026-03-29 18:55:11 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-03-29 18:55:11 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-29 18:55:11 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-03-29 18:55:11 INFO] [run:598] Experiment ended with status: deviated
+[32m[2026-03-29 18:55:11 INFO] [run:600] The steady-state has deviated, a weakness may have been discovered
+[36m[2026-03-29 18:55:11 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[36m[2026-03-29 18:55:11 DEBUG] [__init__:106] Cleaning up controls
+[36m[2026-03-29 18:55:11 DEBUG] [caching:42] Clearing activities cache

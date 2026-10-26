@@ -1,0 +1,52 @@
+[36m[2026-04-14 17:13:51 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-04-14 17:13:51 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-04-14 17:13:51 DEBUG] [__init__:106] Using settings file '/home/mmc/.chaostoolkit/settings.yaml'
+[36m[2026-04-14 17:13:51 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/mmc/.chaostoolkit/settings.yaml'.
+[36m[2026-04-14 17:13:51 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-14 17:13:51 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-14 17:13:51 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-14 17:13:51 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-04-14 17:13:51 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-04-14 17:13:51 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-14 17:13:51 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-14 17:13:51 DEBUG] [secret:104] Done loading secrets
+[32m[2026-04-14 17:13:51 INFO] [experiment:112] Experiment looks valid
+[36m[2026-04-14 17:13:51 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-14 17:13:51 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-04-14 17:13:51 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-14 17:13:51 DEBUG] [caching:35] Cached 3 activities
+[36m[2026-04-14 17:13:51 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-14 17:13:51 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-14 17:13:51 DEBUG] [secret:104] Done loading secrets
+[36m[2026-04-14 17:13:51 DEBUG] [configuration:161] Loading dynamic configuration...
+[32m[2026-04-14 17:13:51 INFO] [run:440] Running experiment: SCE 2.4 Detective Probe: Detection of IMDS Access from Container Processes
+[36m[2026-04-14 17:13:51 DEBUG] [__init__:67] Initializing controls
+[32m[2026-04-14 17:13:51 INFO] [run:471] Steady-state strategy: after-method-only
+[32m[2026-04-14 17:13:51 INFO] [run:477] Rollbacks strategy: default
+[36m[2026-04-14 17:13:51 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[32m[2026-04-14 17:13:51 INFO] [run:778] Playing your experiment's method now...
+[36m[2026-04-14 17:13:51 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-14 17:13:51 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-14 17:13:51 INFO] [activity:232] Action: establish-steady-state-with-detective-controls-vpc-flow-logs-cloudwatch
+[36m[2026-04-14 17:13:51 DEBUG] [python:33] Activity 'establish-steady-state-with-detective-controls-vpc-flow-logs-cloudwatch' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_4_detective.py'
+[36m[2026-04-14 17:26:40 DEBUG] [activity:260]   => succeeded with 'False'
+[36m[2026-04-14 17:26:40 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-14 17:26:40 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-14 17:26:40 INFO] [activity:232] Action: execute-attack-1-3-weaken-imds-and-attack-2-3-container-imds-access
+[36m[2026-04-14 17:26:40 DEBUG] [python:33] Activity 'execute-attack-1-3-weaken-imds-and-attack-2-3-container-imds-access' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_4_detective.py'
+[36m[2026-04-14 17:26:42 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-04-14 17:26:42 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-14 17:26:42 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-14 17:26:42 DEBUG] [run:696] Running steady-state hypothesis after the method
+[32m[2026-04-14 17:26:42 INFO] [hypothesis:205] Steady state hypothesis: Detective controls detect IMDS access attempts from container processes via multiple channels
+[36m[2026-04-14 17:26:42 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[36m[2026-04-14 17:26:42 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-14 17:26:42 INFO] [activity:232] Probe: verify-imds-access-detected-via-cloudwatch-cloudtrail-flowlogs
+[36m[2026-04-14 17:26:42 DEBUG] [python:33] Activity 'verify-imds-access-detected-via-cloudwatch-cloudtrail-flowlogs' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_4_detective.py'
+[36m[2026-04-14 17:37:50 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-14 17:37:50 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[33m[2026-04-14 17:37:50 WARNING] [run:556] Received a termination signal (Ctrl-C)...
+[32m[2026-04-14 17:37:50 INFO] [run:598] Experiment ended with status: interrupted
+[36m[2026-04-14 17:37:50 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[36m[2026-04-14 17:37:50 DEBUG] [__init__:106] Cleaning up controls
+[36m[2026-04-14 17:37:50 DEBUG] [caching:42] Clearing activities cache

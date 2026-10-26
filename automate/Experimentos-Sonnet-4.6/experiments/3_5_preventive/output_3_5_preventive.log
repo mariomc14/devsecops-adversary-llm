@@ -1,0 +1,150 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-04-13 12:28:04 INFO] Validating the experiment's syntax
+[32m[2026-04-13 12:28:04 INFO] Experiment looks valid
+[32m[2026-04-13 12:28:04 INFO] Running experiment: SCE Experiment 3.5 - Preventive Probe: Stolen Credential Lateral Movement Blast-Radius Validation
+[32m[2026-04-13 12:28:04 INFO] Steady-state strategy: after-method-only
+[32m[2026-04-13 12:28:04 INFO] Rollbacks strategy: default
+[32m[2026-04-13 12:28:04 INFO] Playing your experiment's method now...
+[32m[2026-04-13 12:28:04 INFO] Action: Create permission boundary managed policy and IAM roles via boto3 (no Description field); deploy CloudFormation stack with PCI-scope S3 bucket (explicit Deny bucket policy) and CloudWatch Log Group; seed bucket with test object; assert permission boundary attached and bucket policy Deny confirmed
+2026-04-13T12:28:04Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:28:05Z  INFO      ======================================================================
+2026-04-13T12:28:05Z  INFO      SCE Experiment 3.5 - Preventive Probe  |  steady_state()
+2026-04-13T12:28:05Z  INFO      Account=396608802942  Region=us-east-1  Stack=sce-prev-1776076085
+2026-04-13T12:28:05Z  INFO      Bucket=sce-pci-1776076085
+2026-04-13T12:28:05Z  INFO      ======================================================================
+2026-04-13T12:28:05Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:28:05Z  INFO      [IAM] inst_role_name = sce-inst--prev-1776076085
+2026-04-13T12:28:05Z  INFO      [IAM] high_priv_name = sce-hp--prev-1776076085
+2026-04-13T12:28:05Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:28:05Z  INFO      [IAM-BOUNDARY] Creating permission boundary policy: SCEBoundary--prev-1776076085
+2026-04-13T12:28:06Z  INFO      [IAM-BOUNDARY] Created: arn:aws:iam::396608802942:policy/SCEBoundary--prev-1776076085
+2026-04-13T12:28:06Z  INFO      [IAM] Creating high-privilege role: sce-hp--prev-1776076085
+2026-04-13T12:28:06Z  INFO      [IAM] High-privilege role created.
+2026-04-13T12:28:07Z  INFO      [IAM] high_priv_arn = arn:aws:iam::396608802942:role/sce-hp--prev-1776076085
+2026-04-13T12:28:07Z  INFO      [IAM] Creating instance role: sce-inst--prev-1776076085
+2026-04-13T12:28:07Z  INFO      [IAM] Instance role created with permission boundary.
+2026-04-13T12:28:07Z  INFO      [IAM] Inline policy attached (broad grant intentional; boundary is the control under test).
+2026-04-13T12:28:07Z  INFO      [IAM] inst_role_arn = arn:aws:iam::396608802942:role/sce-inst--prev-1776076085
+2026-04-13T12:28:07Z  INFO      [IAM] Waiting 25s for IAM propagation ...
+2026-04-13T12:28:32Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:28:33Z  INFO      [STEADY] Stack creation initiated: sce-prev-1776076085
+2026-04-13T12:28:33Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:28:33Z  INFO      [CFN] Waiting for 'sce-prev-1776076085' -> CREATE_COMPLETE ...
+2026-04-13T12:28:34Z  INFO      [CFN] Stack status: CREATE_IN_PROGRESS
+2026-04-13T12:28:49Z  INFO      [CFN] Stack status: CREATE_IN_PROGRESS
+2026-04-13T12:29:05Z  INFO      [CFN] Stack status: CREATE_COMPLETE
+2026-04-13T12:29:05Z  INFO      [CFN] Target status reached: CREATE_COMPLETE
+2026-04-13T12:29:05Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:29:05Z  INFO      [STEADY] Stack outputs:
+2026-04-13T12:29:05Z  INFO               BucketArn              = arn:aws:s3:::sce-pci-1776076085
+2026-04-13T12:29:05Z  INFO               BucketName             = sce-pci-1776076085
+2026-04-13T12:29:05Z  INFO               LogGroupName           = /sce/preventive/sce-prev-1776076085
+2026-04-13T12:29:05Z  INFO      [STEADY] Seeding PCI bucket with test object ...
+2026-04-13T12:29:05Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:29:06Z  INFO      [STEADY] Test object 'pci-test-record.txt' written to bucket.
+2026-04-13T12:29:06Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:29:07Z  INFO      [STEADY] Permission boundary confirmed: arn:aws:iam::396608802942:policy/SCEBoundary--prev-1776076085
+2026-04-13T12:29:07Z  INFO      [STEADY] Bucket policy confirmed present.
+2026-04-13T12:29:07Z  INFO      [STEADY] Bucket policy Deny s3:GetObject confirmed.
+2026-04-13T12:29:07Z  INFO      [STEADY] All preventive baselines verified.
+2026-04-13T12:29:07Z  INFO      [STEADY] steady_state() complete.
+
+[32m[2026-04-13 12:29:07 INFO] Action: Node 1.2: obtain instance role credentials via sts:AssumeRole simulating IMDS credential theft; Node 2.2: verify credential identity via sts:GetCallerIdentity; Node 3.2: attempt iam:CreateUser, sts:AssumeRole to admin, s3:GetObject on PCI bucket, and cloudtrail:StopLogging with stolen credentials - all must return AccessDenied
+2026-04-13T12:29:07Z  INFO      ----------------------------------------------------------------------
+2026-04-13T12:29:07Z  INFO      [ATTACK] Node 1.2 - Obtaining instance role credentials ...
+2026-04-13T12:29:07Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:29:07Z  INFO      [STS] Assuming instance role to simulate stolen credentials: arn:aws:iam::396608802942:role/sce-inst--prev-1776076085
+2026-04-13T12:29:08Z  INFO      [STS] Assumed role successfully. AccessKeyId=ASIAVYV52CB7BR6YXOPH  Expiration=2026-04-13 10:44:08+00:00
+2026-04-13T12:29:08Z  INFO      [ATTACK] 1.2 - Instance role credentials obtained.
+2026-04-13T12:29:08Z  INFO      [ATTACK] Node 2.2 - Verifying stolen credential identity ...
+2026-04-13T12:29:08Z  INFO      [ATTACK] 2.2 - Identity confirmed: UserId=AROAVYV52CB7JCLYBSMGE:SCEPreventiveAttackSim  Arn=arn:aws:sts::396608802942:assumed-role/sce-inst--prev-1776076085/SCEPreventiveAttackSim
+2026-04-13T12:29:08Z  INFO      [ATTACK] Node 3.2 - Attempting blocked lateral-movement actions ...
+2026-04-13T12:29:08Z  INFO      [ATTACK] 3.2a - Attempting iam:CreateUser ...
+2026-04-13T12:29:09Z  INFO      [ATTACK] 3.2a - iam:CreateUser returned: AccessDenied (expected AccessDenied)
+2026-04-13T12:29:09Z  INFO      [ATTACK] 3.2b - Attempting sts:AssumeRole to high-priv role ...
+2026-04-13T12:29:09Z  INFO      [ATTACK] 3.2b - sts:AssumeRole returned: AccessDenied (expected AccessDenied)
+2026-04-13T12:29:09Z  INFO      [ATTACK] 3.2c - Attempting s3:GetObject on PCI bucket ...
+2026-04-13T12:29:10Z  INFO      [ATTACK] 3.2c - s3:GetObject returned: AccessDenied (expected AccessDenied)
+2026-04-13T12:29:10Z  INFO      [ATTACK] 3.2d - Attempting cloudtrail:StopLogging ...
+2026-04-13T12:29:11Z  INFO      [ATTACK] 3.2d - cloudtrail:StopLogging returned: AccessDeniedException (expected AccessDenied)
+2026-04-13T12:29:11Z  INFO      [ATTACK] Node 3.2 attack attempts completed.
+2026-04-13T12:29:11Z  INFO      [ATTACK] Results: {'iam_create_user': 'AccessDenied', 'sts_assume_role': 'AccessDenied', 's3_get_object': 'AccessDenied', 'cloudtrail_stop': 'AccessDeniedException'}
+2026-04-13T12:29:11Z  INFO      ----------------------------------------------------------------------
+[32m[2026-04-13 12:29:11 INFO] Steady state hypothesis: All five preventive signals confirmed: permission boundary blocks iam:CreateUser, sts:AssumeRole to admin, s3:GetObject on PCI bucket, and cloudtrail:StopLogging; boundary remains durably attached
+[32m[2026-04-13 12:29:11 INFO] Probe: Verify iam:CreateUser denied, sts:AssumeRole to admin role denied, s3:GetObject on PCI bucket denied, cloudtrail:StopLogging denied, and permission boundary still attached - all confirmed within 30-minute SLA after attack nodes 1.2, 2.2, and 3.2
+2026-04-13T12:29:11Z  INFO      ======================================================================
+2026-04-13T12:29:11Z  INFO      [VERIFY] Preventive Probe - starting validation
+2026-04-13T12:29:11Z  INFO      [VERIFY] inst_role_name  : sce-inst--prev-1776076085
+2026-04-13T12:29:11Z  INFO      [VERIFY] boundary_arn    : arn:aws:iam::396608802942:policy/SCEBoundary--prev-1776076085
+2026-04-13T12:29:11Z  INFO      [VERIFY] attack_results  : {'iam_create_user': 'AccessDenied', 'sts_assume_role': 'AccessDenied', 's3_get_object': 'AccessDenied', 'cloudtrail_stop': 'AccessDeniedException'}
+2026-04-13T12:29:11Z  INFO      [VERIFY] SLA window      : 1800s (30 min)
+2026-04-13T12:29:11Z  INFO      ======================================================================
+2026-04-13T12:29:11Z  INFO      
+[VERIFY] === Signal A: iam:CreateUser denied ===
+2026-04-13T12:29:11Z  INFO      [POLL] iam-CreateUser-Denied - attempt 1  elapsed=0s / SLA=60s
+2026-04-13T12:29:11Z  INFO      [SIG-A] PASS  iam:CreateUser blocked by permission boundary. Error=AccessDenied
+2026-04-13T12:29:11Z  INFO      [POLL] iam-CreateUser-Denied - condition MET at attempt 1 (0s elapsed).
+2026-04-13T12:29:11Z  INFO      
+[VERIFY] === Signal B: sts:AssumeRole to admin role denied ===
+2026-04-13T12:29:11Z  INFO      [POLL] sts-AssumeRole-Denied - attempt 1  elapsed=0s / SLA=60s
+2026-04-13T12:29:11Z  INFO      [SIG-B] PASS  sts:AssumeRole to admin role blocked. Error=AccessDenied
+2026-04-13T12:29:11Z  INFO      [POLL] sts-AssumeRole-Denied - condition MET at attempt 1 (0s elapsed).
+2026-04-13T12:29:11Z  INFO      
+[VERIFY] === Signal C: s3:GetObject on PCI bucket denied ===
+2026-04-13T12:29:11Z  INFO      [POLL] s3-GetObject-Denied - attempt 1  elapsed=0s / SLA=60s
+2026-04-13T12:29:11Z  INFO      [SIG-C] PASS  s3:GetObject on PCI bucket blocked. Error=AccessDenied
+2026-04-13T12:29:11Z  INFO      [POLL] s3-GetObject-Denied - condition MET at attempt 1 (0s elapsed).
+2026-04-13T12:29:11Z  INFO      
+[VERIFY] === Signal D: cloudtrail:StopLogging denied ===
+2026-04-13T12:29:11Z  INFO      [POLL] cloudtrail-StopLogging-Denied - attempt 1  elapsed=0s / SLA=60s
+2026-04-13T12:29:11Z  INFO      [SIG-D] PASS  cloudtrail:StopLogging blocked. Audit trail integrity preserved. Error=AccessDeniedException
+2026-04-13T12:29:11Z  INFO      [POLL] cloudtrail-StopLogging-Denied - condition MET at attempt 1 (0s elapsed).
+2026-04-13T12:29:11Z  INFO      
+[VERIFY] === Signal E: Permission boundary durable ===
+2026-04-13T12:29:11Z  INFO      [POLL] Boundary-Still-Attached - attempt 1  elapsed=0s / SLA=1800s
+2026-04-13T12:29:11Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:29:11Z  INFO      [SIG-E] PASS  Permission boundary still attached: arn:aws:iam::396608802942:policy/SCEBoundary--prev-1776076085
+2026-04-13T12:29:11Z  INFO      [POLL] Boundary-Still-Attached - condition MET at attempt 1 (0s elapsed).
+2026-04-13T12:29:11Z  INFO      
+[VERIFY] === Structural check: no IAM user created ===
+2026-04-13T12:29:11Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:29:12Z  INFO      [VERIFY] PASS  No IAM user 'sce-test-persistence-user' found. Boundary prevented creation.
+2026-04-13T12:29:12Z  INFO      
+[VERIFY] -- Signal Summary ------------------------------------------
+2026-04-13T12:29:12Z  INFO      [VERIFY]   iam_create_user_denied         -> PASS
+2026-04-13T12:29:12Z  INFO      [VERIFY]   sts_assume_role_denied         -> PASS
+2026-04-13T12:29:12Z  INFO      [VERIFY]   s3_get_object_denied           -> PASS
+2026-04-13T12:29:12Z  INFO      [VERIFY]   cloudtrail_stop_denied         -> PASS
+2026-04-13T12:29:12Z  INFO      [VERIFY]   boundary_durable               -> PASS
+2026-04-13T12:29:12Z  INFO      [VERIFY]   no_iam_user_created            -> PASS
+2026-04-13T12:29:12Z  INFO      [VERIFY] ALL preventive signals confirmed - permission boundary and bucket policy are blocking all lateral-movement actions.
+2026-04-13T12:29:12Z  INFO      ======================================================================
+[32m[2026-04-13 12:29:12 INFO] Steady state hypothesis is met!
+[32m[2026-04-13 12:29:12 INFO] Let's rollback...
+[32m[2026-04-13 12:29:12 INFO] Rollback: Delete any residual IAM user; empty versioned S3 bucket; delete CloudFormation stack; delete boto3-created IAM roles and permission boundary policy; tolerant of missing resources and pre-existing conditions
+[32m[2026-04-13 12:29:12 INFO] Action: Delete any residual IAM user; empty versioned S3 bucket; delete CloudFormation stack; delete boto3-created IAM roles and permission boundary policy; tolerant of missing resources and pre-existing conditions
+2026-04-13T12:29:12Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:29:12Z  INFO      [ROLLBACK] Emptying S3 bucket: sce-pci-1776076085
+2026-04-13T12:29:12Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:29:13Z  INFO      [ROLLBACK] Deleted 1 object versions.
+2026-04-13T12:29:13Z  INFO      [ROLLBACK] Deleting stack: sce-prev-1776076085
+2026-04-13T12:29:13Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:29:14Z  INFO      [ROLLBACK] delete_stack request accepted.
+2026-04-13T12:29:14Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:29:14Z  INFO      [CFN] Waiting for 'sce-prev-1776076085' -> DELETE_COMPLETE ...
+2026-04-13T12:29:15Z  INFO      [CFN] Stack status: DELETE_IN_PROGRESS
+2026-04-13T12:29:30Z  INFO      [CFN] Stack 'sce-prev-1776076085' deleted.
+2026-04-13T12:29:30Z  INFO      [ROLLBACK] Stack deleted successfully.
+2026-04-13T12:29:30Z  INFO      [ROLLBACK] Deleting IAM resources ...
+2026-04-13T12:29:30Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:29:31Z  INFO      [IAM-RB] Deleted role: sce-inst--prev-1776076085
+2026-04-13T12:29:31Z  INFO      [IAM-RB] Deleted role: sce-hp--prev-1776076085
+2026-04-13T12:29:32Z  INFO      [IAM-RB] Deleted boundary policy: arn:aws:iam::396608802942:policy/SCEBoundary--prev-1776076085
+2026-04-13T12:29:32Z  INFO      [ROLLBACK] Teardown complete.
+[32m[2026-04-13 12:29:32 INFO] Experiment ended with status: completed
+
+
+RETURN CODE: 0

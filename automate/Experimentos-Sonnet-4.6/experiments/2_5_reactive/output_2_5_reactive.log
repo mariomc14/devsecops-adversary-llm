@@ -1,0 +1,160 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-04-13 12:13:11 INFO] Validating the experiment's syntax
+[32m[2026-04-13 12:13:11 INFO] Experiment looks valid
+[32m[2026-04-13 12:13:11 INFO] Running experiment: SCE Experiment 2.5 - Reactive Probe: IMDS Tamper Automated Incident Response Validation
+[32m[2026-04-13 12:13:11 INFO] Steady-state strategy: after-method-only
+[32m[2026-04-13 12:13:11 INFO] Rollbacks strategy: default
+[32m[2026-04-13 12:13:11 INFO] Playing your experiment's method now...
+[32m[2026-04-13 12:13:11 INFO] Action: Create IAM roles (EC2 instance role, SSM automation role) and instance profile via boto3 (no Description field); resolve AMI at runtime via SSM public parameter; deploy CloudFormation stack with VPC, normal SG, quarantine SG, SSM Automation document, and EC2 target (IMDSv2 enforced HopLimit=1); wait for EC2 running; resolve root EBS volume ID; assert baseline
+2026-04-13T12:13:11Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:13:12Z  INFO      ======================================================================
+2026-04-13T12:13:12Z  INFO      SCE Experiment 2.5 - Reactive Probe  |  steady_state()
+2026-04-13T12:13:12Z  INFO      Account=396608802942  Region=us-east-1  Stack=sce-reactive-1776075192
+2026-04-13T12:13:12Z  INFO      ======================================================================
+2026-04-13T12:13:12Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:13:13Z  INFO      [AMI] Resolved via SSM: ami-0e10497160c48e829
+2026-04-13T12:13:13Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:13:13Z  INFO      [IAM] inst_role_name  = sce-ir-eactive-1776075192
+2026-04-13T12:13:13Z  INFO      [IAM] profile_name    = sce-ip-eactive-1776075192
+2026-04-13T12:13:13Z  INFO      [IAM] ssm_role_name   = sce-ssm-eactive-1776075192
+2026-04-13T12:13:14Z  INFO      [IAM] Created instance role: sce-ir-eactive-1776075192
+2026-04-13T12:13:15Z  INFO      [IAM] Created SSM automation role: sce-ssm-eactive-1776075192
+2026-04-13T12:13:15Z  INFO      [IAM] inst_role_arn  = arn:aws:iam::396608802942:role/sce-ir-eactive-1776075192
+2026-04-13T12:13:15Z  INFO      [IAM] ssm_role_arn   = arn:aws:iam::396608802942:role/sce-ssm-eactive-1776075192
+2026-04-13T12:13:15Z  INFO      [IAM] Waiting 20s for IAM propagation ...
+2026-04-13T12:13:35Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:13:36Z  INFO      [STEADY] Stack creation initiated: sce-reactive-1776075192
+2026-04-13T12:13:36Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:13:36Z  INFO      [CFN] Waiting for 'sce-reactive-1776075192' -> CREATE_COMPLETE ...
+2026-04-13T12:13:37Z  INFO      [CFN] Stack status: CREATE_IN_PROGRESS
+2026-04-13T12:13:52Z  INFO      [CFN] Stack status: CREATE_IN_PROGRESS
+2026-04-13T12:14:08Z  INFO      [CFN] Stack status: CREATE_IN_PROGRESS
+2026-04-13T12:14:23Z  INFO      [CFN] Stack status: CREATE_COMPLETE
+2026-04-13T12:14:23Z  INFO      [CFN] Target status reached: CREATE_COMPLETE
+2026-04-13T12:14:23Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:14:24Z  INFO      [STEADY] Stack outputs:
+2026-04-13T12:14:24Z  INFO               VpcId                  = vpc-088a64103df395817
+2026-04-13T12:14:24Z  INFO               InstanceId             = i-0438092321615d155
+2026-04-13T12:14:24Z  INFO               NormalSGId             = sg-0ba2626072a1c05e4
+2026-04-13T12:14:24Z  INFO               QuarantineSGId         = sg-03eec11f92e489057
+2026-04-13T12:14:24Z  INFO               SSMDocumentName        = sce-react-doc-sce-reactive-1776075192
+2026-04-13T12:14:24Z  INFO      [STEADY] Waiting for instance i-0438092321615d155 to reach running state ...
+2026-04-13T12:14:24Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:14:25Z  INFO      [STEADY] Instance i-0438092321615d155 is running.
+2026-04-13T12:14:25Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:14:25Z  INFO      [EC2] Root volume for i-0438092321615d155: vol-0e7ae53cdae2fcd25
+2026-04-13T12:14:25Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:14:26Z  INFO      [STEADY] Baseline IMDS: HttpTokens=required  HopLimit=1
+2026-04-13T12:14:26Z  INFO      [STEADY] Baseline verified - IMDSv2 enforced, HopLimit=1.
+2026-04-13T12:14:26Z  INFO      [STEADY] steady_state() complete.
+
+[32m[2026-04-13 12:14:26 INFO] Action: Execute attack node 1.2 (ec2:ModifyInstanceMetadataOptions HttpTokens=optional HopLimit=2), attack node 2.2 (ec2:DescribeInstances confirm weakened IMDS state), then start SSM Automation reactive playbook to simulate automated incident response pipeline
+2026-04-13T12:14:26Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:14:26Z  INFO      ----------------------------------------------------------------------
+2026-04-13T12:14:26Z  INFO      [ATTACK] Node 1.2 - Weaken IMDS on i-0438092321615d155
+2026-04-13T12:14:26Z  INFO      [ATTACK] Setting HttpTokens=optional  HopLimit=2
+2026-04-13T12:14:27Z  INFO      [ATTACK] 1.2 - ModifyInstanceMetadataOptions succeeded.
+2026-04-13T12:14:35Z  INFO      [ATTACK] Node 2.2 - Confirm weakened IMDS state on i-0438092321615d155
+2026-04-13T12:14:35Z  INFO      [ATTACK] 2.2 - IMDS state: HttpTokens=optional  HopLimit=2
+2026-04-13T12:14:35Z  INFO      [ATTACK] 2.2 - Weakening CONFIRMED: no IMDSv2 token required; container bridge traversal enabled.
+2026-04-13T12:14:35Z  INFO      [ATTACK] Triggering SSM Automation reactive playbook ...
+2026-04-13T12:14:35Z  INFO      [ATTACK]   Document     : sce-react-doc-sce-reactive-1776075192
+2026-04-13T12:14:35Z  INFO      [ATTACK]   InstanceId   : i-0438092321615d155
+2026-04-13T12:14:35Z  INFO      [ATTACK]   QuarantineSG : sg-03eec11f92e489057
+2026-04-13T12:14:35Z  INFO      [ATTACK]   RoleToRevoke : sce-ir-eactive-1776075192
+2026-04-13T12:14:35Z  INFO      [ATTACK]   VolumeId     : vol-0e7ae53cdae2fcd25
+2026-04-13T12:14:35Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:14:36Z  INFO      [ATTACK] SSM Automation started: 81fd96b4-9b09-4f75-ad02-d8c94738fc22
+2026-04-13T12:14:36Z  INFO      [ATTACK] All attack nodes and reactive trigger completed.
+2026-04-13T12:14:36Z  INFO      ----------------------------------------------------------------------
+[32m[2026-04-13 12:14:36 INFO] Steady state hypothesis: All five reactive signals confirmed within 30-minute SLA: SSM Automation success, IAM Deny-all revocation, quarantine SG assignment, EBS snapshot creation, and IMDS_TAMPER_DETECTED tag
+[32m[2026-04-13 12:14:36 INFO] Probe: Verify SSM Automation execution success, IAM Deny-all revocation policy on instance role, quarantine security group assignment, EBS snapshot for root volume, and SecurityStatus=IMDS_TAMPER_DETECTED tag all confirmed within 30-minute SLA after attack nodes 1.2 and 2.2
+2026-04-13T12:14:36Z  INFO      ======================================================================
+2026-04-13T12:14:36Z  INFO      [VERIFY] Reactive Probe - starting validation
+2026-04-13T12:14:36Z  INFO      [VERIFY] Instance       : i-0438092321615d155
+2026-04-13T12:14:36Z  INFO      [VERIFY] InstRoleName   : sce-ir-eactive-1776075192
+2026-04-13T12:14:36Z  INFO      [VERIFY] QuarantineSG   : sg-03eec11f92e489057
+2026-04-13T12:14:36Z  INFO      [VERIFY] VolumeId       : vol-0e7ae53cdae2fcd25
+2026-04-13T12:14:36Z  INFO      [VERIFY] SSMExecutionId : 81fd96b4-9b09-4f75-ad02-d8c94738fc22
+2026-04-13T12:14:36Z  INFO      [VERIFY] TriggerEpoch   : 1776075276
+2026-04-13T12:14:36Z  INFO      [VERIFY] SLA window     : 1800s (30 min)
+2026-04-13T12:14:36Z  INFO      ======================================================================
+2026-04-13T12:14:36Z  INFO      
+[VERIFY] === Signal A: SSM Automation execution success ===
+2026-04-13T12:14:36Z  INFO      [POLL] SSM-Automation-Success - attempt 1  elapsed=0s / SLA=1800s
+2026-04-13T12:14:36Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:14:37Z  INFO      [SSM] Automation status: InProgress
+2026-04-13T12:14:57Z  INFO      [POLL] SSM-Automation-Success - attempt 2  elapsed=20s / SLA=1800s
+2026-04-13T12:14:57Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:14:58Z  INFO      [SSM] Automation status: Success
+2026-04-13T12:14:58Z  INFO      [SSM] PASS  Automation execution succeeded.
+2026-04-13T12:14:58Z  INFO      [POLL] SSM-Automation-Success - condition MET at attempt 2 (20s elapsed).
+2026-04-13T12:14:58Z  INFO      
+[VERIFY] === Signal B: IAM Deny-all revocation policy ===
+2026-04-13T12:14:58Z  INFO      [POLL] IAM-DenyAll-Revocation - attempt 1  elapsed=0s / SLA=1800s
+2026-04-13T12:14:58Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:14:58Z  INFO      [IAM] PASS  Deny-all revocation policy found on role sce-ir-eactive-1776075192.
+2026-04-13T12:14:58Z  INFO      [POLL] IAM-DenyAll-Revocation - condition MET at attempt 1 (0s elapsed).
+2026-04-13T12:14:58Z  INFO      
+[VERIFY] === Signal C: Quarantine security group assigned ===
+2026-04-13T12:14:58Z  INFO      [POLL] Quarantine-SG-Assigned - attempt 1  elapsed=0s / SLA=1800s
+2026-04-13T12:14:58Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:14:59Z  INFO      [SG] Current security groups: ['sg-03eec11f92e489057']
+2026-04-13T12:14:59Z  INFO      [SG] PASS  Quarantine SG sg-03eec11f92e489057 is assigned to instance.
+2026-04-13T12:14:59Z  INFO      [POLL] Quarantine-SG-Assigned - condition MET at attempt 1 (0s elapsed).
+2026-04-13T12:14:59Z  INFO      
+[VERIFY] === Signal D: EBS snapshot created ===
+2026-04-13T12:14:59Z  INFO      [POLL] EBS-Snapshot-Created - attempt 1  elapsed=0s / SLA=1800s
+2026-04-13T12:14:59Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:15:00Z  INFO      [SNAP] Snapshots found for volume vol-0e7ae53cdae2fcd25: 1
+2026-04-13T12:15:00Z  INFO      [SNAP] Snapshot snap-0e40321327e9a09d6  status=pending  startTime=2026-04-13 10:14:39.180000+00:00
+2026-04-13T12:15:00Z  INFO      [SNAP] PASS  EBS snapshot snap-0e40321327e9a09d6 created after reactive trigger.
+2026-04-13T12:15:00Z  INFO      [POLL] EBS-Snapshot-Created - condition MET at attempt 1 (0s elapsed).
+2026-04-13T12:15:00Z  INFO      
+[VERIFY] === Signal E: IMDS_TAMPER_DETECTED tag ===
+2026-04-13T12:15:00Z  INFO      [POLL] IMDS-TAMPER-DETECTED-Tag - attempt 1  elapsed=0s / SLA=1800s
+2026-04-13T12:15:00Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:15:01Z  INFO      [TAG] Instance tags: {'SCEExperiment': '2_5_reactive', 'aws:cloudformation:stack-id': 'arn:aws:cloudformation:us-east-1:396608802942:stack/sce-reactive-1776075192/6f1d36b0-3721-11f1-b370-0affebab6e73', 'aws:cloudformation:logical-id': 'SCEInstance', 'Name': 'SCE-IMDS-Target', 'aws:cloudformation:stack-name': 'sce-reactive-1776075192', 'SecurityStatus': 'IMDS_TAMPER_DETECTED', 'SCETimestamp': '1776075192'}
+2026-04-13T12:15:01Z  INFO      [TAG] PASS  Tag SecurityStatus=IMDS_TAMPER_DETECTED confirmed.
+2026-04-13T12:15:01Z  INFO      [POLL] IMDS-TAMPER-DETECTED-Tag - condition MET at attempt 1 (0s elapsed).
+2026-04-13T12:15:01Z  INFO      
+[VERIFY] -- Signal Summary ------------------------------------------
+2026-04-13T12:15:01Z  INFO      [VERIFY]   ssm_automation            -> PASS
+2026-04-13T12:15:01Z  INFO      [VERIFY]   iam_deny_policy           -> PASS
+2026-04-13T12:15:01Z  INFO      [VERIFY]   quarantine_sg             -> PASS
+2026-04-13T12:15:01Z  INFO      [VERIFY]   ebs_snapshot              -> PASS
+2026-04-13T12:15:01Z  INFO      [VERIFY]   tamper_tag                -> PASS
+2026-04-13T12:15:01Z  INFO      [VERIFY] ALL reactive signals confirmed - reactive controls validated.
+2026-04-13T12:15:01Z  INFO      ======================================================================
+[32m[2026-04-13 12:15:01 INFO] Steady state hypothesis is met!
+[32m[2026-04-13 12:15:01 INFO] Let's rollback...
+[32m[2026-04-13 12:15:01 INFO] Rollback: Delete EBS snapshot created by reactive playbook; delete CloudFormation stack (VPC, SGs, SSM doc, EC2); delete boto3-created IAM resources including removing Deny-all revocation policy before role deletion; tolerant of missing resources
+[32m[2026-04-13 12:15:01 INFO] Action: Delete EBS snapshot created by reactive playbook; delete CloudFormation stack (VPC, SGs, SSM doc, EC2); delete boto3-created IAM resources including removing Deny-all revocation policy before role deletion; tolerant of missing resources
+2026-04-13T12:15:01Z  INFO      [ROLLBACK] Deleting EBS snapshot: snap-0e40321327e9a09d6
+2026-04-13T12:15:01Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:15:02Z  INFO      [ROLLBACK] Snapshot snap-0e40321327e9a09d6 deleted.
+2026-04-13T12:15:02Z  INFO      [ROLLBACK] Deleting stack: sce-reactive-1776075192
+2026-04-13T12:15:02Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:15:03Z  INFO      [ROLLBACK] delete_stack request accepted.
+2026-04-13T12:15:03Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:15:03Z  INFO      [CFN] Waiting for 'sce-reactive-1776075192' -> DELETE_COMPLETE ...
+2026-04-13T12:15:03Z  INFO      [CFN] Stack status: DELETE_IN_PROGRESS
+2026-04-13T12:15:19Z  INFO      [CFN] Stack status: DELETE_IN_PROGRESS
+2026-04-13T12:15:34Z  INFO      [CFN] Stack status: DELETE_IN_PROGRESS
+2026-04-13T12:15:50Z  INFO      [CFN] Stack status: DELETE_IN_PROGRESS
+2026-04-13T12:16:05Z  INFO      [CFN] Stack status: DELETE_IN_PROGRESS
+2026-04-13T12:16:21Z  INFO      [CFN] Stack 'sce-reactive-1776075192' deleted.
+2026-04-13T12:16:21Z  INFO      [ROLLBACK] Stack deleted successfully.
+2026-04-13T12:16:21Z  INFO      [ROLLBACK] Deleting IAM resources ...
+2026-04-13T12:16:21Z  INFO      Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-13T12:16:21Z  INFO      [IAM-RB] Deleted instance profile: sce-ip-eactive-1776075192
+2026-04-13T12:16:22Z  INFO      [IAM-RB] Deleted role: sce-ir-eactive-1776075192
+2026-04-13T12:16:23Z  INFO      [IAM-RB] Deleted role: sce-ssm-eactive-1776075192
+2026-04-13T12:16:23Z  INFO      [ROLLBACK] Teardown complete.
+[32m[2026-04-13 12:16:23 INFO] Experiment ended with status: completed
+
+
+RETURN CODE: 0

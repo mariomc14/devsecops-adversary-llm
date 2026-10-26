@@ -1,0 +1,63 @@
+[36m[2026-04-21 11:35:31 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-04-21 11:35:31 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-04-21 11:35:31 DEBUG] [__init__:106] Using settings file '/home/mmc/.chaostoolkit/settings.yaml'
+[36m[2026-04-21 11:35:31 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/mmc/.chaostoolkit/settings.yaml'.
+[36m[2026-04-21 11:35:31 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-21 11:35:31 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-21 11:35:31 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-21 11:35:31 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-04-21 11:35:31 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-04-21 11:35:31 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-21 11:35:31 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-21 11:35:31 DEBUG] [secret:104] Done loading secrets
+[32m[2026-04-21 11:35:31 INFO] [experiment:112] Experiment looks valid
+[36m[2026-04-21 11:35:31 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-21 11:35:31 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-04-21 11:35:31 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-21 11:35:31 DEBUG] [caching:35] Cached 3 activities
+[36m[2026-04-21 11:35:31 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-21 11:35:31 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-21 11:35:31 DEBUG] [secret:104] Done loading secrets
+[36m[2026-04-21 11:35:31 DEBUG] [configuration:161] Loading dynamic configuration...
+[32m[2026-04-21 11:35:31 INFO] [run:440] Running experiment: SCE 2.3 Reactive Probe: IMDS Credential Exfiltration Auto-Response Validation
+[36m[2026-04-21 11:35:31 DEBUG] [__init__:67] Initializing controls
+[32m[2026-04-21 11:35:31 INFO] [run:471] Steady-state strategy: after-method-only
+[32m[2026-04-21 11:35:31 INFO] [run:477] Rollbacks strategy: default
+[36m[2026-04-21 11:35:31 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[32m[2026-04-21 11:35:31 INFO] [run:778] Playing your experiment's method now...
+[36m[2026-04-21 11:35:31 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-21 11:35:31 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-21 11:35:31 INFO] [activity:232] Action: Provision VPC, EC2 instance with IMDSv2, normal and quarantine security groups, reactive Lambda with EventBridge trigger, and SNS topic
+[36m[2026-04-21 11:35:31 DEBUG] [python:33] Activity 'Provision VPC, EC2 instance with IMDSv2, normal and quarantine security groups, reactive Lambda with EventBridge trigger, and SNS topic' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_3_reactive.py'
+[36m[2026-04-21 11:39:57 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-04-21 11:39:57 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-21 11:39:57 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-21 11:39:57 INFO] [activity:232] Action: Execute attack steps 1.2 (T1580 enumerate IMDS), 1.7 (T1562.001 downgrade IMDS), 2.2 (T1552.005 exfiltrate credentials), then emit detection event
+[36m[2026-04-21 11:39:57 DEBUG] [python:33] Activity 'Execute attack steps 1.2 (T1580 enumerate IMDS), 1.7 (T1562.001 downgrade IMDS), 2.2 (T1552.005 exfiltrate credentials), then emit detection event' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_3_reactive.py'
+[36m[2026-04-21 11:40:05 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-04-21 11:40:05 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-21 11:40:05 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-21 11:40:05 DEBUG] [run:696] Running steady-state hypothesis after the method
+[32m[2026-04-21 11:40:05 INFO] [hypothesis:205] Steady state hypothesis: Reactive controls revoke instance role sessions and quarantine EC2 instance after IMDS credential exfiltration detection
+[36m[2026-04-21 11:40:05 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[36m[2026-04-21 11:40:05 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-21 11:40:05 INFO] [activity:232] Probe: Verify deny-all inline policy attached to instance role and instance moved to quarantine security group
+[36m[2026-04-21 11:40:05 DEBUG] [python:33] Activity 'Verify deny-all inline policy attached to instance role and instance moved to quarantine security group' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_3_reactive.py'
+[36m[2026-04-21 11:40:23 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-04-21 11:40:23 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-21 11:40:23 DEBUG] [hypothesis:247] allowed tolerance is True
+[32m[2026-04-21 11:40:23 INFO] [hypothesis:260] Steady state hypothesis is met!
+[36m[2026-04-21 11:40:23 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[32m[2026-04-21 11:40:23 INFO] [run:1072] Let's rollback...
+[36m[2026-04-21 11:40:23 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-21 11:40:23 INFO] [rollback:36] Rollback: Remove inline policy from role, restore instance to normal SG, revert IMDS settings, and delete CloudFormation stack
+[36m[2026-04-21 11:40:23 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-21 11:40:23 INFO] [activity:232] Action: Remove inline policy from role, restore instance to normal SG, revert IMDS settings, and delete CloudFormation stack
+[36m[2026-04-21 11:40:23 DEBUG] [python:33] Activity 'Remove inline policy from role, restore instance to normal SG, revert IMDS settings, and delete CloudFormation stack' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_3_reactive.py'
+[36m[2026-04-21 11:43:17 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-04-21 11:43:17 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-21 11:43:17 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-21 11:43:17 INFO] [run:598] Experiment ended with status: completed
+[36m[2026-04-21 11:43:17 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[36m[2026-04-21 11:43:17 DEBUG] [__init__:106] Cleaning up controls
+[36m[2026-04-21 11:43:17 DEBUG] [caching:42] Clearing activities cache

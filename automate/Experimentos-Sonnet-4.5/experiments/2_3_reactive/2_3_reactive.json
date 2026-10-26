@@ -1,0 +1,51 @@
+{
+    "title": "SCE Experiment 2.3 - Container IMDS Access Reactive Response",
+    "description": "Validates automated reactive countermeasures when a container successfully accesses the EC2 Instance Metadata Service. Tests incident response workflow including instance isolation, forensic capture, credential revocation, and alerting within a 30-minute SLA.",
+    "tags": ["ec2", "imds", "container-security", "reactive", "incident-response", "credential-theft"],
+    "steady-state-hypothesis": {
+        "title": "Reactive countermeasures trigger within 30 minutes of IMDS access",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "verify-reactive-response",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.2_3_reactive",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "deploy-experiment-infrastructure",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.2_3_reactive",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "simulate-container-imds-access",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.2_3_reactive",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "cleanup-all-resources",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.2_3_reactive",
+                "func": "rollback"
+            }
+        }
+    ]
+}

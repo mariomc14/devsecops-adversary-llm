@@ -1,0 +1,51 @@
+{
+    "title": "SCE 2.3 Preventive - Container Network Isolation Prevents IMDS Access",
+    "description": "Security Chaos Engineering experiment validating that container network isolation controls (iptables rules blocking 169.254.169.254) successfully prevent IMDS credential access from containerized workloads, even when instance metadata protections are weakened. This preventive control protects banking applications from container-based credential exfiltration attacks.",
+    "tags": ["sce-2.3", "preventive", "container-isolation", "imds", "network-security", "banking"],
+    "steady-state-hypothesis": {
+        "title": "Container network isolation blocks IMDS access from container namespace",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "verify-container-imds-blocking",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.2_3_preventive",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "provision-ec2-with-container-isolation",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.2_3_preventive",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "execute-imds-weakening-and-container-access-attack",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.2_3_preventive",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "cleanup-all-experiment-resources",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.2_3_preventive",
+                "func": "rollback"
+            }
+        }
+    ]
+}

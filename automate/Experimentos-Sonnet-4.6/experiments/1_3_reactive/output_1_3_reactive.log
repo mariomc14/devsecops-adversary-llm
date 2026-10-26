@@ -1,0 +1,77 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-04-10 11:38:36 INFO] Validating the experiment's syntax
+[32m[2026-04-10 11:38:37 INFO] Experiment looks valid
+[32m[2026-04-10 11:38:37 INFO] Running experiment: SCE Experiment 1.3 — Reactive Probe: Automated Identity Revocation and IMDS Restoration on IMDS Weakening Attack
+[32m[2026-04-10 11:38:37 INFO] Steady-state strategy: after-method-only
+[32m[2026-04-10 11:38:37 INFO] Rollbacks strategy: default
+[32m[2026-04-10 11:38:37 INFO] Playing your experiment's method now...
+[32m[2026-04-10 11:38:37 INFO] Action: Provision experiment infrastructure via CloudFormation: EC2 instance with IMDSv2 baseline, attacker IAM role with ec2:ModifyInstanceMetadataOptions, reactive Lambda with auto-remediation logic, EventBridge rule matching ModifyInstanceMetadataOptions CloudTrail events, SSM pipeline-block parameter, SNS SOC alert topic, and CloudTrail trail
+2026-04-10T11:38:37 [INFO] sce.1_3.reactive — === [STEADY STATE] BEGIN ===
+2026-04-10T11:38:37 [INFO] sce.1_3.reactive — Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-10T11:38:38 [INFO] sce.1_3.reactive — Orchestrator identity: account=396608802942 arn=arn:aws:iam::396608802942:user/ChaosXploit-Labs
+2026-04-10T11:38:38 [INFO] sce.1_3.reactive — Pre-flight checks passed.
+2026-04-10T11:38:38 [INFO] sce.1_3.reactive — Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-10T11:38:39 [INFO] sce.1_3.reactive — Stack name : sce-experiment-1775813919
+2026-04-10T11:38:39 [INFO] sce.1_3.reactive — Region     : us-east-1
+2026-04-10T11:38:39 [INFO] sce.1_3.reactive — Account ID : 396608802942
+2026-04-10T11:38:39 [INFO] sce.1_3.reactive — Creating CloudFormation stack 'sce-experiment-1775813919' ...
+2026-04-10T11:38:40 [INFO] sce.1_3.reactive — Waiting for stack 'sce-experiment-1775813919' to reach CREATE_COMPLETE ...
+2026-04-10T11:38:40 [INFO] sce.1_3.reactive — Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-10T11:38:40 [INFO] sce.1_3.reactive —   Stack status: CREATE_IN_PROGRESS (poll 1)
+2026-04-10T11:38:56 [INFO] sce.1_3.reactive —   Stack status: CREATE_IN_PROGRESS (poll 2)
+2026-04-10T11:39:11 [INFO] sce.1_3.reactive —   Stack status: CREATE_IN_PROGRESS (poll 3)
+2026-04-10T11:39:27 [INFO] sce.1_3.reactive —   Stack status: CREATE_IN_PROGRESS (poll 4)
+2026-04-10T11:39:42 [INFO] sce.1_3.reactive —   Stack status: CREATE_IN_PROGRESS (poll 5)
+2026-04-10T11:39:58 [INFO] sce.1_3.reactive —   Stack status: CREATE_IN_PROGRESS (poll 6)
+2026-04-10T11:40:14 [INFO] sce.1_3.reactive —   Stack status: CREATE_IN_PROGRESS (poll 7)
+2026-04-10T11:40:29 [INFO] sce.1_3.reactive —   Stack status: CREATE_IN_PROGRESS (poll 8)
+2026-04-10T11:40:45 [INFO] sce.1_3.reactive —   Stack status: CREATE_IN_PROGRESS (poll 9)
+2026-04-10T11:41:00 [INFO] sce.1_3.reactive —   Stack status: CREATE_FAILED (poll 10)
+2026-04-10T11:41:00 [INFO] sce.1_3.reactive — Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-10T11:41:01 [ERROR] sce.1_3.reactive — Stack 'sce-experiment-1775813919' entered failure state: CREATE_FAILED
+  Failed resources:
+  AWS::CloudFormation::Stack / CREATE_FAILED — The following resource(s) failed to create: [BankingAppInstance]. 
+  AWS::EC2::Instance / CREATE_FAILED — Resource handler returned message: "No subnets found for the default VPC 'vpc-00bd1a657644bac9b'. Please specify a subnet. (Service: Ec2, Status Code: 400, Request ID: 66467405-18cb-4405-9a19-7b8c1b4c39e8) (SDK Attempt Count: 1)" (RequestToken: 5a326a8e-4c82-d328-6337-d0cc4baa97f7, HandlerErrorCode: InvalidRequest)
+2026-04-10T11:41:01 [ERROR] sce.1_3.reactive — [STEADY STATE] Stack provisioning failed. Stack preserved (DISABLE_ROLLBACK=True) for diagnosis.
+[32m[2026-04-10 11:41:01 INFO] Action: Execute attack node 1.2: assume attacker role and call ec2:ModifyInstanceMetadataOptions to weaken IMDS (HttpTokens=optional, HopLimit=2) simulating TTP T1552.005, then trigger Lambda directly to ensure reactive controls are observable within SLA
+2026-04-10T11:41:01 [INFO] sce.1_3.reactive — === [ATTACK] BEGIN — TTP: T1552.005 Cloud Instance Metadata API ===
+2026-04-10T11:41:01 [ERROR] sce.1_3.reactive — [ATTACK] Infrastructure not ready — steady_state() must succeed first.
+[32m[2026-04-10 11:41:01 INFO] Steady state hypothesis: Reactive controls are in place: EventBridge rule active, Lambda deployed and Active, SSM flag unblocked, attacker role exists without deny policy, EC2 instance IMDS at required/HopLimit=1 baseline
+[32m[2026-04-10 11:41:01 INFO] Probe: Verify all four reactive playbook actions fired after attacker IMDS weakening call
+2026-04-10T11:41:01 [INFO] sce.1_3.reactive — === [HYPOTHESIS VERIFICATION] BEGIN — Reactive Probe ===
+2026-04-10T11:41:01 [INFO] sce.1_3.reactive — SLA window: 1800s (30 minutes)
+2026-04-10T11:41:01 [ERROR] sce.1_3.reactive — [VERIFICATION] Infrastructure not ready — steady_state() must succeed first.
+[31m[2026-04-10 11:41:01 CRITICAL] Steady state probe 'Verify all four reactive playbook actions fired after attacker IMDS weakening call' is not in the given tolerance so failing this experiment
+[32m[2026-04-10 11:41:01 INFO] Let's rollback...
+[32m[2026-04-10 11:41:01 INFO] Rollback: Delete CloudFormation stack and all experiment resources including EC2 instance, IAM roles, Lambda function, EventBridge rule, SSM parameter, SNS topic, CloudTrail trail, and S3 bucket
+[32m[2026-04-10 11:41:01 INFO] Action: Delete CloudFormation stack and all experiment resources including EC2 instance, IAM roles, Lambda function, EventBridge rule, SSM parameter, SNS topic, CloudTrail trail, and S3 bucket
+2026-04-10T11:41:01 [INFO] sce.1_3.reactive — === [ROLLBACK] BEGIN ===
+2026-04-10T11:41:01 [INFO] sce.1_3.reactive — Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-10T11:41:01 [INFO] sce.1_3.reactive — [ROLLBACK] Deleting CloudFormation stack 'sce-experiment-1775813919' ...
+2026-04-10T11:41:02 [INFO] sce.1_3.reactive — Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-10T11:41:02 [INFO] sce.1_3.reactive —   Stack status: DELETE_IN_PROGRESS (poll 1)
+2026-04-10T11:41:18 [INFO] sce.1_3.reactive —   Stack status: DELETE_IN_PROGRESS (poll 2)
+2026-04-10T11:41:33 [INFO] sce.1_3.reactive —   Stack status: DELETE_IN_PROGRESS (poll 3)
+2026-04-10T11:41:49 [INFO] sce.1_3.reactive —   Stack status: DELETE_IN_PROGRESS (poll 4)
+2026-04-10T11:42:04 [INFO] sce.1_3.reactive —   Stack status: DELETE_IN_PROGRESS (poll 5)
+2026-04-10T11:42:20 [INFO] sce.1_3.reactive —   Stack status: DELETE_IN_PROGRESS (poll 6)
+2026-04-10T11:42:35 [INFO] sce.1_3.reactive —   Stack status: DELETE_IN_PROGRESS (poll 7)
+2026-04-10T11:42:51 [INFO] sce.1_3.reactive —   Stack status: DELETE_IN_PROGRESS (poll 8)
+2026-04-10T11:43:06 [INFO] sce.1_3.reactive —   Stack status: DELETE_IN_PROGRESS (poll 9)
+2026-04-10T11:43:22 [INFO] sce.1_3.reactive —   Stack status: DELETE_FAILED (poll 10)
+2026-04-10T11:43:22 [INFO] sce.1_3.reactive — Found credentials in shared credentials file: ~/.aws/credentials
+2026-04-10T11:43:22 [ERROR] sce.1_3.reactive — Stack 'sce-experiment-1775813919' entered failure state: DELETE_FAILED
+  Failed resources:
+  AWS::CloudFormation::Stack / DELETE_FAILED — The following resource(s) failed to delete: [CloudTrailBucket]. 
+  AWS::S3::Bucket / DELETE_FAILED — Resource handler returned message: "The bucket you tried to delete is not empty (Service: S3, Status Code: 409, Request ID: 2BM3WQ859EN07EZR, Extended Request ID: 6khwzwBaiJjHyDS5jV96TzqVq2jJXurRqSGOfREBpf04Lbd0rafnCCRy8L3Osb2MyLW8oY0vzyw=) (SDK Attempt Count: 1)" (RequestToken: 0b09b3b7-efbe-6b33-5052-80592bd2ea2a, HandlerErrorCode: GeneralServiceException)
+  AWS::CloudFormation::Stack / CREATE_FAILED — The following resource(s) failed to create: [BankingAppInstance]. 
+  AWS::EC2::Instance / CREATE_FAILED — Resource handler returned message: "No subnets found for the default VPC 'vpc-00bd1a657644bac9b'. Please specify a subnet. (Service: Ec2, Status Code: 400, Request ID: 66467405-18cb-4405-9a19-7b8c1b4c39e8) (SDK Attempt Count: 1)" (RequestToken: 5a326a8e-4c82-d328-6337-d0cc4baa97f7, HandlerErrorCode: InvalidRequest)
+2026-04-10T11:43:22 [ERROR] sce.1_3.reactive — [ROLLBACK] Stack 'sce-experiment-1775813919' did not reach DELETE_COMPLETE within SLA.
+[32m[2026-04-10 11:43:22 INFO] Experiment ended with status: deviated
+[32m[2026-04-10 11:43:22 INFO] The steady-state has deviated, a weakness may have been discovered
+
+
+RETURN CODE: 1

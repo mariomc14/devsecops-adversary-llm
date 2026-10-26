@@ -1,0 +1,51 @@
+STDOUT:
+[2026-03-31 17:33:41] [INFO] Starting steady_state: Creating CloudFormation stack
+[2026-03-31 17:33:42] [INFO] Creating CloudFormation stack: sce-experiment-1-4-1774971221
+[2026-03-31 17:33:42] [INFO] Waiting for CloudFormation stack creation to complete (this may take 3-5 minutes)...
+[2026-03-31 17:37:03] [INFO] CloudFormation stack created successfully
+[2026-03-31 17:37:03] [INFO] Test Role ARN: arn:aws:iam::396608802942:role/sce-experiment-1-4-1774971221-attacker-role
+[2026-03-31 17:37:03] [INFO] Instance ID: i-0572ee03e0f6540cd
+[2026-03-31 17:37:03] [INFO] Waiting for EC2 instance to reach running state...
+[2026-03-31 17:37:04] [INFO] EC2 instance is running
+[2026-03-31 17:37:04] [INFO] Waiting 60 seconds for IAM policy propagation...
+[2026-03-31 17:38:04] [INFO] Steady state preparation completed successfully
+[2026-03-31 17:38:04] [INFO] Starting attack: Attempting to modify instance metadata options
+[2026-03-31 17:38:04] [INFO] Executing: ModifyInstanceMetadataOptions on instance i-0572ee03e0f6540cd
+[2026-03-31 17:38:04] [INFO] Parameters: HttpTokens=optional, HttpPutResponseHopLimit=2
+[2026-03-31 17:38:05] [WARNING] WARNING: Attack succeeded - metadata options were modified!
+[2026-03-31 17:38:05] [WARNING] Response: {"InstanceId": "i-0572ee03e0f6540cd", "InstanceMetadataOptions": {"State": "pending", "HttpTokens": "optional", "HttpPutResponseHopLimit": 2, "HttpEndpoint": "enabled", "HttpProtocolIpv6": "disabled", "InstanceMetadataTags": "disabled"}, "ResponseMetadata": {"RequestId": "942a06c6-b9c9-45ee-ac39-a8b2a4a77349", "HTTPStatusCode": 200, "HTTPHeaders": {"x-amzn-requestid": "942a06c6-b9c9-45ee-ac39-a8b2a4a77349", "cache-control": "no-cache, no-store", "strict-transport-security": "max-age=31536000; includeSubDomains", "vary": "accept-encoding", "content-type": "text/xml;charset=UTF-8", "transfer-encoding": "chunked", "date": "Tue, 31 Mar 2026 15:38:01 GMT", "server": "AmazonEC2"}, "RetryAttempts": 0}}
+[2026-03-31 17:38:05] [INFO] Starting hypothesis verification: Checking preventive safeguard effectiveness
+[2026-03-31 17:38:05] [INFO] Retrieving current metadata options for instance i-0572ee03e0f6540cd
+[2026-03-31 17:38:05] [INFO] Current metadata options: {"State": "applied", "HttpTokens": "optional", "HttpPutResponseHopLimit": 2, "HttpEndpoint": "enabled", "HttpProtocolIpv6": "disabled", "InstanceMetadataTags": "disabled"}
+[2026-03-31 17:38:05] [INFO] HttpTokens: optional (expected: required)
+[2026-03-31 17:38:05] [INFO] HttpPutResponseHopLimit: 2 (expected: 1)
+[2026-03-31 17:38:05] [INFO] HttpEndpoint: enabled (expected: enabled)
+[2026-03-31 17:38:05] [ERROR] ✗ PREVENTIVE SAFEGUARD FAILED: IMDS configuration was modified
+[2026-03-31 17:38:05] [ERROR] ✗ Attack succeeded in weakening metadata service protections
+[2026-03-31 17:38:05] [INFO] Starting rollback: Deleting CloudFormation stack and all resources
+[2026-03-31 17:38:06] [INFO] Deleting CloudFormation stack: sce-experiment-1-4-1774971221
+[2026-03-31 17:38:06] [INFO] Waiting for CloudFormation stack deletion to complete...
+[2026-03-31 17:38:53] [INFO] CloudFormation stack deleted successfully
+[2026-03-31 17:38:53] [INFO] All experiment resources have been cleaned up
+
+
+STDERR:
+[32m[2026-03-31 17:33:41 INFO] Validating the experiment's syntax
+[32m[2026-03-31 17:33:41 INFO] Experiment looks valid
+[32m[2026-03-31 17:33:41 INFO] Running experiment: SCE Experiment 1.4 - Preventive Probe: IAM Permission Boundary Blocks IMDS Modification
+[32m[2026-03-31 17:33:41 INFO] Steady-state strategy: after-method-only
+[32m[2026-03-31 17:33:41 INFO] Rollbacks strategy: default
+[32m[2026-03-31 17:33:41 INFO] Playing your experiment's method now...
+[32m[2026-03-31 17:33:41 INFO] Action: deploy-ec2-instance-with-permission-boundary
+[32m[2026-03-31 17:38:04 INFO] Action: attempt-imds-weakening-attack
+[32m[2026-03-31 17:38:05 INFO] Steady state hypothesis: IMDS Configuration Remains Secure After Attack Attempt
+[32m[2026-03-31 17:38:05 INFO] Probe: verify-preventive-safeguard-blocked-imds-modification
+[31m[2026-03-31 17:38:05 CRITICAL] Steady state probe 'verify-preventive-safeguard-blocked-imds-modification' is not in the given tolerance so failing this experiment
+[32m[2026-03-31 17:38:05 INFO] Let's rollback...
+[32m[2026-03-31 17:38:05 INFO] Rollback: cleanup-all-experiment-resources
+[32m[2026-03-31 17:38:05 INFO] Action: cleanup-all-experiment-resources
+[32m[2026-03-31 17:38:53 INFO] Experiment ended with status: deviated
+[32m[2026-03-31 17:38:53 INFO] The steady-state has deviated, a weakness may have been discovered
+
+
+RETURN CODE: 1

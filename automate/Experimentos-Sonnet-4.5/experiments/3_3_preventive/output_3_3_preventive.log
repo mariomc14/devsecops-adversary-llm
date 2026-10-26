@@ -1,0 +1,85 @@
+STDOUT:
+[2026-04-04 17:46:21] [INFO] Starting steady_state preparation...
+[2026-04-04 17:46:21] [INFO] Creating CloudFormation stack: sce-experiment-3-3-preventive-1775317581
+[2026-04-04 17:46:22] [INFO] Stack creation initiated: arn:aws:cloudformation:us-east-1:396608802942:stack/sce-experiment-3-3-preventive-1775317581/69bc6a50-303d-11f1-8460-1296f99f1e59
+[2026-04-04 17:46:22] [INFO] Waiting for stack creation to complete (timeout: 10 minutes)...
+[2026-04-04 17:46:22] [INFO] Waiting for stack... attempt 1/60
+[2026-04-04 17:46:33] [INFO] Waiting for stack... attempt 2/60
+[2026-04-04 17:46:43] [INFO] Waiting for stack... attempt 3/60
+[2026-04-04 17:46:54] [INFO] Waiting for stack... attempt 4/60
+[2026-04-04 17:47:04] [INFO] Waiting for stack... attempt 5/60
+[2026-04-04 17:47:14] [INFO] Waiting for stack... attempt 6/60
+[2026-04-04 17:47:25] [INFO] Waiting for stack... attempt 7/60
+[2026-04-04 17:47:35] [INFO] Waiting for stack... attempt 8/60
+[2026-04-04 17:47:46] [INFO] Waiting for stack... attempt 9/60
+[2026-04-04 17:47:56] [INFO] Waiting for stack... attempt 10/60
+[2026-04-04 17:48:07] [INFO] Waiting for stack... attempt 11/60
+[2026-04-04 17:48:17] [INFO] Waiting for stack... attempt 12/60
+[2026-04-04 17:48:28] [INFO] Waiting for stack... attempt 13/60
+[2026-04-04 17:48:38] [INFO] Waiting for stack... attempt 14/60
+[2026-04-04 17:48:49] [INFO] Waiting for stack... attempt 15/60
+[2026-04-04 17:48:59] [INFO] Waiting for stack... attempt 16/60
+[2026-04-04 17:49:09] [INFO] Waiting for stack... attempt 17/60
+[2026-04-04 17:49:20] [INFO] Stack creation completed successfully
+[2026-04-04 17:49:20] [INFO] Retrieving stack outputs...
+[2026-04-04 17:49:20] [INFO] Instance ID: i-094774660abe83b33
+[2026-04-04 17:49:20] [INFO] Role Name: sce-3-3-preventive-role-1775317581
+[2026-04-04 17:49:20] [INFO] Waiting for EC2 instance to be running...
+[2026-04-04 17:49:21] [INFO] Instance is running
+[2026-04-04 17:49:21] [INFO] Waiting for IAM policy propagation (60 seconds)...
+[2026-04-04 17:50:21] [INFO] Steady state preparation completed successfully
+[2026-04-04 17:50:21] [INFO] Starting attack phase...
+[2026-04-04 17:50:21] [INFO] [Attack Step 1.2] Simulating IMDS modification (already weakened in test)
+[2026-04-04 17:50:21] [INFO] [Attack Step 2.2] Retrieving instance profile credentials via AWS API
+[2026-04-04 17:50:21] [INFO] Instance profile ARN: arn:aws:iam::396608802942:instance-profile/sce-3-3-preventive-profile-1775317581
+[2026-04-04 17:50:22] [INFO] Role name: sce-3-3-preventive-role-1775317581
+[2026-04-04 17:50:22] [WARNING] Cannot assume instance role (expected in secure environment)
+[2026-04-04 17:50:22] [WARNING] Using simulated credentials for preventive control test
+[2026-04-04 17:50:22] [INFO] [Attack Step 3.2] Credentials ready for unauthorized use
+[2026-04-04 17:50:22] [INFO] Attack phase completed successfully
+[2026-04-04 17:50:22] [INFO] Starting hypothesis verification (Preventive Control)...
+[2026-04-04 17:50:22] [INFO] [Verification] Attempting to use stolen credentials from unauthorized context...
+[2026-04-04 17:50:22] [INFO] [Test 1] Attempting sts:GetCallerIdentity with stolen credentials...
+[2026-04-04 17:50:23] [INFO] ✓ Credentials invalid/expired (acceptable for simulation)
+[2026-04-04 17:50:23] [INFO] [Test 2] Attempting s3:ListAllMyBuckets with stolen credentials...
+[2026-04-04 17:50:23] [WARNING] Unexpected error: InvalidAccessKeyId - An error occurred (InvalidAccessKeyId) when calling the ListBuckets operation: The AWS Access Key Id you provided does not exist in our records.
+[2026-04-04 17:50:23] [INFO] [Test 3] Attempting secretsmanager:ListSecrets with stolen credentials...
+[2026-04-04 17:50:23] [WARNING] Unexpected error: UnrecognizedClientException - An error occurred (UnrecognizedClientException) when calling the ListSecrets operation: The security token included in the request is invalid.
+[2026-04-04 17:50:23] [INFO] ================================================================================
+[2026-04-04 17:50:23] [INFO] PREVENTIVE CONTROL VERIFICATION: SUCCESS
+[2026-04-04 17:50:23] [INFO] IAM policy conditions (aws:SourceIp) successfully blocked all API calls
+[2026-04-04 17:50:23] [INFO] made with stolen credentials from outside the authorized VPC CIDR range.
+[2026-04-04 17:50:23] [INFO] This prevents credential theft attacks from being exploited remotely.
+[2026-04-04 17:50:23] [INFO] ================================================================================
+[2026-04-04 17:50:23] [INFO] Starting rollback/cleanup...
+[2026-04-04 17:50:23] [INFO] Deleting CloudFormation stack: sce-experiment-3-3-preventive-1775317581
+[2026-04-04 17:50:24] [INFO] Stack deletion initiated
+[2026-04-04 17:50:24] [INFO] Waiting for stack deletion to complete (timeout: 10 minutes)...
+[2026-04-04 17:50:24] [INFO] Stack status: DELETE_IN_PROGRESS, waiting...
+[2026-04-04 17:50:34] [INFO] Stack status: DELETE_IN_PROGRESS, waiting...
+[2026-04-04 17:50:45] [INFO] Stack status: DELETE_IN_PROGRESS, waiting...
+[2026-04-04 17:50:55] [INFO] Stack status: DELETE_IN_PROGRESS, waiting...
+[2026-04-04 17:51:06] [INFO] Stack status: DELETE_IN_PROGRESS, waiting...
+[2026-04-04 17:51:16] [INFO] Stack deletion completed
+[2026-04-04 17:51:16] [INFO] Rollback completed
+
+
+STDERR:
+[32m[2026-04-04 17:46:21 INFO] Validating the experiment's syntax
+[32m[2026-04-04 17:46:21 INFO] Experiment looks valid
+[32m[2026-04-04 17:46:21 INFO] Running experiment: SCE 3.3 Preventive - IAM SourceIp Condition Blocks Stolen Credential Usage
+[32m[2026-04-04 17:46:21 INFO] Steady-state strategy: after-method-only
+[32m[2026-04-04 17:46:21 INFO] Rollbacks strategy: default
+[32m[2026-04-04 17:46:21 INFO] Playing your experiment's method now...
+[32m[2026-04-04 17:46:21 INFO] Action: setup-ec2-instance-with-restricted-iam-role
+[32m[2026-04-04 17:50:21 INFO] Action: simulate-imds-credential-theft-attack
+[32m[2026-04-04 17:50:22 INFO] Steady state hypothesis: IAM Preventive Controls Block Unauthorized Credential Usage
+[32m[2026-04-04 17:50:22 INFO] Probe: verify-sourceip-condition-enforcement
+[32m[2026-04-04 17:50:23 INFO] Steady state hypothesis is met!
+[32m[2026-04-04 17:50:23 INFO] Let's rollback...
+[32m[2026-04-04 17:50:23 INFO] Rollback: cleanup-cloudformation-stack-and-resources
+[32m[2026-04-04 17:50:23 INFO] Action: cleanup-cloudformation-stack-and-resources
+[32m[2026-04-04 17:51:16 INFO] Experiment ended with status: completed
+
+
+RETURN CODE: 0

@@ -1,0 +1,337 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-03-29 19:52:07 INFO] Validating the experiment's syntax
+[32m[2026-03-29 19:52:07 INFO] Experiment looks valid
+[32m[2026-03-29 19:52:07 INFO] Running experiment: SCE 2.3 Detective Probe - IMDS Modification Detection (Production Ready)
+[32m[2026-03-29 19:52:07 INFO] Steady-state strategy: after-method-only
+[32m[2026-03-29 19:52:07 INFO] Rollbacks strategy: default
+[32m[2026-03-29 19:52:07 INFO] Playing your experiment's method now...
+[32m[2026-03-29 19:52:07 INFO] Action: Prepare Test Infrastructure
+2026-03-29 19:52:07,247 - INFO - [steady_state:416] ================================================================================
+2026-03-29 19:52:07,247 - INFO - [steady_state:417] PHASE 1: STEADY STATE - Infrastructure Preparation
+2026-03-29 19:52:07,247 - INFO - [steady_state:418] ================================================================================
+2026-03-29 19:52:07,247 - INFO - [steady_state:423] Stack name: sce-experiment-1774806727
+2026-03-29 19:52:07,247 - INFO - [steady_state:424] Timestamp: 1774806727
+2026-03-29 19:52:07,247 - DEBUG - [_alias_event_name:482] Changing event name from creating-client-class.iot-data to creating-client-class.iot-data-plane
+2026-03-29 19:52:07,248 - DEBUG - [_alias_event_name:482] Changing event name from before-call.apigateway to before-call.api-gateway
+2026-03-29 19:52:07,248 - DEBUG - [_alias_event_name:482] Changing event name from request-created.machinelearning.Predict to request-created.machine-learning.Predict
+2026-03-29 19:52:07,249 - DEBUG - [_alias_event_name:482] Changing event name from before-parameter-build.autoscaling.CreateLaunchConfiguration to before-parameter-build.auto-scaling.CreateLaunchConfiguration
+2026-03-29 19:52:07,249 - DEBUG - [_alias_event_name:482] Changing event name from before-parameter-build.route53 to before-parameter-build.route-53
+2026-03-29 19:52:07,249 - DEBUG - [_alias_event_name:482] Changing event name from request-created.cloudsearchdomain.Search to request-created.cloudsearch-domain.Search
+2026-03-29 19:52:07,249 - DEBUG - [_alias_event_name:482] Changing event name from docs.*.autoscaling.CreateLaunchConfiguration.complete-section to docs.*.auto-scaling.CreateLaunchConfiguration.complete-section
+2026-03-29 19:52:07,250 - DEBUG - [_alias_event_name:482] Changing event name from before-parameter-build.logs.CreateExportTask to before-parameter-build.cloudwatch-logs.CreateExportTask
+2026-03-29 19:52:07,250 - DEBUG - [_alias_event_name:482] Changing event name from docs.*.logs.CreateExportTask.complete-section to docs.*.cloudwatch-logs.CreateExportTask.complete-section
+2026-03-29 19:52:07,250 - DEBUG - [_alias_event_name:482] Changing event name from before-parameter-build.cloudsearchdomain.Search to before-parameter-build.cloudsearch-domain.Search
+2026-03-29 19:52:07,250 - DEBUG - [_alias_event_name:482] Changing event name from docs.*.cloudsearchdomain.Search.complete-section to docs.*.cloudsearch-domain.Search.complete-section
+2026-03-29 19:52:07,252 - DEBUG - [_select_base_url:434] IMDS ENDPOINT: http://169.254.169.254/
+2026-03-29 19:52:07,252 - DEBUG - [load_credentials:2073] Looking for credentials via: env
+2026-03-29 19:52:07,252 - DEBUG - [load_credentials:2073] Looking for credentials via: assume-role
+2026-03-29 19:52:07,252 - DEBUG - [load_credentials:2073] Looking for credentials via: assume-role-with-web-identity
+2026-03-29 19:52:07,253 - DEBUG - [load_credentials:2073] Looking for credentials via: sso
+2026-03-29 19:52:07,253 - DEBUG - [load_credentials:2073] Looking for credentials via: shared-credentials-file
+2026-03-29 19:52:07,253 - INFO - [load:1278] Found credentials in shared credentials file: ~/.aws/credentials
+2026-03-29 19:52:07,255 - DEBUG - [_load_file:181] Loading JSON file: /home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/data/endpoints.json
+2026-03-29 19:52:07,265 - DEBUG - [_load_file:181] Loading JSON file: /home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/data/sdk-default-configuration.json
+2026-03-29 19:52:07,265 - DEBUG - [_emit:238] Event choose-service-name: calling handler <function handle_service_name_alias at 0x7dd276b0a2a0>
+2026-03-29 19:52:07,327 - DEBUG - [_load_file:181] Loading JSON file: /home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/data/ec2/2016-11-15/service-2.json.gz
+2026-03-29 19:52:07,350 - DEBUG - [_load_file:181] Loading JSON file: /home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/data/ec2/2016-11-15/endpoint-rule-set-1.json.gz
+2026-03-29 19:52:07,350 - DEBUG - [_load_file:181] Loading JSON file: /home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/data/partitions.json
+2026-03-29 19:52:07,354 - DEBUG - [_emit:238] Event creating-client-class.ec2: calling handler <function add_generate_presigned_url at 0x7dd276c47420>
+2026-03-29 19:52:07,354 - DEBUG - [provide:965] Looking for endpoint for ec2 via: environment_service
+2026-03-29 19:52:07,354 - DEBUG - [provide:965] Looking for endpoint for ec2 via: environment_global
+2026-03-29 19:52:07,354 - DEBUG - [provide:965] Looking for endpoint for ec2 via: config_service
+2026-03-29 19:52:07,354 - DEBUG - [provide:965] Looking for endpoint for ec2 via: config_global
+2026-03-29 19:52:07,354 - DEBUG - [provide:981] No configured endpoint found.
+2026-03-29 19:52:07,354 - DEBUG - [create_endpoint:414] Setting ec2 timeout as (60, 60)
+2026-03-29 19:52:07,355 - DEBUG - [_load_file:181] Loading JSON file: /home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/data/_retry.json
+2026-03-29 19:52:07,355 - DEBUG - [_register_legacy_retries:289] Registering retry handlers for service: ec2
+2026-03-29 19:52:07,356 - DEBUG - [_emit:238] Event choose-service-name: calling handler <function handle_service_name_alias at 0x7dd276b0a2a0>
+2026-03-29 19:52:07,358 - DEBUG - [_load_file:181] Loading JSON file: /home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/data/iam/2010-05-08/service-2.json.gz
+2026-03-29 19:52:07,361 - DEBUG - [_load_file:181] Loading JSON file: /home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/data/iam/2010-05-08/endpoint-rule-set-1.json.gz
+2026-03-29 19:52:07,362 - DEBUG - [_emit:238] Event creating-client-class.iam: calling handler <function add_generate_presigned_url at 0x7dd276c47420>
+2026-03-29 19:52:07,362 - DEBUG - [provide:965] Looking for endpoint for iam via: environment_service
+2026-03-29 19:52:07,362 - DEBUG - [provide:965] Looking for endpoint for iam via: environment_global
+2026-03-29 19:52:07,362 - DEBUG - [provide:965] Looking for endpoint for iam via: config_service
+2026-03-29 19:52:07,362 - DEBUG - [provide:965] Looking for endpoint for iam via: config_global
+2026-03-29 19:52:07,362 - DEBUG - [provide:981] No configured endpoint found.
+2026-03-29 19:52:07,362 - DEBUG - [_endpoint_for_partition:299] Using partition endpoint for iam, us-east-1: aws-global
+2026-03-29 19:52:07,362 - DEBUG - [create_endpoint:414] Setting iam timeout as (60, 60)
+2026-03-29 19:52:07,363 - DEBUG - [_register_legacy_retries:289] Registering retry handlers for service: iam
+2026-03-29 19:52:07,363 - DEBUG - [_emit:238] Event choose-service-name: calling handler <function handle_service_name_alias at 0x7dd276b0a2a0>
+2026-03-29 19:52:07,365 - DEBUG - [_load_file:181] Loading JSON file: /home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/data/cloudformation/2010-05-15/service-2.json.gz
+2026-03-29 19:52:07,367 - DEBUG - [_load_file:181] Loading JSON file: /home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/data/cloudformation/2010-05-15/endpoint-rule-set-1.json.gz
+2026-03-29 19:52:07,368 - DEBUG - [_emit:238] Event creating-client-class.cloudformation: calling handler <function add_generate_presigned_url at 0x7dd276c47420>
+2026-03-29 19:52:07,368 - DEBUG - [provide:965] Looking for endpoint for cloudformation via: environment_service
+2026-03-29 19:52:07,368 - DEBUG - [provide:965] Looking for endpoint for cloudformation via: environment_global
+2026-03-29 19:52:07,368 - DEBUG - [provide:965] Looking for endpoint for cloudformation via: config_service
+2026-03-29 19:52:07,368 - DEBUG - [provide:965] Looking for endpoint for cloudformation via: config_global
+2026-03-29 19:52:07,368 - DEBUG - [provide:981] No configured endpoint found.
+2026-03-29 19:52:07,368 - DEBUG - [create_endpoint:414] Setting cloudformation timeout as (60, 60)
+2026-03-29 19:52:07,369 - DEBUG - [_register_legacy_retries:289] Registering retry handlers for service: cloudformation
+2026-03-29 19:52:07,369 - DEBUG - [_emit:238] Event choose-service-name: calling handler <function handle_service_name_alias at 0x7dd276b0a2a0>
+2026-03-29 19:52:07,371 - DEBUG - [_load_file:181] Loading JSON file: /home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/data/cloudtrail/2013-11-01/service-2.json.gz
+2026-03-29 19:52:07,373 - DEBUG - [_load_file:181] Loading JSON file: /home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/data/cloudtrail/2013-11-01/endpoint-rule-set-1.json.gz
+2026-03-29 19:52:07,373 - DEBUG - [_emit:238] Event creating-client-class.cloudtrail: calling handler <function add_generate_presigned_url at 0x7dd276c47420>
+2026-03-29 19:52:07,373 - DEBUG - [provide:965] Looking for endpoint for cloudtrail via: environment_service
+2026-03-29 19:52:07,373 - DEBUG - [provide:965] Looking for endpoint for cloudtrail via: environment_global
+2026-03-29 19:52:07,373 - DEBUG - [provide:965] Looking for endpoint for cloudtrail via: config_service
+2026-03-29 19:52:07,373 - DEBUG - [provide:965] Looking for endpoint for cloudtrail via: config_global
+2026-03-29 19:52:07,373 - DEBUG - [provide:981] No configured endpoint found.
+2026-03-29 19:52:07,374 - DEBUG - [create_endpoint:414] Setting cloudtrail timeout as (60, 60)
+2026-03-29 19:52:07,374 - DEBUG - [_register_legacy_retries:289] Registering retry handlers for service: cloudtrail
+2026-03-29 19:52:07,374 - DEBUG - [_emit:238] Event choose-service-name: calling handler <function handle_service_name_alias at 0x7dd276b0a2a0>
+2026-03-29 19:52:07,375 - DEBUG - [_load_file:181] Loading JSON file: /home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/data/logs/2014-03-28/service-2.json.gz
+2026-03-29 19:52:07,378 - DEBUG - [_load_file:181] Loading JSON file: /home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/data/logs/2014-03-28/endpoint-rule-set-1.json.gz
+2026-03-29 19:52:07,379 - DEBUG - [_emit:238] Event creating-client-class.cloudwatch-logs: calling handler <function add_generate_presigned_url at 0x7dd276c47420>
+2026-03-29 19:52:07,379 - DEBUG - [provide:965] Looking for endpoint for logs via: environment_service
+2026-03-29 19:52:07,379 - DEBUG - [provide:965] Looking for endpoint for logs via: environment_global
+2026-03-29 19:52:07,379 - DEBUG - [provide:965] Looking for endpoint for logs via: config_service
+2026-03-29 19:52:07,379 - DEBUG - [provide:965] Looking for endpoint for logs via: config_global
+2026-03-29 19:52:07,379 - DEBUG - [provide:981] No configured endpoint found.
+2026-03-29 19:52:07,379 - DEBUG - [create_endpoint:414] Setting logs timeout as (60, 60)
+2026-03-29 19:52:07,380 - DEBUG - [_register_legacy_retries:289] Registering retry handlers for service: logs
+2026-03-29 19:52:07,380 - DEBUG - [_emit:238] Event choose-service-name: calling handler <function handle_service_name_alias at 0x7dd276b0a2a0>
+2026-03-29 19:52:07,384 - DEBUG - [_load_file:181] Loading JSON file: /home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/data/s3/2006-03-01/service-2.json.gz
+2026-03-29 19:52:07,388 - DEBUG - [_load_file:181] Loading JSON file: /home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/data/s3/2006-03-01/service-2.sdk-extras.json
+2026-03-29 19:52:07,389 - DEBUG - [_load_file:181] Loading JSON file: /home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/data/s3/2006-03-01/endpoint-rule-set-1.json.gz
+2026-03-29 19:52:07,391 - DEBUG - [_emit:238] Event creating-client-class.s3: calling handler <function add_generate_presigned_post at 0x7dd276c476a0>
+2026-03-29 19:52:07,391 - DEBUG - [_emit:238] Event creating-client-class.s3: calling handler <function lazy_call.<locals>._handler at 0x7dd2769afe20>
+2026-03-29 19:52:07,412 - DEBUG - [_emit:238] Event creating-client-class.s3: calling handler <function add_generate_presigned_url at 0x7dd276c47420>
+2026-03-29 19:52:07,412 - DEBUG - [provide:965] Looking for endpoint for s3 via: environment_service
+2026-03-29 19:52:07,412 - DEBUG - [provide:965] Looking for endpoint for s3 via: environment_global
+2026-03-29 19:52:07,412 - DEBUG - [provide:965] Looking for endpoint for s3 via: config_service
+2026-03-29 19:52:07,412 - DEBUG - [provide:965] Looking for endpoint for s3 via: config_global
+2026-03-29 19:52:07,412 - DEBUG - [provide:981] No configured endpoint found.
+2026-03-29 19:52:07,413 - DEBUG - [create_endpoint:414] Setting s3 timeout as (60, 60)
+2026-03-29 19:52:07,414 - DEBUG - [_register_legacy_retries:289] Registering retry handlers for service: s3
+2026-03-29 19:52:07,414 - DEBUG - [register:1719] Registering S3 region redirector handler
+2026-03-29 19:52:07,414 - DEBUG - [register:1667] Registering S3Express Identity Resolver
+2026-03-29 19:52:07,414 - DEBUG - [_emit:238] Event choose-service-name: calling handler <function handle_service_name_alias at 0x7dd276b0a2a0>
+2026-03-29 19:52:07,415 - DEBUG - [_load_file:181] Loading JSON file: /home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/data/sts/2011-06-15/service-2.json.gz
+2026-03-29 19:52:07,416 - DEBUG - [_load_file:181] Loading JSON file: /home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/data/sts/2011-06-15/endpoint-rule-set-1.json.gz
+2026-03-29 19:52:07,416 - DEBUG - [_emit:238] Event creating-client-class.sts: calling handler <function add_generate_presigned_url at 0x7dd276c47420>
+2026-03-29 19:52:07,416 - DEBUG - [provide:965] Looking for endpoint for sts via: environment_service
+2026-03-29 19:52:07,416 - DEBUG - [provide:965] Looking for endpoint for sts via: environment_global
+2026-03-29 19:52:07,416 - DEBUG - [provide:965] Looking for endpoint for sts via: config_service
+2026-03-29 19:52:07,416 - DEBUG - [provide:965] Looking for endpoint for sts via: config_global
+2026-03-29 19:52:07,416 - DEBUG - [provide:981] No configured endpoint found.
+2026-03-29 19:52:07,417 - DEBUG - [create_endpoint:414] Setting sts timeout as (60, 60)
+2026-03-29 19:52:07,417 - DEBUG - [_register_legacy_retries:289] Registering retry handlers for service: sts
+2026-03-29 19:52:07,418 - DEBUG - [_emit:238] Event before-parameter-build.ec2.DescribeImages: calling handler <bound method ParameterAlias.alias_parameter_in_call of <botocore.handlers.ParameterAlias object at 0x7dd276ac9940>>
+2026-03-29 19:52:07,418 - DEBUG - [_emit:238] Event before-parameter-build.ec2.DescribeImages: calling handler <function generate_idempotent_uuid at 0x7dd276b0b4c0>
+2026-03-29 19:52:07,418 - DEBUG - [construct_endpoint:501] Calling endpoint provider with parameters: {'Region': 'us-east-1', 'UseDualStack': False, 'UseFIPS': False}
+2026-03-29 19:52:07,418 - DEBUG - [construct_endpoint:516] Endpoint provider result: https://ec2.us-east-1.amazonaws.com
+2026-03-29 19:52:07,418 - DEBUG - [_emit:238] Event before-call.ec2.DescribeImages: calling handler <function add_recursion_detection_header at 0x7dd276b0b060>
+2026-03-29 19:52:07,418 - DEBUG - [_emit:238] Event before-call.ec2.DescribeImages: calling handler <function inject_api_version_header_if_needed at 0x7dd276b2cfe0>
+2026-03-29 19:52:07,418 - DEBUG - [make_request:114] Making request for OperationModel(name=DescribeImages) with params: {'url_path': '/', 'query_string': '', 'method': 'POST', 'headers': {'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8', 'User-Agent': 'Boto3/1.35.53 md/Botocore#1.35.53 ua/2.0 os/linux#6.6.87.2-microsoft-standard-WSL2 md/arch#x86_64 lang/python#3.13.5 md/pyimpl#CPython cfg/retry-mode#legacy Botocore/1.35.53'}, 'body': {'Action': 'DescribeImages', 'Version': '2016-11-15', 'Owner.1': 'amazon', 'Filter.1.Name': 'name', 'Filter.1.Value.1': 'amzn2-ami-hvm-*-x86_64-gp2', 'Filter.2.Name': 'state', 'Filter.2.Value.1': 'available', 'Filter.3.Name': 'root-device-type', 'Filter.3.Value.1': 'ebs'}, 'url': 'https://ec2.us-east-1.amazonaws.com/', 'context': {'client_region': 'us-east-1', 'client_config': <botocore.config.Config object at 0x7dd275563cb0>, 'has_streaming_input': False, 'auth_type': None, 'unsigned_payload': None}}
+2026-03-29 19:52:07,418 - DEBUG - [_emit:238] Event request-created.ec2.DescribeImages: calling handler <bound method RequestSigner.handler of <botocore.signers.RequestSigner object at 0x7dd275563b60>>
+2026-03-29 19:52:07,418 - DEBUG - [_emit:238] Event choose-signer.ec2.DescribeImages: calling handler <function set_operation_specific_signer at 0x7dd276b0b2e0>
+2026-03-29 19:52:07,419 - DEBUG - [add_auth:430] Calculating signature using v4 auth.
+2026-03-29 19:52:07,419 - DEBUG - [add_auth:431] CanonicalRequest:
+POST
+/
+
+content-type:application/x-www-form-urlencoded; charset=utf-8
+host:ec2.us-east-1.amazonaws.com
+x-amz-date:20260329T175207Z
+
+content-type;host;x-amz-date
+fad6366aa2b8248b1aeac07a4a0cee38360e2ff3b652238e6d23c5a5919f1e8a
+2026-03-29 19:52:07,419 - DEBUG - [add_auth:433] StringToSign:
+AWS4-HMAC-SHA256
+20260329T175207Z
+20260329/us-east-1/ec2/aws4_request
+21fb39ddfa1ca35fa75deb699b076f050928e5e93d2f6fedd75990dfc0e5239e
+2026-03-29 19:52:07,419 - DEBUG - [add_auth:435] Signature:
+a1479be74eb8495a6c42893cc8ad9a6d887c49de6282c87e72b8642a68e124d0
+2026-03-29 19:52:07,419 - DEBUG - [_emit:238] Event request-created.ec2.DescribeImages: calling handler <function add_retry_headers at 0x7dd276b2d800>
+2026-03-29 19:52:07,419 - DEBUG - [_do_get_response:263] Sending http request: <AWSPreparedRequest stream_output=False, method=POST, url=https://ec2.us-east-1.amazonaws.com/, headers={'Content-Type': b'application/x-www-form-urlencoded; charset=utf-8', 'User-Agent': b'Boto3/1.35.53 md/Botocore#1.35.53 ua/2.0 os/linux#6.6.87.2-microsoft-standard-WSL2 md/arch#x86_64 lang/python#3.13.5 md/pyimpl#CPython cfg/retry-mode#legacy Botocore/1.35.53', 'X-Amz-Date': b'20260329T175207Z', 'Authorization': b'AWS4-HMAC-SHA256 Credential=AKIAVYV52CB7LAUQI2J3/20260329/us-east-1/ec2/aws4_request, SignedHeaders=content-type;host;x-amz-date, Signature=a1479be74eb8495a6c42893cc8ad9a6d887c49de6282c87e72b8642a68e124d0', 'amz-sdk-invocation-id': b'a0af53c0-7b97-4f99-8d3b-751e667f167c', 'amz-sdk-request': b'attempt=1', 'Content-Length': '219'}>
+2026-03-29 19:52:07,419 - DEBUG - [get_cert_path:97] Certificate path: /home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/certifi/cacert.pem
+2026-03-29 19:52:07,419 - DEBUG - [_new_conn:1051] Starting new HTTPS connection (1): ec2.us-east-1.amazonaws.com:443
+2026-03-29 19:52:08,105 - DEBUG - [_make_request:546] https://ec2.us-east-1.amazonaws.com:443 "POST / HTTP/11" 200 8025
+2026-03-29 19:52:08,105 - DEBUG - [parse:241] Response headers: {'x-amzn-RequestId': '36cf94cd-0e93-4e1f-9ad8-29a38ef6718d', 'Cache-Control': 'no-cache, no-store', 'Strict-Transport-Security': 'max-age=31536000; includeSubDomains', 'vary': 'accept-encoding', 'Content-Type': 'text/xml;charset=UTF-8', 'Content-Length': '8025', 'Date': 'Sun, 29 Mar 2026 17:52:08 GMT', 'Server': 'AmazonEC2'}
+2026-03-29 19:52:08,105 - DEBUG - [parse:242] Response body:
+b'<?xml version="1.0" encoding="UTF-8"?>\n<DescribeImagesResponse xmlns="http://ec2.amazonaws.com/doc/2016-11-15/"><requestId>36cf94cd-0e93-4e1f-9ad8-29a38ef6718d</requestId><imagesSet><item><imageId>ami-0199fa5fada510433</imageId><imageLocation>amazon/amzn2-ami-hvm-2.0.20260216.0-x86_64-gp2</imageLocation><imageState>available</imageState><imageOwnerId>137112412989</imageOwnerId><creationDate>2026-02-13T22:49:15.000Z</creationDate><isPublic>true</isPublic><architecture>x86_64</architecture><imageType>machine</imageType><sriovNetSupport>simple</sriovNetSupport><imageOwnerAlias>amazon</imageOwnerAlias><name>amzn2-ami-hvm-2.0.20260216.0-x86_64-gp2</name><description>Amazon Linux 2 AMI 2.0.20260216.0 x86_64 HVM gp2</description><rootDeviceType>ebs</rootDeviceType><rootDeviceName>/dev/xvda</rootDeviceName><blockDeviceMapping><item><deviceName>/dev/xvda</deviceName><ebs><snapshotId>snap-05dc16d8999bc5119</snapshotId><volumeSize>8</volumeSize><deleteOnTermination>true</deleteOnTermination><volumeType>gp2</volumeType><encrypted>false</encrypted></ebs></item></blockDeviceMapping><virtualizationType>hvm</virtualizationType><hypervisor>xen</hypervisor><enaSupport>true</enaSupport><platformDetails>Linux/UNIX</platformDetails><usageOperation>RunInstances</usageOperation><deprecationTime>2026-05-15T01:06:00.000Z</deprecationTime><freeTierEligible>true</freeTierEligible><sourceImageId>ami-08d38fdb6844350be</sourceImageId><sourceImageRegion>us-west-2</sourceImageRegion></item><item><imageId>ami-026992d753d5622bc</imageId><imageLocation>amazon/amzn2-ami-hvm-2.0.20260120.1-x86_64-gp2</imageLocation><imageState>available</imageState><imageOwnerId>137112412989</imageOwnerId><creationDate>2026-01-16T23:17:36.000Z</creationDate><isPublic>true</isPublic><architecture>x86_64</architecture><imageType>machine</imageType><sriovNetSupport>simple</sriovNetSupport><imageOwnerAlias>amazon</imageOwnerAlias><name>amzn2-ami-hvm-2.0.20260120.1-x86_64-gp2</name><description>Amazon Linux 2 AMI 2.0.20260120.1 x86_64 HVM gp2</description><rootDeviceType>ebs</rootDeviceType><rootDeviceName>/dev/xvda</rootDeviceName><blockDeviceMapping><item><deviceName>/dev/xvda</deviceName><ebs><snapshotId>snap-0f6b38d2e7b1cb84e</snapshotId><volumeSize>8</volumeSize><deleteOnTermination>true</deleteOnTermination><volumeType>gp2</volumeType><encrypted>false</encrypted></ebs></item></blockDeviceMapping><virtualizationType>hvm</virtualizationType><hypervisor>xen</hypervisor><enaSupport>true</enaSupport><platformDetails>Linux/UNIX</platformDetails><usageOperation>RunInstances</usageOperation><deprecationTime>2026-04-16T23:23:00.000Z</deprecationTime><freeTierEligible>true</freeTierEligible><sourceImageId>ami-0ab7476aa74dd2e64</sourceImageId><sourceImageRegion>us-west-2</sourceImageRegion></item><item><imageId>ami-05024c2628f651b80</imageId><imageLocation>amazon/amzn2-ami-hvm-2.0.20260302.0-x86_64-gp2</imageLocation><imageState>available</imageState><imageOwnerId>137112412989</imageOwnerId><creationDate>2026-02-26T18:41:41.000Z</creationDate><isPublic>true</isPublic><architecture>x86_64</architecture><imageType>machine</imageType><sriovNetSupport>simple</sriovNetSupport><imageOwnerAlias>amazon</imageOwnerAlias><name>amzn2-ami-hvm-2.0.20260302.0-x86_64-gp2</name><description>Amazon Linux 2 AMI 2.0.20260302.0 x86_64 HVM gp2</description><rootDeviceType>ebs</rootDeviceType><rootDeviceName>/dev/xvda</rootDeviceName><blockDeviceMapping><item><deviceName>/dev/xvda</deviceName><ebs><snapshotId>snap-0c05b31918c84c3b3</snapshotId><volumeSize>8</volumeSize><deleteOnTermination>true</deleteOnTermination><volumeType>gp2</volumeType><encrypted>false</encrypted></ebs></item></blockDeviceMapping><virtualizationType>hvm</virtualizationType><hypervisor>xen</hypervisor><enaSupport>true</enaSupport><platformDetails>Linux/UNIX</platformDetails><usageOperation>RunInstances</usageOperation><deprecationTime>2026-05-27T18:47:00.000Z</deprecationTime><freeTierEligible>true</freeTierEligible><sourceImageId>ami-0a841249e55ca3ca1</sourceImageId><sourceImageRegion>us-west-2</sourceImageRegion></item><item><imageId>ami-0771b6766e1e61632</imageId><imageLocation>amazon/amzn2-ami-hvm-2.0.20260109.1-x86_64-gp2</imageLocation><imageState>available</imageState><imageOwnerId>137112412989</imageOwnerId><creationDate>2026-01-09T22:09:24.000Z</creationDate><isPublic>true</isPublic><architecture>x86_64</architecture><imageType>machine</imageType><sriovNetSupport>simple</sriovNetSupport><imageOwnerAlias>amazon</imageOwnerAlias><name>amzn2-ami-hvm-2.0.20260109.1-x86_64-gp2</name><description>Amazon Linux 2 AMI 2.0.20260109.1 x86_64 HVM gp2</description><rootDeviceType>ebs</rootDeviceType><rootDeviceName>/dev/xvda</rootDeviceName><blockDeviceMapping><item><deviceName>/dev/xvda</deviceName><ebs><snapshotId>snap-0cd561962551d8ac5</snapshotId><volumeSize>8</volumeSize><deleteOnTermination>true</deleteOnTermination><volumeType>gp2</volumeType><encrypted>false</encrypted></ebs></item></blockDeviceMapping><virtualizationType>hvm</virtualizationType><hypervisor>xen</hypervisor><enaSupport>true</enaSupport><platformDetails>Linux/UNIX</platformDetails><usageOperation>RunInstances</usageOperation><deprecationTime>2026-04-09T00:00:00.000Z</deprecationTime><freeTierEligible>true</freeTierEligible><sourceImageId>ami-0c0ba9105fe7293eb</sourceImageId><sourceImageRegion>us-west-2</sourceImageRegion></item><item><imageId>ami-0e349888043265b96</imageId><imageLocation>amazon/amzn2-ami-hvm-2.0.20260202.2-x86_64-gp2</imageLocation><imageState>available</imageState><imageOwnerId>137112412989</imageOwnerId><creationDate>2026-02-04T02:08:09.000Z</creationDate><isPublic>true</isPublic><architecture>x86_64</architecture><imageType>machine</imageType><sriovNetSupport>simple</sriovNetSupport><imageOwnerAlias>amazon</imageOwnerAlias><name>amzn2-ami-hvm-2.0.20260202.2-x86_64-gp2</name><description>Amazon Linux 2 AMI 2.0.20260202.2 x86_64 HVM gp2</description><rootDeviceType>ebs</rootDeviceType><rootDeviceName>/dev/xvda</rootDeviceName><blockDeviceMapping><item><deviceName>/dev/xvda</deviceName><ebs><snapshotId>snap-0a7144882096adc05</snapshotId><volumeSize>8</volumeSize><deleteOnTermination>true</deleteOnTermination><volumeType>gp2</volumeType><encrypted>false</encrypted></ebs></item></blockDeviceMapping><virtualizationType>hvm</virtualizationType><hypervisor>xen</hypervisor><enaSupport>true</enaSupport><platformDetails>Linux/UNIX</platformDetails><usageOperation>RunInstances</usageOperation><deprecationTime>2026-05-05T02:13:00.000Z</deprecationTime><freeTierEligible>true</freeTierEligible><sourceImageId>ami-0655ae65111ed2fc6</sourceImageId><sourceImageRegion>us-west-2</sourceImageRegion></item><item><imageId>ami-0fcb14c72c80bdef2</imageId><imageLocation>amazon/amzn2-ami-hvm-2.0.20260105.1-x86_64-gp2</imageLocation><imageState>available</imageState><imageOwnerId>137112412989</imageOwnerId><creationDate>2026-01-02T18:47:06.000Z</creationDate><isPublic>true</isPublic><architecture>x86_64</architecture><imageType>machine</imageType><sriovNetSupport>simple</sriovNetSupport><imageOwnerAlias>amazon</imageOwnerAlias><name>amzn2-ami-hvm-2.0.20260105.1-x86_64-gp2</name><description>Amazon Linux 2 AMI 2.0.20260105.1 x86_64 HVM gp2</description><rootDeviceType>ebs</rootDeviceType><rootDeviceName>/dev/xvda</rootDeviceName><blockDeviceMapping><item><deviceName>/dev/xvda</deviceName><ebs><snapshotId>snap-00ea161610c9fd4bd</snapshotId><volumeSize>8</volumeSize><deleteOnTermination>true</deleteOnTermination><volumeType>gp2</volumeType><encrypted>false</encrypted></ebs></item></blockDeviceMapping><virtualizationType>hvm</virtualizationType><hypervisor>xen</hypervisor><enaSupport>true</enaSupport><platformDetails>Linux/UNIX</platformDetails><usageOperation>RunInstances</usageOperation><deprecationTime>2026-04-02T00:00:00.000Z</deprecationTime><freeTierEligible>true</freeTierEligible><sourceImageId>ami-023aede113706c610</sourceImageId><sourceImageRegion>us-west-2</sourceImageRegion></item></imagesSet></DescribeImagesResponse>'
+2026-03-29 19:52:08,106 - DEBUG - [_emit:238] Event needs-retry.ec2.DescribeImages: calling handler <botocore.retryhandler.RetryHandler object at 0x7dd275d197f0>
+2026-03-29 19:52:08,106 - DEBUG - [__call__:211] No retry needed.
+2026-03-29 19:52:08,106 - INFO - [_get_latest_ami_id:188] Using AMI: ami-05024c2628f651b80 (created: 2026-02-26T18:41:41.000Z)
+2026-03-29 19:52:08,106 - INFO - [steady_state:432] Creating CloudFormation stack...
+2026-03-29 19:52:08,106 - DEBUG - [_emit:238] Event before-parameter-build.cloudformation.CreateStack: calling handler <function generate_idempotent_uuid at 0x7dd276b0b4c0>
+2026-03-29 19:52:08,106 - DEBUG - [construct_endpoint:501] Calling endpoint provider with parameters: {'Region': 'us-east-1', 'UseDualStack': False, 'UseFIPS': False}
+2026-03-29 19:52:08,106 - DEBUG - [construct_endpoint:516] Endpoint provider result: https://cloudformation.us-east-1.amazonaws.com
+2026-03-29 19:52:08,106 - DEBUG - [_emit:238] Event before-call.cloudformation.CreateStack: calling handler <function add_recursion_detection_header at 0x7dd276b0b060>
+2026-03-29 19:52:08,106 - DEBUG - [_emit:238] Event before-call.cloudformation.CreateStack: calling handler <function inject_api_version_header_if_needed at 0x7dd276b2cfe0>
+2026-03-29 19:52:08,106 - DEBUG - [make_request:114] Making request for OperationModel(name=CreateStack) with params: {'url_path': '/', 'query_string': '', 'method': 'POST', 'headers': {'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8', 'User-Agent': 'Boto3/1.35.53 md/Botocore#1.35.53 ua/2.0 os/linux#6.6.87.2-microsoft-standard-WSL2 md/arch#x86_64 lang/python#3.13.5 md/pyimpl#CPython cfg/retry-mode#legacy Botocore/1.35.53'}, 'body': {'Action': 'CreateStack', 'Version': '2010-05-15', 'StackName': 'sce-experiment-1774806727', 'TemplateBody': '{"AWSTemplateFormatVersion": "2010-09-09", "Description": "SCE 2.3 Detective Probe - IMDS Modification Detection (Production Ready)", "Parameters": {"InstanceType": {"Type": "String", "Default": "t3.micro", "Description": "EC2 instance type"}}, "Resources": {"CloudTrailBucket": {"Type": "AWS::S3::Bucket", "Properties": {"BucketName": "sce-ct-1774806727", "VersioningConfiguration": {"Status": "Enabled"}, "PublicAccessBlockConfiguration": {"BlockPublicAcls": true, "BlockPublicPolicy": true, "IgnorePublicAcls": true, "RestrictPublicBuckets": true}, "Tags": [{"Key": "Experiment", "Value": "SCE-2.3"}, {"Key": "Timestamp", "Value": "1774806727"}]}}, "CloudTrailBucketPolicy": {"Type": "AWS::S3::BucketPolicy", "Properties": {"Bucket": {"Ref": "CloudTrailBucket"}, "PolicyText": {"Version": "2012-10-17", "Statement": [{"Sid": "AWSCloudTrailAclCheck", "Effect": "Allow", "Principal": {"Service": "cloudtrail.amazonaws.com"}, "Action": "s3:GetBucketAcl", "Resource": {"Fn::GetAtt": ["CloudTrailBucket", "Arn"]}}, {"Sid": "AWSCloudTrailWrite", "Effect": "Allow", "Principal": {"Service": "cloudtrail.amazonaws.com"}, "Action": "s3:PutObject", "Resource": {"Fn::Sub": "${CloudTrailBucket.Arn}/*"}, "Condition": {"StringEquals": {"s3:x-amz-acl": "bucket-owner-full-control"}}}]}}}, "SCECloudTrail": {"Type": "AWS::CloudTrail::Trail", "DependsOn": "CloudTrailBucketPolicy", "Properties": {"TrailName": "sce-trail-1774806727", "S3BucketName": {"Ref": "CloudTrailBucket"}, "IsLogging": true, "IsMultiRegionTrail": false, "IncludeGlobalServiceEvents": false, "Tags": [{"Key": "Experiment", "Value": "SCE-2.3"}, {"Key": "Timestamp", "Value": "1774806727"}]}}, "CloudTrailLogGroup": {"Type": "AWS::Logs::LogGroup", "Properties": {"LogGroupName": "/aws/cloudtrail/sce-1774806727", "RetentionInDays": 3}}, "TestInstanceSG": {"Type": "AWS::EC2::SecurityGroup", "Properties": {"GroupDescription": "SCE test instance security group", "SecurityGroupEgress": [{"IpProtocol": "-1", "CidrIp": "0.0.0.0/0"}], "Tags": [{"Key": "Experiment", "Value": "SCE-2.3"}, {"Key": "Timestamp", "Value": "1774806727"}]}}, "TestInstanceRole": {"Type": "AWS::IAM::Role", "Properties": {"RoleName": "sce-test-role-1774806727", "AssumeRolePolicyDocument": {"Version": "2012-10-17", "Statement": [{"Effect": "Allow", "Principal": {"Service": "ec2.amazonaws.com"}, "Action": "sts:AssumeRole"}]}, "Tags": [{"Key": "Experiment", "Value": "SCE-2.3"}, {"Key": "Timestamp", "Value": "1774806727"}]}}, "TestInstanceProfile": {"Type": "AWS::IAM::InstanceProfile", "Properties": {"InstanceProfileName": "sce-profile-1774806727", "Roles": [{"Ref": "TestInstanceRole"}]}}, "TestInstance": {"Type": "AWS::EC2::Instance", "Properties": {"ImageId": "ami-05024c2628f651b80", "InstanceType": {"Ref": "InstanceType"}, "IamInstanceProfile": {"Ref": "TestInstanceProfile"}, "SecurityGroupIds": [{"Ref": "TestInstanceSG"}], "MetadataOptions": {"HttpTokens": "required", "HttpPutResponseHopLimit": 1, "HttpEndpoint": "enabled"}, "TagSpecifications": [{"ResourceType": "instance", "Tags": [{"Key": "Name", "Value": "sce-instance-1774806727"}, {"Key": "Experiment", "Value": "SCE-2.3"}, {"Key": "Timestamp", "Value": "1774806727"}]}]}}, "AttackerRole": {"Type": "AWS::IAM::Role", "Properties": {"RoleName": "sce-attacker-1774806727", "AssumeRolePolicyDocument": {"Version": "2012-10-17", "Statement": [{"Effect": "Allow", "Principal": {"AWS": {"Fn::Sub": "arn:aws:iam::${AWS::AccountId}:root"}}, "Action": "sts:AssumeRole"}]}, "Policies": [{"PolicyName": "EC2Modify", "PolicyDocument": {"Version": "2012-10-17", "Statement": [{"Effect": "Allow", "Action": ["ec2:DescribeInstances", "ec2:ModifyInstanceMetadataOptions"], "Resource": "*"}]}}], "Tags": [{"Key": "Experiment", "Value": "SCE-2.3"}, {"Key": "Timestamp", "Value": "1774806727"}]}}}, "Outputs": {"TestInstanceId": {"Description": "Instance ID", "Value": {"Ref": "TestInstance"}}, "CloudTrailBucket": {"Description": "CloudTrail bucket", "Value": {"Ref": "CloudTrailBucket"}}, "AttackerRoleArn": {"Description": "Attacker role ARN", "Value": {"Fn::GetAtt": ["AttackerRole", "Arn"]}}}}', 'Capabilities.member.1': 'CAPABILITY_NAMED_IAM', 'Tags.member.1.Key': 'Experiment', 'Tags.member.1.Value': 'SCE-2.3', 'Tags.member.2.Key': 'Timestamp', 'Tags.member.2.Value': '1774806727'}, 'url': 'https://cloudformation.us-east-1.amazonaws.com/', 'context': {'client_region': 'us-east-1', 'client_config': <botocore.config.Config object at 0x7dd275a09450>, 'has_streaming_input': False, 'auth_type': None, 'unsigned_payload': None}}
+2026-03-29 19:52:08,107 - DEBUG - [_emit:238] Event request-created.cloudformation.CreateStack: calling handler <bound method RequestSigner.handler of <botocore.signers.RequestSigner object at 0x7dd275a09310>>
+2026-03-29 19:52:08,107 - DEBUG - [_emit:238] Event choose-signer.cloudformation.CreateStack: calling handler <function set_operation_specific_signer at 0x7dd276b0b2e0>
+2026-03-29 19:52:08,107 - DEBUG - [add_auth:430] Calculating signature using v4 auth.
+2026-03-29 19:52:08,107 - DEBUG - [add_auth:431] CanonicalRequest:
+POST
+/
+
+content-type:application/x-www-form-urlencoded; charset=utf-8
+host:cloudformation.us-east-1.amazonaws.com
+x-amz-date:20260329T175208Z
+
+content-type;host;x-amz-date
+fc6eafbacda9b004a86f00a85f6b3b1bd43da9f6ddeb07d87cd8468283f7d633
+2026-03-29 19:52:08,107 - DEBUG - [add_auth:433] StringToSign:
+AWS4-HMAC-SHA256
+20260329T175208Z
+20260329/us-east-1/cloudformation/aws4_request
+c2782d34280c4a2b46c62f007a6945ab05d18388852faff9a25ab164e6e15e37
+2026-03-29 19:52:08,107 - DEBUG - [add_auth:435] Signature:
+581e2295dee4e80908b328d1eabe76c4ba68aa38fa135923243461f7b964958e
+2026-03-29 19:52:08,107 - DEBUG - [_emit:238] Event request-created.cloudformation.CreateStack: calling handler <function add_retry_headers at 0x7dd276b2d800>
+2026-03-29 19:52:08,107 - DEBUG - [_do_get_response:263] Sending http request: <AWSPreparedRequest stream_output=False, method=POST, url=https://cloudformation.us-east-1.amazonaws.com/, headers={'Content-Type': b'application/x-www-form-urlencoded; charset=utf-8', 'User-Agent': b'Boto3/1.35.53 md/Botocore#1.35.53 ua/2.0 os/linux#6.6.87.2-microsoft-standard-WSL2 md/arch#x86_64 lang/python#3.13.5 md/pyimpl#CPython cfg/retry-mode#legacy Botocore/1.35.53', 'X-Amz-Date': b'20260329T175208Z', 'Authorization': b'AWS4-HMAC-SHA256 Credential=AKIAVYV52CB7LAUQI2J3/20260329/us-east-1/cloudformation/aws4_request, SignedHeaders=content-type;host;x-amz-date, Signature=581e2295dee4e80908b328d1eabe76c4ba68aa38fa135923243461f7b964958e', 'amz-sdk-invocation-id': b'3a0cb3fd-222b-463d-a207-db930859de30', 'amz-sdk-request': b'attempt=1', 'Content-Length': '6404'}>
+2026-03-29 19:52:08,107 - DEBUG - [get_cert_path:97] Certificate path: /home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/certifi/cacert.pem
+2026-03-29 19:52:08,107 - DEBUG - [_new_conn:1051] Starting new HTTPS connection (1): cloudformation.us-east-1.amazonaws.com:443
+2026-03-29 19:52:08,747 - DEBUG - [_make_request:546] https://cloudformation.us-east-1.amazonaws.com:443 "POST / HTTP/11" 200 463
+2026-03-29 19:52:08,747 - DEBUG - [parse:241] Response headers: {'x-amzn-RequestId': '5c9a1eb7-6e9a-44b0-a003-a17311375c97', 'Date': 'Sun, 29 Mar 2026 17:52:08 GMT', 'Content-Type': 'text/xml', 'Content-Length': '463', 'connection': 'keep-alive'}
+2026-03-29 19:52:08,747 - DEBUG - [parse:242] Response body:
+b'<CreateStackResponse xmlns="http://cloudformation.amazonaws.com/doc/2010-05-15/">\n  <CreateStackResult>\n    <StackId>arn:aws:cloudformation:us-east-1:396608802942:stack/sce-experiment-1774806727/017d2c80-2b98-11f1-b0c1-12672edc9483</StackId>\n    <OperationId>cc699d4e-77ea-4379-a11b-947da741331a</OperationId>\n  </CreateStackResult>\n  <ResponseMetadata>\n    <RequestId>5c9a1eb7-6e9a-44b0-a003-a17311375c97</RequestId>\n  </ResponseMetadata>\n</CreateStackResponse>\n'
+2026-03-29 19:52:08,747 - DEBUG - [_emit:238] Event needs-retry.cloudformation.CreateStack: calling handler <botocore.retryhandler.RetryHandler object at 0x7dd275a0a490>
+2026-03-29 19:52:08,748 - DEBUG - [__call__:211] No retry needed.
+2026-03-29 19:52:08,748 - INFO - [steady_state:445] ✓ Stack creation initiated
+2026-03-29 19:52:08,748 - INFO - [_wait_for_cloudformation_stack:124] Waiting for stack sce-experiment-1774806727 to complete (timeout: 1200s, check every 15s)...
+2026-03-29 19:52:08,748 - DEBUG - [_emit:238] Event before-parameter-build.cloudformation.DescribeStacks: calling handler <function generate_idempotent_uuid at 0x7dd276b0b4c0>
+2026-03-29 19:52:08,748 - DEBUG - [construct_endpoint:501] Calling endpoint provider with parameters: {'Region': 'us-east-1', 'UseDualStack': False, 'UseFIPS': False}
+2026-03-29 19:52:08,748 - DEBUG - [construct_endpoint:516] Endpoint provider result: https://cloudformation.us-east-1.amazonaws.com
+2026-03-29 19:52:08,748 - DEBUG - [_emit:238] Event before-call.cloudformation.DescribeStacks: calling handler <function add_recursion_detection_header at 0x7dd276b0b060>
+2026-03-29 19:52:08,748 - DEBUG - [_emit:238] Event before-call.cloudformation.DescribeStacks: calling handler <function inject_api_version_header_if_needed at 0x7dd276b2cfe0>
+2026-03-29 19:52:08,748 - DEBUG - [make_request:114] Making request for OperationModel(name=DescribeStacks) with params: {'url_path': '/', 'query_string': '', 'method': 'POST', 'headers': {'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8', 'User-Agent': 'Boto3/1.35.53 md/Botocore#1.35.53 ua/2.0 os/linux#6.6.87.2-microsoft-standard-WSL2 md/arch#x86_64 lang/python#3.13.5 md/pyimpl#CPython cfg/retry-mode#legacy Botocore/1.35.53'}, 'body': {'Action': 'DescribeStacks', 'Version': '2010-05-15', 'StackName': 'sce-experiment-1774806727'}, 'url': 'https://cloudformation.us-east-1.amazonaws.com/', 'context': {'client_region': 'us-east-1', 'client_config': <botocore.config.Config object at 0x7dd275a09450>, 'has_streaming_input': False, 'auth_type': None, 'unsigned_payload': None}}
+2026-03-29 19:52:08,748 - DEBUG - [_emit:238] Event request-created.cloudformation.DescribeStacks: calling handler <bound method RequestSigner.handler of <botocore.signers.RequestSigner object at 0x7dd275a09310>>
+2026-03-29 19:52:08,748 - DEBUG - [_emit:238] Event choose-signer.cloudformation.DescribeStacks: calling handler <function set_operation_specific_signer at 0x7dd276b0b2e0>
+2026-03-29 19:52:08,748 - DEBUG - [add_auth:430] Calculating signature using v4 auth.
+2026-03-29 19:52:08,748 - DEBUG - [add_auth:431] CanonicalRequest:
+POST
+/
+
+content-type:application/x-www-form-urlencoded; charset=utf-8
+host:cloudformation.us-east-1.amazonaws.com
+x-amz-date:20260329T175208Z
+
+content-type;host;x-amz-date
+31040d2fca08d02be7284300e715b2445bbac928f635c099f6605f20851623c6
+2026-03-29 19:52:08,748 - DEBUG - [add_auth:433] StringToSign:
+AWS4-HMAC-SHA256
+20260329T175208Z
+20260329/us-east-1/cloudformation/aws4_request
+7f89ed9718b8a556677b3aab3c2a7dba2893563e76f42468357fcafb3a4192ac
+2026-03-29 19:52:08,748 - DEBUG - [add_auth:435] Signature:
+be31e29b7c3f037a6895e45b6dd4442f8351af18c35cb504f3846040a186a0fa
+2026-03-29 19:52:08,748 - DEBUG - [_emit:238] Event request-created.cloudformation.DescribeStacks: calling handler <function add_retry_headers at 0x7dd276b2d800>
+2026-03-29 19:52:08,748 - DEBUG - [_do_get_response:263] Sending http request: <AWSPreparedRequest stream_output=False, method=POST, url=https://cloudformation.us-east-1.amazonaws.com/, headers={'Content-Type': b'application/x-www-form-urlencoded; charset=utf-8', 'User-Agent': b'Boto3/1.35.53 md/Botocore#1.35.53 ua/2.0 os/linux#6.6.87.2-microsoft-standard-WSL2 md/arch#x86_64 lang/python#3.13.5 md/pyimpl#CPython cfg/retry-mode#legacy Botocore/1.35.53', 'X-Amz-Date': b'20260329T175208Z', 'Authorization': b'AWS4-HMAC-SHA256 Credential=AKIAVYV52CB7LAUQI2J3/20260329/us-east-1/cloudformation/aws4_request, SignedHeaders=content-type;host;x-amz-date, Signature=be31e29b7c3f037a6895e45b6dd4442f8351af18c35cb504f3846040a186a0fa', 'amz-sdk-invocation-id': b'524c46cb-12e7-41a9-8bb5-21d3380848b3', 'amz-sdk-request': b'attempt=1', 'Content-Length': '76'}>
+2026-03-29 19:52:08,748 - DEBUG - [get_cert_path:97] Certificate path: /home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/certifi/cacert.pem
+2026-03-29 19:52:08,875 - DEBUG - [_make_request:546] https://cloudformation.us-east-1.amazonaws.com:443 "POST / HTTP/11" 200 1865
+2026-03-29 19:52:08,875 - DEBUG - [parse:241] Response headers: {'x-amzn-RequestId': '6315b800-7476-4438-95ef-55ba931cdbcd', 'Date': 'Sun, 29 Mar 2026 17:52:08 GMT', 'Content-Type': 'text/xml', 'Content-Length': '1865', 'connection': 'keep-alive'}
+2026-03-29 19:52:08,875 - DEBUG - [parse:242] Response body:
+b'<DescribeStacksResponse xmlns="http://cloudformation.amazonaws.com/doc/2010-05-15/">\n  <DescribeStacksResult>\n    <Stacks>\n      <member>\n        <CreationTime>2026-03-29T17:52:08.550Z</CreationTime>\n        <NotificationARNs/>\n        <StackName>sce-experiment-1774806727</StackName>\n        <Description>SCE 2.3 Detective Probe - IMDS Modification Detection (Production Ready)</Description>\n        <RollbackConfiguration/>\n        <LastOperations>\n          <member>\n            <OperationId>cc699d4e-77ea-4379-a11b-947da741331a</OperationId>\n            <OperationType>CREATE_STACK</OperationType>\n          </member>\n        </LastOperations>\n        <DriftInformation>\n          <StackDriftStatus>NOT_CHECKED</StackDriftStatus>\n        </DriftInformation>\n        <EnableTerminationProtection>false</EnableTerminationProtection>\n        <StackStatusReason>User Initiated</StackStatusReason>\n        <Capabilities>\n          <member>CAPABILITY_NAMED_IAM</member>\n        </Capabilities>\n        <StackId>arn:aws:cloudformation:us-east-1:396608802942:stack/sce-experiment-1774806727/017d2c80-2b98-11f1-b0c1-12672edc9483</StackId>\n        <StackStatus>CREATE_IN_PROGRESS</StackStatus>\n        <DisableRollback>false</DisableRollback>\n        <Tags>\n          <member>\n            <Value>SCE-2.3</Value>\n            <Key>Experiment</Key>\n          </member>\n          <member>\n            <Value>1774806727</Value>\n            <Key>Timestamp</Key>\n          </member>\n        </Tags>\n        <Parameters>\n          <member>\n            <ParameterKey>InstanceType</ParameterKey>\n            <ParameterValue>t3.micro</ParameterValue>\n          </member>\n        </Parameters>\n      </member>\n    </Stacks>\n  </DescribeStacksResult>\n  <ResponseMetadata>\n    <RequestId>6315b800-7476-4438-95ef-55ba931cdbcd</RequestId>\n  </ResponseMetadata>\n</DescribeStacksResponse>\n'
+2026-03-29 19:52:08,876 - DEBUG - [_emit:238] Event needs-retry.cloudformation.DescribeStacks: calling handler <botocore.retryhandler.RetryHandler object at 0x7dd275a0a490>
+2026-03-29 19:52:08,876 - DEBUG - [__call__:211] No retry needed.
+2026-03-29 19:52:08,876 - INFO - [_wait_for_cloudformation_stack:139] [0s] Stack status: CREATE_IN_PROGRESS
+2026-03-29 19:52:23,877 - DEBUG - [_emit:238] Event before-parameter-build.cloudformation.DescribeStacks: calling handler <function generate_idempotent_uuid at 0x7dd276b0b4c0>
+2026-03-29 19:52:23,877 - DEBUG - [construct_endpoint:501] Calling endpoint provider with parameters: {'Region': 'us-east-1', 'UseDualStack': False, 'UseFIPS': False}
+2026-03-29 19:52:23,877 - DEBUG - [construct_endpoint:516] Endpoint provider result: https://cloudformation.us-east-1.amazonaws.com
+2026-03-29 19:52:23,877 - DEBUG - [_emit:238] Event before-call.cloudformation.DescribeStacks: calling handler <function add_recursion_detection_header at 0x7dd276b0b060>
+2026-03-29 19:52:23,877 - DEBUG - [_emit:238] Event before-call.cloudformation.DescribeStacks: calling handler <function inject_api_version_header_if_needed at 0x7dd276b2cfe0>
+2026-03-29 19:52:23,877 - DEBUG - [make_request:114] Making request for OperationModel(name=DescribeStacks) with params: {'url_path': '/', 'query_string': '', 'method': 'POST', 'headers': {'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8', 'User-Agent': 'Boto3/1.35.53 md/Botocore#1.35.53 ua/2.0 os/linux#6.6.87.2-microsoft-standard-WSL2 md/arch#x86_64 lang/python#3.13.5 md/pyimpl#CPython cfg/retry-mode#legacy Botocore/1.35.53'}, 'body': {'Action': 'DescribeStacks', 'Version': '2010-05-15', 'StackName': 'sce-experiment-1774806727'}, 'url': 'https://cloudformation.us-east-1.amazonaws.com/', 'context': {'client_region': 'us-east-1', 'client_config': <botocore.config.Config object at 0x7dd275a09450>, 'has_streaming_input': False, 'auth_type': None, 'unsigned_payload': None}}
+2026-03-29 19:52:23,877 - DEBUG - [_emit:238] Event request-created.cloudformation.DescribeStacks: calling handler <bound method RequestSigner.handler of <botocore.signers.RequestSigner object at 0x7dd275a09310>>
+2026-03-29 19:52:23,877 - DEBUG - [_emit:238] Event choose-signer.cloudformation.DescribeStacks: calling handler <function set_operation_specific_signer at 0x7dd276b0b2e0>
+2026-03-29 19:52:23,877 - DEBUG - [add_auth:430] Calculating signature using v4 auth.
+2026-03-29 19:52:23,877 - DEBUG - [add_auth:431] CanonicalRequest:
+POST
+/
+
+content-type:application/x-www-form-urlencoded; charset=utf-8
+host:cloudformation.us-east-1.amazonaws.com
+x-amz-date:20260329T175223Z
+
+content-type;host;x-amz-date
+31040d2fca08d02be7284300e715b2445bbac928f635c099f6605f20851623c6
+2026-03-29 19:52:23,877 - DEBUG - [add_auth:433] StringToSign:
+AWS4-HMAC-SHA256
+20260329T175223Z
+20260329/us-east-1/cloudformation/aws4_request
+d20d91874fd2f8f95086381361e2b0c130adc84d5ea01770ffc17c627ee65af4
+2026-03-29 19:52:23,877 - DEBUG - [add_auth:435] Signature:
+a9fb46429f8900b29ed57e46454666778a70d82c598a4aefb1b7f334d4671c03
+2026-03-29 19:52:23,877 - DEBUG - [_emit:238] Event request-created.cloudformation.DescribeStacks: calling handler <function add_retry_headers at 0x7dd276b2d800>
+2026-03-29 19:52:23,878 - DEBUG - [_do_get_response:263] Sending http request: <AWSPreparedRequest stream_output=False, method=POST, url=https://cloudformation.us-east-1.amazonaws.com/, headers={'Content-Type': b'application/x-www-form-urlencoded; charset=utf-8', 'User-Agent': b'Boto3/1.35.53 md/Botocore#1.35.53 ua/2.0 os/linux#6.6.87.2-microsoft-standard-WSL2 md/arch#x86_64 lang/python#3.13.5 md/pyimpl#CPython cfg/retry-mode#legacy Botocore/1.35.53', 'X-Amz-Date': b'20260329T175223Z', 'Authorization': b'AWS4-HMAC-SHA256 Credential=AKIAVYV52CB7LAUQI2J3/20260329/us-east-1/cloudformation/aws4_request, SignedHeaders=content-type;host;x-amz-date, Signature=a9fb46429f8900b29ed57e46454666778a70d82c598a4aefb1b7f334d4671c03', 'amz-sdk-invocation-id': b'b9da8f54-9873-4cd7-8f1b-7ebdc2a83b67', 'amz-sdk-request': b'attempt=1', 'Content-Length': '76'}>
+2026-03-29 19:52:23,878 - DEBUG - [get_cert_path:97] Certificate path: /home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/certifi/cacert.pem
+2026-03-29 19:52:23,878 - DEBUG - [_get_conn:291] Resetting dropped connection: cloudformation.us-east-1.amazonaws.com
+2026-03-29 19:52:24,331 - DEBUG - [_make_request:546] https://cloudformation.us-east-1.amazonaws.com:443 "POST / HTTP/11" 200 2031
+2026-03-29 19:52:24,331 - DEBUG - [parse:241] Response headers: {'x-amzn-RequestId': 'a273d291-f9d4-4e19-bdb8-a1ec2778c616', 'Date': 'Sun, 29 Mar 2026 17:52:24 GMT', 'Content-Type': 'text/xml', 'Content-Length': '2031', 'connection': 'keep-alive'}
+2026-03-29 19:52:24,331 - DEBUG - [parse:242] Response body:
+b'<DescribeStacksResponse xmlns="http://cloudformation.amazonaws.com/doc/2010-05-15/">\n  <DescribeStacksResult>\n    <Stacks>\n      <member>\n        <CreationTime>2026-03-29T17:52:08.550Z</CreationTime>\n        <NotificationARNs/>\n        <StackName>sce-experiment-1774806727</StackName>\n        <Description>SCE 2.3 Detective Probe - IMDS Modification Detection (Production Ready)</Description>\n        <DeletionTime>2026-03-29T17:52:10.651Z</DeletionTime>\n        <RollbackConfiguration/>\n        <LastOperations>\n          <member>\n            <OperationId>f31bf76d-784a-458d-8011-d49dec365ac7</OperationId>\n            <OperationType>ROLLBACK</OperationType>\n          </member>\n          <member>\n            <OperationId>cc699d4e-77ea-4379-a11b-947da741331a</OperationId>\n            <OperationType>CREATE_STACK</OperationType>\n          </member>\n        </LastOperations>\n        <DriftInformation>\n          <StackDriftStatus>NOT_CHECKED</StackDriftStatus>\n        </DriftInformation>\n        <EnableTerminationProtection>false</EnableTerminationProtection>\n        <Capabilities>\n          <member>CAPABILITY_NAMED_IAM</member>\n        </Capabilities>\n        <StackId>arn:aws:cloudformation:us-east-1:396608802942:stack/sce-experiment-1774806727/017d2c80-2b98-11f1-b0c1-12672edc9483</StackId>\n        <StackStatus>ROLLBACK_COMPLETE</StackStatus>\n        <DisableRollback>false</DisableRollback>\n        <Tags>\n          <member>\n            <Value>SCE-2.3</Value>\n            <Key>Experiment</Key>\n          </member>\n          <member>\n            <Value>1774806727</Value>\n            <Key>Timestamp</Key>\n          </member>\n        </Tags>\n        <Parameters>\n          <member>\n            <ParameterKey>InstanceType</ParameterKey>\n            <ParameterValue>t3.micro</ParameterValue>\n          </member>\n        </Parameters>\n      </member>\n    </Stacks>\n  </DescribeStacksResult>\n  <ResponseMetadata>\n    <RequestId>a273d291-f9d4-4e19-bdb8-a1ec2778c616</RequestId>\n  </ResponseMetadata>\n</DescribeStacksResponse>\n'
+2026-03-29 19:52:24,331 - DEBUG - [_emit:238] Event needs-retry.cloudformation.DescribeStacks: calling handler <botocore.retryhandler.RetryHandler object at 0x7dd275a0a490>
+2026-03-29 19:52:24,331 - DEBUG - [__call__:211] No retry needed.
+2026-03-29 19:52:24,331 - INFO - [_wait_for_cloudformation_stack:139] [16s] Stack status: ROLLBACK_COMPLETE
+2026-03-29 19:52:24,331 - ERROR - [_wait_for_cloudformation_stack:149] ✗ Stack creation failed with status: ROLLBACK_COMPLETE
+2026-03-29 19:52:24,331 - DEBUG - [_emit:238] Event before-parameter-build.cloudformation.DescribeStackEvents: calling handler <function generate_idempotent_uuid at 0x7dd276b0b4c0>
+2026-03-29 19:52:24,331 - DEBUG - [construct_endpoint:501] Calling endpoint provider with parameters: {'Region': 'us-east-1', 'UseDualStack': False, 'UseFIPS': False}
+2026-03-29 19:52:24,331 - DEBUG - [construct_endpoint:516] Endpoint provider result: https://cloudformation.us-east-1.amazonaws.com
+2026-03-29 19:52:24,332 - DEBUG - [_emit:238] Event before-call.cloudformation.DescribeStackEvents: calling handler <function add_recursion_detection_header at 0x7dd276b0b060>
+2026-03-29 19:52:24,332 - DEBUG - [_emit:238] Event before-call.cloudformation.DescribeStackEvents: calling handler <function inject_api_version_header_if_needed at 0x7dd276b2cfe0>
+2026-03-29 19:52:24,332 - DEBUG - [make_request:114] Making request for OperationModel(name=DescribeStackEvents) with params: {'url_path': '/', 'query_string': '', 'method': 'POST', 'headers': {'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8', 'User-Agent': 'Boto3/1.35.53 md/Botocore#1.35.53 ua/2.0 os/linux#6.6.87.2-microsoft-standard-WSL2 md/arch#x86_64 lang/python#3.13.5 md/pyimpl#CPython cfg/retry-mode#legacy Botocore/1.35.53'}, 'body': {'Action': 'DescribeStackEvents', 'Version': '2010-05-15', 'StackName': 'sce-experiment-1774806727'}, 'url': 'https://cloudformation.us-east-1.amazonaws.com/', 'context': {'client_region': 'us-east-1', 'client_config': <botocore.config.Config object at 0x7dd275a09450>, 'has_streaming_input': False, 'auth_type': None, 'unsigned_payload': None}}
+2026-03-29 19:52:24,332 - DEBUG - [_emit:238] Event request-created.cloudformation.DescribeStackEvents: calling handler <bound method RequestSigner.handler of <botocore.signers.RequestSigner object at 0x7dd275a09310>>
+2026-03-29 19:52:24,332 - DEBUG - [_emit:238] Event choose-signer.cloudformation.DescribeStackEvents: calling handler <function set_operation_specific_signer at 0x7dd276b0b2e0>
+2026-03-29 19:52:24,332 - DEBUG - [add_auth:430] Calculating signature using v4 auth.
+2026-03-29 19:52:24,332 - DEBUG - [add_auth:431] CanonicalRequest:
+POST
+/
+
+content-type:application/x-www-form-urlencoded; charset=utf-8
+host:cloudformation.us-east-1.amazonaws.com
+x-amz-date:20260329T175224Z
+
+content-type;host;x-amz-date
+f6dea65a565dbf271928a8e4e82a9b831f31010ded19517c58505aac8126032f
+2026-03-29 19:52:24,332 - DEBUG - [add_auth:433] StringToSign:
+AWS4-HMAC-SHA256
+20260329T175224Z
+20260329/us-east-1/cloudformation/aws4_request
+514ce37438d214fcdcb920069f175d2c825c247ce548dfb3dfa56b13b94e8d3d
+2026-03-29 19:52:24,332 - DEBUG - [add_auth:435] Signature:
+8ee5a1a63d0b36821a75264181223dcbc9d8ae59972cfc4bf54a641d0d3c843b
+2026-03-29 19:52:24,332 - DEBUG - [_emit:238] Event request-created.cloudformation.DescribeStackEvents: calling handler <function add_retry_headers at 0x7dd276b2d800>
+2026-03-29 19:52:24,332 - DEBUG - [_do_get_response:263] Sending http request: <AWSPreparedRequest stream_output=False, method=POST, url=https://cloudformation.us-east-1.amazonaws.com/, headers={'Content-Type': b'application/x-www-form-urlencoded; charset=utf-8', 'User-Agent': b'Boto3/1.35.53 md/Botocore#1.35.53 ua/2.0 os/linux#6.6.87.2-microsoft-standard-WSL2 md/arch#x86_64 lang/python#3.13.5 md/pyimpl#CPython cfg/retry-mode#legacy Botocore/1.35.53', 'X-Amz-Date': b'20260329T175224Z', 'Authorization': b'AWS4-HMAC-SHA256 Credential=AKIAVYV52CB7LAUQI2J3/20260329/us-east-1/cloudformation/aws4_request, SignedHeaders=content-type;host;x-amz-date, Signature=8ee5a1a63d0b36821a75264181223dcbc9d8ae59972cfc4bf54a641d0d3c843b', 'amz-sdk-invocation-id': b'1f08bb01-7254-4789-a7a9-f5aec50d7535', 'amz-sdk-request': b'attempt=1', 'Content-Length': '81'}>
+2026-03-29 19:52:24,332 - DEBUG - [get_cert_path:97] Certificate path: /home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/certifi/cacert.pem
+2026-03-29 19:52:24,460 - DEBUG - [_make_request:546] https://cloudformation.us-east-1.amazonaws.com:443 "POST / HTTP/11" 200 3758
+2026-03-29 19:52:24,460 - DEBUG - [parse:241] Response headers: {'x-amzn-RequestId': 'efa5e89a-acc9-4b4a-bd2f-5d9138dc0742', 'Date': 'Sun, 29 Mar 2026 17:52:24 GMT', 'Content-Type': 'text/xml', 'Content-Length': '3758', 'connection': 'keep-alive'}
+2026-03-29 19:52:24,460 - DEBUG - [parse:242] Response body:
+b'<DescribeStackEventsResponse xmlns="http://cloudformation.amazonaws.com/doc/2010-05-15/">\n  <DescribeStackEventsResult>\n    <StackEvents>\n      <member>\n        <EventId>03db40c0-2b98-11f1-bd0a-0ebebcc81ab3</EventId>\n        <PhysicalResourceId>arn:aws:cloudformation:us-east-1:396608802942:stack/sce-experiment-1774806727/017d2c80-2b98-11f1-b0c1-12672edc9483</PhysicalResourceId>\n        <StackId>arn:aws:cloudformation:us-east-1:396608802942:stack/sce-experiment-1774806727/017d2c80-2b98-11f1-b0c1-12672edc9483</StackId>\n        <StackName>sce-experiment-1774806727</StackName>\n        <LogicalResourceId>sce-experiment-1774806727</LogicalResourceId>\n        <ResourceStatus>ROLLBACK_COMPLETE</ResourceStatus>\n        <OperationId>f31bf76d-784a-458d-8011-d49dec365ac7</OperationId>\n        <Timestamp>2026-03-29T17:52:12.455Z</Timestamp>\n        <ResourceType>AWS::CloudFormation::Stack</ResourceType>\n      </member>\n      <member>\n        <EventId>02c90d70-2b98-11f1-b9d8-0affdf3e2909</EventId>\n        <PhysicalResourceId>arn:aws:cloudformation:us-east-1:396608802942:stack/sce-experiment-1774806727/017d2c80-2b98-11f1-b0c1-12672edc9483</PhysicalResourceId>\n        <ResourceStatusReason>Validation failed for following resources: [TestInstance]. Rollback requested by user.</ResourceStatusReason>\n        <StackId>arn:aws:cloudformation:us-east-1:396608802942:stack/sce-experiment-1774806727/017d2c80-2b98-11f1-b0c1-12672edc9483</StackId>\n        <StackName>sce-experiment-1774806727</StackName>\n        <LogicalResourceId>sce-experiment-1774806727</LogicalResourceId>\n        <ResourceStatus>ROLLBACK_IN_PROGRESS</ResourceStatus>\n        <OperationId>f31bf76d-784a-458d-8011-d49dec365ac7</OperationId>\n        <Timestamp>2026-03-29T17:52:10.651Z</Timestamp>\n        <ResourceType>AWS::CloudFormation::Stack</ResourceType>\n      </member>\n      <member>\n        <EventId>TestInstance-54045989-2173-4194-bc2f-a213303b01d9</EventId>\n        <PhysicalResourceId/>\n        <ResourceStatusReason>Properties validation failed for resource TestInstance with message:\n[#: extraneous key [TagSpecifications] is not permitted]</ResourceStatusReason>\n        <StackId>arn:aws:cloudformation:us-east-1:396608802942:stack/sce-experiment-1774806727/017d2c80-2b98-11f1-b0c1-12672edc9483</StackId>\n        <StackName>sce-experiment-1774806727</StackName>\n        <LogicalResourceId>TestInstance</LogicalResourceId>\n        <ResourceStatus>CREATE_FAILED</ResourceStatus>\n        <DetailedStatus>VALIDATION_FAILED</DetailedStatus>\n        <OperationId>cc699d4e-77ea-4379-a11b-947da741331a</OperationId>\n        <Timestamp>2026-03-29T17:52:10.409Z</Timestamp>\n        <ResourceType>AWS::EC2::Instance</ResourceType>\n      </member>\n      <member>\n        <EventId>017defd0-2b98-11f1-b0c1-12672edc9483</EventId>\n        <PhysicalResourceId>arn:aws:cloudformation:us-east-1:396608802942:stack/sce-experiment-1774806727/017d2c80-2b98-11f1-b0c1-12672edc9483</PhysicalResourceId>\n        <ResourceStatusReason>User Initiated</ResourceStatusReason>\n        <StackId>arn:aws:cloudformation:us-east-1:396608802942:stack/sce-experiment-1774806727/017d2c80-2b98-11f1-b0c1-12672edc9483</StackId>\n        <StackName>sce-experiment-1774806727</StackName>\n        <LogicalResourceId>sce-experiment-1774806727</LogicalResourceId>\n        <ResourceStatus>CREATE_IN_PROGRESS</ResourceStatus>\n        <OperationId>cc699d4e-77ea-4379-a11b-947da741331a</OperationId>\n        <Timestamp>2026-03-29T17:52:08.550Z</Timestamp>\n        <ResourceType>AWS::CloudFormation::Stack</ResourceType>\n      </member>\n    </StackEvents>\n  </DescribeStackEventsResult>\n  <ResponseMetadata>\n    <RequestId>efa5e89a-acc9-4b4a-bd2f-5d9138dc0742</RequestId>\n  </ResponseMetadata>\n</DescribeStackEventsResponse>\n'
+2026-03-29 19:52:24,461 - DEBUG - [_emit:238] Event needs-retry.cloudformation.DescribeStackEvents: calling handler <botocore.retryhandler.RetryHandler object at 0x7dd275a0a490>
+2026-03-29 19:52:24,461 - DEBUG - [__call__:211] No retry needed.
+2026-03-29 19:52:24,461 - ERROR - [_get_stack_events_for_diagnostics:102] Recent CloudFormation events:
+2026-03-29 19:52:24,461 - ERROR - [_get_stack_events_for_diagnostics:111]   [2026-03-29T17:52:12.455000+00:00] ROLLBACK_COMPLETE: sce-experiment-1774806727 - 
+2026-03-29 19:52:24,461 - ERROR - [_get_stack_events_for_diagnostics:111]   [2026-03-29T17:52:10.651000+00:00] ROLLBACK_IN_PROGRESS: sce-experiment-1774806727 - Validation failed for following resources: [TestInstance]. Rollback requested by user.
+2026-03-29 19:52:24,461 - ERROR - [_get_stack_events_for_diagnostics:111]   [2026-03-29T17:52:10.409000+00:00] CREATE_FAILED: TestInstance - Properties validation failed for resource TestInstance with message:
+[#: extraneous key [TagSpecifications] is not permitted]
+2026-03-29 19:52:24,461 - DEBUG - [_get_stack_events_for_diagnostics:113]   [2026-03-29T17:52:08.550000+00:00] CREATE_IN_PROGRESS: sce-experiment-1774806727
+2026-03-29 19:52:24,461 - ERROR - [steady_state:486] ✗ Steady state failed: Stack creation failed or timed out
+Traceback (most recent call last):
+  File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_3_detective.py", line 449, in steady_state
+    raise RuntimeError("Stack creation failed or timed out")
+RuntimeError: Stack creation failed or timed out
+[31m[2026-03-29 19:52:24 ERROR]   => failed: RuntimeError: Stack creation failed or timed out
+[32m[2026-03-29 19:52:24 INFO] Action: Execute Attack Steps 1.2 & 2.2
+2026-03-29 19:52:24,465 - INFO - [attack:494] ================================================================================
+2026-03-29 19:52:24,465 - INFO - [attack:495] PHASE 2: ATTACK - Execute Steps 1.2 & 2.2
+2026-03-29 19:52:24,465 - INFO - [attack:496] ================================================================================
+[31m[2026-03-29 19:52:24 ERROR]   => failed: RuntimeError: Steady state must complete first
+[32m[2026-03-29 19:52:24 INFO] Steady state hypothesis: CloudTrail Successfully Detects IMDS Modifications
+[32m[2026-03-29 19:52:24 INFO] Probe: Verify Detective Controls Detect IMDS Modification
+2026-03-29 19:52:24,467 - INFO - [hypothesis_verification:566] ================================================================================
+2026-03-29 19:52:24,467 - INFO - [hypothesis_verification:567] PHASE 3: HYPOTHESIS VERIFICATION - Detective Controls
+2026-03-29 19:52:24,467 - INFO - [hypothesis_verification:568] ================================================================================
+[31m[2026-03-29 19:52:24 ERROR]   => failed: RuntimeError: Instance ID not available
+[33m[2026-03-29 19:52:24 WARNING] Probe terminated unexpectedly, so its tolerance could not be validated
+[31m[2026-03-29 19:52:24 CRITICAL] Steady state probe 'Verify Detective Controls Detect IMDS Modification' is not in the given tolerance so failing this experiment
+[32m[2026-03-29 19:52:24 INFO] Experiment ended with status: deviated
+[32m[2026-03-29 19:52:24 INFO] The steady-state has deviated, a weakness may have been discovered
+
+
+RETURN CODE: 1

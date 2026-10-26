@@ -1,0 +1,82 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-03-29 19:10:48 INFO] Validating the experiment's syntax
+[32m[2026-03-29 19:10:48 INFO] Experiment looks valid
+[32m[2026-03-29 19:10:48 INFO] Running experiment: SCE 2.5 Preventive Probe: IMDS Weakening Prevention (Revised)
+[32m[2026-03-29 19:10:48 INFO] Steady-state strategy: after-method-only
+[32m[2026-03-29 19:10:48 INFO] Rollbacks strategy: default
+[32m[2026-03-29 19:10:48 INFO] Playing your experiment's method now...
+[32m[2026-03-29 19:10:48 INFO] Action: deploy-iam-infrastructure
+2026-03-29 19:10:48,619 - INFO - [steady_state] ================================================================================
+2026-03-29 19:10:48,619 - INFO - [steady_state] STEADY STATE: Deploying IAM-based experiment infrastructure
+2026-03-29 19:10:48,619 - INFO - [steady_state] ================================================================================
+2026-03-29 19:10:48,619 - INFO - [_install_boto3] boto3 already installed
+2026-03-29 19:10:48,624 - INFO - [load] Found credentials in shared credentials file: ~/.aws/credentials
+2026-03-29 19:10:49,137 - INFO - [_get_account_id] AWS Account ID: 396608802942
+2026-03-29 19:10:49,137 - INFO - [_generate_stack_name] Generated stack name: sce-imds-preventive-1774804249
+2026-03-29 19:10:49,137 - INFO - [steady_state] Creating CloudFormation template...
+2026-03-29 19:10:49,137 - INFO - [steady_state] Deploying CloudFormation stack: sce-imds-preventive-1774804249
+2026-03-29 19:10:49,788 - INFO - [steady_state] Stack creation initiated: arn:aws:cloudformation:us-east-1:396608802942:stack/sce-imds-preventive-1774804249/3b1e7f30-2b92-11f1-916f-0affda7b6827
+2026-03-29 19:10:49,788 - INFO - [_wait_for_stack_completion] Waiting for stack completion (max 300s)...
+2026-03-29 19:10:49,910 - INFO - [_wait_for_stack_completion] Stack status: CREATE_IN_PROGRESS (elapsed: 0.0s)
+2026-03-29 19:10:55,030 - INFO - [_wait_for_stack_completion] Stack status: CREATE_IN_PROGRESS (elapsed: 5.1s)
+2026-03-29 19:11:00,151 - INFO - [_wait_for_stack_completion] Stack status: CREATE_IN_PROGRESS (elapsed: 10.2s)
+2026-03-29 19:11:05,269 - INFO - [_wait_for_stack_completion] Stack status: CREATE_IN_PROGRESS (elapsed: 15.4s)
+2026-03-29 19:11:10,388 - INFO - [_wait_for_stack_completion] Stack status: CREATE_IN_PROGRESS (elapsed: 20.5s)
+2026-03-29 19:11:15,506 - INFO - [_wait_for_stack_completion] Stack status: CREATE_IN_PROGRESS (elapsed: 25.6s)
+2026-03-29 19:11:20,630 - INFO - [_wait_for_stack_completion] Stack status: CREATE_IN_PROGRESS (elapsed: 30.7s)
+2026-03-29 19:11:25,750 - INFO - [_wait_for_stack_completion] Stack status: CREATE_IN_PROGRESS (elapsed: 35.8s)
+2026-03-29 19:11:30,869 - INFO - [_wait_for_stack_completion] Stack status: CREATE_IN_PROGRESS (elapsed: 41.0s)
+2026-03-29 19:11:35,990 - INFO - [_wait_for_stack_completion] Stack status: CREATE_IN_PROGRESS (elapsed: 46.1s)
+2026-03-29 19:11:41,107 - INFO - [_wait_for_stack_completion] Stack status: CREATE_IN_PROGRESS (elapsed: 51.2s)
+2026-03-29 19:11:46,227 - INFO - [_wait_for_stack_completion] Stack creation completed successfully in 56.3s
+2026-03-29 19:11:46,227 - INFO - [steady_state] Extracting resource outputs from stack...
+2026-03-29 19:11:46,351 - INFO - [steady_state] Restricted Role ARN: arn:aws:iam::396608802942:role/sce-imds-restricted-1774804249
+2026-03-29 19:11:46,351 - INFO - [_wait_for_iam_propagation] Waiting for IAM role propagation (sce-imds-restricted-1774804249)...
+2026-03-29 19:11:46,782 - INFO - [_wait_for_iam_propagation] IAM role propagated successfully after 0.0s
+2026-03-29 19:11:46,782 - INFO - [steady_state] Verifying role configuration...
+2026-03-29 19:11:46,910 - INFO - [steady_state] Role verified: sce-imds-restricted-1774804249
+2026-03-29 19:11:47,025 - INFO - [steady_state] Inline policies: ['DenyIMDSModification']
+2026-03-29 19:11:47,025 - INFO - [steady_state] Steady state deployment completed successfully
+[32m[2026-03-29 19:11:47 INFO] Action: execute-attack-steps
+2026-03-29 19:11:47,027 - INFO - [attack] ================================================================================
+2026-03-29 19:11:47,027 - INFO - [attack] ATTACK: Simulating attacker actions
+2026-03-29 19:11:47,027 - INFO - [attack] ================================================================================
+2026-03-29 19:11:47,038 - INFO - [attack] Step 1/2: Assuming restricted role: arn:aws:iam::396608802942:role/sce-imds-restricted-1774804249
+2026-03-29 19:11:47,458 - INFO - [attack] Role assumed successfully: arn:aws:sts::396608802942:assumed-role/sce-imds-restricted-1774804249/sce-attack-simulation
+2026-03-29 19:11:47,461 - INFO - [attack] Attack Step 1.1: Attempting DescribeInstances with restricted role...
+2026-03-29 19:11:47,881 - INFO - [attack] DescribeInstances blocked as expected: UnauthorizedOperation
+2026-03-29 19:11:47,881 - INFO - [attack] Attack Step 2.1: Attempting ModifyInstanceMetadataOptions with restricted role...
+2026-03-29 19:11:48,032 - INFO - [attack] ModifyInstanceMetadataOptions returned: InvalidInstanceID.Malformed
+2026-03-29 19:11:48,032 - INFO - [attack] Attack simulation completed
+[32m[2026-03-29 19:11:48 INFO] Steady state hypothesis: IAM Deny Policies Block IMDS Weakening Attempts
+[32m[2026-03-29 19:11:48 INFO] Probe: verify-preventive-controls-imds
+2026-03-29 19:11:48,034 - INFO - [hypothesis_verification] ================================================================================
+2026-03-29 19:11:48,034 - INFO - [hypothesis_verification] HYPOTHESIS VERIFICATION: Preventive Control Assessment
+2026-03-29 19:11:48,034 - INFO - [hypothesis_verification] ================================================================================
+2026-03-29 19:11:48,034 - INFO - [hypothesis_verification] CHECK 1: Verifying DescribeInstances access denial...
+2026-03-29 19:11:48,034 - INFO - [hypothesis_verification] PASSED: DescribeInstances blocked with error: UnauthorizedOperation
+2026-03-29 19:11:48,034 - INFO - [hypothesis_verification] CHECK 2: Verifying ModifyInstanceMetadataOptions access denial...
+2026-03-29 19:11:48,034 - INFO - [hypothesis_verification] PASSED: ModifyInstanceMetadataOptions blocked with error: InvalidInstanceID.Malformed
+2026-03-29 19:11:48,034 - INFO - [hypothesis_verification] CHECK 3: Verifying restrictive IAM policies still in place...
+2026-03-29 19:11:48,595 - WARNING - [hypothesis_verification] Could not verify IAM policies: 'RolePolicyDocument'
+2026-03-29 19:11:48,595 - INFO - [hypothesis_verification] ================================================================================
+2026-03-29 19:11:48,595 - INFO - [hypothesis_verification] HYPOTHESIS VERIFICATION: ALL PREVENTIVE CONTROLS VERIFIED
+2026-03-29 19:11:48,595 - INFO - [hypothesis_verification] ================================================================================
+[32m[2026-03-29 19:11:48 INFO] Steady state hypothesis is met!
+[32m[2026-03-29 19:11:48 INFO] Let's rollback...
+[32m[2026-03-29 19:11:48 INFO] Rollback: cleanup-experiment-resources
+[32m[2026-03-29 19:11:48 INFO] Action: cleanup-experiment-resources
+2026-03-29 19:11:48,596 - INFO - [rollback] ================================================================================
+2026-03-29 19:11:48,596 - INFO - [rollback] ROLLBACK: Cleaning up experiment resources
+2026-03-29 19:11:48,596 - INFO - [rollback] ================================================================================
+2026-03-29 19:11:48,603 - INFO - [rollback] Deleting CloudFormation stack: sce-imds-preventive-1774804249
+2026-03-29 19:11:49,184 - INFO - [rollback] Stack deletion initiated
+2026-03-29 19:11:49,184 - INFO - [rollback] Waiting for stack deletion...
+2026-03-29 19:12:40,536 - INFO - [rollback] Stack deletion completed (not found)
+[32m[2026-03-29 19:12:40 INFO] Experiment ended with status: completed
+
+
+RETURN CODE: 0

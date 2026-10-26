@@ -1,0 +1,28 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-03-28 21:56:54 INFO] Validating the experiment's syntax
+[32m[2026-03-28 21:56:54 INFO] Experiment looks valid
+[32m[2026-03-28 21:56:54 INFO] Running experiment: IMDS Configuration Reactive Security Probe
+[32m[2026-03-28 21:56:54 INFO] Steady-state strategy: after-method-only
+[32m[2026-03-28 21:56:54 INFO] Rollbacks strategy: default
+[32m[2026-03-28 21:56:54 INFO] Playing your experiment's method now...
+[32m[2026-03-28 21:56:54 INFO] Action: Prepare Experiment Environment
+2026-03-28 21:56:54,205 - INFO - Found credentials in shared credentials file: ~/.aws/credentials
+2026-03-28 21:59:27,320 - ERROR - Error in steady_state: Waiter StackCreateComplete failed: Waiter encountered a terminal failure state: For expression "Stacks[].StackStatus" we matched expected path: "ROLLBACK_COMPLETE" at least once
+[32m[2026-03-28 21:59:27 INFO] Action: Simulate IMDS Configuration Attack
+2026-03-28 21:59:27,840 - ERROR - No instances found in the experiment stack
+[32m[2026-03-28 21:59:27 INFO] Steady state hypothesis: Initial IMDS Configuration is Secure
+[32m[2026-03-28 21:59:27 INFO] Probe: IMDS Configuration Initial Check
+2026-03-28 22:29:37,632 - ERROR - No IMDS configuration change event detected
+[31m[2026-03-28 22:29:37 CRITICAL] Steady state probe 'IMDS Configuration Initial Check' is not in the given tolerance so failing this experiment
+[32m[2026-03-28 22:29:37 INFO] Let's rollback...
+[32m[2026-03-28 22:29:37 INFO] Rollback: Clean Up Experiment Resources
+[32m[2026-03-28 22:29:37 INFO] Action: Clean Up Experiment Resources
+2026-03-28 22:30:08,806 - INFO - Successfully deleted experiment stack: sce-experiment-imds-1774731414
+[32m[2026-03-28 22:30:08 INFO] Experiment ended with status: deviated
+[32m[2026-03-28 22:30:08 INFO] The steady-state has deviated, a weakness may have been discovered
+
+
+RETURN CODE: 1

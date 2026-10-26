@@ -1,0 +1,51 @@
+{
+    "title": "AWS EC2 IMDS Protection Bypass Preventive Probe",
+    "description": "Validate preventive controls against Instance Metadata Service configuration manipulation",
+    "tags": ["aws", "ec2", "imds", "security"],
+    "steady-state-hypothesis": {
+        "title": "IMDS Configuration Security",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "Verify IMDS Protection Controls",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.1_3_preventive",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "Prepare IMDS Experiment Resources",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_3_preventive",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "Simulate IMDS Configuration Attack",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_3_preventive",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "Clean Up Experiment Resources",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_3_preventive",
+                "func": "rollback"
+            }
+        }
+    ]
+}

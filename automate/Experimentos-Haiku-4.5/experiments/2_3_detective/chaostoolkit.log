@@ -1,0 +1,389 @@
+[36m[2026-03-29 19:36:55 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-03-29 19:36:55 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-03-29 19:36:55 DEBUG] [__init__:106] Using settings file '/home/debian/.chaostoolkit/settings.yaml'
+[36m[2026-03-29 19:36:55 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/debian/.chaostoolkit/settings.yaml'.
+[36m[2026-03-29 19:36:55 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-03-29 19:36:55 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-03-29 19:36:55 DEBUG] [caching:24] Building activity cache...
+[36m[2026-03-29 19:36:55 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-03-29 19:36:55 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-03-29 19:36:55 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-03-29 19:36:55 DEBUG] [secret:79] Loading secrets...
+[36m[2026-03-29 19:36:55 DEBUG] [secret:104] Done loading secrets
+[32m[2026-03-29 19:36:55 INFO] [experiment:112] Experiment looks valid
+[36m[2026-03-29 19:36:55 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-03-29 19:36:55 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-03-29 19:36:55 DEBUG] [caching:24] Building activity cache...
+[36m[2026-03-29 19:36:55 DEBUG] [caching:35] Cached 3 activities
+[36m[2026-03-29 19:36:55 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-03-29 19:36:55 DEBUG] [secret:79] Loading secrets...
+[36m[2026-03-29 19:36:55 DEBUG] [secret:104] Done loading secrets
+[36m[2026-03-29 19:36:55 DEBUG] [configuration:161] Loading dynamic configuration...
+[32m[2026-03-29 19:36:55 INFO] [run:440] Running experiment: SCE 2.3 Detective Probe - IMDS Modification Detection via CloudTrail
+[36m[2026-03-29 19:36:55 DEBUG] [__init__:67] Initializing controls
+[32m[2026-03-29 19:36:55 INFO] [run:471] Steady-state strategy: after-method-only
+[32m[2026-03-29 19:36:55 INFO] [run:477] Rollbacks strategy: default
+[36m[2026-03-29 19:36:55 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[32m[2026-03-29 19:36:55 INFO] [run:778] Playing your experiment's method now...
+[36m[2026-03-29 19:36:55 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-03-29 19:36:55 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-29 19:36:55 INFO] [activity:232] Action: Prepare Test Infrastructure (EC2, CloudTrail, IAM, CloudWatch)
+[36m[2026-03-29 19:36:55 DEBUG] [python:33] Activity 'Prepare Test Infrastructure (EC2, CloudTrail, IAM, CloudWatch)' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_3_detective.py'
+[36m[2026-03-29 19:36:56 DEBUG] [activity:317] Activity failed
+    Traceback (most recent call last):
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_3_detective.py", line 497, in steady_state
+        cf.create_stack(
+        ~~~~~~~~~~~~~~~^
+            StackName=EXPERIMENT_STATE['stack_name'],
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        ...<4 lines>...
+            ]
+            ^
+        )
+        ^
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/client.py", line 569, in _api_call
+        return self._make_api_call(operation_name, kwargs)
+               ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/client.py", line 1023, in _make_api_call
+        raise error_class(parsed_response, operation_name)
+    botocore.errorfactory.InsufficientCapabilitiesException: An error occurred (InsufficientCapabilitiesException) when calling the CreateStack operation: Requires capabilities : [CAPABILITY_NAMED_IAM]
+    
+    During handling of the above exception, another exception occurred:
+    
+    Traceback (most recent call last):
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/activity.py", line 310, in run_activity
+        result = run_python_activity(activity, configuration, secrets)
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 58, in run_python_activity
+        raise ActivityFailed(
+            traceback.format_exception_only(type(x), x)[0].strip()
+        ).with_traceback(sys.exc_info()[2])
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_3_detective.py", line 497, in steady_state
+        cf.create_stack(
+        ~~~~~~~~~~~~~~~^
+            StackName=EXPERIMENT_STATE['stack_name'],
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        ...<4 lines>...
+            ]
+            ^
+        )
+        ^
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/client.py", line 569, in _api_call
+        return self._make_api_call(operation_name, kwargs)
+               ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/botocore/client.py", line 1023, in _make_api_call
+        raise error_class(parsed_response, operation_name)
+    chaoslib.exceptions.ActivityFailed: botocore.errorfactory.InsufficientCapabilitiesException: An error occurred (InsufficientCapabilitiesException) when calling the CreateStack operation: Requires capabilities : [CAPABILITY_NAMED_IAM]
+[31m[2026-03-29 19:36:56 ERROR] [activity:268]   => failed: botocore.errorfactory.InsufficientCapabilitiesException: An error occurred (InsufficientCapabilitiesException) when calling the CreateStack operation: Requires capabilities : [CAPABILITY_NAMED_IAM]
+[36m[2026-03-29 19:36:56 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-29 19:36:56 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-29 19:36:56 INFO] [activity:232] Action: Execute Attack Steps 1.2 & 2.2 (IMDS Enumeration + Modification)
+[36m[2026-03-29 19:36:56 DEBUG] [python:33] Activity 'Execute Attack Steps 1.2 & 2.2 (IMDS Enumeration + Modification)' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_3_detective.py'
+[36m[2026-03-29 19:36:56 DEBUG] [activity:317] Activity failed
+    Traceback (most recent call last):
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_3_detective.py", line 586, in attack
+        raise RuntimeError("steady_state() must be called first")
+    RuntimeError: steady_state() must be called first
+    
+    During handling of the above exception, another exception occurred:
+    
+    Traceback (most recent call last):
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/activity.py", line 310, in run_activity
+        result = run_python_activity(activity, configuration, secrets)
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 58, in run_python_activity
+        raise ActivityFailed(
+            traceback.format_exception_only(type(x), x)[0].strip()
+        ).with_traceback(sys.exc_info()[2])
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_3_detective.py", line 586, in attack
+        raise RuntimeError("steady_state() must be called first")
+    chaoslib.exceptions.ActivityFailed: RuntimeError: steady_state() must be called first
+[31m[2026-03-29 19:36:56 ERROR] [activity:268]   => failed: RuntimeError: steady_state() must be called first
+[36m[2026-03-29 19:36:56 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-29 19:36:56 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-03-29 19:36:56 DEBUG] [run:696] Running steady-state hypothesis after the method
+[32m[2026-03-29 19:36:56 INFO] [hypothesis:205] Steady state hypothesis: CloudTrail and CloudWatch Logs Successfully Detect IMDS Modifications
+[36m[2026-03-29 19:36:56 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[36m[2026-03-29 19:36:56 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-29 19:36:56 INFO] [activity:232] Probe: Verify Detective Controls Detect IMDS Modification
+[36m[2026-03-29 19:36:56 DEBUG] [python:33] Activity 'Verify Detective Controls Detect IMDS Modification' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_3_detective.py'
+[36m[2026-03-29 19:36:56 DEBUG] [activity:317] Activity failed
+    Traceback (most recent call last):
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_3_detective.py", line 702, in hypothesis_verification
+        raise RuntimeError("steady_state() must be called first")
+    RuntimeError: steady_state() must be called first
+    
+    During handling of the above exception, another exception occurred:
+    
+    Traceback (most recent call last):
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/activity.py", line 310, in run_activity
+        result = run_python_activity(activity, configuration, secrets)
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 58, in run_python_activity
+        raise ActivityFailed(
+            traceback.format_exception_only(type(x), x)[0].strip()
+        ).with_traceback(sys.exc_info()[2])
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_3_detective.py", line 702, in hypothesis_verification
+        raise RuntimeError("steady_state() must be called first")
+    chaoslib.exceptions.ActivityFailed: RuntimeError: steady_state() must be called first
+[31m[2026-03-29 19:36:56 ERROR] [activity:268]   => failed: RuntimeError: steady_state() must be called first
+[36m[2026-03-29 19:36:56 DEBUG] [__init__:472] No controls to apply on 'activity'
+[33m[2026-03-29 19:36:56 WARNING] [hypothesis:232] Probe terminated unexpectedly, so its tolerance could not be validated
+[36m[2026-03-29 19:36:56 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[31m[2026-03-29 19:36:56 CRITICAL] [run:716] Steady state probe 'Verify Detective Controls Detect IMDS Modification' is not in the given tolerance so failing this experiment
+[32m[2026-03-29 19:36:56 INFO] [run:598] Experiment ended with status: deviated
+[32m[2026-03-29 19:36:56 INFO] [run:600] The steady-state has deviated, a weakness may have been discovered
+[36m[2026-03-29 19:36:56 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[36m[2026-03-29 19:36:56 DEBUG] [__init__:106] Cleaning up controls
+[36m[2026-03-29 19:36:56 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-03-29 19:43:48 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-03-29 19:43:48 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-03-29 19:43:48 DEBUG] [__init__:106] Using settings file '/home/debian/.chaostoolkit/settings.yaml'
+[36m[2026-03-29 19:43:48 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/debian/.chaostoolkit/settings.yaml'.
+[36m[2026-03-29 19:43:48 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-03-29 19:43:48 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-03-29 19:43:48 DEBUG] [caching:24] Building activity cache...
+[36m[2026-03-29 19:43:48 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-03-29 19:43:48 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-03-29 19:43:48 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-03-29 19:43:48 DEBUG] [secret:79] Loading secrets...
+[36m[2026-03-29 19:43:48 DEBUG] [secret:104] Done loading secrets
+[32m[2026-03-29 19:43:49 INFO] [experiment:112] Experiment looks valid
+[36m[2026-03-29 19:43:49 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-03-29 19:43:49 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-03-29 19:43:49 DEBUG] [caching:24] Building activity cache...
+[36m[2026-03-29 19:43:49 DEBUG] [caching:35] Cached 3 activities
+[36m[2026-03-29 19:43:49 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-03-29 19:43:49 DEBUG] [secret:79] Loading secrets...
+[36m[2026-03-29 19:43:49 DEBUG] [secret:104] Done loading secrets
+[36m[2026-03-29 19:43:49 DEBUG] [configuration:161] Loading dynamic configuration...
+[32m[2026-03-29 19:43:49 INFO] [run:440] Running experiment: SCE 2.3 Detective Probe - IMDS Modification Detection via CloudTrail (Improved)
+[36m[2026-03-29 19:43:49 DEBUG] [__init__:67] Initializing controls
+[32m[2026-03-29 19:43:49 INFO] [run:471] Steady-state strategy: after-method-only
+[32m[2026-03-29 19:43:49 INFO] [run:477] Rollbacks strategy: default
+[36m[2026-03-29 19:43:49 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[32m[2026-03-29 19:43:49 INFO] [run:778] Playing your experiment's method now...
+[36m[2026-03-29 19:43:49 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-03-29 19:43:49 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-29 19:43:49 INFO] [activity:232] Action: Prepare Test Infrastructure (EC2, CloudTrail, IAM, CloudWatch)
+[36m[2026-03-29 19:43:49 DEBUG] [python:33] Activity 'Prepare Test Infrastructure (EC2, CloudTrail, IAM, CloudWatch)' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_3_detective.py'
+[36m[2026-03-29 19:46:27 DEBUG] [activity:317] Activity failed
+    Traceback (most recent call last):
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_3_detective.py", line 573, in steady_state
+        raise RuntimeError("Stack creation failed or timed out")
+    RuntimeError: Stack creation failed or timed out
+    
+    During handling of the above exception, another exception occurred:
+    
+    Traceback (most recent call last):
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/activity.py", line 310, in run_activity
+        result = run_python_activity(activity, configuration, secrets)
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 58, in run_python_activity
+        raise ActivityFailed(
+            traceback.format_exception_only(type(x), x)[0].strip()
+        ).with_traceback(sys.exc_info()[2])
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_3_detective.py", line 573, in steady_state
+        raise RuntimeError("Stack creation failed or timed out")
+    chaoslib.exceptions.ActivityFailed: RuntimeError: Stack creation failed or timed out
+[31m[2026-03-29 19:46:27 ERROR] [activity:268]   => failed: RuntimeError: Stack creation failed or timed out
+[36m[2026-03-29 19:46:27 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-29 19:46:27 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-29 19:46:27 INFO] [activity:232] Action: Execute Attack Steps 1.2 & 2.2 (IMDS Enumeration + Modification)
+[36m[2026-03-29 19:46:27 DEBUG] [python:33] Activity 'Execute Attack Steps 1.2 & 2.2 (IMDS Enumeration + Modification)' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_3_detective.py'
+[36m[2026-03-29 19:46:27 DEBUG] [activity:317] Activity failed
+    Traceback (most recent call last):
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_3_detective.py", line 691, in attack
+        raise RuntimeError("steady_state() must be called first")
+    RuntimeError: steady_state() must be called first
+    
+    During handling of the above exception, another exception occurred:
+    
+    Traceback (most recent call last):
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/activity.py", line 310, in run_activity
+        result = run_python_activity(activity, configuration, secrets)
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 58, in run_python_activity
+        raise ActivityFailed(
+            traceback.format_exception_only(type(x), x)[0].strip()
+        ).with_traceback(sys.exc_info()[2])
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_3_detective.py", line 691, in attack
+        raise RuntimeError("steady_state() must be called first")
+    chaoslib.exceptions.ActivityFailed: RuntimeError: steady_state() must be called first
+[31m[2026-03-29 19:46:27 ERROR] [activity:268]   => failed: RuntimeError: steady_state() must be called first
+[36m[2026-03-29 19:46:27 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-29 19:46:27 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-03-29 19:46:27 DEBUG] [run:696] Running steady-state hypothesis after the method
+[32m[2026-03-29 19:46:27 INFO] [hypothesis:205] Steady state hypothesis: CloudTrail and CloudWatch Logs Successfully Detect IMDS Modifications
+[36m[2026-03-29 19:46:27 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[36m[2026-03-29 19:46:27 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-29 19:46:27 INFO] [activity:232] Probe: Verify Detective Controls Detect IMDS Modification
+[36m[2026-03-29 19:46:27 DEBUG] [python:33] Activity 'Verify Detective Controls Detect IMDS Modification' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_3_detective.py'
+[36m[2026-03-29 19:46:27 DEBUG] [activity:317] Activity failed
+    Traceback (most recent call last):
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_3_detective.py", line 839, in hypothesis_verification
+        raise RuntimeError("steady_state() must be called first and set instance_id")
+    RuntimeError: steady_state() must be called first and set instance_id
+    
+    During handling of the above exception, another exception occurred:
+    
+    Traceback (most recent call last):
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/activity.py", line 310, in run_activity
+        result = run_python_activity(activity, configuration, secrets)
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 58, in run_python_activity
+        raise ActivityFailed(
+            traceback.format_exception_only(type(x), x)[0].strip()
+        ).with_traceback(sys.exc_info()[2])
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_3_detective.py", line 839, in hypothesis_verification
+        raise RuntimeError("steady_state() must be called first and set instance_id")
+    chaoslib.exceptions.ActivityFailed: RuntimeError: steady_state() must be called first and set instance_id
+[31m[2026-03-29 19:46:27 ERROR] [activity:268]   => failed: RuntimeError: steady_state() must be called first and set instance_id
+[36m[2026-03-29 19:46:27 DEBUG] [__init__:472] No controls to apply on 'activity'
+[33m[2026-03-29 19:46:27 WARNING] [hypothesis:232] Probe terminated unexpectedly, so its tolerance could not be validated
+[36m[2026-03-29 19:46:27 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[31m[2026-03-29 19:46:27 CRITICAL] [run:716] Steady state probe 'Verify Detective Controls Detect IMDS Modification' is not in the given tolerance so failing this experiment
+[32m[2026-03-29 19:46:27 INFO] [run:598] Experiment ended with status: deviated
+[32m[2026-03-29 19:46:27 INFO] [run:600] The steady-state has deviated, a weakness may have been discovered
+[36m[2026-03-29 19:46:27 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[36m[2026-03-29 19:46:27 DEBUG] [__init__:106] Cleaning up controls
+[36m[2026-03-29 19:46:27 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-03-29 19:52:07 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-03-29 19:52:07 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-03-29 19:52:07 DEBUG] [__init__:106] Using settings file '/home/debian/.chaostoolkit/settings.yaml'
+[36m[2026-03-29 19:52:07 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/debian/.chaostoolkit/settings.yaml'.
+[36m[2026-03-29 19:52:07 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-03-29 19:52:07 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-03-29 19:52:07 DEBUG] [caching:24] Building activity cache...
+[36m[2026-03-29 19:52:07 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-03-29 19:52:07 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-03-29 19:52:07 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-03-29 19:52:07 DEBUG] [secret:79] Loading secrets...
+[36m[2026-03-29 19:52:07 DEBUG] [secret:104] Done loading secrets
+[32m[2026-03-29 19:52:07 INFO] [experiment:112] Experiment looks valid
+[36m[2026-03-29 19:52:07 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-03-29 19:52:07 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-03-29 19:52:07 DEBUG] [caching:24] Building activity cache...
+[36m[2026-03-29 19:52:07 DEBUG] [caching:35] Cached 3 activities
+[36m[2026-03-29 19:52:07 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-03-29 19:52:07 DEBUG] [secret:79] Loading secrets...
+[36m[2026-03-29 19:52:07 DEBUG] [secret:104] Done loading secrets
+[36m[2026-03-29 19:52:07 DEBUG] [configuration:161] Loading dynamic configuration...
+[32m[2026-03-29 19:52:07 INFO] [run:440] Running experiment: SCE 2.3 Detective Probe - IMDS Modification Detection (Production Ready)
+[36m[2026-03-29 19:52:07 DEBUG] [__init__:67] Initializing controls
+[32m[2026-03-29 19:52:07 INFO] [run:471] Steady-state strategy: after-method-only
+[32m[2026-03-29 19:52:07 INFO] [run:477] Rollbacks strategy: default
+[36m[2026-03-29 19:52:07 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[32m[2026-03-29 19:52:07 INFO] [run:778] Playing your experiment's method now...
+[36m[2026-03-29 19:52:07 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-03-29 19:52:07 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-29 19:52:07 INFO] [activity:232] Action: Prepare Test Infrastructure
+[36m[2026-03-29 19:52:07 DEBUG] [python:33] Activity 'Prepare Test Infrastructure' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_3_detective.py'
+[36m[2026-03-29 19:52:24 DEBUG] [activity:317] Activity failed
+    Traceback (most recent call last):
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_3_detective.py", line 449, in steady_state
+        raise RuntimeError("Stack creation failed or timed out")
+    RuntimeError: Stack creation failed or timed out
+    
+    During handling of the above exception, another exception occurred:
+    
+    Traceback (most recent call last):
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/activity.py", line 310, in run_activity
+        result = run_python_activity(activity, configuration, secrets)
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 58, in run_python_activity
+        raise ActivityFailed(
+            traceback.format_exception_only(type(x), x)[0].strip()
+        ).with_traceback(sys.exc_info()[2])
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_3_detective.py", line 449, in steady_state
+        raise RuntimeError("Stack creation failed or timed out")
+    chaoslib.exceptions.ActivityFailed: RuntimeError: Stack creation failed or timed out
+[31m[2026-03-29 19:52:24 ERROR] [activity:268]   => failed: RuntimeError: Stack creation failed or timed out
+[36m[2026-03-29 19:52:24 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-29 19:52:24 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-29 19:52:24 INFO] [activity:232] Action: Execute Attack Steps 1.2 & 2.2
+[36m[2026-03-29 19:52:24 DEBUG] [python:33] Activity 'Execute Attack Steps 1.2 & 2.2' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_3_detective.py'
+[36m[2026-03-29 19:52:24 DEBUG] [activity:317] Activity failed
+    Traceback (most recent call last):
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_3_detective.py", line 499, in attack
+        raise RuntimeError("Steady state must complete first")
+    RuntimeError: Steady state must complete first
+    
+    During handling of the above exception, another exception occurred:
+    
+    Traceback (most recent call last):
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/activity.py", line 310, in run_activity
+        result = run_python_activity(activity, configuration, secrets)
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 58, in run_python_activity
+        raise ActivityFailed(
+            traceback.format_exception_only(type(x), x)[0].strip()
+        ).with_traceback(sys.exc_info()[2])
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_3_detective.py", line 499, in attack
+        raise RuntimeError("Steady state must complete first")
+    chaoslib.exceptions.ActivityFailed: RuntimeError: Steady state must complete first
+[31m[2026-03-29 19:52:24 ERROR] [activity:268]   => failed: RuntimeError: Steady state must complete first
+[36m[2026-03-29 19:52:24 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-03-29 19:52:24 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-03-29 19:52:24 DEBUG] [run:696] Running steady-state hypothesis after the method
+[32m[2026-03-29 19:52:24 INFO] [hypothesis:205] Steady state hypothesis: CloudTrail Successfully Detects IMDS Modifications
+[36m[2026-03-29 19:52:24 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[36m[2026-03-29 19:52:24 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-03-29 19:52:24 INFO] [activity:232] Probe: Verify Detective Controls Detect IMDS Modification
+[36m[2026-03-29 19:52:24 DEBUG] [python:33] Activity 'Verify Detective Controls Detect IMDS Modification' loaded from '/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_3_detective.py'
+[36m[2026-03-29 19:52:24 DEBUG] [activity:317] Activity failed
+    Traceback (most recent call last):
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_3_detective.py", line 571, in hypothesis_verification
+        raise RuntimeError("Instance ID not available")
+    RuntimeError: Instance ID not available
+    
+    During handling of the above exception, another exception occurred:
+    
+    Traceback (most recent call last):
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/activity.py", line 310, in run_activity
+        result = run_python_activity(activity, configuration, secrets)
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 58, in run_python_activity
+        raise ActivityFailed(
+            traceback.format_exception_only(type(x), x)[0].strip()
+        ).with_traceback(sys.exc_info()[2])
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaoslib/provider/python.py", line 56, in run_python_activity
+        return func(**arguments)
+      File "/home/debian/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/2_3_detective.py", line 571, in hypothesis_verification
+        raise RuntimeError("Instance ID not available")
+    chaoslib.exceptions.ActivityFailed: RuntimeError: Instance ID not available
+[31m[2026-03-29 19:52:24 ERROR] [activity:268]   => failed: RuntimeError: Instance ID not available
+[36m[2026-03-29 19:52:24 DEBUG] [__init__:472] No controls to apply on 'activity'
+[33m[2026-03-29 19:52:24 WARNING] [hypothesis:232] Probe terminated unexpectedly, so its tolerance could not be validated
+[36m[2026-03-29 19:52:24 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[31m[2026-03-29 19:52:24 CRITICAL] [run:716] Steady state probe 'Verify Detective Controls Detect IMDS Modification' is not in the given tolerance so failing this experiment
+[32m[2026-03-29 19:52:24 INFO] [run:598] Experiment ended with status: deviated
+[32m[2026-03-29 19:52:24 INFO] [run:600] The steady-state has deviated, a weakness may have been discovered
+[36m[2026-03-29 19:52:24 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[36m[2026-03-29 19:52:24 DEBUG] [__init__:106] Cleaning up controls
+[36m[2026-03-29 19:52:24 DEBUG] [caching:42] Clearing activities cache

@@ -1,0 +1,508 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-03-29 11:55:23 INFO] Validating the experiment's syntax
+[32m[2026-03-29 11:55:23 INFO] Experiment looks valid
+[32m[2026-03-29 11:55:23 INFO] Running experiment: EC2 IMDS Preventive Control Bypass Experiment
+[32m[2026-03-29 11:55:23 INFO] Steady-state strategy: after-method-only
+[32m[2026-03-29 11:55:23 INFO] Rollbacks strategy: default
+[32m[2026-03-29 11:55:23 INFO] Playing your experiment's method now...
+[32m[2026-03-29 11:55:23 INFO] Action: Prepare IMDS Experiment Environment
+2026-03-29 11:55:23,631 - INFO: Found credentials in shared credentials file: ~/.aws/credentials
+2026-03-29 11:56:25,989 - INFO: Successfully created stack sce-imds-experiment-1774778123
+[32m[2026-03-29 11:56:25 INFO] Action: Simulate IMDS Metadata Retrieval Attack
+2026-03-29 11:56:27,334 - INFO: Successfully modified IMDS settings for instance i-055e74b9dfba3cfc9
+[32m[2026-03-29 11:56:27 INFO] Steady state hypothesis: IMDS Configuration Should Prevent Unauthorized Metadata Access
+[32m[2026-03-29 11:56:27 INFO] Probe: IMDS Preventive Control Verification
+2026-03-29 11:56:28,275 - INFO: Current IMDS Settings: {
+  "State": "applied",
+  "HttpTokens": "optional",
+  "HttpPutResponseHopLimit": 2,
+  "HttpEndpoint": "enabled",
+  "HttpProtocolIpv6": "disabled",
+  "InstanceMetadataTags": "enabled"
+}
+2026-03-29 11:56:58,448 - INFO: Current IMDS Settings: {
+  "State": "applied",
+  "HttpTokens": "optional",
+  "HttpPutResponseHopLimit": 2,
+  "HttpEndpoint": "enabled",
+  "HttpProtocolIpv6": "disabled",
+  "InstanceMetadataTags": "enabled"
+}
+2026-03-29 11:57:28,626 - INFO: Current IMDS Settings: {
+  "State": "applied",
+  "HttpTokens": "optional",
+  "HttpPutResponseHopLimit": 2,
+  "HttpEndpoint": "enabled",
+  "HttpProtocolIpv6": "disabled",
+  "InstanceMetadataTags": "enabled"
+}
+2026-03-29 11:57:58,919 - INFO: Current IMDS Settings: {
+  "State": "applied",
+  "HttpTokens": "optional",
+  "HttpPutResponseHopLimit": 2,
+  "HttpEndpoint": "enabled",
+  "HttpProtocolIpv6": "disabled",
+  "InstanceMetadataTags": "enabled"
+}
+2026-03-29 11:58:29,156 - INFO: Current IMDS Settings: {
+  "State": "applied",
+  "HttpTokens": "optional",
+  "HttpPutResponseHopLimit": 2,
+  "HttpEndpoint": "enabled",
+  "HttpProtocolIpv6": "disabled",
+  "InstanceMetadataTags": "enabled"
+}
+2026-03-29 11:58:59,364 - INFO: Current IMDS Settings: {
+  "State": "applied",
+  "HttpTokens": "optional",
+  "HttpPutResponseHopLimit": 2,
+  "HttpEndpoint": "enabled",
+  "HttpProtocolIpv6": "disabled",
+  "InstanceMetadataTags": "enabled"
+}
+2026-03-29 11:59:29,537 - INFO: Current IMDS Settings: {
+  "State": "applied",
+  "HttpTokens": "optional",
+  "HttpPutResponseHopLimit": 2,
+  "HttpEndpoint": "enabled",
+  "HttpProtocolIpv6": "disabled",
+  "InstanceMetadataTags": "enabled"
+}
+2026-03-29 11:59:59,721 - INFO: Current IMDS Settings: {
+  "State": "applied",
+  "HttpTokens": "optional",
+  "HttpPutResponseHopLimit": 2,
+  "HttpEndpoint": "enabled",
+  "HttpProtocolIpv6": "disabled",
+  "InstanceMetadataTags": "enabled"
+}
+2026-03-29 12:00:29,905 - INFO: Current IMDS Settings: {
+  "State": "applied",
+  "HttpTokens": "optional",
+  "HttpPutResponseHopLimit": 2,
+  "HttpEndpoint": "enabled",
+  "HttpProtocolIpv6": "disabled",
+  "InstanceMetadataTags": "enabled"
+}
+2026-03-29 12:01:00,410 - INFO: Current IMDS Settings: {
+  "State": "applied",
+  "HttpTokens": "optional",
+  "HttpPutResponseHopLimit": 2,
+  "HttpEndpoint": "enabled",
+  "HttpProtocolIpv6": "disabled",
+  "InstanceMetadataTags": "enabled"
+}
+2026-03-29 12:01:30,641 - INFO: Current IMDS Settings: {
+  "State": "applied",
+  "HttpTokens": "optional",
+  "HttpPutResponseHopLimit": 2,
+  "HttpEndpoint": "enabled",
+  "HttpProtocolIpv6": "disabled",
+  "InstanceMetadataTags": "enabled"
+}
+2026-03-29 12:02:00,818 - INFO: Current IMDS Settings: {
+  "State": "applied",
+  "HttpTokens": "optional",
+  "HttpPutResponseHopLimit": 2,
+  "HttpEndpoint": "enabled",
+  "HttpProtocolIpv6": "disabled",
+  "InstanceMetadataTags": "enabled"
+}
+2026-03-29 12:02:31,003 - INFO: Current IMDS Settings: {
+  "State": "applied",
+  "HttpTokens": "optional",
+  "HttpPutResponseHopLimit": 2,
+  "HttpEndpoint": "enabled",
+  "HttpProtocolIpv6": "disabled",
+  "InstanceMetadataTags": "enabled"
+}
+2026-03-29 12:03:01,225 - INFO: Current IMDS Settings: {
+  "State": "applied",
+  "HttpTokens": "optional",
+  "HttpPutResponseHopLimit": 2,
+  "HttpEndpoint": "enabled",
+  "HttpProtocolIpv6": "disabled",
+  "InstanceMetadataTags": "enabled"
+}
+2026-03-29 12:03:31,398 - INFO: Current IMDS Settings: {
+  "State": "applied",
+  "HttpTokens": "optional",
+  "HttpPutResponseHopLimit": 2,
+  "HttpEndpoint": "enabled",
+  "HttpProtocolIpv6": "disabled",
+  "InstanceMetadataTags": "enabled"
+}
+2026-03-29 12:04:01,579 - INFO: Current IMDS Settings: {
+  "State": "applied",
+  "HttpTokens": "optional",
+  "HttpPutResponseHopLimit": 2,
+  "HttpEndpoint": "enabled",
+  "HttpProtocolIpv6": "disabled",
+  "InstanceMetadataTags": "enabled"
+}
+2026-03-29 12:04:31,806 - INFO: Current IMDS Settings: {
+  "State": "applied",
+  "HttpTokens": "optional",
+  "HttpPutResponseHopLimit": 2,
+  "HttpEndpoint": "enabled",
+  "HttpProtocolIpv6": "disabled",
+  "InstanceMetadataTags": "enabled"
+}
+2026-03-29 12:05:01,979 - INFO: Current IMDS Settings: {
+  "State": "applied",
+  "HttpTokens": "optional",
+  "HttpPutResponseHopLimit": 2,
+  "HttpEndpoint": "enabled",
+  "HttpProtocolIpv6": "disabled",
+  "InstanceMetadataTags": "enabled"
+}
+2026-03-29 12:05:32,483 - INFO: Current IMDS Settings: {
+  "State": "applied",
+  "HttpTokens": "optional",
+  "HttpPutResponseHopLimit": 2,
+  "HttpEndpoint": "enabled",
+  "HttpProtocolIpv6": "disabled",
+  "InstanceMetadataTags": "enabled"
+}
+2026-03-29 12:06:02,658 - INFO: Current IMDS Settings: {
+  "State": "applied",
+  "HttpTokens": "optional",
+  "HttpPutResponseHopLimit": 2,
+  "HttpEndpoint": "enabled",
+  "HttpProtocolIpv6": "disabled",
+  "InstanceMetadataTags": "enabled"
+}
+2026-03-29 12:06:32,839 - INFO: Current IMDS Settings: {
+  "State": "applied",
+  "HttpTokens": "optional",
+  "HttpPutResponseHopLimit": 2,
+  "HttpEndpoint": "enabled",
+  "HttpProtocolIpv6": "disabled",
+  "InstanceMetadataTags": "enabled"
+}
+2026-03-29 12:07:03,039 - INFO: Current IMDS Settings: {
+  "State": "applied",
+  "HttpTokens": "optional",
+  "HttpPutResponseHopLimit": 2,
+  "HttpEndpoint": "enabled",
+  "HttpProtocolIpv6": "disabled",
+  "InstanceMetadataTags": "enabled"
+}
+2026-03-29 12:07:33,264 - INFO: Current IMDS Settings: {
+  "State": "applied",
+  "HttpTokens": "optional",
+  "HttpPutResponseHopLimit": 2,
+  "HttpEndpoint": "enabled",
+  "HttpProtocolIpv6": "disabled",
+  "InstanceMetadataTags": "enabled"
+}
+2026-03-29 12:08:03,451 - INFO: Current IMDS Settings: {
+  "State": "applied",
+  "HttpTokens": "optional",
+  "HttpPutResponseHopLimit": 2,
+  "HttpEndpoint": "enabled",
+  "HttpProtocolIpv6": "disabled",
+  "InstanceMetadataTags": "enabled"
+}
+2026-03-29 12:08:33,690 - INFO: Current IMDS Settings: {
+  "State": "applied",
+  "HttpTokens": "optional",
+  "HttpPutResponseHopLimit": 2,
+  "HttpEndpoint": "enabled",
+  "HttpProtocolIpv6": "disabled",
+  "InstanceMetadataTags": "enabled"
+}
+2026-03-29 12:09:03,868 - INFO: Current IMDS Settings: {
+  "State": "applied",
+  "HttpTokens": "optional",
+  "HttpPutResponseHopLimit": 2,
+  "HttpEndpoint": "enabled",
+  "HttpProtocolIpv6": "disabled",
+  "InstanceMetadataTags": "enabled"
+}
+2026-03-29 12:09:34,046 - INFO: Current IMDS Settings: {
+  "State": "applied",
+  "HttpTokens": "optional",
+  "HttpPutResponseHopLimit": 2,
+  "HttpEndpoint": "enabled",
+  "HttpProtocolIpv6": "disabled",
+  "InstanceMetadataTags": "enabled"
+}
+2026-03-29 12:10:04,562 - INFO: Current IMDS Settings: {
+  "State": "applied",
+  "HttpTokens": "optional",
+  "HttpPutResponseHopLimit": 2,
+  "HttpEndpoint": "enabled",
+  "HttpProtocolIpv6": "disabled",
+  "InstanceMetadataTags": "enabled"
+}
+2026-03-29 12:10:34,804 - INFO: Current IMDS Settings: {
+  "State": "applied",
+  "HttpTokens": "optional",
+  "HttpPutResponseHopLimit": 2,
+  "HttpEndpoint": "enabled",
+  "HttpProtocolIpv6": "disabled",
+  "InstanceMetadataTags": "enabled"
+}
+2026-03-29 12:11:04,989 - INFO: Current IMDS Settings: {
+  "State": "applied",
+  "HttpTokens": "optional",
+  "HttpPutResponseHopLimit": 2,
+  "HttpEndpoint": "enabled",
+  "HttpProtocolIpv6": "disabled",
+  "InstanceMetadataTags": "enabled"
+}
+2026-03-29 12:11:35,159 - INFO: Current IMDS Settings: {
+  "State": "applied",
+  "HttpTokens": "optional",
+  "HttpPutResponseHopLimit": 2,
+  "HttpEndpoint": "enabled",
+  "HttpProtocolIpv6": "disabled",
+  "InstanceMetadataTags": "enabled"
+}
+2026-03-29 12:12:05,348 - INFO: Current IMDS Settings: {
+  "State": "applied",
+  "HttpTokens": "optional",
+  "HttpPutResponseHopLimit": 2,
+  "HttpEndpoint": "enabled",
+  "HttpProtocolIpv6": "disabled",
+  "InstanceMetadataTags": "enabled"
+}
+2026-03-29 12:12:35,600 - INFO: Current IMDS Settings: {
+  "State": "applied",
+  "HttpTokens": "optional",
+  "HttpPutResponseHopLimit": 2,
+  "HttpEndpoint": "enabled",
+  "HttpProtocolIpv6": "disabled",
+  "InstanceMetadataTags": "enabled"
+}
+2026-03-29 12:13:05,779 - INFO: Current IMDS Settings: {
+  "State": "applied",
+  "HttpTokens": "optional",
+  "HttpPutResponseHopLimit": 2,
+  "HttpEndpoint": "enabled",
+  "HttpProtocolIpv6": "disabled",
+  "InstanceMetadataTags": "enabled"
+}
+2026-03-29 12:13:36,024 - INFO: Current IMDS Settings: {
+  "State": "applied",
+  "HttpTokens": "optional",
+  "HttpPutResponseHopLimit": 2,
+  "HttpEndpoint": "enabled",
+  "HttpProtocolIpv6": "disabled",
+  "InstanceMetadataTags": "enabled"
+}
+2026-03-29 12:14:06,207 - INFO: Current IMDS Settings: {
+  "State": "applied",
+  "HttpTokens": "optional",
+  "HttpPutResponseHopLimit": 2,
+  "HttpEndpoint": "enabled",
+  "HttpProtocolIpv6": "disabled",
+  "InstanceMetadataTags": "enabled"
+}
+2026-03-29 12:14:36,704 - INFO: Current IMDS Settings: {
+  "State": "applied",
+  "HttpTokens": "optional",
+  "HttpPutResponseHopLimit": 2,
+  "HttpEndpoint": "enabled",
+  "HttpProtocolIpv6": "disabled",
+  "InstanceMetadataTags": "enabled"
+}
+2026-03-29 12:15:06,882 - INFO: Current IMDS Settings: {
+  "State": "applied",
+  "HttpTokens": "optional",
+  "HttpPutResponseHopLimit": 2,
+  "HttpEndpoint": "enabled",
+  "HttpProtocolIpv6": "disabled",
+  "InstanceMetadataTags": "enabled"
+}
+2026-03-29 12:15:37,052 - INFO: Current IMDS Settings: {
+  "State": "applied",
+  "HttpTokens": "optional",
+  "HttpPutResponseHopLimit": 2,
+  "HttpEndpoint": "enabled",
+  "HttpProtocolIpv6": "disabled",
+  "InstanceMetadataTags": "enabled"
+}
+2026-03-29 12:16:07,225 - INFO: Current IMDS Settings: {
+  "State": "applied",
+  "HttpTokens": "optional",
+  "HttpPutResponseHopLimit": 2,
+  "HttpEndpoint": "enabled",
+  "HttpProtocolIpv6": "disabled",
+  "InstanceMetadataTags": "enabled"
+}
+2026-03-29 12:16:37,448 - INFO: Current IMDS Settings: {
+  "State": "applied",
+  "HttpTokens": "optional",
+  "HttpPutResponseHopLimit": 2,
+  "HttpEndpoint": "enabled",
+  "HttpProtocolIpv6": "disabled",
+  "InstanceMetadataTags": "enabled"
+}
+2026-03-29 12:17:07,609 - INFO: Current IMDS Settings: {
+  "State": "applied",
+  "HttpTokens": "optional",
+  "HttpPutResponseHopLimit": 2,
+  "HttpEndpoint": "enabled",
+  "HttpProtocolIpv6": "disabled",
+  "InstanceMetadataTags": "enabled"
+}
+2026-03-29 12:17:37,776 - INFO: Current IMDS Settings: {
+  "State": "applied",
+  "HttpTokens": "optional",
+  "HttpPutResponseHopLimit": 2,
+  "HttpEndpoint": "enabled",
+  "HttpProtocolIpv6": "disabled",
+  "InstanceMetadataTags": "enabled"
+}
+2026-03-29 12:18:07,952 - INFO: Current IMDS Settings: {
+  "State": "applied",
+  "HttpTokens": "optional",
+  "HttpPutResponseHopLimit": 2,
+  "HttpEndpoint": "enabled",
+  "HttpProtocolIpv6": "disabled",
+  "InstanceMetadataTags": "enabled"
+}
+2026-03-29 12:18:38,136 - INFO: Current IMDS Settings: {
+  "State": "applied",
+  "HttpTokens": "optional",
+  "HttpPutResponseHopLimit": 2,
+  "HttpEndpoint": "enabled",
+  "HttpProtocolIpv6": "disabled",
+  "InstanceMetadataTags": "enabled"
+}
+2026-03-29 12:19:08,642 - INFO: Current IMDS Settings: {
+  "State": "applied",
+  "HttpTokens": "optional",
+  "HttpPutResponseHopLimit": 2,
+  "HttpEndpoint": "enabled",
+  "HttpProtocolIpv6": "disabled",
+  "InstanceMetadataTags": "enabled"
+}
+2026-03-29 12:19:38,877 - INFO: Current IMDS Settings: {
+  "State": "applied",
+  "HttpTokens": "optional",
+  "HttpPutResponseHopLimit": 2,
+  "HttpEndpoint": "enabled",
+  "HttpProtocolIpv6": "disabled",
+  "InstanceMetadataTags": "enabled"
+}
+2026-03-29 12:20:09,050 - INFO: Current IMDS Settings: {
+  "State": "applied",
+  "HttpTokens": "optional",
+  "HttpPutResponseHopLimit": 2,
+  "HttpEndpoint": "enabled",
+  "HttpProtocolIpv6": "disabled",
+  "InstanceMetadataTags": "enabled"
+}
+2026-03-29 12:20:39,229 - INFO: Current IMDS Settings: {
+  "State": "applied",
+  "HttpTokens": "optional",
+  "HttpPutResponseHopLimit": 2,
+  "HttpEndpoint": "enabled",
+  "HttpProtocolIpv6": "disabled",
+  "InstanceMetadataTags": "enabled"
+}
+2026-03-29 12:21:09,414 - INFO: Current IMDS Settings: {
+  "State": "applied",
+  "HttpTokens": "optional",
+  "HttpPutResponseHopLimit": 2,
+  "HttpEndpoint": "enabled",
+  "HttpProtocolIpv6": "disabled",
+  "InstanceMetadataTags": "enabled"
+}
+2026-03-29 12:21:39,586 - INFO: Current IMDS Settings: {
+  "State": "applied",
+  "HttpTokens": "optional",
+  "HttpPutResponseHopLimit": 2,
+  "HttpEndpoint": "enabled",
+  "HttpProtocolIpv6": "disabled",
+  "InstanceMetadataTags": "enabled"
+}
+2026-03-29 12:22:09,761 - INFO: Current IMDS Settings: {
+  "State": "applied",
+  "HttpTokens": "optional",
+  "HttpPutResponseHopLimit": 2,
+  "HttpEndpoint": "enabled",
+  "HttpProtocolIpv6": "disabled",
+  "InstanceMetadataTags": "enabled"
+}
+2026-03-29 12:22:40,006 - INFO: Current IMDS Settings: {
+  "State": "applied",
+  "HttpTokens": "optional",
+  "HttpPutResponseHopLimit": 2,
+  "HttpEndpoint": "enabled",
+  "HttpProtocolIpv6": "disabled",
+  "InstanceMetadataTags": "enabled"
+}
+2026-03-29 12:23:10,183 - INFO: Current IMDS Settings: {
+  "State": "applied",
+  "HttpTokens": "optional",
+  "HttpPutResponseHopLimit": 2,
+  "HttpEndpoint": "enabled",
+  "HttpProtocolIpv6": "disabled",
+  "InstanceMetadataTags": "enabled"
+}
+2026-03-29 12:23:40,688 - INFO: Current IMDS Settings: {
+  "State": "applied",
+  "HttpTokens": "optional",
+  "HttpPutResponseHopLimit": 2,
+  "HttpEndpoint": "enabled",
+  "HttpProtocolIpv6": "disabled",
+  "InstanceMetadataTags": "enabled"
+}
+2026-03-29 12:24:10,865 - INFO: Current IMDS Settings: {
+  "State": "applied",
+  "HttpTokens": "optional",
+  "HttpPutResponseHopLimit": 2,
+  "HttpEndpoint": "enabled",
+  "HttpProtocolIpv6": "disabled",
+  "InstanceMetadataTags": "enabled"
+}
+2026-03-29 12:24:41,044 - INFO: Current IMDS Settings: {
+  "State": "applied",
+  "HttpTokens": "optional",
+  "HttpPutResponseHopLimit": 2,
+  "HttpEndpoint": "enabled",
+  "HttpProtocolIpv6": "disabled",
+  "InstanceMetadataTags": "enabled"
+}
+2026-03-29 12:25:11,213 - INFO: Current IMDS Settings: {
+  "State": "applied",
+  "HttpTokens": "optional",
+  "HttpPutResponseHopLimit": 2,
+  "HttpEndpoint": "enabled",
+  "HttpProtocolIpv6": "disabled",
+  "InstanceMetadataTags": "enabled"
+}
+2026-03-29 12:25:41,444 - INFO: Current IMDS Settings: {
+  "State": "applied",
+  "HttpTokens": "optional",
+  "HttpPutResponseHopLimit": 2,
+  "HttpEndpoint": "enabled",
+  "HttpProtocolIpv6": "disabled",
+  "InstanceMetadataTags": "enabled"
+}
+2026-03-29 12:26:11,624 - INFO: Current IMDS Settings: {
+  "State": "applied",
+  "HttpTokens": "optional",
+  "HttpPutResponseHopLimit": 2,
+  "HttpEndpoint": "enabled",
+  "HttpProtocolIpv6": "disabled",
+  "InstanceMetadataTags": "enabled"
+}
+2026-03-29 12:26:41,624 - ERROR: Failed to verify IMDS security within 30 minutes
+[31m[2026-03-29 12:26:41 CRITICAL] Steady state probe 'IMDS Preventive Control Verification' is not in the given tolerance so failing this experiment
+[32m[2026-03-29 12:26:41 INFO] Let's rollback...
+[32m[2026-03-29 12:26:41 INFO] Rollback: Clean Up Experiment Resources
+[32m[2026-03-29 12:26:41 INFO] Action: Clean Up Experiment Resources
+2026-03-29 12:27:43,258 - INFO: Successfully deleted stack sce-imds-experiment-1774778123
+[32m[2026-03-29 12:27:43 INFO] Experiment ended with status: deviated
+[32m[2026-03-29 12:27:43 INFO] The steady-state has deviated, a weakness may have been discovered
+
+
+RETURN CODE: 1

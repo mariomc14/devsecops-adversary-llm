@@ -1,0 +1,51 @@
+{
+    "title": "SCE 2.3 Detective Probe: IMDS Attack Detection via CloudTrail and VPC Flow Logs",
+    "description": "Validates that detective controls detect all three stages of an IMDS credential exfiltration attack on a banking EC2 instance: (1) Step 1.2 T1580 DescribeInstances enumeration is logged in CloudTrail with the attacker role identity, (2) Step 1.7 T1562.001 ModifyInstanceMetadataOptions attempt (denied by IAM) is logged in CloudTrail capturing the defense impairment attempt, (3) Step 2.2 T1552.005 IMDS credential access attempt from the instance generates VPC Flow Log entries showing network traffic. The detective probe passes when CloudTrail events for both API calls are found with attacker attribution and VPC Flow Logs contain traffic entries for the experiment VPC, confirming that all attack activity is observable by the banking platform security monitoring stack.",
+    "tags": ["sce", "detective", "imds", "ec2", "cloudtrail", "vpc-flow-logs", "node-2-3"],
+    "steady-state-hypothesis": {
+        "title": "Detective controls capture CloudTrail events for IMDS enumeration and modification attempts and VPC Flow Logs record instance network activity",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "Verify CloudTrail logged DescribeInstances and ModifyInstanceMetadataOptions from attacker role and VPC Flow Logs contain traffic entries",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.2_3_detective",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "Provision VPC with Flow Logs, CloudTrail trail, EC2 instance with IMDSv2 enforced, attacker IAM role, and SSM endpoints",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.2_3_detective",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "Execute attack steps 1.2 (T1580 enumerate IMDS config), 1.7 (T1562.001 attempt IMDS downgrade), and 2.2 (T1552.005 attempt IMDS credential exfiltration via SSM)",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.2_3_detective",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "Delete CloudFormation stack and clean up trail S3 bucket with all experiment resources",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.2_3_detective",
+                "func": "rollback"
+            }
+        }
+    ]
+}

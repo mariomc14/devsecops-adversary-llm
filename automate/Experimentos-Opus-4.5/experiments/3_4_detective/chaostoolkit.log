@@ -1,0 +1,63 @@
+[36m[2026-04-17 11:25:12 DEBUG] [__init__:101] ###############################################################################
+[36m[2026-04-17 11:25:12 DEBUG] [__init__:102] Running command 'run'
+[36m[2026-04-17 11:25:12 DEBUG] [__init__:106] Using settings file '/home/mmc/.chaostoolkit/settings.yaml'
+[36m[2026-04-17 11:25:12 DEBUG] [settings:31] The Chaos Toolkit settings file could not be found at '/home/mmc/.chaostoolkit/settings.yaml'.
+[36m[2026-04-17 11:25:12 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-17 11:25:12 DEBUG] [__init__:472] No controls to apply on 'loader'
+[36m[2026-04-17 11:25:12 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-17 11:25:12 DEBUG] [caching:35] Cached 3 activities
+[32m[2026-04-17 11:25:12 INFO] [experiment:59] Validating the experiment's syntax
+[36m[2026-04-17 11:25:12 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-17 11:25:12 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-17 11:25:12 DEBUG] [secret:104] Done loading secrets
+[32m[2026-04-17 11:25:12 INFO] [experiment:112] Experiment looks valid
+[36m[2026-04-17 11:25:12 DEBUG] [caching:42] Clearing activities cache
+[36m[2026-04-17 11:25:12 DEBUG] [run:224] Runtime strategies: hypothesis - after-method-only / rollbacks - default
+[36m[2026-04-17 11:25:12 DEBUG] [caching:24] Building activity cache...
+[36m[2026-04-17 11:25:12 DEBUG] [caching:35] Cached 3 activities
+[36m[2026-04-17 11:25:12 DEBUG] [configuration:64] Loading configuration...
+[36m[2026-04-17 11:25:12 DEBUG] [secret:79] Loading secrets...
+[36m[2026-04-17 11:25:12 DEBUG] [secret:104] Done loading secrets
+[36m[2026-04-17 11:25:12 DEBUG] [configuration:161] Loading dynamic configuration...
+[32m[2026-04-17 11:25:12 INFO] [run:440] Running experiment: SCE 3.4 Detective: EC2 IMDS Protection Weakening Detection
+[36m[2026-04-17 11:25:12 DEBUG] [__init__:67] Initializing controls
+[32m[2026-04-17 11:25:12 INFO] [run:471] Steady-state strategy: after-method-only
+[32m[2026-04-17 11:25:12 INFO] [run:477] Rollbacks strategy: default
+[36m[2026-04-17 11:25:12 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[32m[2026-04-17 11:25:12 INFO] [run:778] Playing your experiment's method now...
+[36m[2026-04-17 11:25:12 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-17 11:25:12 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-17 11:25:12 INFO] [activity:232] Action: deploy-ec2-with-detective-controls
+[36m[2026-04-17 11:25:12 DEBUG] [python:33] Activity 'deploy-ec2-with-detective-controls' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/3_4_detective.py'
+[36m[2026-04-17 11:29:17 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-04-17 11:29:17 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-17 11:29:17 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-17 11:29:17 INFO] [activity:232] Action: execute-imds-weakening-attack
+[36m[2026-04-17 11:29:17 DEBUG] [python:33] Activity 'execute-imds-weakening-attack' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/3_4_detective.py'
+[36m[2026-04-17 11:29:19 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-04-17 11:29:19 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-17 11:29:19 DEBUG] [__init__:472] No controls to apply on 'method'
+[36m[2026-04-17 11:29:19 DEBUG] [run:696] Running steady-state hypothesis after the method
+[32m[2026-04-17 11:29:19 INFO] [hypothesis:205] Steady state hypothesis: Detective Controls Detect IMDS Protection Weakening
+[36m[2026-04-17 11:29:19 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[36m[2026-04-17 11:29:19 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-17 11:29:19 INFO] [activity:232] Probe: verify-detective-controls
+[36m[2026-04-17 11:29:19 DEBUG] [python:33] Activity 'verify-detective-controls' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/3_4_detective.py'
+[36m[2026-04-17 11:31:10 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-04-17 11:31:10 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-17 11:31:10 DEBUG] [hypothesis:247] allowed tolerance is True
+[32m[2026-04-17 11:31:10 INFO] [hypothesis:260] Steady state hypothesis is met!
+[36m[2026-04-17 11:31:10 DEBUG] [__init__:472] No controls to apply on 'hypothesis'
+[32m[2026-04-17 11:31:10 INFO] [run:1072] Let's rollback...
+[36m[2026-04-17 11:31:10 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-17 11:31:10 INFO] [rollback:36] Rollback: delete-cloudformation-stack
+[36m[2026-04-17 11:31:10 DEBUG] [__init__:472] No controls to apply on 'activity'
+[32m[2026-04-17 11:31:10 INFO] [activity:232] Action: delete-cloudformation-stack
+[36m[2026-04-17 11:31:10 DEBUG] [python:33] Activity 'delete-cloudformation-stack' loaded from '/home/mmc/devsecops-adversary-llm/automate/.venv/lib/python3.13/site-packages/chaosaws/ec2/3_4_detective.py'
+[36m[2026-04-17 11:33:24 DEBUG] [activity:260]   => succeeded with 'True'
+[36m[2026-04-17 11:33:24 DEBUG] [__init__:472] No controls to apply on 'activity'
+[36m[2026-04-17 11:33:24 DEBUG] [__init__:472] No controls to apply on 'rollback'
+[32m[2026-04-17 11:33:24 INFO] [run:598] Experiment ended with status: completed
+[36m[2026-04-17 11:33:24 DEBUG] [__init__:472] No controls to apply on 'experiment'
+[36m[2026-04-17 11:33:24 DEBUG] [__init__:106] Cleaning up controls
+[36m[2026-04-17 11:33:24 DEBUG] [caching:42] Clearing activities cache

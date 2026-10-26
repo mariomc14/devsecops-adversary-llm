@@ -1,0 +1,68 @@
+STDOUT:
+
+
+STDERR:
+[32m[2026-03-29 18:52:34 INFO] Validating the experiment's syntax
+[32m[2026-03-29 18:52:34 INFO] Experiment looks valid
+[32m[2026-03-29 18:52:34 INFO] Running experiment: SCE 1.3: Reactive Probe - EC2 IMDS Unauthorized Operation Detection (EXECUTION FIXED)
+[32m[2026-03-29 18:52:34 INFO] Steady-state strategy: after-method-only
+[32m[2026-03-29 18:52:34 INFO] Rollbacks strategy: default
+[32m[2026-03-29 18:52:34 INFO] Playing your experiment's method now...
+[32m[2026-03-29 18:52:34 INFO] Action: Establish steady state: Provision EC2, EventBridge, Lambda, SNS, Security Hub infrastructure
+2026-03-29 18:52:34,908 [INFO] steady_state: ================================================================================
+2026-03-29 18:52:34,908 [INFO] steady_state: STEADY STATE: Provisioning SCE 1.3 Infrastructure
+2026-03-29 18:52:34,908 [INFO] steady_state: ================================================================================
+2026-03-29 18:52:34,913 [INFO] load: Found credentials in shared credentials file: ~/.aws/credentials
+2026-03-29 18:52:35,456 [INFO] get_aws_clients: AWS clients initialized (Account: 396608802942)
+2026-03-29 18:52:35,456 [INFO] steady_state: CloudFormation Stack: sce-experiment-1-3-1774803154
+2026-03-29 18:52:35,456 [INFO] steady_state: AWS Account: 396608802942
+2026-03-29 18:52:36,137 [INFO] steady_state: Stack creation initiated: arn:aws:cloudformation:us-east-1:396608802942:stack/sce-experiment-1-3-1774803154/af3d1690-2b8f-11f1-b597-1234cf53f511
+2026-03-29 18:52:36,138 [INFO] steady_state: Waiting for stack creation...
+2026-03-29 18:52:36,262 [INFO] steady_state:   Stack status: CREATE_IN_PROGRESS
+2026-03-29 18:52:51,727 [INFO] steady_state:   Stack status: ROLLBACK_IN_PROGRESS
+2026-03-29 18:53:07,179 [INFO] steady_state:   Stack status: ROLLBACK_IN_PROGRESS
+2026-03-29 18:53:22,652 [INFO] steady_state:   Stack status: ROLLBACK_IN_PROGRESS
+2026-03-29 18:53:38,104 [INFO] steady_state:   Stack status: ROLLBACK_IN_PROGRESS
+2026-03-29 18:53:53,554 [INFO] steady_state:   Stack status: ROLLBACK_IN_PROGRESS
+2026-03-29 18:54:09,008 [INFO] steady_state:   Stack status: ROLLBACK_IN_PROGRESS
+2026-03-29 18:54:24,461 [INFO] steady_state:   Stack status: ROLLBACK_IN_PROGRESS
+2026-03-29 18:54:39,913 [INFO] steady_state:   Stack status: ROLLBACK_IN_PROGRESS
+2026-03-29 18:54:55,366 [INFO] steady_state:   Stack status: ROLLBACK_COMPLETE
+2026-03-29 18:54:55,589 [ERROR] steady_state:   Resource: IncidentAlertTopic
+2026-03-29 18:54:55,589 [ERROR] steady_state:   Reason: Resource creation cancelled
+2026-03-29 18:54:55,589 [ERROR] steady_state:   Resource: IncidentLogGroup
+2026-03-29 18:54:55,589 [ERROR] steady_state:   Reason: Resource creation cancelled
+2026-03-29 18:54:55,589 [ERROR] steady_state:   Resource: AttackerUser
+2026-03-29 18:54:55,589 [ERROR] steady_state:   Reason: Resource creation cancelled
+2026-03-29 18:54:55,589 [ERROR] steady_state:   Resource: VictimInstance
+2026-03-29 18:54:55,589 [ERROR] steady_state:   Reason: Resource handler returned message: "The image id '[ami-0c55b159cbfafe1f0]' does not exist (Service: Ec2, Status Code: 400, Request ID: fe4cab3c-1e28-4900-9ba9-0abe015713ec) (SDK Attempt Count: 1)" (RequestToken: d0065479-8e50-8621-21cf-9a6166c59a2b, HandlerErrorCode: InvalidRequest)
+2026-03-29 18:54:55,589 [ERROR] steady_state: Steady state failed: Stack creation failed: ROLLBACK_COMPLETE
+[32m[2026-03-29 18:54:55 INFO] Action: Execute Attack Step 1.2: DescribeInstances reconnaissance (T1087 Account Discovery)
+2026-03-29 18:54:55,589 [INFO] attack: ================================================================================
+2026-03-29 18:54:55,589 [INFO] attack: ATTACK: Phase 1.2 DescribeInstances Reconnaissance
+2026-03-29 18:54:55,589 [INFO] attack: ================================================================================
+2026-03-29 18:54:55,589 [ERROR] attack: ✗ Steady state failed. Cannot execute attack.
+[32m[2026-03-29 18:54:55 INFO] Steady state hypothesis: Reactive incident response chain successfully detects and responds to unauthorized EC2 API operations via EventBridge → Lambda → SNS → Security Hub automation
+[32m[2026-03-29 18:54:55 INFO] Probe: Verify reactive countermeasure chain: EventBridge injection → Lambda invocation → SNS alert → Security Hub finding
+2026-03-29 18:54:55,589 [INFO] hypothesis_verification: ================================================================================
+2026-03-29 18:54:55,589 [INFO] hypothesis_verification: HYPOTHESIS VERIFICATION: Reactive Probe
+2026-03-29 18:54:55,589 [INFO] hypothesis_verification: ================================================================================
+2026-03-29 18:54:55,589 [ERROR] hypothesis_verification: ✗ Attack execution time not set. Cannot proceed with probe.
+[31m[2026-03-29 18:54:55 CRITICAL] Steady state probe 'Verify reactive countermeasure chain: EventBridge injection → Lambda invocation → SNS alert → Security Hub finding' is not in the given tolerance so failing this experiment
+[32m[2026-03-29 18:54:55 INFO] Let's rollback...
+[32m[2026-03-29 18:54:55 INFO] Rollback: Teardown: Delete CloudFormation stack and all provisioned resources
+[32m[2026-03-29 18:54:55 INFO] Action: Teardown: Delete CloudFormation stack and all provisioned resources
+2026-03-29 18:54:55,590 [INFO] rollback: ================================================================================
+2026-03-29 18:54:55,590 [INFO] rollback: ROLLBACK: Cleaning Up Infrastructure
+2026-03-29 18:54:55,590 [INFO] rollback: ================================================================================
+2026-03-29 18:54:55,590 [INFO] rollback: Deleting CloudFormation stack...
+2026-03-29 18:54:56,009 [INFO] rollback:   Stack status: DELETE_IN_PROGRESS
+2026-03-29 18:55:11,464 [INFO] rollback: ✓ Stack deleted (not found)
+2026-03-29 18:55:11,464 [INFO] rollback: ================================================================================
+2026-03-29 18:55:11,464 [INFO] rollback: ROLLBACK COMPLETE
+2026-03-29 18:55:11,464 [INFO] rollback: ================================================================================
+[32m[2026-03-29 18:55:11 INFO] Experiment ended with status: deviated
+[32m[2026-03-29 18:55:11 INFO] The steady-state has deviated, a weakness may have been discovered
+
+
+RETURN CODE: 1

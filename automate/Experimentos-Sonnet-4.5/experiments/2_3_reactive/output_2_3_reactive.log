@@ -1,0 +1,567 @@
+STDOUT:
+
+================================================================================
+STEADY STATE: Deploying Experiment Infrastructure
+================================================================================
+Experiment timestamp: 1775311606
+Stack name: sce-experiment-2-3-1775311606
+Region: us-east-1
+
+Creating CloudFormation stack...
+Waiting for stack creation to complete (timeout: 15 minutes)...
+  Waiting... attempt 1/30
+  Waiting... attempt 2/30
+  Waiting... attempt 3/30
+  Waiting... attempt 4/30
+  Waiting... attempt 5/30
+  Waiting... attempt 6/30
+  Waiting... attempt 7/30
+  Waiting... attempt 8/30
+  Waiting... attempt 9/30
+  Waiting... attempt 10/30
+  Waiting... attempt 11/30
+  Waiting... attempt 12/30
+  Waiting... attempt 13/30
+  Waiting... attempt 14/30
+  Waiting... attempt 15/30
+  Waiting... attempt 16/30
+  Waiting... attempt 17/30
+  Waiting... attempt 18/30
+  Waiting... attempt 19/30
+  Waiting... attempt 20/30
+  Waiting... attempt 21/30
+  Waiting... attempt 22/30
+  Waiting... attempt 23/30
+  Waiting... attempt 24/30
+  Waiting... attempt 25/30
+  Waiting... attempt 26/30
+  Waiting... attempt 27/30
+  Waiting... attempt 28/30
+  Waiting... attempt 29/30
+  Waiting... attempt 30/30
+  Waiting... attempt 31/30
+  Waiting... attempt 32/30
+✓ Stack created successfully
+
+Stack Outputs:
+  ResponseFunctionArn: arn:aws:lambda:us-east-1:396608802942:function:sce-response-function-1775311606
+  VPCId: vpc-0d86ec51873ac79b2
+  AlertTopicArn: arn:aws:sns:us-east-1:396608802942:sce-alert-topic-1775311606
+  InstanceRoleName: sce-instance-role-1775311606
+  InstanceSecurityGroupId: sg-04b8c69ed57cd35d5
+  SubnetId: subnet-06ef77f06eec6b669
+  QuarantineSecurityGroupId: sg-0c1df6f5906ce96a8
+  EventRuleArn: arn:aws:events:us-east-1:396608802942:rule/sce-imds-access-rule-1775311606
+  InstanceProfileArn: arn:aws:iam::396608802942:instance-profile/sce-instance-profile-1775311606
+
+Waiting for IAM role propagation (60 seconds)...
+
+Launching EC2 instance with Docker...
+Using AMI: ami-0190ba1cb5ab4e9e8
+Instance launched: i-0876b7814d8993bec
+Waiting for instance to be running (timeout: 5 minutes)...
+  Waiting... attempt 1/30
+  Waiting... attempt 2/30
+✓ Instance is running
+Waiting for instance status checks (timeout: 10 minutes)...
+  Waiting... attempt 1/30
+  Waiting... attempt 2/30
+  Waiting... attempt 3/30
+  Waiting... attempt 4/30
+  Waiting... attempt 5/30
+  Waiting... attempt 6/30
+  Waiting... attempt 7/30
+  Waiting... attempt 8/30
+  Waiting... attempt 9/30
+  Waiting... attempt 10/30
+  Waiting... attempt 11/30
+  Waiting... attempt 12/30
+  Waiting... attempt 13/30
+  Waiting... attempt 14/30
+  Waiting... attempt 15/30
+  Waiting... attempt 16/30
+  Waiting... attempt 17/30
+  Waiting... attempt 18/30
+  Waiting... attempt 19/30
+  Waiting... attempt 20/30
+  Waiting... attempt 21/30
+  Waiting... attempt 22/30
+  Waiting... attempt 23/30
+  Waiting... attempt 24/30
+  Waiting... attempt 25/30
+  Waiting... attempt 26/30
+✓ Instance status checks passed
+
+✓ Steady state established successfully
+  Instance ID: i-0876b7814d8993bec
+  Stack: sce-experiment-2-3-1775311606
+
+================================================================================
+ATTACK PHASE: Simulating Container IMDS Access
+================================================================================
+
+Target instance: i-0876b7814d8993bec
+
+[Attack Step 1.2] Verifying IMDS protections are weakened...
+  HttpTokens: optional
+  HttpPutResponseHopLimit: 2
+  HttpEndpoint: enabled
+✓ IMDS protections successfully weakened (IMDSv1 enabled, hop limit = 2)
+
+[Attack Step 2.2] Simulating container accessing IMDS endpoint...
+  (In real scenario: curl http://169.254.169.254/latest/meta-data/iam/security-credentials/)
+  Waiting for SSM agent to be ready...
+  ✓ SSM agent is ready
+  SSM Command sent: 0abfbcf3-fe20-4f2d-9484-ce279be37530
+  Command Status: Success
+  Output: Attempting IMDS access from instance context (simulating container)...
+sce-instance-role-1775311606IMDS access attempt completed
+
+✓ IMDS access simulated (container retrieved role name)
+
+  Triggering detection event via EventBridge...
+✓ Detection event triggered
+
+Attack phase completed successfully
+  Instance i-0876b7814d8993bec accessed IMDS from container context
+  Reactive countermeasures should now be triggered...
+
+================================================================================
+HYPOTHESIS VERIFICATION: Validating Reactive Countermeasures
+================================================================================
+
+Reactive Probe Requirements:
+  1. Instance isolated with quarantine security group
+  2. Forensic EBS snapshot created
+  3. IAM role sessions revoked
+  4. Alert sent to SNS topic
+
+SLA: 30-minute timeout for AWS eventual consistency
+
+Target Resources:
+  Instance: i-0876b7814d8993bec
+  Quarantine SG: sg-0c1df6f5906ce96a8
+  IAM Role: sce-instance-role-1775311606
+
+Starting verification polling (timeout: 1800s, interval: 30s)...
+
+[Attempt 1] Elapsed: 0s / 1800s
+  ⧗ CHECK 1: Waiting for security group change (current: ['sg-04b8c69ed57cd35d5'])
+  ⧗ CHECK 2: Waiting for forensic snapshot creation
+  ⧗ CHECK 3: Waiting for session revocation policy
+  ⧗ CHECK 4: Lambda log group not yet created
+
+[Attempt 2] Elapsed: 31s / 1800s
+  ⧗ CHECK 1: Waiting for security group change (current: ['sg-04b8c69ed57cd35d5'])
+  ⧗ CHECK 2: Waiting for forensic snapshot creation
+  ⧗ CHECK 3: Waiting for session revocation policy
+  ⧗ CHECK 4: Waiting for SNS alert confirmation in logs
+
+[Attempt 3] Elapsed: 63s / 1800s
+  ⧗ CHECK 1: Waiting for security group change (current: ['sg-04b8c69ed57cd35d5'])
+  ⧗ CHECK 2: Waiting for forensic snapshot creation
+  ⧗ CHECK 3: Waiting for session revocation policy
+  ⧗ CHECK 4: Waiting for SNS alert confirmation in logs
+
+[Attempt 4] Elapsed: 94s / 1800s
+  ⧗ CHECK 1: Waiting for security group change (current: ['sg-04b8c69ed57cd35d5'])
+  ⧗ CHECK 2: Waiting for forensic snapshot creation
+  ⧗ CHECK 3: Waiting for session revocation policy
+  ⧗ CHECK 4: Waiting for SNS alert confirmation in logs
+
+[Attempt 5] Elapsed: 125s / 1800s
+  ⧗ CHECK 1: Waiting for security group change (current: ['sg-04b8c69ed57cd35d5'])
+  ⧗ CHECK 2: Waiting for forensic snapshot creation
+  ⧗ CHECK 3: Waiting for session revocation policy
+  ⧗ CHECK 4: Waiting for SNS alert confirmation in logs
+
+[Attempt 6] Elapsed: 157s / 1800s
+  ⧗ CHECK 1: Waiting for security group change (current: ['sg-04b8c69ed57cd35d5'])
+  ⧗ CHECK 2: Waiting for forensic snapshot creation
+  ⧗ CHECK 3: Waiting for session revocation policy
+  ⧗ CHECK 4: Waiting for SNS alert confirmation in logs
+
+[Attempt 7] Elapsed: 188s / 1800s
+  ⧗ CHECK 1: Waiting for security group change (current: ['sg-04b8c69ed57cd35d5'])
+  ⧗ CHECK 2: Waiting for forensic snapshot creation
+  ⧗ CHECK 3: Waiting for session revocation policy
+  ⧗ CHECK 4: Waiting for SNS alert confirmation in logs
+
+[Attempt 8] Elapsed: 219s / 1800s
+  ⧗ CHECK 1: Waiting for security group change (current: ['sg-04b8c69ed57cd35d5'])
+  ⧗ CHECK 2: Waiting for forensic snapshot creation
+  ⧗ CHECK 3: Waiting for session revocation policy
+  ⧗ CHECK 4: Waiting for SNS alert confirmation in logs
+
+[Attempt 9] Elapsed: 251s / 1800s
+  ⧗ CHECK 1: Waiting for security group change (current: ['sg-04b8c69ed57cd35d5'])
+  ⧗ CHECK 2: Waiting for forensic snapshot creation
+  ⧗ CHECK 3: Waiting for session revocation policy
+  ⧗ CHECK 4: Waiting for SNS alert confirmation in logs
+
+[Attempt 10] Elapsed: 282s / 1800s
+  ⧗ CHECK 1: Waiting for security group change (current: ['sg-04b8c69ed57cd35d5'])
+  ⧗ CHECK 2: Waiting for forensic snapshot creation
+  ⧗ CHECK 3: Waiting for session revocation policy
+  ⧗ CHECK 4: Waiting for SNS alert confirmation in logs
+
+[Attempt 11] Elapsed: 314s / 1800s
+  ⧗ CHECK 1: Waiting for security group change (current: ['sg-04b8c69ed57cd35d5'])
+  ⧗ CHECK 2: Waiting for forensic snapshot creation
+  ⧗ CHECK 3: Waiting for session revocation policy
+  ⧗ CHECK 4: Waiting for SNS alert confirmation in logs
+
+[Attempt 12] Elapsed: 345s / 1800s
+  ⧗ CHECK 1: Waiting for security group change (current: ['sg-04b8c69ed57cd35d5'])
+  ⧗ CHECK 2: Waiting for forensic snapshot creation
+  ⧗ CHECK 3: Waiting for session revocation policy
+  ⧗ CHECK 4: Waiting for SNS alert confirmation in logs
+
+[Attempt 13] Elapsed: 377s / 1800s
+  ⧗ CHECK 1: Waiting for security group change (current: ['sg-04b8c69ed57cd35d5'])
+  ⧗ CHECK 2: Waiting for forensic snapshot creation
+  ⧗ CHECK 3: Waiting for session revocation policy
+  ⧗ CHECK 4: Waiting for SNS alert confirmation in logs
+
+[Attempt 14] Elapsed: 408s / 1800s
+  ⧗ CHECK 1: Waiting for security group change (current: ['sg-04b8c69ed57cd35d5'])
+  ⧗ CHECK 2: Waiting for forensic snapshot creation
+  ⧗ CHECK 3: Waiting for session revocation policy
+  ⧗ CHECK 4: Waiting for SNS alert confirmation in logs
+
+[Attempt 15] Elapsed: 440s / 1800s
+  ⧗ CHECK 1: Waiting for security group change (current: ['sg-04b8c69ed57cd35d5'])
+  ⧗ CHECK 2: Waiting for forensic snapshot creation
+  ⧗ CHECK 3: Waiting for session revocation policy
+  ⧗ CHECK 4: Waiting for SNS alert confirmation in logs
+
+[Attempt 16] Elapsed: 471s / 1800s
+  ⧗ CHECK 1: Waiting for security group change (current: ['sg-04b8c69ed57cd35d5'])
+  ⧗ CHECK 2: Waiting for forensic snapshot creation
+  ⧗ CHECK 3: Waiting for session revocation policy
+  ⧗ CHECK 4: Waiting for SNS alert confirmation in logs
+
+[Attempt 17] Elapsed: 502s / 1800s
+  ⧗ CHECK 1: Waiting for security group change (current: ['sg-04b8c69ed57cd35d5'])
+  ⧗ CHECK 2: Waiting for forensic snapshot creation
+  ⧗ CHECK 3: Waiting for session revocation policy
+  ⧗ CHECK 4: Waiting for SNS alert confirmation in logs
+
+[Attempt 18] Elapsed: 534s / 1800s
+  ⧗ CHECK 1: Waiting for security group change (current: ['sg-04b8c69ed57cd35d5'])
+  ⧗ CHECK 2: Waiting for forensic snapshot creation
+  ⧗ CHECK 3: Waiting for session revocation policy
+  ⧗ CHECK 4: Waiting for SNS alert confirmation in logs
+
+[Attempt 19] Elapsed: 566s / 1800s
+  ⧗ CHECK 1: Waiting for security group change (current: ['sg-04b8c69ed57cd35d5'])
+  ⧗ CHECK 2: Waiting for forensic snapshot creation
+  ⧗ CHECK 3: Waiting for session revocation policy
+  ⧗ CHECK 4: Waiting for SNS alert confirmation in logs
+
+[Attempt 20] Elapsed: 597s / 1800s
+  ⧗ CHECK 1: Waiting for security group change (current: ['sg-04b8c69ed57cd35d5'])
+  ⧗ CHECK 2: Waiting for forensic snapshot creation
+  ⧗ CHECK 3: Waiting for session revocation policy
+  ⧗ CHECK 4: Waiting for SNS alert confirmation in logs
+
+[Attempt 21] Elapsed: 628s / 1800s
+  ⧗ CHECK 1: Waiting for security group change (current: ['sg-04b8c69ed57cd35d5'])
+  ⧗ CHECK 2: Waiting for forensic snapshot creation
+  ⧗ CHECK 3: Waiting for session revocation policy
+  ⧗ CHECK 4: Waiting for SNS alert confirmation in logs
+
+[Attempt 22] Elapsed: 660s / 1800s
+  ⧗ CHECK 1: Waiting for security group change (current: ['sg-04b8c69ed57cd35d5'])
+  ⧗ CHECK 2: Waiting for forensic snapshot creation
+  ⧗ CHECK 3: Waiting for session revocation policy
+  ⧗ CHECK 4: Waiting for SNS alert confirmation in logs
+
+[Attempt 23] Elapsed: 691s / 1800s
+  ⧗ CHECK 1: Waiting for security group change (current: ['sg-04b8c69ed57cd35d5'])
+  ⧗ CHECK 2: Waiting for forensic snapshot creation
+  ⧗ CHECK 3: Waiting for session revocation policy
+  ⧗ CHECK 4: Waiting for SNS alert confirmation in logs
+
+[Attempt 24] Elapsed: 722s / 1800s
+  ⧗ CHECK 1: Waiting for security group change (current: ['sg-04b8c69ed57cd35d5'])
+  ⧗ CHECK 2: Waiting for forensic snapshot creation
+  ⧗ CHECK 3: Waiting for session revocation policy
+  ⧗ CHECK 4: Waiting for SNS alert confirmation in logs
+
+[Attempt 25] Elapsed: 754s / 1800s
+  ⧗ CHECK 1: Waiting for security group change (current: ['sg-04b8c69ed57cd35d5'])
+  ⧗ CHECK 2: Waiting for forensic snapshot creation
+  ⧗ CHECK 3: Waiting for session revocation policy
+  ⧗ CHECK 4: Waiting for SNS alert confirmation in logs
+
+[Attempt 26] Elapsed: 785s / 1800s
+  ⧗ CHECK 1: Waiting for security group change (current: ['sg-04b8c69ed57cd35d5'])
+  ⧗ CHECK 2: Waiting for forensic snapshot creation
+  ⧗ CHECK 3: Waiting for session revocation policy
+  ⧗ CHECK 4: Waiting for SNS alert confirmation in logs
+
+[Attempt 27] Elapsed: 817s / 1800s
+  ⧗ CHECK 1: Waiting for security group change (current: ['sg-04b8c69ed57cd35d5'])
+  ⧗ CHECK 2: Waiting for forensic snapshot creation
+  ⧗ CHECK 3: Waiting for session revocation policy
+  ⧗ CHECK 4: Waiting for SNS alert confirmation in logs
+
+[Attempt 28] Elapsed: 848s / 1800s
+  ⧗ CHECK 1: Waiting for security group change (current: ['sg-04b8c69ed57cd35d5'])
+  ⧗ CHECK 2: Waiting for forensic snapshot creation
+  ⧗ CHECK 3: Waiting for session revocation policy
+  ⧗ CHECK 4: Waiting for SNS alert confirmation in logs
+
+[Attempt 29] Elapsed: 879s / 1800s
+  ⧗ CHECK 1: Waiting for security group change (current: ['sg-04b8c69ed57cd35d5'])
+  ⧗ CHECK 2: Waiting for forensic snapshot creation
+  ⧗ CHECK 3: Waiting for session revocation policy
+  ⧗ CHECK 4: Waiting for SNS alert confirmation in logs
+
+[Attempt 30] Elapsed: 911s / 1800s
+  ⧗ CHECK 1: Waiting for security group change (current: ['sg-04b8c69ed57cd35d5'])
+  ⧗ CHECK 2: Waiting for forensic snapshot creation
+  ⧗ CHECK 3: Waiting for session revocation policy
+  ⧗ CHECK 4: Waiting for SNS alert confirmation in logs
+
+[Attempt 31] Elapsed: 943s / 1800s
+  ⧗ CHECK 1: Waiting for security group change (current: ['sg-04b8c69ed57cd35d5'])
+  ⧗ CHECK 2: Waiting for forensic snapshot creation
+  ⧗ CHECK 3: Waiting for session revocation policy
+  ⧗ CHECK 4: Waiting for SNS alert confirmation in logs
+
+[Attempt 32] Elapsed: 974s / 1800s
+  ⧗ CHECK 1: Waiting for security group change (current: ['sg-04b8c69ed57cd35d5'])
+  ⧗ CHECK 2: Waiting for forensic snapshot creation
+  ⧗ CHECK 3: Waiting for session revocation policy
+  ⧗ CHECK 4: Waiting for SNS alert confirmation in logs
+
+[Attempt 33] Elapsed: 1005s / 1800s
+  ⧗ CHECK 1: Waiting for security group change (current: ['sg-04b8c69ed57cd35d5'])
+  ⧗ CHECK 2: Waiting for forensic snapshot creation
+  ⧗ CHECK 3: Waiting for session revocation policy
+  ⧗ CHECK 4: Waiting for SNS alert confirmation in logs
+
+[Attempt 34] Elapsed: 1037s / 1800s
+  ⧗ CHECK 1: Waiting for security group change (current: ['sg-04b8c69ed57cd35d5'])
+  ⧗ CHECK 2: Waiting for forensic snapshot creation
+  ⧗ CHECK 3: Waiting for session revocation policy
+  ⧗ CHECK 4: Waiting for SNS alert confirmation in logs
+
+[Attempt 35] Elapsed: 1068s / 1800s
+  ⧗ CHECK 1: Waiting for security group change (current: ['sg-04b8c69ed57cd35d5'])
+  ⧗ CHECK 2: Waiting for forensic snapshot creation
+  ⧗ CHECK 3: Waiting for session revocation policy
+  ⧗ CHECK 4: Waiting for SNS alert confirmation in logs
+
+[Attempt 36] Elapsed: 1100s / 1800s
+  ⧗ CHECK 1: Waiting for security group change (current: ['sg-04b8c69ed57cd35d5'])
+  ⧗ CHECK 2: Waiting for forensic snapshot creation
+  ⧗ CHECK 3: Waiting for session revocation policy
+  ⧗ CHECK 4: Waiting for SNS alert confirmation in logs
+
+[Attempt 37] Elapsed: 1131s / 1800s
+  ⧗ CHECK 1: Waiting for security group change (current: ['sg-04b8c69ed57cd35d5'])
+  ⧗ CHECK 2: Waiting for forensic snapshot creation
+  ⧗ CHECK 3: Waiting for session revocation policy
+  ⧗ CHECK 4: Waiting for SNS alert confirmation in logs
+
+[Attempt 38] Elapsed: 1163s / 1800s
+  ⧗ CHECK 1: Waiting for security group change (current: ['sg-04b8c69ed57cd35d5'])
+  ⧗ CHECK 2: Waiting for forensic snapshot creation
+  ⧗ CHECK 3: Waiting for session revocation policy
+  ⧗ CHECK 4: Waiting for SNS alert confirmation in logs
+
+[Attempt 39] Elapsed: 1194s / 1800s
+  ⧗ CHECK 1: Waiting for security group change (current: ['sg-04b8c69ed57cd35d5'])
+  ⧗ CHECK 2: Waiting for forensic snapshot creation
+  ⧗ CHECK 3: Waiting for session revocation policy
+  ⧗ CHECK 4: Waiting for SNS alert confirmation in logs
+
+[Attempt 40] Elapsed: 1226s / 1800s
+  ⧗ CHECK 1: Waiting for security group change (current: ['sg-04b8c69ed57cd35d5'])
+  ⧗ CHECK 2: Waiting for forensic snapshot creation
+  ⧗ CHECK 3: Waiting for session revocation policy
+  ⧗ CHECK 4: Waiting for SNS alert confirmation in logs
+
+[Attempt 41] Elapsed: 1257s / 1800s
+  ⧗ CHECK 1: Waiting for security group change (current: ['sg-04b8c69ed57cd35d5'])
+  ⧗ CHECK 2: Waiting for forensic snapshot creation
+  ⧗ CHECK 3: Waiting for session revocation policy
+  ⧗ CHECK 4: Waiting for SNS alert confirmation in logs
+
+[Attempt 42] Elapsed: 1289s / 1800s
+  ⧗ CHECK 1: Waiting for security group change (current: ['sg-04b8c69ed57cd35d5'])
+  ⧗ CHECK 2: Waiting for forensic snapshot creation
+  ⧗ CHECK 3: Waiting for session revocation policy
+  ⧗ CHECK 4: Waiting for SNS alert confirmation in logs
+
+[Attempt 43] Elapsed: 1320s / 1800s
+  ⧗ CHECK 1: Waiting for security group change (current: ['sg-04b8c69ed57cd35d5'])
+  ⧗ CHECK 2: Waiting for forensic snapshot creation
+  ⧗ CHECK 3: Waiting for session revocation policy
+  ⧗ CHECK 4: Waiting for SNS alert confirmation in logs
+
+[Attempt 44] Elapsed: 1351s / 1800s
+  ⧗ CHECK 1: Waiting for security group change (current: ['sg-04b8c69ed57cd35d5'])
+  ⧗ CHECK 2: Waiting for forensic snapshot creation
+  ⧗ CHECK 3: Waiting for session revocation policy
+  ⧗ CHECK 4: Waiting for SNS alert confirmation in logs
+
+[Attempt 45] Elapsed: 1383s / 1800s
+  ⧗ CHECK 1: Waiting for security group change (current: ['sg-04b8c69ed57cd35d5'])
+  ⧗ CHECK 2: Waiting for forensic snapshot creation
+  ⧗ CHECK 3: Waiting for session revocation policy
+  ⧗ CHECK 4: Waiting for SNS alert confirmation in logs
+
+[Attempt 46] Elapsed: 1414s / 1800s
+  ⧗ CHECK 1: Waiting for security group change (current: ['sg-04b8c69ed57cd35d5'])
+  ⧗ CHECK 2: Waiting for forensic snapshot creation
+  ⧗ CHECK 3: Waiting for session revocation policy
+  ⧗ CHECK 4: Waiting for SNS alert confirmation in logs
+
+[Attempt 47] Elapsed: 1446s / 1800s
+  ⧗ CHECK 1: Waiting for security group change (current: ['sg-04b8c69ed57cd35d5'])
+  ⧗ CHECK 2: Waiting for forensic snapshot creation
+  ⧗ CHECK 3: Waiting for session revocation policy
+  ⧗ CHECK 4: Waiting for SNS alert confirmation in logs
+
+[Attempt 48] Elapsed: 1477s / 1800s
+  ⧗ CHECK 1: Waiting for security group change (current: ['sg-04b8c69ed57cd35d5'])
+  ⧗ CHECK 2: Waiting for forensic snapshot creation
+  ⧗ CHECK 3: Waiting for session revocation policy
+  ⧗ CHECK 4: Waiting for SNS alert confirmation in logs
+
+[Attempt 49] Elapsed: 1508s / 1800s
+  ⧗ CHECK 1: Waiting for security group change (current: ['sg-04b8c69ed57cd35d5'])
+  ⧗ CHECK 2: Waiting for forensic snapshot creation
+  ⧗ CHECK 3: Waiting for session revocation policy
+  ⧗ CHECK 4: Waiting for SNS alert confirmation in logs
+
+[Attempt 50] Elapsed: 1540s / 1800s
+  ⧗ CHECK 1: Waiting for security group change (current: ['sg-04b8c69ed57cd35d5'])
+  ⧗ CHECK 2: Waiting for forensic snapshot creation
+  ⧗ CHECK 3: Waiting for session revocation policy
+  ⧗ CHECK 4: Waiting for SNS alert confirmation in logs
+
+[Attempt 51] Elapsed: 1571s / 1800s
+  ⧗ CHECK 1: Waiting for security group change (current: ['sg-04b8c69ed57cd35d5'])
+  ⧗ CHECK 2: Waiting for forensic snapshot creation
+  ⧗ CHECK 3: Waiting for session revocation policy
+  ⧗ CHECK 4: Waiting for SNS alert confirmation in logs
+
+[Attempt 52] Elapsed: 1603s / 1800s
+  ⧗ CHECK 1: Waiting for security group change (current: ['sg-04b8c69ed57cd35d5'])
+  ⧗ CHECK 2: Waiting for forensic snapshot creation
+  ⧗ CHECK 3: Waiting for session revocation policy
+  ⧗ CHECK 4: Waiting for SNS alert confirmation in logs
+
+[Attempt 53] Elapsed: 1634s / 1800s
+  ⧗ CHECK 1: Waiting for security group change (current: ['sg-04b8c69ed57cd35d5'])
+  ⧗ CHECK 2: Waiting for forensic snapshot creation
+  ⧗ CHECK 3: Waiting for session revocation policy
+  ⧗ CHECK 4: Waiting for SNS alert confirmation in logs
+
+[Attempt 54] Elapsed: 1665s / 1800s
+  ⧗ CHECK 1: Waiting for security group change (current: ['sg-04b8c69ed57cd35d5'])
+  ⧗ CHECK 2: Waiting for forensic snapshot creation
+  ⧗ CHECK 3: Waiting for session revocation policy
+  ⧗ CHECK 4: Waiting for SNS alert confirmation in logs
+
+[Attempt 55] Elapsed: 1697s / 1800s
+  ⧗ CHECK 1: Waiting for security group change (current: ['sg-04b8c69ed57cd35d5'])
+  ⧗ CHECK 2: Waiting for forensic snapshot creation
+  ⧗ CHECK 3: Waiting for session revocation policy
+  ⧗ CHECK 4: Waiting for SNS alert confirmation in logs
+
+[Attempt 56] Elapsed: 1728s / 1800s
+  ⧗ CHECK 1: Waiting for security group change (current: ['sg-04b8c69ed57cd35d5'])
+  ⧗ CHECK 2: Waiting for forensic snapshot creation
+  ⧗ CHECK 3: Waiting for session revocation policy
+  ⧗ CHECK 4: Waiting for SNS alert confirmation in logs
+
+[Attempt 57] Elapsed: 1759s / 1800s
+  ⧗ CHECK 1: Waiting for security group change (current: ['sg-04b8c69ed57cd35d5'])
+  ⧗ CHECK 2: Waiting for forensic snapshot creation
+  ⧗ CHECK 3: Waiting for session revocation policy
+  ⧗ CHECK 4: Waiting for SNS alert confirmation in logs
+
+[Attempt 58] Elapsed: 1791s / 1800s
+  ⧗ CHECK 1: Waiting for security group change (current: ['sg-04b8c69ed57cd35d5'])
+  ⧗ CHECK 2: Waiting for forensic snapshot creation
+  ⧗ CHECK 3: Waiting for session revocation policy
+  ⧗ CHECK 4: Waiting for SNS alert confirmation in logs
+
+================================================================================
+✗ VERIFICATION TIMEOUT REACHED (30 minutes)
+================================================================================
+
+Verification Status:
+  1. Security Group Changed: ✗
+  2. Snapshot Created: ✗
+  3. Sessions Revoked: ✗
+  4. Alert Sent: ✗
+
+Passed: 0/4
+
+================================================================================
+ROLLBACK: Cleaning Up Experiment Resources
+================================================================================
+
+Terminating EC2 instance: i-0876b7814d8993bec
+Waiting for instance termination...
+  Waiting... attempt 1/30
+  Waiting... attempt 2/30
+  Waiting... attempt 3/30
+  Waiting... attempt 4/30
+  Waiting... attempt 5/30
+  Waiting... attempt 6/30
+✓ Instance terminated
+
+Deleting CloudFormation stack: sce-experiment-2-3-1775311606
+Stack deletion initiated
+Waiting for stack deletion (timeout: 15 minutes)...
+  Waiting... attempt 1/30
+  Waiting... attempt 2/30
+  Waiting... attempt 3/30
+  Waiting... attempt 4/30
+  Waiting... attempt 5/30
+  Waiting... attempt 6/30
+  Waiting... attempt 7/30
+  Waiting... attempt 8/30
+  Waiting... attempt 9/30
+  Waiting... attempt 10/30
+  Waiting... attempt 11/30
+  Waiting... attempt 12/30
+  Waiting... attempt 13/30
+  Waiting... attempt 14/30
+  Waiting... attempt 15/30
+  Waiting... attempt 16/30
+  Waiting... attempt 17/30
+  Waiting... attempt 18/30
+✓ Stack deleted successfully
+
+✓ Rollback completed
+
+
+STDERR:
+[32m[2026-04-04 16:06:46 INFO] Validating the experiment's syntax
+[32m[2026-04-04 16:06:46 INFO] Experiment looks valid
+[32m[2026-04-04 16:06:46 INFO] Running experiment: SCE Experiment 2.3 - Container IMDS Access Reactive Response
+[32m[2026-04-04 16:06:46 INFO] Steady-state strategy: after-method-only
+[32m[2026-04-04 16:06:46 INFO] Rollbacks strategy: default
+[32m[2026-04-04 16:06:46 INFO] Playing your experiment's method now...
+[32m[2026-04-04 16:06:46 INFO] Action: deploy-experiment-infrastructure
+[32m[2026-04-04 16:12:44 INFO] Action: simulate-container-imds-access
+[32m[2026-04-04 16:12:57 INFO] Steady state hypothesis: Reactive countermeasures trigger within 30 minutes of IMDS access
+[32m[2026-04-04 16:12:57 INFO] Probe: verify-reactive-response
+[31m[2026-04-04 16:43:21 CRITICAL] Steady state probe 'verify-reactive-response' is not in the given tolerance so failing this experiment
+[32m[2026-04-04 16:43:21 INFO] Let's rollback...
+[32m[2026-04-04 16:43:21 INFO] Rollback: cleanup-all-resources
+[32m[2026-04-04 16:43:21 INFO] Action: cleanup-all-resources
+[32m[2026-04-04 16:45:17 INFO] Experiment ended with status: deviated
+[32m[2026-04-04 16:45:17 INFO] The steady-state has deviated, a weakness may have been discovered
+
+
+RETURN CODE: 1

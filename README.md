@@ -1,17 +1,17 @@
 # DevSecOps Adversary LLM: Empirical Security Validation & Chaos Attack–Defense Trees
 
-[![Journal](https://img.shields.io/badge/Journal-IJIS-blue.svg)](https://www.springer.com/journal/10207)
+[![Status](https://img.shields.io/badge/Status-Under_Review_at_IJIS-informational.svg)](#)
 [![Conference](https://img.shields.io/badge/Conference-JNIC%202026-orange.svg)](https://jnic.es)
 [![arXiv](https://img.shields.io/badge/arXiv-2602.14106-b31b1b.svg)](https://arxiv.org/abs/2602.14106)
-[![Release IJIS](https://img.shields.io/badge/Release-v2.0--ijis--reproducibility-success.svg)](#)
+[![Release Package](https://img.shields.io/badge/Release-v2.0--ijis--reproducibility-success.svg)](#)
 [![Release JNIC](https://img.shields.io/badge/Release-v1.0--jnic-lightgrey.svg)](#)
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 
 Welcome to the central repository for the research on **LLM-driven threat modeling and Security Chaos Engineering (SCE) in cloud-native DevSecOps scenarios**.
 
-This repository hosts and indexes the artifacts, experimental datasets, automation pipelines, and reproducibility materials supporting two successive peer-reviewed works:
-1. **Conference Work (JNIC 2026):** *“Anticipating Adversary Behavior in DevSecOps Scenarios through Large Language Models”* (arXiv: [2602.14106](https://arxiv.org/abs/2602.14106)).
-2. **Extended Journal Work (IJIS):** *“LLM-Driven Chaos Attack–Defense Trees for Empirical Security Validation in DevSecOps Scenarios”* (Submitted to the *International Journal of Information Security*).
+This repository hosts and indexes the artifacts, experimental datasets, automation pipelines, and reproducibility materials supporting two research milestones:
+1. **Conference Paper (JNIC 2026):** *“Anticipating Adversary Behavior in DevSecOps Scenarios through Large Language Models”* (arXiv: [2602.14106](https://arxiv.org/abs/2602.14106)).
+2. **Extended Journal Manuscript (Submitted to IJIS):** *“LLM-Driven Chaos Attack–Defense Trees for Empirical Security Validation in DevSecOps Scenarios”* (Currently under review at the *International Journal of Information Security*).
 
 ---
 
@@ -29,7 +29,7 @@ flowchart TD
         BRANCH_JNIC --- TAG_JNIC
     end
     
-    subgraph IJIS ["2. IJIS Journal Research & Artifacts"]
+    subgraph IJIS ["2. IJIS Journal Submission & Artifacts"]
         BRANCH_EXP["ijis-experiments (Branch)"]
         BRANCH_REPRO["reproducibility/ijis-paper (Branch)"]
         TAG_REPRO["Tag: v2.0-ijis-reproducibility"]
@@ -45,14 +45,14 @@ flowchart TD
 |---|---|---|---|
 | **[`main`](https://github.com/mariomc14/devsecops-adversary-llm/tree/main)** | — | **Repository Portal** | Central index, global roadmap, comparative synthesis, and bibliographic metadata. |
 | **[`jnic`](https://github.com/mariomc14/devsecops-adversary-llm/tree/jnic)** | [`v1.0-jnic`](https://github.com/mariomc14/devsecops-adversary-llm/releases/tag/v1.0-jnic) | **JNIC 2026 Paper** | Attack tree generation prompts, QwQ-32B vs GPT-4 trees, and single-scenario SCE experiment (Spot EC2 privilege escalation). |
-| **[`ijis-experiments`](https://github.com/mariomc14/devsecops-adversary-llm/tree/ijis-experiments)** | — | **IJIS Consolidated Experiments** | Complete experimental campaign codebase, reference Bedrock orchestrator, iterative refinement loops, and all model-organized experimental outputs. |
-| **[`reproducibility/ijis-paper`](https://github.com/mariomc14/devsecops-adversary-llm/tree/reproducibility/ijis-paper)** | [`v2.0-ijis-reproducibility`](https://github.com/mariomc14/devsecops-adversary-llm/releases/tag/v2.0-ijis-reproducibility) | **IJIS Reproducibility Package** | Frozen, peer-review package: sanitized experiment artifacts, SHA256 checksums, normalized input DAGs, execution logs, and validation scripts. |
+| **[`ijis-experiments`](https://github.com/mariomc14/devsecops-adversary-llm/tree/ijis-experiments)** | — | **Extended Journal Experiments (IJIS Submission)** | Complete experimental campaign codebase, reference Bedrock orchestrator, iterative refinement loops, and all model-organized experimental outputs. |
+| **[`reproducibility/ijis-paper`](https://github.com/mariomc14/devsecops-adversary-llm/tree/reproducibility/ijis-paper)** | [`v2.0-ijis-reproducibility`](https://github.com/mariomc14/devsecops-adversary-llm/releases/tag/v2.0-ijis-reproducibility) | **IJIS Reproducibility Package** | Frozen package prepared for peer-review: sanitized experiment artifacts, SHA256 checksums, normalized input DAGs, execution logs, and validation scripts. |
 
 ---
 
 ## 📊 Comparison of Research Phases
 
-| Dimension | JNIC 2026 Conference Work | IJIS Extended Journal Work |
+| Dimension | JNIC 2026 Conference Paper | Extended Journal Manuscript (Submitted to IJIS) |
 |---|---|---|
 | **Manuscript Title** | *Anticipating Adversary Behavior in DevSecOps Scenarios through Large Language Models* | *LLM-Driven Chaos Attack–Defense Trees for Empirical Security Validation in DevSecOps Scenarios* |
 | **Primary Scope** | Feasibility study of LLMs constructing ADTs & manual translation into a single SCE experiment. | End-to-end framework automating Chaos ADT generation, multi-stage SCE translation, and iterative convergence. |
@@ -68,7 +68,7 @@ flowchart TD
 
 ### 1. Replicating the IJIS Reproducibility Package
 
-To validate the frozen artifacts cited in the IJIS journal paper:
+To validate the frozen artifacts associated with the IJIS manuscript submission:
 
 ```bash
 # Clone the repository
@@ -106,14 +106,14 @@ cd SCE_Experiment/Runner
 
 ## 📚 Bibliographic Citations
 
-If you use or build upon this work, please cite the corresponding publication:
+If you use or build upon this work, please cite the corresponding publication or manuscript:
 
-### Journal Paper (IJIS)
+### Journal Manuscript (Under Review at IJIS)
 ```bibtex
 @article{nespoli2026llmdriven,
   title   = {LLM-Driven Chaos Attack--Defense Trees for Empirical Security Validation in DevSecOps Scenarios},
   author  = {Nespoli, Pantaleone and Mar{\'\i}n-Caballero, Mario and Betancourt Alonso, Miguel and D{\'\i}az-L{\'o}pez, Daniel and Perales G{\'o}mez, Angel Luis},
-  journal = {International Journal of Information Security},
+  journal = {Submitted to International Journal of Information Security},
   year    = {2026},
   note    = {Under review}
 }

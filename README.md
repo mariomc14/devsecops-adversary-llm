@@ -10,7 +10,7 @@
 > 
 > *“Anticipating Adversary Behavior in DevSecOps Scenarios through Large Language Models”* (arXiv: [2602.14106](https://arxiv.org/abs/2602.14106)).
 > 
-> *For the extended journal framework published in the **International Journal of Information Security (IJIS)**, please refer to the [`ijis-experiments`](https://github.com/mariomc14/devsecops-adversary-llm/tree/ijis-experiments) branch and the dedicated [`reproducibility/ijis-paper`](https://github.com/mariomc14/devsecops-adversary-llm/tree/reproducibility/ijis-paper) branch.*
+> *For the extended framework submitted to the **International Journal of Information Security (IJIS)** (currently under review), please refer to the [`ijis-experiments`](https://github.com/mariomc14/devsecops-adversary-llm/tree/ijis-experiments) branch and the dedicated [`reproducibility/ijis-paper`](https://github.com/mariomc14/devsecops-adversary-llm/tree/reproducibility/ijis-paper) branch.*
 
 ---
 

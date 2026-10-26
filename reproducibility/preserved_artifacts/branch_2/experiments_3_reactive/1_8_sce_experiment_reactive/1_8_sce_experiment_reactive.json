@@ -1,0 +1,51 @@
+{
+    "title": "SCE 1.8 - Reactive Security Control for Malicious Build Detection",
+    "description": "Validates that CloudWatch Logs captures malicious CodeBuild activity for forensic analysis. This experiment starts a build that attempts credential exfiltration and verifies that the reactive security control (CloudWatch Logs) successfully records the malicious behavior for investigation.",
+    "tags": ["reactive", "codebuild", "cloudwatch-logs", "security-chaos", "forensics"],
+    "steady-state-hypothesis": {
+        "title": "CloudWatch Logs must capture malicious build activity",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "verify-reactive-logging-control",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.1_8_sce_experiment_reactive",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "deploy-codebuild-with-logging",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_8_sce_experiment_reactive",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "start-malicious-build",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_8_sce_experiment_reactive",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "cleanup-experiment-resources",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_8_sce_experiment_reactive",
+                "func": "rollback"
+            }
+        }
+    ]
+}

@@ -1,0 +1,51 @@
+{
+    "title": "Prevent Wildcard Principal Injection",
+    "description": "Validate IAM role's resistance to unauthorized principal modifications",
+    "tags": ["iam", "security", "least-privilege"],
+    "steady-state-hypothesis": {
+        "title": "IAM roles should prevent wildcard principal injection",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "Verify IAM Role Protection",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.sce_1_8_experiment_preventive",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "Setup Restricted IAM Role",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.sce_1_8_experiment_preventive",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "Attempt Wildcard Principal Injection",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.sce_1_8_experiment_preventive",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "Clean Up Experiment Resources",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.sce_1_8_experiment_preventive",
+                "func": "rollback"
+            }
+        }
+    ]
+}

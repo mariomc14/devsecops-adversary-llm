@@ -1,0 +1,146 @@
+{
+  "chaoslib-version": "1.44.0",
+  "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.41",
+  "node": "DESKTOP-R7NS3KO",
+  "experiment": {
+    "title": "EC2 IMDS Configuration Change Detection Experiment",
+    "description": "Validate detective controls for detecting unauthorized IMDS configuration modifications",
+    "tags": [
+      "ec2",
+      "imds",
+      "security",
+      "detective"
+    ],
+    "steady-state-hypothesis": {
+      "title": "IMDS Configuration Changes Should Be Detectable",
+      "probes": [
+        {
+          "type": "probe",
+          "name": "IMDS Configuration Change Detection",
+          "tolerance": true,
+          "provider": {
+            "type": "python",
+            "module": "chaosaws.ec2.1_8_detective",
+            "func": "hypothesis_verification"
+          }
+        }
+      ]
+    },
+    "method": [
+      {
+        "type": "action",
+        "name": "Prepare IMDS Monitoring Environment",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_detective",
+          "func": "steady_state"
+        }
+      },
+      {
+        "type": "action",
+        "name": "Simulate IMDS Configuration Modification",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_detective",
+          "func": "attack"
+        }
+      }
+    ],
+    "rollbacks": [
+      {
+        "type": "action",
+        "name": "Clean Up Experiment Resources",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_detective",
+          "func": "rollback"
+        }
+      }
+    ],
+    "dry": null
+  },
+  "start": "2026-03-29T11:04:48.969948+00:00",
+  "status": "completed",
+  "deviated": false,
+  "steady_states": {
+    "before": null,
+    "after": {
+      "steady_state_met": true,
+      "probes": [
+        {
+          "activity": {
+            "type": "probe",
+            "name": "IMDS Configuration Change Detection",
+            "tolerance": true,
+            "provider": {
+              "type": "python",
+              "module": "chaosaws.ec2.1_8_detective",
+              "func": "hypothesis_verification"
+            }
+          },
+          "output": true,
+          "start": "2026-03-29T11:07:53.630137+00:00",
+          "status": "succeeded",
+          "end": "2026-03-29T11:07:54.315694+00:00",
+          "duration": 0.685557,
+          "tolerance_met": true
+        }
+      ]
+    },
+    "during": []
+  },
+  "run": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "Prepare IMDS Monitoring Environment",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_detective",
+          "func": "steady_state"
+        }
+      },
+      "output": false,
+      "start": "2026-03-29T11:04:48.970370+00:00",
+      "status": "succeeded",
+      "end": "2026-03-29T11:07:53.087979+00:00",
+      "duration": 184.117609
+    },
+    {
+      "activity": {
+        "type": "action",
+        "name": "Simulate IMDS Configuration Modification",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_detective",
+          "func": "attack"
+        }
+      },
+      "output": false,
+      "start": "2026-03-29T11:07:53.088127+00:00",
+      "status": "succeeded",
+      "end": "2026-03-29T11:07:53.629866+00:00",
+      "duration": 0.541739
+    }
+  ],
+  "rollbacks": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "Clean Up Experiment Resources",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_detective",
+          "func": "rollback"
+        }
+      },
+      "output": null,
+      "start": "2026-03-29T11:07:54.315985+00:00",
+      "status": "succeeded",
+      "end": "2026-03-29T11:08:26.584182+00:00",
+      "duration": 32.268197
+    }
+  ],
+  "end": "2026-03-29T11:08:26.584254+00:00",
+  "duration": 217.6150643825531
+}

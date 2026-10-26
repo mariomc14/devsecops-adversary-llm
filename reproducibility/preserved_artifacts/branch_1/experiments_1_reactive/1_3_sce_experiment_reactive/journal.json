@@ -1,0 +1,149 @@
+{
+  "chaoslib-version": "1.44.0",
+  "platform": "Linux-6.17.0-20-generic-x86_64-with-glibc2.39",
+  "node": "sce-user-VirtualBox",
+  "experiment": {
+    "title": "CodeBuild Project Creation Security Control",
+    "description": "Validate detection and prevention of unauthorized CodeBuild project creation",
+    "tags": [
+      "aws",
+      "codebuild",
+      "security",
+      "iam"
+    ],
+    "steady-state-hypothesis": {
+      "title": "No Unauthorized CodeBuild Projects",
+      "probes": [
+        {
+          "type": "probe",
+          "name": "Verify No Unauthorized Projects",
+          "tolerance": true,
+          "provider": {
+            "type": "python",
+            "module": "chaosaws.ec2.1_3_sce_experiment_reactive",
+            "func": "hypothesis_verification"
+          }
+        }
+      ]
+    },
+    "method": [
+      {
+        "type": "action",
+        "name": "Create Secure CodeBuild Infrastructure",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_sce_experiment_reactive",
+          "func": "steady_state"
+        }
+      },
+      {
+        "type": "action",
+        "name": "Simulate Malicious CodeBuild Project Creation",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_sce_experiment_reactive",
+          "func": "attack"
+        }
+      }
+    ],
+    "rollbacks": [
+      {
+        "type": "action",
+        "name": "Remove Experimental Resources",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_sce_experiment_reactive",
+          "func": "rollback"
+        }
+      }
+    ],
+    "dry": null
+  },
+  "start": "2026-04-09T03:07:30.652853+00:00",
+  "status": "completed",
+  "deviated": false,
+  "steady_states": {
+    "before": null,
+    "after": {
+      "steady_state_met": true,
+      "probes": [
+        {
+          "activity": {
+            "type": "probe",
+            "name": "Verify No Unauthorized Projects",
+            "tolerance": true,
+            "provider": {
+              "type": "python",
+              "module": "chaosaws.ec2.1_3_sce_experiment_reactive",
+              "func": "hypothesis_verification"
+            }
+          },
+          "output": true,
+          "start": "2026-04-09T03:08:34.563223+00:00",
+          "status": "succeeded",
+          "end": "2026-04-09T03:08:34.976793+00:00",
+          "duration": 0.41357,
+          "tolerance_met": true
+        }
+      ]
+    },
+    "during": []
+  },
+  "run": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "Create Secure CodeBuild Infrastructure",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_sce_experiment_reactive",
+          "func": "steady_state"
+        }
+      },
+      "output": {
+        "stack_name": "sce-codebuild-experiment-1775704050",
+        "timestamp": 1775704050
+      },
+      "start": "2026-04-09T03:07:30.653957+00:00",
+      "status": "succeeded",
+      "end": "2026-04-09T03:08:02.107943+00:00",
+      "duration": 31.453986
+    },
+    {
+      "activity": {
+        "type": "action",
+        "name": "Simulate Malicious CodeBuild Project Creation",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_sce_experiment_reactive",
+          "func": "attack"
+        }
+      },
+      "output": true,
+      "start": "2026-04-09T03:08:02.108862+00:00",
+      "status": "succeeded",
+      "end": "2026-04-09T03:08:34.562643+00:00",
+      "duration": 32.453781
+    }
+  ],
+  "rollbacks": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "Remove Experimental Resources",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_sce_experiment_reactive",
+          "func": "rollback"
+        }
+      },
+      "output": null,
+      "start": "2026-04-09T03:08:34.977803+00:00",
+      "status": "succeeded",
+      "end": "2026-04-09T03:08:34.977952+00:00",
+      "duration": 0.000149
+    }
+  ],
+  "end": "2026-04-09T03:08:34.978169+00:00",
+  "duration": 64.32886862754822
+}

@@ -1,0 +1,61 @@
+{
+    "title": "SCE 1.3 - Reactive Probe for Malicious CodeBuild Detection",
+    "description": "Validates that reactive detection infrastructure (EventBridge rules, SNS alerts, and automated response) can identify and remediate malicious CodeBuild project creation attempts. Tests the organization's ability to detect credential exfiltration attacks via compromised build projects.",
+    "tags": [
+        "aws",
+        "codebuild",
+        "security-chaos",
+        "reactive-detection",
+        "credential-exfiltration",
+        "eventbridge",
+        "sns",
+        "iam"
+    ],
+    "steady-state-hypothesis": {
+        "title": "Reactive Control for Malicious CodeBuild Detection is Configured",
+        "description": "The system maintains properly configured EventBridge detection rules that can identify malicious CodeBuild project creation events and route them to SNS for alerting and automated remediation.",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "Verify EventBridge Rule and SNS Topic Configuration",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.1_3_sce_experiment_reactive",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "Deploy Detection Infrastructure (EventBridge, SNS, IAM)",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_3_sce_experiment_reactive",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "Execute Attack: Create Malicious CodeBuild Project with Credential Exfiltration",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_3_sce_experiment_reactive",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "Delete EventBridge Rule, SNS Topic, and IAM Role",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_3_sce_experiment_reactive",
+                "func": "rollback"
+            }
+        }
+    ]
+}

@@ -1,0 +1,58 @@
+{
+    "title": "SCE 1.8 - Preventive Control for Malicious Build Execution",
+    "description": "Security Chaos Engineering experiment that validates preventive controls block unauthorized CodeBuild execution attempts (Attack Node 1.7: Start Malicious Build). The experiment deploys a CodeBuild project with IAM-based preventive controls that deny StartBuild actions with buildspec overrides, then attempts to execute a malicious build using an attacker role. The hypothesis is verified by confirming the build attempt was blocked by IAM deny policies.",
+    "tags": [
+        "sce-1-8",
+        "preventive",
+        "codebuild",
+        "iam",
+        "malicious-build",
+        "supply-chain-security"
+    ],
+    "steady-state-hypothesis": {
+        "title": "Preventive control blocks malicious build attempts",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "verify-malicious-build-blocked",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.1_8_sce_experiment_preventive",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "deploy-codebuild-with-preventive-controls",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_8_sce_experiment_preventive",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "attempt-malicious-build-execution",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_8_sce_experiment_preventive",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "cleanup-experiment-resources",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_8_sce_experiment_preventive",
+                "func": "rollback"
+            }
+        }
+    ]
+}

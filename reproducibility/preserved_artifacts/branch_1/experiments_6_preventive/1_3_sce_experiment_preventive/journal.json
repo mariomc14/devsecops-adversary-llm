@@ -1,0 +1,147 @@
+{
+  "chaoslib-version": "1.44.0",
+  "platform": "Linux-6.17.0-19-generic-x86_64-with-glibc2.39",
+  "node": "sce-user-VirtualBox",
+  "experiment": {
+    "title": "SCE 1.3 Preventive: Block Malicious CodeBuild Project Creation",
+    "description": "Validates that a preventive IAM deny policy blocks the creation of unauthorized CodeBuild projects (Attack Node 1.2). The experiment deploys a role with an explicit Deny on codebuild:CreateProject, then attempts to create a malicious project using that role. The hypothesis is that the API call is denied, proving the preventive control is effective.",
+    "tags": [
+      "sce-1.3",
+      "preventive",
+      "codebuild",
+      "iam-deny",
+      "security-chaos-engineering"
+    ],
+    "steady-state-hypothesis": {
+      "title": "Malicious CodeBuild project creation is blocked by preventive IAM deny policy",
+      "probes": [
+        {
+          "type": "probe",
+          "name": "verify-preventive-control-blocks-codebuild-create-project",
+          "tolerance": true,
+          "provider": {
+            "type": "python",
+            "module": "chaosaws.ec2.1_3_sce_experiment_preventive",
+            "func": "hypothesis_verification"
+          }
+        }
+      ]
+    },
+    "method": [
+      {
+        "type": "action",
+        "name": "deploy-experiment-infrastructure-with-preventive-deny-policy",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_sce_experiment_preventive",
+          "func": "steady_state"
+        }
+      },
+      {
+        "type": "action",
+        "name": "attempt-malicious-codebuild-project-creation",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_sce_experiment_preventive",
+          "func": "attack"
+        }
+      }
+    ],
+    "rollbacks": [
+      {
+        "type": "action",
+        "name": "delete-experiment-cloudformation-stack-and-resources",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_sce_experiment_preventive",
+          "func": "rollback"
+        }
+      }
+    ],
+    "dry": null
+  },
+  "start": "2026-04-05T02:33:10.894588+00:00",
+  "status": "completed",
+  "deviated": false,
+  "steady_states": {
+    "before": null,
+    "after": {
+      "steady_state_met": true,
+      "probes": [
+        {
+          "activity": {
+            "type": "probe",
+            "name": "verify-preventive-control-blocks-codebuild-create-project",
+            "tolerance": true,
+            "provider": {
+              "type": "python",
+              "module": "chaosaws.ec2.1_3_sce_experiment_preventive",
+              "func": "hypothesis_verification"
+            }
+          },
+          "output": true,
+          "start": "2026-04-05T02:34:09.690214+00:00",
+          "status": "succeeded",
+          "end": "2026-04-05T02:34:10.621411+00:00",
+          "duration": 0.931197,
+          "tolerance_met": true
+        }
+      ]
+    },
+    "during": []
+  },
+  "run": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "deploy-experiment-infrastructure-with-preventive-deny-policy",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_sce_experiment_preventive",
+          "func": "steady_state"
+        }
+      },
+      "output": true,
+      "start": "2026-04-05T02:33:10.895223+00:00",
+      "status": "succeeded",
+      "end": "2026-04-05T02:34:08.705431+00:00",
+      "duration": 57.810208
+    },
+    {
+      "activity": {
+        "type": "action",
+        "name": "attempt-malicious-codebuild-project-creation",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_sce_experiment_preventive",
+          "func": "attack"
+        }
+      },
+      "output": true,
+      "start": "2026-04-05T02:34:08.705788+00:00",
+      "status": "succeeded",
+      "end": "2026-04-05T02:34:09.689664+00:00",
+      "duration": 0.983876
+    }
+  ],
+  "rollbacks": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "delete-experiment-cloudformation-stack-and-resources",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_sce_experiment_preventive",
+          "func": "rollback"
+        }
+      },
+      "output": null,
+      "start": "2026-04-05T02:34:10.621971+00:00",
+      "status": "succeeded",
+      "end": "2026-04-05T02:34:32.794979+00:00",
+      "duration": 22.173008
+    }
+  ],
+  "end": "2026-04-05T02:34:32.795169+00:00",
+  "duration": 81.90475797653198
+}

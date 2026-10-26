@@ -1,0 +1,51 @@
+{
+    "title": "SCE 1.8 Preventive Probe: Validate IAM Deny Policy Blocks IMDS Enumeration and Downgrade",
+    "description": "Security Chaos Engineering experiment validating that an explicit IAM deny policy (simulating an SCP preventive control) successfully blocks attack steps 1.2 (ec2:DescribeInstances for IMDS enumeration - T1580) and 1.7 (ec2:ModifyInstanceMetadataOptions for IMDS downgrade to IMDSv1 and hop limit increase - T1562.001). The experiment provisions a banking-tier EC2 instance with IMDSv2 enforced and a restricted IAM role with deny policy, then attempts both attack steps using the restricted role and verifies that both are denied and IMDS configuration remains intact.",
+    "tags": ["sce-1-8", "preventive", "imds", "ec2", "iam-deny", "T1580", "T1562.001", "credential-theft", "defense-evasion"],
+    "steady-state-hypothesis": {
+        "title": "Preventive IAM deny policy blocks IMDS reconnaissance and downgrade attempts",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "Verify both ec2:DescribeInstances and ec2:ModifyInstanceMetadataOptions are denied and IMDS remains IMDSv2-enforced with hop-limit 1",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.1_8_preventive",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "Provision EC2 instance with IMDSv2 enforced and IAM restricted role with deny policy via CloudFormation",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_8_preventive",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "Execute attack steps 1.2 (DescribeInstances enumeration) and 1.7 (ModifyInstanceMetadataOptions downgrade) using restricted role",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_8_preventive",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "Delete CloudFormation stack and all experiment resources (EC2 instance, IAM role, policies, security group)",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_8_preventive",
+                "func": "rollback"
+            }
+        }
+    ]
+}

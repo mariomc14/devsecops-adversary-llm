@@ -1,0 +1,149 @@
+{
+  "chaoslib-version": "1.44.0",
+  "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.41",
+  "node": "PC-INF-MAMA",
+  "experiment": {
+    "title": "SCE 2.5 Reactive Probe: IMDS Downgrade Auto-Remediation Validation",
+    "description": "Validates that when an attacker enumerates a banking EC2 instance IMDS configuration (step 1.3, T1580) and then downgrades IMDSv2 to IMDSv1 with increased hop limit (step 2.4, T1562.001), the reactive controls detect the NON_COMPLIANT state via AWS Config rule ec2-imdsv2-check, fire an EventBridge rule, and invoke a remediation Lambda that automatically reverts HttpTokens to required and HttpPutResponseHopLimit to 1, while sending a SOC alert via SNS. Simulates the SCP-removed scenario from SCE node 2.5. Time-to-remediation target: less than 5 minutes.",
+    "tags": [
+      "sce",
+      "reactive",
+      "imds",
+      "ec2",
+      "config-rule",
+      "auto-remediation",
+      "node-2-5"
+    ],
+    "steady-state-hypothesis": {
+      "title": "Reactive controls revert IMDS downgrade and restore enforcement within SLA",
+      "probes": [
+        {
+          "type": "probe",
+          "name": "Verify IMDS reverted to required and hop limit restored to 1 by auto-remediation Lambda",
+          "tolerance": true,
+          "provider": {
+            "type": "python",
+            "module": "chaosaws.ec2.2_5_reactive",
+            "func": "hypothesis_verification"
+          }
+        }
+      ]
+    },
+    "method": [
+      {
+        "type": "action",
+        "name": "Provision Config recorder imperatively then deploy CFN stack with EC2 IMDSv2 instance, Config rule, EventBridge rule, remediation Lambda, and SNS topic",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.2_5_reactive",
+          "func": "steady_state"
+        }
+      },
+      {
+        "type": "action",
+        "name": "Execute attack steps 1.3 (T1580 enumerate EC2 IMDS config) and 2.4 (T1562.001 downgrade IMDS to optional with hop limit 2)",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.2_5_reactive",
+          "func": "attack"
+        }
+      }
+    ],
+    "rollbacks": [
+      {
+        "type": "action",
+        "name": "Delete CFN stack and imperatively created Config recorder, delivery channel, S3 bucket, and IAM role",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.2_5_reactive",
+          "func": "rollback"
+        }
+      }
+    ],
+    "dry": null
+  },
+  "start": "2026-04-21T08:36:58.516567+00:00",
+  "status": "completed",
+  "deviated": false,
+  "steady_states": {
+    "before": null,
+    "after": {
+      "steady_state_met": true,
+      "probes": [
+        {
+          "activity": {
+            "type": "probe",
+            "name": "Verify IMDS reverted to required and hop limit restored to 1 by auto-remediation Lambda",
+            "tolerance": true,
+            "provider": {
+              "type": "python",
+              "module": "chaosaws.ec2.2_5_reactive",
+              "func": "hypothesis_verification"
+            }
+          },
+          "output": true,
+          "start": "2026-04-21T08:42:56.498444+00:00",
+          "status": "succeeded",
+          "end": "2026-04-21T08:44:33.829717+00:00",
+          "duration": 97.331273,
+          "tolerance_met": true
+        }
+      ]
+    },
+    "during": []
+  },
+  "run": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "Provision Config recorder imperatively then deploy CFN stack with EC2 IMDSv2 instance, Config rule, EventBridge rule, remediation Lambda, and SNS topic",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.2_5_reactive",
+          "func": "steady_state"
+        }
+      },
+      "output": true,
+      "start": "2026-04-21T08:36:58.517330+00:00",
+      "status": "succeeded",
+      "end": "2026-04-21T08:42:52.105082+00:00",
+      "duration": 353.587752
+    },
+    {
+      "activity": {
+        "type": "action",
+        "name": "Execute attack steps 1.3 (T1580 enumerate EC2 IMDS config) and 2.4 (T1562.001 downgrade IMDS to optional with hop limit 2)",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.2_5_reactive",
+          "func": "attack"
+        }
+      },
+      "output": true,
+      "start": "2026-04-21T08:42:52.105535+00:00",
+      "status": "succeeded",
+      "end": "2026-04-21T08:42:56.498151+00:00",
+      "duration": 4.392616
+    }
+  ],
+  "rollbacks": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "Delete CFN stack and imperatively created Config recorder, delivery channel, S3 bucket, and IAM role",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.2_5_reactive",
+          "func": "rollback"
+        }
+      },
+      "output": true,
+      "start": "2026-04-21T08:44:33.830153+00:00",
+      "status": "succeeded",
+      "end": "2026-04-21T08:46:29.577245+00:00",
+      "duration": 115.747092
+    }
+  ],
+  "end": "2026-04-21T08:46:29.577395+00:00",
+  "duration": 571.0631563663483
+}

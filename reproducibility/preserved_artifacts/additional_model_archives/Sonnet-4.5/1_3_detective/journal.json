@@ -1,0 +1,148 @@
+{
+  "chaoslib-version": "1.44.0",
+  "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.41",
+  "node": "DESKTOP-R7NS3KO",
+  "experiment": {
+    "title": "SCE Experiment 1.3 - Detective Probe: CloudTrail EC2 Reconnaissance Detection",
+    "description": "Validates CloudTrail logs EC2 reconnaissance attempts (ec2:DescribeInstances) from test IAM user within 30-minute SLA. Tests detective control effectiveness for MITRE ATT&CK T1580 (Cloud Infrastructure Discovery).",
+    "tags": [
+      "detective",
+      "cloudtrail",
+      "reconnaissance",
+      "ec2",
+      "mitre-t1580",
+      "sce"
+    ],
+    "steady-state-hypothesis": {
+      "title": "CloudTrail detects EC2 reconnaissance within 30-minute SLA",
+      "probes": [
+        {
+          "type": "probe",
+          "name": "Verify CloudTrail logs DescribeInstances from test user",
+          "tolerance": true,
+          "provider": {
+            "type": "python",
+            "module": "chaosaws.ec2.1_3_detective",
+            "func": "hypothesis_verification"
+          }
+        }
+      ]
+    },
+    "method": [
+      {
+        "type": "action",
+        "name": "Provision CloudTrail and IAM test infrastructure",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_detective",
+          "func": "steady_state"
+        }
+      },
+      {
+        "type": "action",
+        "name": "Execute EC2 reconnaissance with test credentials",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_detective",
+          "func": "attack"
+        }
+      }
+    ],
+    "rollbacks": [
+      {
+        "type": "action",
+        "name": "Delete CloudTrail and CloudFormation stack",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_detective",
+          "func": "rollback"
+        }
+      }
+    ],
+    "dry": null
+  },
+  "start": "2026-03-31T17:59:37.172013+00:00",
+  "status": "completed",
+  "deviated": false,
+  "steady_states": {
+    "before": null,
+    "after": {
+      "steady_state_met": true,
+      "probes": [
+        {
+          "activity": {
+            "type": "probe",
+            "name": "Verify CloudTrail logs DescribeInstances from test user",
+            "tolerance": true,
+            "provider": {
+              "type": "python",
+              "module": "chaosaws.ec2.1_3_detective",
+              "func": "hypothesis_verification"
+            }
+          },
+          "output": true,
+          "start": "2026-03-31T18:02:26.399816+00:00",
+          "status": "succeeded",
+          "end": "2026-03-31T18:03:27.098414+00:00",
+          "duration": 60.698598,
+          "tolerance_met": true
+        }
+      ]
+    },
+    "during": []
+  },
+  "run": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "Provision CloudTrail and IAM test infrastructure",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_detective",
+          "func": "steady_state"
+        }
+      },
+      "output": true,
+      "start": "2026-03-31T17:59:37.172274+00:00",
+      "status": "succeeded",
+      "end": "2026-03-31T18:02:25.808859+00:00",
+      "duration": 168.636585
+    },
+    {
+      "activity": {
+        "type": "action",
+        "name": "Execute EC2 reconnaissance with test credentials",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_detective",
+          "func": "attack"
+        }
+      },
+      "output": true,
+      "start": "2026-03-31T18:02:25.809051+00:00",
+      "status": "succeeded",
+      "end": "2026-03-31T18:02:26.399612+00:00",
+      "duration": 0.590561
+    }
+  ],
+  "rollbacks": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "Delete CloudTrail and CloudFormation stack",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_detective",
+          "func": "rollback"
+        }
+      },
+      "output": false,
+      "start": "2026-03-31T18:03:27.098631+00:00",
+      "status": "succeeded",
+      "end": "2026-03-31T18:04:14.755418+00:00",
+      "duration": 47.656787
+    }
+  ],
+  "end": "2026-03-31T18:04:14.755495+00:00",
+  "duration": 277.58459854125977
+}

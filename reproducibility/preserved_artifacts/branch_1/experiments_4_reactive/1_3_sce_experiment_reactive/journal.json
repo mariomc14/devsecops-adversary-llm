@@ -1,0 +1,149 @@
+{
+  "chaoslib-version": "1.44.0",
+  "platform": "Linux-6.17.0-20-generic-x86_64-with-glibc2.39",
+  "node": "sce-user-VirtualBox",
+  "experiment": {
+    "title": "SCE 1.3 — Reactive: Detect and Respond to Malicious CodeBuild Project Creation",
+    "description": "Validates that an EventBridge + Lambda reactive control detects the creation of a malicious AWS CodeBuild project (attack node 1.2), automatically deletes it, and publishes verifiable CloudWatch metric evidence that the reactor fired. The experiment deploys a dedicated CloudFormation stack, executes the attack by calling codebuild:CreateProject with a credential-exfiltration buildspec, invokes the reactor Lambda, and confirms the defensive response via CloudWatch metric statistics and project-deletion checks.",
+    "tags": [
+      "sce",
+      "codebuild",
+      "reactive",
+      "eventbridge",
+      "lambda",
+      "security-chaos-engineering",
+      "1.3"
+    ],
+    "steady-state-hypothesis": {
+      "title": "Reactive control infrastructure is deployed and the malicious CodeBuild project does not exist prior to the attack",
+      "probes": [
+        {
+          "type": "probe",
+          "name": "verify-reactive-control-fired-and-project-deleted",
+          "tolerance": true,
+          "provider": {
+            "type": "python",
+            "module": "chaosaws.ec2.1_3_sce_experiment_reactive",
+            "func": "hypothesis_verification"
+          }
+        }
+      ]
+    },
+    "method": [
+      {
+        "type": "action",
+        "name": "deploy-experiment-stack-and-reactive-control-infrastructure",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_sce_experiment_reactive",
+          "func": "steady_state"
+        }
+      },
+      {
+        "type": "action",
+        "name": "create-malicious-codebuild-project-with-credential-exfiltration-buildspec",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_sce_experiment_reactive",
+          "func": "attack"
+        }
+      }
+    ],
+    "rollbacks": [
+      {
+        "type": "action",
+        "name": "delete-cloudformation-stack-and-all-experiment-resources",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_sce_experiment_reactive",
+          "func": "rollback"
+        }
+      }
+    ],
+    "dry": null
+  },
+  "start": "2026-04-22T03:13:19.970924+00:00",
+  "status": "completed",
+  "deviated": false,
+  "steady_states": {
+    "before": null,
+    "after": {
+      "steady_state_met": true,
+      "probes": [
+        {
+          "activity": {
+            "type": "probe",
+            "name": "verify-reactive-control-fired-and-project-deleted",
+            "tolerance": true,
+            "provider": {
+              "type": "python",
+              "module": "chaosaws.ec2.1_3_sce_experiment_reactive",
+              "func": "hypothesis_verification"
+            }
+          },
+          "output": true,
+          "start": "2026-04-22T03:15:11.010809+00:00",
+          "status": "succeeded",
+          "end": "2026-04-22T03:15:25.819643+00:00",
+          "duration": 14.808834,
+          "tolerance_met": true
+        }
+      ]
+    },
+    "during": []
+  },
+  "run": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "deploy-experiment-stack-and-reactive-control-infrastructure",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_sce_experiment_reactive",
+          "func": "steady_state"
+        }
+      },
+      "output": true,
+      "start": "2026-04-22T03:13:19.971640+00:00",
+      "status": "succeeded",
+      "end": "2026-04-22T03:15:10.262242+00:00",
+      "duration": 110.290602
+    },
+    {
+      "activity": {
+        "type": "action",
+        "name": "create-malicious-codebuild-project-with-credential-exfiltration-buildspec",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_sce_experiment_reactive",
+          "func": "attack"
+        }
+      },
+      "output": true,
+      "start": "2026-04-22T03:15:10.262774+00:00",
+      "status": "succeeded",
+      "end": "2026-04-22T03:15:11.009707+00:00",
+      "duration": 0.746933
+    }
+  ],
+  "rollbacks": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "delete-cloudformation-stack-and-all-experiment-resources",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_sce_experiment_reactive",
+          "func": "rollback"
+        }
+      },
+      "output": null,
+      "start": "2026-04-22T03:15:25.820671+00:00",
+      "status": "succeeded",
+      "end": "2026-04-22T03:16:33.564781+00:00",
+      "duration": 67.74411
+    }
+  ],
+  "end": "2026-04-22T03:16:33.565037+00:00",
+  "duration": 193.59863710403442
+}

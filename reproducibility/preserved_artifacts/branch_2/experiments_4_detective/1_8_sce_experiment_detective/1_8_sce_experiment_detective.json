@@ -1,0 +1,59 @@
+{
+    "title": "SCE 1.8 – Detect Malicious CodeBuild Invocation (Attack Node 1.7: Start Malicious Build)",
+    "description": "Validates the detective control for unauthorised / malicious CodeBuild project execution. A rogue CodeBuild project is created and a build is deliberately triggered (StartBuild). An EventBridge rule captures the build-state-change event and routes it to a CloudWatch Logs group. A CloudWatch metric filter increments a counter, and a CloudWatch Alarm transitions to ALARM state. The hypothesis verifies – via real AWS API calls – that either the alarm fired or log events are present in the detective log group, confirming the control observed the malicious build invocation.",
+    "tags": [
+        "sce",
+        "detective",
+        "codebuild",
+        "malicious-build",
+        "eventbridge",
+        "cloudwatch",
+        "supply-chain"
+    ],
+    "steady-state-hypothesis": {
+        "title": "CloudWatch Alarm or Log Group captures malicious CodeBuild StartBuild event",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "Verify detective control detected the malicious build invocation",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.1_8_sce_experiment_detective",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "Deploy CloudFormation stack with CodeBuild project, EventBridge rule, CloudWatch log group and alarm",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_8_sce_experiment_detective",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "Start malicious CodeBuild build (Attack Node 1.7)",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_8_sce_experiment_detective",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "Delete CloudFormation stack and all provisioned resources",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_8_sce_experiment_detective",
+                "func": "rollback"
+            }
+        }
+    ]
+}

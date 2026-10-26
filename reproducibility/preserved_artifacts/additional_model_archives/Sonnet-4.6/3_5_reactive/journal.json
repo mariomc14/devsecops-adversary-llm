@@ -1,0 +1,160 @@
+{
+  "chaoslib-version": "1.44.0",
+  "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.41",
+  "node": "PC-INF-MAMA",
+  "experiment": {
+    "title": "SCE Experiment 3.5 - Reactive Probe: Stolen Credential Automated Incident Response Validation",
+    "description": "Validates that the reactive controls for SCE node 3.5 execute correctly after the three-step credential-theft attack chain: attack node 1.2 (sts:AssumeRole on the EC2 instance-simulation role to obtain stolen instance-profile credentials, proxying the IMDS credential acquisition step T1562.008 and T1552.005), attack node 2.2 (sts:GetCallerIdentity with stolen credentials to verify validity and generate the identity-confirmation CloudTrail event), and attack node 3.2 (iam:ListAttachedRolePolicies and s3:ListAllMyBuckets with stolen credentials for lateral movement reconnaissance T1078.004) are executed in a clean AWS account. The experiment provisions a CloudTrail trail with CloudWatch Logs delivery, an S3 bucket for CloudTrail log storage with a service-principal bucket policy, an S3 evidence bucket configured with Object Lock in Governance mode (simulating the WORM compliance store described in ADT 3.4 step 4), an SSM Parameter Store parameter serving as the deployment pipeline gate flag (initial value OK), and an SSM Automation document implementing the two-step reactive playbook (credential revocation via iam:PutRolePolicy + pipeline blocking via ssm:PutParameter). All IAM resources (CloudTrail CW Logs delivery role, EC2 instance-simulation role, SSM Automation execution role) are created directly via boto3 before CloudFormation is invoked, applying all lessons from prior probe executions: no Description field on any IAM call, role names sanitized to ASCII-safe characters, GuardDuty managed outside CloudFormation to tolerate pre-existing detectors, and CFN template containing zero IAM resources. The reactive probe confirms five independent signals within a 30-minute SLA: (A) the SSM Automation execution reaches Success status confirming the playbook ran to completion (ADT 3.4 automated pipeline), (B) the instance-simulation role has the SCEDenyAllRevocation Deny-all inline policy attached confirming credential revocation (ADT 3.4 step 1 CREDENTIAL_COMPROMISE playbook), (C) subsequent sts:GetCallerIdentity calls with the same stolen credentials return AccessDenied confirming the revocation policy is effective and in-flight sessions are invalidated (ADT 3.4 result: subsequent API calls return AccessDenied), (D) the SSM Parameter Store pipeline gate is set to BLOCKED confirming the deployment pipeline is halted pending credential rotation (ADT 3.4 step 6), and (E) a CloudTrail log file from the attack window is successfully copied to the Object Lock evidence bucket confirming WORM evidence preservation (ADT 3.4 step 4). Rollback restores the pipeline gate to OK, removes the Deny-all revocation policy from the instance role before deletion, stops the CloudTrail trail, empties both S3 buckets (using BypassGovernanceRetention for Object Lock objects), deletes the CloudFormation stack, deletes all boto3-created IAM roles, and deletes the GuardDuty detector only if this experiment created it.",
+    "tags": [
+      "sce",
+      "reactive",
+      "credential-revocation",
+      "pipeline-blocking",
+      "worm-evidence",
+      "ssm-automation",
+      "iam",
+      "cloudtrail",
+      "object-lock",
+      "banking-platform",
+      "pci-dss",
+      "t1562.008",
+      "t1552.005",
+      "t1078.004",
+      "attack-node-1.2",
+      "attack-node-2.2",
+      "attack-node-3.2",
+      "sce-node-3.5"
+    ],
+    "steady-state-hypothesis": {
+      "title": "All five reactive signals confirmed within 30-minute SLA: SSM Automation success, IAM Deny-all revocation, stolen credentials return AccessDenied, pipeline gate BLOCKED, and CloudTrail evidence in Object Lock bucket",
+      "probes": [
+        {
+          "type": "probe",
+          "name": "Verify SSM Automation execution success, SCEDenyAllRevocation policy on instance role, stolen credentials returning AccessDenied, pipeline gate parameter set to BLOCKED, and CloudTrail log file present in Object Lock evidence bucket - all confirmed within 30-minute SLA after attack nodes 1.2, 2.2, and 3.2",
+          "tolerance": true,
+          "provider": {
+            "type": "python",
+            "module": "chaosaws.ec2.3_5_reactive",
+            "func": "hypothesis_verification"
+          }
+        }
+      ]
+    },
+    "method": [
+      {
+        "type": "action",
+        "name": "Get-or-create GuardDuty detector; create IAM roles (CloudTrail CW delivery, instance-simulation, SSM Automation) via boto3 (no Description field); deploy CloudFormation stack with CloudTrail trail, S3 CT bucket, S3 Object Lock evidence bucket, CloudWatch Log Group, SSM pipeline gate parameter (initial OK), and SSM Automation document; wait for CloudTrail IsLogging=True; assert pipeline gate is OK and no revocation policy on instance role",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.3_5_reactive",
+          "func": "steady_state"
+        }
+      },
+      {
+        "type": "action",
+        "name": "Node 1.2: sts:AssumeRole on instance-simulation role to obtain stolen credentials (T1562.008 proxy); Node 2.2: sts:GetCallerIdentity to verify credential validity (T1552.005); Node 3.2: iam:ListAttachedRolePolicies and s3:ListAllMyBuckets for lateral movement enumeration (T1078.004); trigger SSM Automation reactive playbook to revoke credentials and block deployment pipeline",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.3_5_reactive",
+          "func": "attack"
+        }
+      }
+    ],
+    "rollbacks": [
+      {
+        "type": "action",
+        "name": "Restore pipeline gate to OK; remove Deny-all revocation policy from instance role; stop CloudTrail trail; empty CT and Object Lock evidence buckets (with BypassGovernanceRetention); delete CloudFormation stack; delete boto3-created IAM roles; delete GuardDuty detector only if experiment-owned; tolerant of missing resources",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.3_5_reactive",
+          "func": "rollback"
+        }
+      }
+    ],
+    "dry": null
+  },
+  "start": "2026-04-13T13:28:04.814267+00:00",
+  "status": "completed",
+  "deviated": true,
+  "steady_states": {
+    "before": null,
+    "after": {
+      "steady_state_met": false,
+      "probes": [
+        {
+          "activity": {
+            "type": "probe",
+            "name": "Verify SSM Automation execution success, SCEDenyAllRevocation policy on instance role, stolen credentials returning AccessDenied, pipeline gate parameter set to BLOCKED, and CloudTrail log file present in Object Lock evidence bucket - all confirmed within 30-minute SLA after attack nodes 1.2, 2.2, and 3.2",
+            "tolerance": true,
+            "provider": {
+              "type": "python",
+              "module": "chaosaws.ec2.3_5_reactive",
+              "func": "hypothesis_verification"
+            }
+          },
+          "output": false,
+          "start": "2026-04-13T13:29:48.790262+00:00",
+          "status": "succeeded",
+          "end": "2026-04-13T14:00:17.384726+00:00",
+          "duration": 1828.594464,
+          "tolerance_met": false
+        }
+      ]
+    },
+    "during": []
+  },
+  "run": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "Get-or-create GuardDuty detector; create IAM roles (CloudTrail CW delivery, instance-simulation, SSM Automation) via boto3 (no Description field); deploy CloudFormation stack with CloudTrail trail, S3 CT bucket, S3 Object Lock evidence bucket, CloudWatch Log Group, SSM pipeline gate parameter (initial OK), and SSM Automation document; wait for CloudTrail IsLogging=True; assert pipeline gate is OK and no revocation policy on instance role",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.3_5_reactive",
+          "func": "steady_state"
+        }
+      },
+      "output": null,
+      "start": "2026-04-13T13:28:04.814815+00:00",
+      "status": "succeeded",
+      "end": "2026-04-13T13:29:39.885302+00:00",
+      "duration": 95.070487
+    },
+    {
+      "activity": {
+        "type": "action",
+        "name": "Node 1.2: sts:AssumeRole on instance-simulation role to obtain stolen credentials (T1562.008 proxy); Node 2.2: sts:GetCallerIdentity to verify credential validity (T1552.005); Node 3.2: iam:ListAttachedRolePolicies and s3:ListAllMyBuckets for lateral movement enumeration (T1078.004); trigger SSM Automation reactive playbook to revoke credentials and block deployment pipeline",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.3_5_reactive",
+          "func": "attack"
+        }
+      },
+      "output": true,
+      "start": "2026-04-13T13:29:39.885468+00:00",
+      "status": "succeeded",
+      "end": "2026-04-13T13:29:48.788405+00:00",
+      "duration": 8.902937
+    }
+  ],
+  "rollbacks": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "Restore pipeline gate to OK; remove Deny-all revocation policy from instance role; stop CloudTrail trail; empty CT and Object Lock evidence buckets (with BypassGovernanceRetention); delete CloudFormation stack; delete boto3-created IAM roles; delete GuardDuty detector only if experiment-owned; tolerant of missing resources",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.3_5_reactive",
+          "func": "rollback"
+        }
+      },
+      "output": null,
+      "start": "2026-04-13T14:00:17.385130+00:00",
+      "status": "succeeded",
+      "end": "2026-04-13T14:01:12.350087+00:00",
+      "duration": 54.964957
+    }
+  ],
+  "end": "2026-04-13T14:01:12.350495+00:00",
+  "duration": 1987.5386986732483
+}

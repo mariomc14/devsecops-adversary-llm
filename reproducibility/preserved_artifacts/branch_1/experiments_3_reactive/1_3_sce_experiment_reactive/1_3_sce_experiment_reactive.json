@@ -1,0 +1,51 @@
+{
+    "title": "SCE 1.3 - Reactive Probe: Malicious CodeBuild Project Detection",
+    "description": "Validates reactive security controls that detect and alert on malicious CodeBuild project creation and execution. The experiment creates a CodeBuild project with suspicious commands in its buildspec, executes a build, and verifies that CloudWatch Alarms detect the malicious activity through log analysis and metric filters.",
+    "tags": ["security", "chaos-engineering", "reactive", "codebuild", "detection", "cloudwatch"],
+    "steady-state-hypothesis": {
+        "title": "Reactive control detects malicious CodeBuild activity",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "verify-cloudwatch-alarm-triggered",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.1_3_sce_experiment_reactive",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "deploy-reactive-security-controls",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_3_sce_experiment_reactive",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "create-and-execute-malicious-codebuild-project",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_3_sce_experiment_reactive",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "cleanup-experiment-resources",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_3_sce_experiment_reactive",
+                "func": "rollback"
+            }
+        }
+    ]
+}

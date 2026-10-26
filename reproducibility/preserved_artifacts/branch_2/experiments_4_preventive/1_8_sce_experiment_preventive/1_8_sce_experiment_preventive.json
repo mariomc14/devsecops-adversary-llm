@@ -1,0 +1,61 @@
+{
+    "title": "SCE 1.8 — Prevent Malicious CodeBuild Execution (Node 1.7: Start Malicious Build)",
+    "description": "Validates that an explicit IAM Deny policy prevents an adversary from invoking codebuild:StartBuild against a targeted CodeBuild project. The experiment deploys a CodeBuild project and an attack-simulation IAM role carrying a Deny guardrail, attempts to start a malicious build through the restricted role, and then verifies via IAM policy inspection, IAM Policy Simulator, and CodeBuild build-history queries that the preventive control blocked the attack at the AWS authorization layer.",
+    "tags": [
+        "sce",
+        "codebuild",
+        "supply-chain",
+        "malicious-build",
+        "preventive",
+        "iam",
+        "ci-poisoning",
+        "node-1-7",
+        "node-1-8"
+    ],
+    "steady-state-hypothesis": {
+        "title": "An explicit IAM Deny policy blocks codebuild:StartBuild for the attack-simulation role",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "verify-startbuild-is-denied-by-iam-policy",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.1_8_sce_experiment_preventive",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "deploy-malicious-build-experiment-stack",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_8_sce_experiment_preventive",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "attempt-start-malicious-build-via-restricted-role",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_8_sce_experiment_preventive",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "teardown-malicious-build-experiment-stack",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_8_sce_experiment_preventive",
+                "func": "rollback"
+            }
+        }
+    ]
+}

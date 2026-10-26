@@ -4,3 +4,9 @@ SCE_Experiment/Runner/journal.json
 SCE_Experiment/Runner/remote_output.json
 automate/.venv/
 automate/.vscode/
+chaostk/
+*.pdf
+*.zip
+*:Zone.Identifier
+__pycache__/
+*.pyc

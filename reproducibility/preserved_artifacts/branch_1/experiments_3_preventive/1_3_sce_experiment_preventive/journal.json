@@ -1,0 +1,148 @@
+{
+  "chaoslib-version": "1.44.0",
+  "platform": "Linux-6.17.0-19-generic-x86_64-with-glibc2.39",
+  "node": "sce-user-VirtualBox",
+  "experiment": {
+    "title": "SCE 1.3 - Preventive Control for Malicious CodeBuild Project Creation",
+    "description": "Validates that preventive IAM policies block the creation of malicious CodeBuild projects with dangerous configurations such as privileged mode enabled. This experiment creates an attacker role with restricted permissions and verifies that attempts to create privileged CodeBuild projects are denied.",
+    "tags": [
+      "aws",
+      "codebuild",
+      "iam",
+      "preventive",
+      "security-chaos",
+      "sce-1.3"
+    ],
+    "steady-state-hypothesis": {
+      "title": "Preventive control blocks malicious CodeBuild project creation",
+      "probes": [
+        {
+          "type": "probe",
+          "name": "verify-preventive-control-effectiveness",
+          "tolerance": true,
+          "provider": {
+            "type": "python",
+            "module": "chaosaws.ec2.1_3_sce_experiment_preventive",
+            "func": "hypothesis_verification"
+          }
+        }
+      ]
+    },
+    "method": [
+      {
+        "type": "action",
+        "name": "deploy-codebuild-environment-with-preventive-controls",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_sce_experiment_preventive",
+          "func": "steady_state"
+        }
+      },
+      {
+        "type": "action",
+        "name": "attempt-malicious-codebuild-project-creation",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_sce_experiment_preventive",
+          "func": "attack"
+        }
+      }
+    ],
+    "rollbacks": [
+      {
+        "type": "action",
+        "name": "cleanup-experiment-resources",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_sce_experiment_preventive",
+          "func": "rollback"
+        }
+      }
+    ],
+    "dry": null
+  },
+  "start": "2026-04-04T04:05:33.188256+00:00",
+  "status": "completed",
+  "deviated": false,
+  "steady_states": {
+    "before": null,
+    "after": {
+      "steady_state_met": true,
+      "probes": [
+        {
+          "activity": {
+            "type": "probe",
+            "name": "verify-preventive-control-effectiveness",
+            "tolerance": true,
+            "provider": {
+              "type": "python",
+              "module": "chaosaws.ec2.1_3_sce_experiment_preventive",
+              "func": "hypothesis_verification"
+            }
+          },
+          "output": true,
+          "start": "2026-04-04T04:06:00.801566+00:00",
+          "status": "succeeded",
+          "end": "2026-04-04T04:06:02.540296+00:00",
+          "duration": 1.73873,
+          "tolerance_met": true
+        }
+      ]
+    },
+    "during": []
+  },
+  "run": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "deploy-codebuild-environment-with-preventive-controls",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_sce_experiment_preventive",
+          "func": "steady_state"
+        }
+      },
+      "output": null,
+      "start": "2026-04-04T04:05:33.188923+00:00",
+      "status": "succeeded",
+      "end": "2026-04-04T04:05:59.402576+00:00",
+      "duration": 26.213653
+    },
+    {
+      "activity": {
+        "type": "action",
+        "name": "attempt-malicious-codebuild-project-creation",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_sce_experiment_preventive",
+          "func": "attack"
+        }
+      },
+      "output": true,
+      "start": "2026-04-04T04:05:59.403021+00:00",
+      "status": "succeeded",
+      "end": "2026-04-04T04:06:00.800966+00:00",
+      "duration": 1.397945
+    }
+  ],
+  "rollbacks": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "cleanup-experiment-resources",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_sce_experiment_preventive",
+          "func": "rollback"
+        }
+      },
+      "output": null,
+      "start": "2026-04-04T04:06:02.540794+00:00",
+      "status": "succeeded",
+      "end": "2026-04-04T04:06:27.904665+00:00",
+      "duration": 25.363871
+    }
+  ],
+  "end": "2026-04-04T04:06:27.904798+00:00",
+  "duration": 54.72048997879028
+}

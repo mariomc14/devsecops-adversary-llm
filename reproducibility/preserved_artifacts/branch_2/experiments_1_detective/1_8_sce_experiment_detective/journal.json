@@ -1,0 +1,148 @@
+{
+  "chaoslib-version": "1.44.0",
+  "platform": "Linux-6.17.0-20-generic-x86_64-with-glibc2.39",
+  "node": "sce-user-VirtualBox",
+  "experiment": {
+    "title": "Security Group Unauthorized Modification Detection",
+    "description": "Detect unauthorized security group configuration changes",
+    "tags": [
+      "security",
+      "network",
+      "detective"
+    ],
+    "steady-state-hypothesis": {
+      "title": "Baseline Security Group Configuration",
+      "probes": [
+        {
+          "type": "probe",
+          "name": "Security Group Configuration Check",
+          "tolerance": true,
+          "provider": {
+            "type": "python",
+            "module": "chaosaws.ec2.1_8_sce_experiment_detective",
+            "func": "hypothesis_verification"
+          }
+        }
+      ]
+    },
+    "method": [
+      {
+        "type": "action",
+        "name": "Provision Test Environment",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_detective",
+          "func": "steady_state"
+        }
+      },
+      {
+        "type": "action",
+        "name": "Simulate Malicious Security Group Modification",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_detective",
+          "func": "attack"
+        }
+      }
+    ],
+    "rollbacks": [
+      {
+        "type": "action",
+        "name": "Clean Up Experiment Resources",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_detective",
+          "func": "rollback"
+        }
+      }
+    ],
+    "dry": null
+  },
+  "start": "2026-04-25T05:48:21.776881+00:00",
+  "status": "completed",
+  "deviated": true,
+  "steady_states": {
+    "before": null,
+    "after": {
+      "steady_state_met": false,
+      "probes": [
+        {
+          "activity": {
+            "type": "probe",
+            "name": "Security Group Configuration Check",
+            "tolerance": true,
+            "provider": {
+              "type": "python",
+              "module": "chaosaws.ec2.1_8_sce_experiment_detective",
+              "func": "hypothesis_verification"
+            }
+          },
+          "output": false,
+          "start": "2026-04-25T05:48:53.338078+00:00",
+          "status": "succeeded",
+          "end": "2026-04-25T05:48:53.338224+00:00",
+          "duration": 0.000146,
+          "tolerance_met": false
+        }
+      ]
+    },
+    "during": []
+  },
+  "run": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "Provision Test Environment",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_detective",
+          "func": "steady_state"
+        }
+      },
+      "output": {
+        "stack_name": "sce-experiment-1777096101",
+        "security_group_id": "sg-090252df89f616a91"
+      },
+      "start": "2026-04-25T05:48:21.777778+00:00",
+      "status": "succeeded",
+      "end": "2026-04-25T05:48:53.336876+00:00",
+      "duration": 31.559098
+    },
+    {
+      "activity": {
+        "type": "action",
+        "name": "Simulate Malicious Security Group Modification",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_detective",
+          "func": "attack"
+        }
+      },
+      "output": false,
+      "start": "2026-04-25T05:48:53.337281+00:00",
+      "status": "succeeded",
+      "end": "2026-04-25T05:48:53.337751+00:00",
+      "duration": 0.00047
+    }
+  ],
+  "rollbacks": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "Clean Up Experiment Resources",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_detective",
+          "func": "rollback"
+        }
+      },
+      "output": null,
+      "start": "2026-04-25T05:48:53.338927+00:00",
+      "status": "succeeded",
+      "end": "2026-04-25T05:48:53.339088+00:00",
+      "duration": 0.000161
+    }
+  ],
+  "end": "2026-04-25T05:48:53.339156+00:00",
+  "duration": 31.56728982925415
+}

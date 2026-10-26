@@ -1,0 +1,150 @@
+{
+  "chaoslib-version": "1.44.0",
+  "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.41",
+  "node": "PC-INF-MAMA",
+  "experiment": {
+    "title": "SCE 1.4 Detective Probe: CloudTrail Detection of IMDS Modification",
+    "description": "Validates that CloudTrail successfully detects and logs ModifyInstanceMetadataOptions API calls when an attacker attempts to weaken IMDS security configuration on EC2 instances hosting banking transaction microservices. This experiment creates an EC2 instance with IMDSv2 enforced, sets up CloudTrail logging, executes the IMDS weakening attack, and verifies the event is captured within the 30-minute SLA for CloudTrail eventual consistency.",
+    "tags": [
+      "sce-1-4",
+      "detective",
+      "cloudtrail",
+      "imds",
+      "ec2",
+      "banking-platform",
+      "t1562-001",
+      "credential-theft"
+    ],
+    "steady-state-hypothesis": {
+      "title": "CloudTrail detects ModifyInstanceMetadataOptions API calls within 30-minute SLA",
+      "probes": [
+        {
+          "type": "probe",
+          "name": "verify-cloudtrail-captured-imds-modification-event",
+          "tolerance": true,
+          "provider": {
+            "type": "python",
+            "module": "chaosaws.ec2.1_4_detective",
+            "func": "hypothesis_verification"
+          }
+        }
+      ]
+    },
+    "method": [
+      {
+        "type": "action",
+        "name": "establish-steady-state-with-ec2-cloudtrail-infrastructure",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_4_detective",
+          "func": "steady_state"
+        }
+      },
+      {
+        "type": "action",
+        "name": "execute-imds-weakening-attack-modify-instance-metadata-options",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_4_detective",
+          "func": "attack"
+        }
+      }
+    ],
+    "rollbacks": [
+      {
+        "type": "action",
+        "name": "cleanup-cloudformation-stack-and-all-experiment-resources",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_4_detective",
+          "func": "rollback"
+        }
+      }
+    ],
+    "dry": null
+  },
+  "start": "2026-04-14T11:19:11.955730+00:00",
+  "status": "completed",
+  "deviated": true,
+  "steady_states": {
+    "before": null,
+    "after": {
+      "steady_state_met": false,
+      "probes": [
+        {
+          "activity": {
+            "type": "probe",
+            "name": "verify-cloudtrail-captured-imds-modification-event",
+            "tolerance": true,
+            "provider": {
+              "type": "python",
+              "module": "chaosaws.ec2.1_4_detective",
+              "func": "hypothesis_verification"
+            }
+          },
+          "output": false,
+          "start": "2026-04-14T11:20:33.188345+00:00",
+          "status": "succeeded",
+          "end": "2026-04-14T11:49:58.725868+00:00",
+          "duration": 1765.537523,
+          "tolerance_met": false
+        }
+      ]
+    },
+    "during": []
+  },
+  "run": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "establish-steady-state-with-ec2-cloudtrail-infrastructure",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_4_detective",
+          "func": "steady_state"
+        }
+      },
+      "output": true,
+      "start": "2026-04-14T11:19:11.956133+00:00",
+      "status": "succeeded",
+      "end": "2026-04-14T11:20:32.207918+00:00",
+      "duration": 80.251785
+    },
+    {
+      "activity": {
+        "type": "action",
+        "name": "execute-imds-weakening-attack-modify-instance-metadata-options",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_4_detective",
+          "func": "attack"
+        }
+      },
+      "output": true,
+      "start": "2026-04-14T11:20:32.208053+00:00",
+      "status": "succeeded",
+      "end": "2026-04-14T11:20:33.187985+00:00",
+      "duration": 0.979932
+    }
+  ],
+  "rollbacks": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "cleanup-cloudformation-stack-and-all-experiment-resources",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_4_detective",
+          "func": "rollback"
+        }
+      },
+      "output": true,
+      "start": "2026-04-14T11:49:58.726321+00:00",
+      "status": "succeeded",
+      "end": "2026-04-14T11:51:19.279318+00:00",
+      "duration": 80.552997
+    }
+  ],
+  "end": "2026-04-14T11:51:19.279400+00:00",
+  "duration": 1927.3257312774658
+}

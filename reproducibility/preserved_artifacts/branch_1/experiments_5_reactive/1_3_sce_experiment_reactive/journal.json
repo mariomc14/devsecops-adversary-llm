@@ -1,0 +1,148 @@
+{
+  "chaoslib-version": "1.44.0",
+  "platform": "Linux-6.17.0-20-generic-x86_64-with-glibc2.39",
+  "node": "sce-user-VirtualBox",
+  "experiment": {
+    "title": "SCE 1.3 Reactive Control - Malicious CodeBuild Project Detection and Removal",
+    "description": "This Security Chaos Engineering experiment validates that a reactive control (CloudWatch Events + Lambda) can automatically detect and delete a malicious CodeBuild project when an attacker attempts to create one. The experiment deploys a reactive infrastructure, simulates an attack by creating a malicious CodeBuild project, and verifies that the control successfully removes the threat.",
+    "tags": [
+      "security-chaos-engineering",
+      "reactive-control",
+      "codebuild",
+      "cloudtrail",
+      "lambda",
+      "sce-1-3"
+    ],
+    "steady-state-hypothesis": {
+      "title": "Reactive control should automatically delete malicious CodeBuild projects",
+      "probes": [
+        {
+          "type": "probe",
+          "name": "verify-malicious-codebuild-project-deleted",
+          "tolerance": true,
+          "provider": {
+            "type": "python",
+            "module": "chaosaws.ec2.1_3_sce_experiment_reactive",
+            "func": "hypothesis_verification"
+          }
+        }
+      ]
+    },
+    "method": [
+      {
+        "type": "action",
+        "name": "deploy-reactive-control-infrastructure",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_sce_experiment_reactive",
+          "func": "steady_state"
+        }
+      },
+      {
+        "type": "action",
+        "name": "create-malicious-codebuild-project",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_sce_experiment_reactive",
+          "func": "attack"
+        }
+      }
+    ],
+    "rollbacks": [
+      {
+        "type": "action",
+        "name": "cleanup-experiment-resources",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_sce_experiment_reactive",
+          "func": "rollback"
+        }
+      }
+    ],
+    "dry": null
+  },
+  "start": "2026-04-27T23:47:39.239449+00:00",
+  "status": "completed",
+  "deviated": false,
+  "steady_states": {
+    "before": null,
+    "after": {
+      "steady_state_met": true,
+      "probes": [
+        {
+          "activity": {
+            "type": "probe",
+            "name": "verify-malicious-codebuild-project-deleted",
+            "tolerance": true,
+            "provider": {
+              "type": "python",
+              "module": "chaosaws.ec2.1_3_sce_experiment_reactive",
+              "func": "hypothesis_verification"
+            }
+          },
+          "output": true,
+          "start": "2026-04-27T23:49:35.350472+00:00",
+          "status": "succeeded",
+          "end": "2026-04-27T23:49:52.066961+00:00",
+          "duration": 16.716489,
+          "tolerance_met": true
+        }
+      ]
+    },
+    "during": []
+  },
+  "run": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "deploy-reactive-control-infrastructure",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_sce_experiment_reactive",
+          "func": "steady_state"
+        }
+      },
+      "output": true,
+      "start": "2026-04-27T23:47:39.240307+00:00",
+      "status": "succeeded",
+      "end": "2026-04-27T23:49:34.245356+00:00",
+      "duration": 115.005049
+    },
+    {
+      "activity": {
+        "type": "action",
+        "name": "create-malicious-codebuild-project",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_sce_experiment_reactive",
+          "func": "attack"
+        }
+      },
+      "output": true,
+      "start": "2026-04-27T23:49:34.245949+00:00",
+      "status": "succeeded",
+      "end": "2026-04-27T23:49:35.350113+00:00",
+      "duration": 1.104164
+    }
+  ],
+  "rollbacks": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "cleanup-experiment-resources",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_sce_experiment_reactive",
+          "func": "rollback"
+        }
+      },
+      "output": null,
+      "start": "2026-04-27T23:49:52.067395+00:00",
+      "status": "succeeded",
+      "end": "2026-04-27T23:51:01.904857+00:00",
+      "duration": 69.837462
+    }
+  ],
+  "end": "2026-04-27T23:51:01.905045+00:00",
+  "duration": 202.67014718055725
+}

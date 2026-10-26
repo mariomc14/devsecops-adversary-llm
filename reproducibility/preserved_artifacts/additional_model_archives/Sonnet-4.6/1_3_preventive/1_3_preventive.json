@@ -1,0 +1,66 @@
+{
+    "title": "SCE 1.3 Preventive Probe: Least-Privilege IAM Blocks ec2:ModifyInstanceMetadataOptions on Hardened Banking EC2 Instances",
+    "description": "Validates that an IAM principal carrying an explicit Deny on ec2:ModifyInstanceMetadataOptions cannot downgrade IMDS protections on a hardened EC2 instance configured with IMDSv2. The experiment provisions a fully self-contained VPC, subnet, and all networking from scratch. A baseline positive test using a privileged role confirms the EC2 API is reachable before the deny test runs, eliminating false negatives caused by infrastructure failures. All CloudFormation template strings use plain ASCII characters only, resolving the non-ASCII GroupDescription failure from the previous execution. Simulates ADT attack node 1.2 (T1552.005) against the preventive safeguard defined in ADT node 1.1.",
+    "tags": [
+        "sce",
+        "preventive",
+        "ec2",
+        "imds",
+        "imdsv2",
+        "iam",
+        "least-privilege",
+        "banking",
+        "pci-dss",
+        "t1552.005",
+        "aws-ec2-imds-weakening-001",
+        "node-1.3",
+        "self-contained-vpc",
+        "ascii-safe"
+    ],
+    "steady-state-hypothesis": {
+        "title": "Hardened EC2 instance exists with IMDSv2 enforced and restricted IAM role is denied ec2:ModifyInstanceMetadataOptions and ec2:DescribeInstances",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "verify-iam-deny-blocks-imds-downgrade-and-describe-and-imds-baseline-intact",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.1_3_preventive",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "provision-self-contained-vpc-hardened-ec2-and-restricted-iam-role-via-cloudformation",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_3_preventive",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "execute-t1552-005-imds-downgrade-attempt-as-restricted-principal",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_3_preventive",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "teardown-cloudformation-stack-and-all-experiment-resources-including-vpc",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_3_preventive",
+                "func": "rollback"
+            }
+        }
+    ]
+}

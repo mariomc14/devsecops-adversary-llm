@@ -1,0 +1,152 @@
+{
+  "chaoslib-version": "1.44.0",
+  "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.41",
+  "node": "PC-INF-MAMA",
+  "experiment": {
+    "title": "SCE 1.4 Reactive Probe: Auto-Remediation Lambda for IMDS Weakening",
+    "description": "Validates that the reactive control (Auto-Remediation Lambda) automatically reverts IMDS configuration to secure settings when an attacker attempts to weaken IMDS security on EC2 instances hosting banking transaction microservices. This experiment creates an EC2 instance with IMDSv2 enforced, sets up an EventBridge rule triggering a Lambda function on ModifyInstanceMetadataOptions API calls, executes the IMDS weakening attack, and verifies the Lambda automatically remediates the configuration within the 30-minute SLA.",
+    "tags": [
+      "sce-1-4",
+      "reactive",
+      "lambda",
+      "eventbridge",
+      "auto-remediation",
+      "imds",
+      "ec2",
+      "banking-platform",
+      "t1562-001",
+      "credential-theft"
+    ],
+    "steady-state-hypothesis": {
+      "title": "Auto-Remediation Lambda reverts IMDS to secure configuration within 30-minute SLA",
+      "probes": [
+        {
+          "type": "probe",
+          "name": "verify-lambda-remediated-imds-configuration",
+          "tolerance": true,
+          "provider": {
+            "type": "python",
+            "module": "chaosaws.ec2.1_4_reactive",
+            "func": "hypothesis_verification"
+          }
+        }
+      ]
+    },
+    "method": [
+      {
+        "type": "action",
+        "name": "establish-steady-state-with-ec2-lambda-eventbridge-infrastructure",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_4_reactive",
+          "func": "steady_state"
+        }
+      },
+      {
+        "type": "action",
+        "name": "execute-imds-weakening-attack-to-trigger-remediation",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_4_reactive",
+          "func": "attack"
+        }
+      }
+    ],
+    "rollbacks": [
+      {
+        "type": "action",
+        "name": "cleanup-cloudformation-stack-and-all-experiment-resources",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_4_reactive",
+          "func": "rollback"
+        }
+      }
+    ],
+    "dry": null
+  },
+  "start": "2026-04-14T13:57:04.907532+00:00",
+  "status": "completed",
+  "deviated": true,
+  "steady_states": {
+    "before": null,
+    "after": {
+      "steady_state_met": false,
+      "probes": [
+        {
+          "activity": {
+            "type": "probe",
+            "name": "verify-lambda-remediated-imds-configuration",
+            "tolerance": true,
+            "provider": {
+              "type": "python",
+              "module": "chaosaws.ec2.1_4_reactive",
+              "func": "hypothesis_verification"
+            }
+          },
+          "output": false,
+          "start": "2026-04-14T13:59:29.087258+00:00",
+          "status": "succeeded",
+          "end": "2026-04-14T14:28:42.734696+00:00",
+          "duration": 1753.647438,
+          "tolerance_met": false
+        }
+      ]
+    },
+    "during": []
+  },
+  "run": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "establish-steady-state-with-ec2-lambda-eventbridge-infrastructure",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_4_reactive",
+          "func": "steady_state"
+        }
+      },
+      "output": true,
+      "start": "2026-04-14T13:57:04.907873+00:00",
+      "status": "succeeded",
+      "end": "2026-04-14T13:59:28.052969+00:00",
+      "duration": 143.145096
+    },
+    {
+      "activity": {
+        "type": "action",
+        "name": "execute-imds-weakening-attack-to-trigger-remediation",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_4_reactive",
+          "func": "attack"
+        }
+      },
+      "output": true,
+      "start": "2026-04-14T13:59:28.053149+00:00",
+      "status": "succeeded",
+      "end": "2026-04-14T13:59:29.086997+00:00",
+      "duration": 1.033848
+    }
+  ],
+  "rollbacks": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "cleanup-cloudformation-stack-and-all-experiment-resources",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_4_reactive",
+          "func": "rollback"
+        }
+      },
+      "output": true,
+      "start": "2026-04-14T14:28:42.735211+00:00",
+      "status": "succeeded",
+      "end": "2026-04-14T14:30:04.346885+00:00",
+      "duration": 81.611674
+    }
+  ],
+  "end": "2026-04-14T14:30:04.346984+00:00",
+  "duration": 1979.4416227340698
+}

@@ -1,0 +1,177 @@
+{
+  "chaoslib-version": "1.44.0",
+  "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.41",
+  "node": "DESKTOP-R7NS3KO",
+  "experiment": {
+    "title": "SCE 2.3 Reactive Probe: EC2 IMDS Auto-Remediation (HopLimit Reversion) - FIXED",
+    "description": "Security Chaos Engineering experiment validating reactive safeguard for AWS EC2 Instance Metadata Service (IMDS) configuration weakening. This probe executes attack steps 1.2 (Identify Target EC2 Instance) and 2.2 (Modify IMDS HttpPutResponseHopLimit to 2), then verifies that the reactive safeguard (Lambda auto-remediation via EventBridge) successfully detects and reverts the unsafe configuration back to secure baseline (HopLimit=1, HttpTokens=required) within the 30-minute SLA window for AWS eventual consistency. FIXED VERSION addresses CloudFormation AMI resolution, enhanced diagnostics, and improved reliability.",
+    "tags": [
+      "aws",
+      "ec2",
+      "imds",
+      "credential-theft",
+      "reactive",
+      "auto-remediation",
+      "eventbridge",
+      "lambda",
+      "chaos-engineering",
+      "fixed",
+      "production-ready"
+    ],
+    "configuration": {
+      "probe_id": "2_3",
+      "probe_type": "reactive",
+      "attack_nodes": [
+        "1.2",
+        "2.2"
+      ],
+      "stride_goals": [
+        "Elevation of Privilege",
+        "Information Disclosure"
+      ],
+      "sla_window_seconds": 1800,
+      "polling_interval_seconds": 10,
+      "stack_creation_timeout_seconds": 1200,
+      "stack_deletion_timeout_seconds": 900,
+      "log_verification_timeout_seconds": 120
+    },
+    "steady-state-hypothesis": {
+      "title": "IMDS Auto-Remediation Safeguard is Effective and Responsive",
+      "description": "When an EC2 instance's IMDS configuration is weakened (HopLimit increased from 1 to 2), the reactive safeguard (Lambda function triggered by EventBridge/CloudTrail) must detect this unsafe state and automatically revert the configuration to secure baseline (HopLimit=1, HttpTokens=required) within the 30-minute SLA window. The hypothesis assumes that: (1) Attack successfully modifies IMDS config to unsafe state, (2) Lambda remediation function is triggered, (3) Remediation logic correctly identifies unsafe state, (4) Configuration is reverted to secure baseline, (5) Remediation action is logged for audit/compliance.",
+      "probes": [
+        {
+          "type": "probe",
+          "name": "Verify IMDS Auto-Remediation",
+          "tolerance": true,
+          "provider": {
+            "type": "python",
+            "module": "chaosaws.ec2.2_3_reactive",
+            "func": "hypothesis_verification"
+          }
+        }
+      ]
+    },
+    "method": [
+      {
+        "type": "action",
+        "name": "Prepare Test Environment and Deploy Resources",
+        "description": "Provision CloudFormation stack with EC2 instance (hardened IMDS: HopLimit=1, HttpTokens=required), Lambda remediation function with comprehensive logging, EventBridge rule for automatic ModifyInstanceMetadataOptions detection, and IAM roles following least-privilege principle. Resolves latest Amazon Linux 2 AMI dynamically to ensure compatibility. Verifies initial IMDS configuration is secure before proceeding.",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.2_3_reactive",
+          "func": "steady_state"
+        }
+      },
+      {
+        "type": "action",
+        "name": "Execute Attack Steps 1.2 and 2.2",
+        "description": "Step 1.2: Identify target EC2 instance via aws ec2 describe-instances (T1526 - Cloud Service Discovery). Step 2.2: Weaken IMDS configuration by modifying HttpPutResponseHopLimit from 1 to 2 via aws ec2 modify-instance-metadata-options (T1578.001 - Modify Cloud Instance). Verifies attack success by confirming HopLimit=2 after modification.",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.2_3_reactive",
+          "func": "attack"
+        }
+      }
+    ],
+    "rollbacks": [
+      {
+        "type": "action",
+        "name": "Clean Up AWS Resources",
+        "description": "Delete CloudFormation stack and all provisioned resources (EC2 instance, Lambda function, EventBridge rule, IAM roles, security groups). Handles eventual consistency and stack-not-found errors gracefully. Always executes rollback, even if experiment fails mid-execution, to ensure no orphaned resources.",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.2_3_reactive",
+          "func": "rollback"
+        }
+      }
+    ],
+    "dry": null
+  },
+  "start": "2026-03-30T16:01:19.485395+00:00",
+  "status": "completed",
+  "deviated": true,
+  "steady_states": {
+    "before": null,
+    "after": {
+      "steady_state_met": false,
+      "probes": [
+        {
+          "activity": {
+            "type": "probe",
+            "name": "Verify IMDS Auto-Remediation",
+            "tolerance": true,
+            "provider": {
+              "type": "python",
+              "module": "chaosaws.ec2.2_3_reactive",
+              "func": "hypothesis_verification"
+            }
+          },
+          "output": false,
+          "start": "2026-03-30T16:21:27.887780+00:00",
+          "status": "succeeded",
+          "end": "2026-03-30T16:21:27.887849+00:00",
+          "duration": 6.9e-05,
+          "tolerance_met": false
+        }
+      ]
+    },
+    "during": []
+  },
+  "run": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "Prepare Test Environment and Deploy Resources",
+        "description": "Provision CloudFormation stack with EC2 instance (hardened IMDS: HopLimit=1, HttpTokens=required), Lambda remediation function with comprehensive logging, EventBridge rule for automatic ModifyInstanceMetadataOptions detection, and IAM roles following least-privilege principle. Resolves latest Amazon Linux 2 AMI dynamically to ensure compatibility. Verifies initial IMDS configuration is secure before proceeding.",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.2_3_reactive",
+          "func": "steady_state"
+        }
+      },
+      "output": false,
+      "start": "2026-03-30T16:01:19.485666+00:00",
+      "status": "succeeded",
+      "end": "2026-03-30T16:21:27.887425+00:00",
+      "duration": 1208.401759
+    },
+    {
+      "activity": {
+        "type": "action",
+        "name": "Execute Attack Steps 1.2 and 2.2",
+        "description": "Step 1.2: Identify target EC2 instance via aws ec2 describe-instances (T1526 - Cloud Service Discovery). Step 2.2: Weaken IMDS configuration by modifying HttpPutResponseHopLimit from 1 to 2 via aws ec2 modify-instance-metadata-options (T1578.001 - Modify Cloud Instance). Verifies attack success by confirming HopLimit=2 after modification.",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.2_3_reactive",
+          "func": "attack"
+        }
+      },
+      "output": false,
+      "start": "2026-03-30T16:21:27.887551+00:00",
+      "status": "succeeded",
+      "end": "2026-03-30T16:21:27.887672+00:00",
+      "duration": 0.000121
+    }
+  ],
+  "rollbacks": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "Clean Up AWS Resources",
+        "description": "Delete CloudFormation stack and all provisioned resources (EC2 instance, Lambda function, EventBridge rule, IAM roles, security groups). Handles eventual consistency and stack-not-found errors gracefully. Always executes rollback, even if experiment fails mid-execution, to ensure no orphaned resources.",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.2_3_reactive",
+          "func": "rollback"
+        }
+      },
+      "output": true,
+      "start": "2026-03-30T16:21:27.887986+00:00",
+      "status": "succeeded",
+      "end": "2026-03-30T16:21:38.728190+00:00",
+      "duration": 10.840204
+    }
+  ],
+  "end": "2026-03-30T16:21:38.728256+00:00",
+  "duration": 1219.2436635494232
+}

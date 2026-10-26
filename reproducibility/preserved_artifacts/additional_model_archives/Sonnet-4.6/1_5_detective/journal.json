@@ -1,0 +1,158 @@
+{
+  "chaoslib-version": "1.44.0",
+  "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.41",
+  "node": "PC-INF-MAMA",
+  "experiment": {
+    "title": "SCE 1.5 Detective Probe - IMDS Protection Weakening Detection via ModifyInstanceMetadataOptions",
+    "description": "Validates the detective control chain for Attack Node 1.2 (Weaken IMDS Protections via ModifyInstanceMetadataOptions) within a 30-minute SLA. The experiment deploys a minimal stable CloudFormation stack containing an EC2 instance with IMDSv2 enforced (steady state baseline), an EventBridge rule scoped post-deploy to the experiment instance ID with httpTokens=optional filter, an SNS topic, an SQS queue for programmatic event polling, a CloudWatch Logs log group, a CloudWatch metric filter, and a CloudWatch Alarm. All CFN template string values are validated as strict ASCII-only before deployment to prevent the SecurityGroup GroupDescription non-ASCII rejection that caused ROLLBACK_COMPLETE in the previous run. CloudTrail trail and AWS Config Rule are created via direct boto3 calls after stack stabilisation so their optional unavailability does not cause stack rollback. The attack executes ModifyInstanceMetadataOptions with HttpTokens=optional and HttpPutResponseHopLimit=2. The detective probe verifies: [A] PRIMARY - EventBridge captures the CloudTrail event and delivers it to SQS with measured latency within 1800 s; [B] CONDITIONAL - Config Rule transitions the instance to NON_COMPLIANT (immediate evaluation triggered via start_config_rules_evaluation); [C] CONDITIONAL - CloudWatch Alarm enters ALARM state via metric filter. The probe passes if A succeeds and neither B nor C is a confirmed failure. Root cause fix: _assert_ascii() scans all template characters before any AWS API call and raises with offending position if any codepoint exceeds 127.",
+    "tags": [
+      "sce-probe:detective",
+      "sce-node:1_5",
+      "attack-node:1_2",
+      "ttp:T1578",
+      "ttp:T1552.005",
+      "threat-category:ec2-privilege-escalation",
+      "threat-category:credential-theft-iam-abuse",
+      "platform:aws-ec2",
+      "compliance:pci-dss",
+      "stack:cloud-native-banking",
+      "fix:non-ascii-chars-removed",
+      "fix:ascii-validation-added",
+      "fix:config-rule-decoupled-from-cfn",
+      "fix:cloudtrail-decoupled-from-cfn",
+      "fix:iam-role-name-shortened",
+      "fix:immediate-config-evaluation-trigger"
+    ],
+    "steady-state-hypothesis": {
+      "title": "Primary detective control EventBridge to SQS responds to IMDS weakening within the 1800-second SLA",
+      "probes": [
+        {
+          "type": "probe",
+          "name": "Verify EventBridge captures ModifyInstanceMetadataOptions event and delivers to SQS within 1800 s; Config Rule marks instance NON_COMPLIANT if Config recorder is active; CloudWatch Alarm enters ALARM state if CloudTrail trail was provisioned",
+          "tolerance": true,
+          "provider": {
+            "type": "python",
+            "module": "chaosaws.ec2.1_5_detective",
+            "func": "hypothesis_verification"
+          }
+        }
+      ]
+    },
+    "method": [
+      {
+        "type": "action",
+        "name": "Provision experiment infrastructure: ASCII-validate and deploy minimal stable CloudFormation stack (EC2 with IMDSv2 enforced, EventBridge rule, SNS, SQS, CW Logs, metric filter, Alarm); create CloudTrail trail and Config Rule via boto3 as optional non-blocking components; narrow EventBridge rule to specific instance ID and httpTokens=optional",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_5_detective",
+          "func": "steady_state"
+        }
+      },
+      {
+        "type": "action",
+        "name": "Execute Attack Node 1.2 - ModifyInstanceMetadataOptions with HttpTokens=optional and HttpPutResponseHopLimit=2 on the experiment EC2 instance to re-enable IMDSv1 and expand IMDS reachability to containers and SSRF-vulnerable workloads",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_5_detective",
+          "func": "attack"
+        }
+      }
+    ],
+    "rollbacks": [
+      {
+        "type": "action",
+        "name": "Teardown all experiment resources in dependency order: stop and delete CloudTrail trail, delete Config Rule, empty and delete S3 trail bucket via paginator, delete CloudTrail IAM role with inline policy removal, delete CloudFormation stack and wait for DELETE_COMPLETE",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_5_detective",
+          "func": "rollback"
+        }
+      }
+    ],
+    "dry": null
+  },
+  "start": "2026-04-08T11:00:15.224429+00:00",
+  "status": "completed",
+  "deviated": true,
+  "steady_states": {
+    "before": null,
+    "after": {
+      "steady_state_met": false,
+      "probes": [
+        {
+          "activity": {
+            "type": "probe",
+            "name": "Verify EventBridge captures ModifyInstanceMetadataOptions event and delivers to SQS within 1800 s; Config Rule marks instance NON_COMPLIANT if Config recorder is active; CloudWatch Alarm enters ALARM state if CloudTrail trail was provisioned",
+            "tolerance": true,
+            "provider": {
+              "type": "python",
+              "module": "chaosaws.ec2.1_5_detective",
+              "func": "hypothesis_verification"
+            }
+          },
+          "output": false,
+          "start": "2026-04-08T11:03:47.754784+00:00",
+          "status": "succeeded",
+          "end": "2026-04-08T12:04:02.447481+00:00",
+          "duration": 3614.692697,
+          "tolerance_met": false
+        }
+      ]
+    },
+    "during": []
+  },
+  "run": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "Provision experiment infrastructure: ASCII-validate and deploy minimal stable CloudFormation stack (EC2 with IMDSv2 enforced, EventBridge rule, SNS, SQS, CW Logs, metric filter, Alarm); create CloudTrail trail and Config Rule via boto3 as optional non-blocking components; narrow EventBridge rule to specific instance ID and httpTokens=optional",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_5_detective",
+          "func": "steady_state"
+        }
+      },
+      "output": null,
+      "start": "2026-04-08T11:00:15.224747+00:00",
+      "status": "succeeded",
+      "end": "2026-04-08T11:03:46.812616+00:00",
+      "duration": 211.587869
+    },
+    {
+      "activity": {
+        "type": "action",
+        "name": "Execute Attack Node 1.2 - ModifyInstanceMetadataOptions with HttpTokens=optional and HttpPutResponseHopLimit=2 on the experiment EC2 instance to re-enable IMDSv1 and expand IMDS reachability to containers and SSRF-vulnerable workloads",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_5_detective",
+          "func": "attack"
+        }
+      },
+      "output": true,
+      "start": "2026-04-08T11:03:46.812889+00:00",
+      "status": "succeeded",
+      "end": "2026-04-08T11:03:47.754444+00:00",
+      "duration": 0.941555
+    }
+  ],
+  "rollbacks": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "Teardown all experiment resources in dependency order: stop and delete CloudTrail trail, delete Config Rule, empty and delete S3 trail bucket via paginator, delete CloudTrail IAM role with inline policy removal, delete CloudFormation stack and wait for DELETE_COMPLETE",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_5_detective",
+          "func": "rollback"
+        }
+      },
+      "output": null,
+      "start": "2026-04-08T12:04:02.447866+00:00",
+      "status": "succeeded",
+      "end": "2026-04-08T12:05:50.110937+00:00",
+      "duration": 107.663071
+    }
+  ],
+  "end": "2026-04-08T12:05:50.111096+00:00",
+  "duration": 3934.8888437747955
+}

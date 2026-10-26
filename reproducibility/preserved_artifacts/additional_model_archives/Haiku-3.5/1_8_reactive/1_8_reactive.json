@@ -1,0 +1,51 @@
+{
+    "title": "EC2 IMDS Configuration Change Reactive Response Experiment",
+    "description": "Validate reactive controls for automated response to unauthorized IMDS configuration modifications",
+    "tags": ["ec2", "imds", "security", "reactive"],
+    "steady-state-hypothesis": {
+        "title": "IMDS Configuration Changes Trigger Automated Response",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "IMDS Reactive Control Verification",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.1_8_reactive",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "Prepare IMDS Reactive Environment",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_8_reactive",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "Simulate IMDS Configuration Modification",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_8_reactive",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "Clean Up Experiment Resources",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_8_reactive",
+                "func": "rollback"
+            }
+        }
+    ]
+}

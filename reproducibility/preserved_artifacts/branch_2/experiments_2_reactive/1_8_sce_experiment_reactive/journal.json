@@ -1,0 +1,149 @@
+{
+  "chaoslib-version": "1.44.0",
+  "platform": "Linux-6.17.0-20-generic-x86_64-with-glibc2.39",
+  "node": "sce-user-VirtualBox",
+  "experiment": {
+    "title": "SCE 1.8 - Reactive Detection of CodeBuild Credential Exfiltration",
+    "description": "Validates that AWS-native reactive controls (CloudWatch Logs, metric filters, alarms) detect and log credential exfiltration attempts in CodeBuild environments. Implements T1098.001 (Account Manipulation via credential leakage) with detective STRIDE controls.",
+    "tags": [
+      "sce-1.8",
+      "reactive-probe",
+      "codebuild",
+      "credential-exfiltration",
+      "cloudwatch",
+      "detective-control",
+      "t1098.001"
+    ],
+    "steady-state-hypothesis": {
+      "title": "Reactive controls for CodeBuild credential exfiltration detection are active",
+      "probes": [
+        {
+          "type": "probe",
+          "name": "verify-reactive-detection-infrastructure",
+          "tolerance": true,
+          "provider": {
+            "type": "python",
+            "module": "chaosaws.ec2.1_8_sce_experiment_reactive",
+            "func": "hypothesis_verification"
+          }
+        }
+      ]
+    },
+    "method": [
+      {
+        "type": "action",
+        "name": "deploy-codebuild-infrastructure",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_reactive",
+          "func": "steady_state"
+        }
+      },
+      {
+        "type": "action",
+        "name": "execute-malicious-codebuild-with-credential-exfiltration",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_reactive",
+          "func": "attack"
+        }
+      }
+    ],
+    "rollbacks": [
+      {
+        "type": "action",
+        "name": "cleanup-all-resources",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_reactive",
+          "func": "rollback"
+        }
+      }
+    ],
+    "dry": null
+  },
+  "start": "2026-04-20T03:21:08.820827+00:00",
+  "status": "completed",
+  "deviated": true,
+  "steady_states": {
+    "before": null,
+    "after": {
+      "steady_state_met": false,
+      "probes": [
+        {
+          "activity": {
+            "type": "probe",
+            "name": "verify-reactive-detection-infrastructure",
+            "tolerance": true,
+            "provider": {
+              "type": "python",
+              "module": "chaosaws.ec2.1_8_sce_experiment_reactive",
+              "func": "hypothesis_verification"
+            }
+          },
+          "output": false,
+          "start": "2026-04-20T03:21:11.072780+00:00",
+          "status": "succeeded",
+          "end": "2026-04-20T03:21:11.073571+00:00",
+          "duration": 0.000791,
+          "tolerance_met": false
+        }
+      ]
+    },
+    "during": []
+  },
+  "run": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "deploy-codebuild-infrastructure",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_reactive",
+          "func": "steady_state"
+        }
+      },
+      "output": false,
+      "start": "2026-04-20T03:21:08.822769+00:00",
+      "status": "succeeded",
+      "end": "2026-04-20T03:21:11.069664+00:00",
+      "duration": 2.246895
+    },
+    {
+      "activity": {
+        "type": "action",
+        "name": "execute-malicious-codebuild-with-credential-exfiltration",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_reactive",
+          "func": "attack"
+        }
+      },
+      "output": false,
+      "start": "2026-04-20T03:21:11.071183+00:00",
+      "status": "succeeded",
+      "end": "2026-04-20T03:21:11.072118+00:00",
+      "duration": 0.000935
+    }
+  ],
+  "rollbacks": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "cleanup-all-resources",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_reactive",
+          "func": "rollback"
+        }
+      },
+      "output": true,
+      "start": "2026-04-20T03:21:11.075265+00:00",
+      "status": "succeeded",
+      "end": "2026-04-20T03:21:12.327766+00:00",
+      "duration": 1.252501
+    }
+  ],
+  "end": "2026-04-20T03:21:12.327934+00:00",
+  "duration": 3.514833688735962
+}

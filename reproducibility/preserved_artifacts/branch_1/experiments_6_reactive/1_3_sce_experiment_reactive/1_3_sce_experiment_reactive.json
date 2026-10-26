@@ -1,0 +1,51 @@
+{
+    "title": "SCE 1.3 Reactive Control - Malicious CodeBuild Project Remediation",
+    "description": "Validates that a reactive control (EventBridge + Lambda) detects and automatically deletes a malicious CodeBuild project created by an attacker attempting credential exfiltration. The experiment creates the reactive infrastructure, simulates the attack by creating a malicious CodeBuild project with exfiltration commands in its buildspec, and verifies that the Lambda function successfully remediates the threat by deleting the project.",
+    "tags": ["sce", "reactive", "codebuild", "eventbridge", "lambda", "remediation"],
+    "steady-state-hypothesis": {
+        "title": "Malicious CodeBuild project is automatically deleted by reactive control",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "verify-reactive-control-deleted-malicious-codebuild-project",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.1_3_sce_experiment_reactive",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "deploy-reactive-control-infrastructure",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_3_sce_experiment_reactive",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "create-malicious-codebuild-project",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_3_sce_experiment_reactive",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "delete-experiment-stack-and-resources",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_3_sce_experiment_reactive",
+                "func": "rollback"
+            }
+        }
+    ]
+}

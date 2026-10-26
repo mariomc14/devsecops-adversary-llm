@@ -1,0 +1,38 @@
+attack:
+  id: "<unique-attack-id>"
+  name: "<attack-name>"
+  overview: >
+    Provide a description of how the attack works, including the method used to achieve.
+  steps:
+    - title: "<Step 1 Title>"
+      command: |
+        <insert-command-here>
+      dependencies:
+        - "<required permission or resource 1>"
+        - "<required permission or resource 2>"
+        - "<external setup or condition>"
+      result: >
+        Describe the expected outcome of this step, e.g.,
+        access obtained or credentials retrieved.
+      ttp: "<MITRE ATT&CK Technique ID and Name>"
+
+    - title: "<Step 2 Title>"
+      command: |
+        <insert-command-here>
+      dependencies:
+        - "<list dependencies or prerequisites here>"
+      result: >
+        Describe the impact or what was gained from this stage.
+      ttp: "<MITRE ATT&CK Technique ID and Name>"
+
+    - title: "<Step 3 Title>"
+      command: |
+        <insert-command-here>
+      dependencies:
+        - "<list permissions, prerequisites, or conditions>"
+      result: >
+        Describe the attack completion or escalation effect.
+      ttp: "<MITRE ATT&CK Technique ID and Name>"
+      
+  stride_goal:
+    - "<choose one or more: Spoofing, Tampering, Repudiation, Information Disclosure, Denial of Service, Elevation of Privilege>"

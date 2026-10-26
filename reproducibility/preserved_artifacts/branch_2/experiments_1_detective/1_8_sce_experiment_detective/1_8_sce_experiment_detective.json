@@ -1,0 +1,51 @@
+{
+    "title": "Detect Unauthorized Security Group Modifications",
+    "description": "Verify detection of unauthorized security group changes",
+    "tags": ["security", "detective", "ec2", "iam"],
+    "steady-state-hypothesis": {
+        "title": "Secure Security Group Configuration",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "Check Security Group Integrity",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.1_8_sce_experiment_detective",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "Provision Experiment Resources",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_8_sce_experiment_detective",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "Simulate Unauthorized Modification",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_8_sce_experiment_detective",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "Clean Up Experiment Resources",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_8_sce_experiment_detective",
+                "func": "rollback"
+            }
+        }
+    ]
+}

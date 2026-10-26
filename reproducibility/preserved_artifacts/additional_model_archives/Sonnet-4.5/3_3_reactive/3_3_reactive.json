@@ -1,0 +1,51 @@
+{
+    "title": "SCE 3.3 - IMDS Credential Theft Reactive Control",
+    "description": "Validates automated credential revocation when IMDS protections are weakened and credentials are exfiltrated. Tests EventBridge → Lambda → IAM policy injection with MTTR measurement.",
+    "tags": ["aws", "ec2", "imds", "iam", "reactive-control", "sce", "pci-dss"],
+    "steady-state-hypothesis": {
+        "title": "Reactive Control Revokes Stolen Credentials Within SLA",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "verify-credential-revocation-and-incident-response",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.3_3_reactive",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "deploy-experiment-infrastructure",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.3_3_reactive",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "execute-imds-credential-theft-attack",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.3_3_reactive",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "teardown-experiment-infrastructure",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.3_3_reactive",
+                "func": "rollback"
+            }
+        }
+    ]
+}

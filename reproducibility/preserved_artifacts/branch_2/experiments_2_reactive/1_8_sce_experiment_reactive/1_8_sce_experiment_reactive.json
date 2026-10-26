@@ -1,0 +1,59 @@
+{
+    "title": "SCE 1.8 - Reactive Detection of CodeBuild Credential Exfiltration",
+    "description": "Validates that AWS-native reactive controls (CloudWatch Logs, metric filters, alarms) detect and log credential exfiltration attempts in CodeBuild environments. Implements T1098.001 (Account Manipulation via credential leakage) with detective STRIDE controls.",
+    "tags": [
+        "sce-1.8",
+        "reactive-probe",
+        "codebuild",
+        "credential-exfiltration",
+        "cloudwatch",
+        "detective-control",
+        "t1098.001"
+    ],
+    "steady-state-hypothesis": {
+        "title": "Reactive controls for CodeBuild credential exfiltration detection are active",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "verify-reactive-detection-infrastructure",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.1_8_sce_experiment_reactive",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "deploy-codebuild-infrastructure",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_8_sce_experiment_reactive",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "execute-malicious-codebuild-with-credential-exfiltration",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_8_sce_experiment_reactive",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "cleanup-all-resources",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_8_sce_experiment_reactive",
+                "func": "rollback"
+            }
+        }
+    ]
+}

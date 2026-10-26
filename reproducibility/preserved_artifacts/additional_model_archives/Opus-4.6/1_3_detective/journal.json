@@ -1,0 +1,153 @@
+{
+  "chaoslib-version": "1.44.0",
+  "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.41",
+  "node": "PC-INF-MAMA",
+  "experiment": {
+    "title": "SCE 1.3 Detective Probe: Validate CloudTrail and CloudWatch Detect EC2 Reconnaissance",
+    "description": "Security Chaos Engineering experiment that validates detective controls (CloudTrail logging to CloudWatch Logs, CloudWatch Metric Filter, and CloudWatch Alarm) successfully detect unauthorized EC2 reconnaissance (T1580 - Cloud Infrastructure Discovery). A simulated attacker role executes ec2:DescribeInstances against the banking platform infrastructure. The experiment verifies that the API call is captured by CloudTrail, forwarded to CloudWatch Logs, matched by a metric filter for DescribeInstances events, and triggers a CloudWatch Alarm — confirming the detective control pipeline operates end-to-end as designed.",
+    "tags": [
+      "sce-1.3",
+      "detective",
+      "ec2",
+      "cloudtrail",
+      "cloudwatch",
+      "metric-filter",
+      "alarm",
+      "T1580",
+      "reconnaissance",
+      "banking",
+      "imds"
+    ],
+    "steady-state-hypothesis": {
+      "title": "CloudTrail and CloudWatch detective controls detect EC2 reconnaissance API calls",
+      "probes": [
+        {
+          "type": "probe",
+          "name": "verify-detective-controls-detect-reconnaissance",
+          "tolerance": true,
+          "provider": {
+            "type": "python",
+            "module": "chaosaws.ec2.1_3_detective",
+            "func": "hypothesis_verification"
+          }
+        }
+      ]
+    },
+    "method": [
+      {
+        "type": "action",
+        "name": "deploy-detective-control-infrastructure",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_detective",
+          "func": "steady_state"
+        }
+      },
+      {
+        "type": "action",
+        "name": "execute-ec2-reconnaissance-attack",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_detective",
+          "func": "attack"
+        }
+      }
+    ],
+    "rollbacks": [
+      {
+        "type": "action",
+        "name": "cleanup-experiment-resources",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_detective",
+          "func": "rollback"
+        }
+      }
+    ],
+    "dry": null
+  },
+  "start": "2026-04-17T10:53:31.106001+00:00",
+  "status": "completed",
+  "deviated": true,
+  "steady_states": {
+    "before": null,
+    "after": {
+      "steady_state_met": false,
+      "probes": [
+        {
+          "activity": {
+            "type": "probe",
+            "name": "verify-detective-controls-detect-reconnaissance",
+            "tolerance": true,
+            "provider": {
+              "type": "python",
+              "module": "chaosaws.ec2.1_3_detective",
+              "func": "hypothesis_verification"
+            }
+          },
+          "output": false,
+          "start": "2026-04-17T10:54:48.276907+00:00",
+          "status": "succeeded",
+          "end": "2026-04-17T11:24:50.251128+00:00",
+          "duration": 1801.974221,
+          "tolerance_met": false
+        }
+      ]
+    },
+    "during": []
+  },
+  "run": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "deploy-detective-control-infrastructure",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_detective",
+          "func": "steady_state"
+        }
+      },
+      "output": null,
+      "start": "2026-04-17T10:53:31.106432+00:00",
+      "status": "succeeded",
+      "end": "2026-04-17T10:54:46.408635+00:00",
+      "duration": 75.302203
+    },
+    {
+      "activity": {
+        "type": "action",
+        "name": "execute-ec2-reconnaissance-attack",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_detective",
+          "func": "attack"
+        }
+      },
+      "output": true,
+      "start": "2026-04-17T10:54:46.408825+00:00",
+      "status": "succeeded",
+      "end": "2026-04-17T10:54:48.276548+00:00",
+      "duration": 1.867723
+    }
+  ],
+  "rollbacks": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "cleanup-experiment-resources",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_detective",
+          "func": "rollback"
+        }
+      },
+      "output": null,
+      "start": "2026-04-17T11:24:50.251454+00:00",
+      "status": "succeeded",
+      "end": "2026-04-17T11:25:54.479675+00:00",
+      "duration": 64.228221
+    }
+  ],
+  "end": "2026-04-17T11:25:54.479845+00:00",
+  "duration": 1943.3759162425995
+}

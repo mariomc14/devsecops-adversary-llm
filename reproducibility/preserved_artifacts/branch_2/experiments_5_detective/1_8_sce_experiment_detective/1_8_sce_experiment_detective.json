@@ -1,0 +1,59 @@
+{
+    "title": "SCE 1.8 - Detect Malicious Build Start",
+    "description": "This Security Chaos Engineering experiment validates that detective controls can identify when a malicious or unauthorized CodeBuild build is started. The experiment deploys EventBridge rules and CloudWatch monitoring to detect build state changes, then simulates a malicious build start to verify the detection capability.",
+    "tags": [
+        "security-chaos-engineering",
+        "detective-control",
+        "codebuild",
+        "malicious-build",
+        "eventbridge",
+        "cloudwatch",
+        "sce-1.8"
+    ],
+    "steady-state-hypothesis": {
+        "title": "Detective controls should detect malicious build starts",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "verify-malicious-build-detected",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.1_8_sce_experiment_detective",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "establish-detective-controls",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_8_sce_experiment_detective",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "start-malicious-build",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_8_sce_experiment_detective",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "cleanup-experiment-resources",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_8_sce_experiment_detective",
+                "func": "rollback"
+            }
+        }
+    ]
+}

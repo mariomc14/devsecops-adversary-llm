@@ -1,0 +1,148 @@
+{
+  "chaoslib-version": "1.44.0",
+  "platform": "Linux-6.17.0-20-generic-x86_64-with-glibc2.39",
+  "node": "sce-user-VirtualBox",
+  "experiment": {
+    "title": "SCE 1.8 - Preventive Control: Block Malicious CodeBuild Start",
+    "description": "Validates that an IAM-based preventive control denies attempts to start a CodeBuild build with an overridden malicious source (attack node 1.7 - Start Malicious Build). The experiment deploys a CodeBuild project and a constrained attacker role, then attempts to invoke StartBuild with a malicious source override. The hypothesis is that the explicit Deny policy prevents the build from starting.",
+    "tags": [
+      "sce",
+      "preventive",
+      "codebuild",
+      "iam",
+      "malicious-build",
+      "1.8"
+    ],
+    "steady-state-hypothesis": {
+      "title": "Malicious build start is blocked by preventive IAM policy",
+      "probes": [
+        {
+          "type": "probe",
+          "name": "verify-malicious-build-was-prevented",
+          "tolerance": true,
+          "provider": {
+            "type": "python",
+            "module": "chaosaws.ec2.1_8_sce_experiment_preventive",
+            "func": "hypothesis_verification"
+          }
+        }
+      ]
+    },
+    "method": [
+      {
+        "type": "action",
+        "name": "deploy-codebuild-project-and-preventive-iam-policy",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_preventive",
+          "func": "steady_state"
+        }
+      },
+      {
+        "type": "action",
+        "name": "attempt-start-malicious-build-with-source-override",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_preventive",
+          "func": "attack"
+        }
+      }
+    ],
+    "rollbacks": [
+      {
+        "type": "action",
+        "name": "delete-cloudformation-stack-and-all-resources",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_preventive",
+          "func": "rollback"
+        }
+      }
+    ],
+    "dry": null
+  },
+  "start": "2026-04-12T03:01:36.382214+00:00",
+  "status": "completed",
+  "deviated": true,
+  "steady_states": {
+    "before": null,
+    "after": {
+      "steady_state_met": false,
+      "probes": [
+        {
+          "activity": {
+            "type": "probe",
+            "name": "verify-malicious-build-was-prevented",
+            "tolerance": true,
+            "provider": {
+              "type": "python",
+              "module": "chaosaws.ec2.1_8_sce_experiment_preventive",
+              "func": "hypothesis_verification"
+            }
+          },
+          "output": false,
+          "start": "2026-04-12T03:02:40.995961+00:00",
+          "status": "succeeded",
+          "end": "2026-04-12T03:02:41.613679+00:00",
+          "duration": 0.617718,
+          "tolerance_met": false
+        }
+      ]
+    },
+    "during": []
+  },
+  "run": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "deploy-codebuild-project-and-preventive-iam-policy",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_preventive",
+          "func": "steady_state"
+        }
+      },
+      "output": true,
+      "start": "2026-04-12T03:01:36.383064+00:00",
+      "status": "succeeded",
+      "end": "2026-04-12T03:02:39.665014+00:00",
+      "duration": 63.28195
+    },
+    {
+      "activity": {
+        "type": "action",
+        "name": "attempt-start-malicious-build-with-source-override",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_preventive",
+          "func": "attack"
+        }
+      },
+      "output": true,
+      "start": "2026-04-12T03:02:39.665353+00:00",
+      "status": "succeeded",
+      "end": "2026-04-12T03:02:40.994921+00:00",
+      "duration": 1.329568
+    }
+  ],
+  "rollbacks": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "delete-cloudformation-stack-and-all-resources",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_8_sce_experiment_preventive",
+          "func": "rollback"
+        }
+      },
+      "output": null,
+      "start": "2026-04-12T03:02:41.615018+00:00",
+      "status": "succeeded",
+      "end": "2026-04-12T03:03:03.940877+00:00",
+      "duration": 22.325859
+    }
+  ],
+  "end": "2026-04-12T03:03:03.941206+00:00",
+  "duration": 87.56301236152649
+}

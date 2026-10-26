@@ -1,0 +1,51 @@
+{
+    "title": "AWS EC2 IMDS Protection Detective Probe",
+    "description": "Validate detective controls for Instance Metadata Service configuration modifications",
+    "tags": ["aws", "ec2", "imds", "security", "detective"],
+    "steady-state-hypothesis": {
+        "title": "IMDS Configuration Monitoring",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "Detect IMDS Protection Violations",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.1_3_detective",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "Prepare IMDS Detection Environment",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_3_detective",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "Simulate IMDS Configuration Attack",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_3_detective",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "Clean Up Experiment Resources",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_3_detective",
+                "func": "rollback"
+            }
+        }
+    ]
+}

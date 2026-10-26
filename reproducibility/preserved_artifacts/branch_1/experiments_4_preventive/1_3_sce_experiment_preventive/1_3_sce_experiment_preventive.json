@@ -1,0 +1,58 @@
+{
+    "title": "SCE 1.3 — Preventive Probe: Block Creation of Malicious CodeBuild Project",
+    "description": "Validates that a preventive IAM deny policy blocks an attacker from executing codebuild:CreateProject, preventing credential-exfiltration buildspecs from being registered in the account. The attack role carries an explicit Deny on codebuild:CreateProject; the hypothesis confirms the project was never created.",
+    "tags": [
+        "sce",
+        "codebuild",
+        "preventive",
+        "iam",
+        "credential-exfiltration",
+        "1.3"
+    ],
+    "steady-state-hypothesis": {
+        "title": "Malicious CodeBuild project does not exist and deny policy is active",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "verify-codebuild-project-blocked-by-deny-policy",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.1_3_sce_experiment_preventive",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "deploy-iam-preventive-control-and-attack-role",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_3_sce_experiment_preventive",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "attempt-to-create-malicious-codebuild-project-via-constrained-role",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_3_sce_experiment_preventive",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "delete-cloudformation-stack-and-all-sce-resources",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_3_sce_experiment_preventive",
+                "func": "rollback"
+            }
+        }
+    ]
+}

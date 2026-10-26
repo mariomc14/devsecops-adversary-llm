@@ -1,0 +1,58 @@
+{
+    "title": "SCE 1.8 Detective Probe: Malicious Build Detection",
+    "description": "Validates that detective controls (CloudWatch Logs, Metrics, CodeBuild monitoring) detect unauthorized CodeBuild execution attempting credential extraction via SSRF/credential misuse attacks.",
+    "tags": [
+        "sce-1.8",
+        "detective",
+        "malicious-build",
+        "credential-extraction",
+        "cloudwatch-monitoring",
+        "codebuild-detection"
+    ],
+    "steady-state-hypothesis": {
+        "title": "Detective control captures all CodeBuild executions",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "verify-build-detection",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.1_8_sce_experiment_detective",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "setup-detective-infrastructure",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_8_sce_experiment_detective",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "initiate-malicious-build",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_8_sce_experiment_detective",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "cleanup-experiment-resources",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_8_sce_experiment_detective",
+                "func": "rollback"
+            }
+        }
+    ]
+}

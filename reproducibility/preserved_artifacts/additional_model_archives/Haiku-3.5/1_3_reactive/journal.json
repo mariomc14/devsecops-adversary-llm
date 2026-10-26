@@ -1,0 +1,146 @@
+{
+  "chaoslib-version": "1.44.0",
+  "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.41",
+  "node": "DESKTOP-R7NS3KO",
+  "experiment": {
+    "title": "IMDS Configuration Reactive Security Probe",
+    "description": "Validate reactive controls for Instance Metadata Service configuration changes",
+    "tags": [
+      "ec2",
+      "imds",
+      "security",
+      "reactive"
+    ],
+    "steady-state-hypothesis": {
+      "title": "Initial IMDS Configuration is Secure",
+      "probes": [
+        {
+          "type": "probe",
+          "name": "IMDS Configuration Initial Check",
+          "tolerance": true,
+          "provider": {
+            "type": "python",
+            "module": "chaosaws.ec2.1_3_reactive",
+            "func": "hypothesis_verification"
+          }
+        }
+      ]
+    },
+    "method": [
+      {
+        "type": "action",
+        "name": "Prepare Experiment Environment",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_reactive",
+          "func": "steady_state"
+        }
+      },
+      {
+        "type": "action",
+        "name": "Simulate IMDS Configuration Attack",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_reactive",
+          "func": "attack"
+        }
+      }
+    ],
+    "rollbacks": [
+      {
+        "type": "action",
+        "name": "Clean Up Experiment Resources",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_reactive",
+          "func": "rollback"
+        }
+      }
+    ],
+    "dry": null
+  },
+  "start": "2026-03-28T20:56:54.201175+00:00",
+  "status": "completed",
+  "deviated": true,
+  "steady_states": {
+    "before": null,
+    "after": {
+      "steady_state_met": false,
+      "probes": [
+        {
+          "activity": {
+            "type": "probe",
+            "name": "IMDS Configuration Initial Check",
+            "tolerance": true,
+            "provider": {
+              "type": "python",
+              "module": "chaosaws.ec2.1_3_reactive",
+              "func": "hypothesis_verification"
+            }
+          },
+          "output": false,
+          "start": "2026-03-28T20:59:27.841207+00:00",
+          "status": "succeeded",
+          "end": "2026-03-28T21:29:37.633642+00:00",
+          "duration": 1809.792435,
+          "tolerance_met": false
+        }
+      ]
+    },
+    "during": []
+  },
+  "run": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "Prepare Experiment Environment",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_reactive",
+          "func": "steady_state"
+        }
+      },
+      "output": false,
+      "start": "2026-03-28T20:56:54.201409+00:00",
+      "status": "succeeded",
+      "end": "2026-03-28T20:59:27.321610+00:00",
+      "duration": 153.120201
+    },
+    {
+      "activity": {
+        "type": "action",
+        "name": "Simulate IMDS Configuration Attack",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_reactive",
+          "func": "attack"
+        }
+      },
+      "output": false,
+      "start": "2026-03-28T20:59:27.321763+00:00",
+      "status": "succeeded",
+      "end": "2026-03-28T20:59:27.840978+00:00",
+      "duration": 0.519215
+    }
+  ],
+  "rollbacks": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "Clean Up Experiment Resources",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_reactive",
+          "func": "rollback"
+        }
+      },
+      "output": true,
+      "start": "2026-03-28T21:29:37.633952+00:00",
+      "status": "succeeded",
+      "end": "2026-03-28T21:30:08.807334+00:00",
+      "duration": 31.173382
+    }
+  ],
+  "end": "2026-03-28T21:30:08.807433+00:00",
+  "duration": 1994.6070640087128
+}

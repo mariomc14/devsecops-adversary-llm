@@ -1,0 +1,65 @@
+{
+    "title": "SCE 1.3: Reactive Probe - EC2 IMDS Unauthorized Operation Detection (EXECUTION FIXED)",
+    "description": "Security Chaos Engineering experiment validating reactive countermeasure (EventBridge → Lambda → SNS → Security Hub) for unauthorized EC2 API attempts. EXECUTION FIXED: Corrected CloudFormation S3 BucketEncryption schema; simplified template to core resources only; enhanced error reporting; improved SLA timeouts. Executes Attack Step 1.2 (DescribeInstances reconnaissance), injects simulated UnauthorizedOperation event, validates incident response automation chain.",
+    "tags": [
+        "ec2",
+        "imds",
+        "iam",
+        "eventbridge",
+        "lambda",
+        "sns",
+        "security-hub",
+        "incident-response",
+        "reactive",
+        "security-chaos",
+        "t1087",
+        "execution-fixed",
+        "production-ready"
+    ],
+    "steady-state-hypothesis": {
+        "title": "Reactive incident response chain successfully detects and responds to unauthorized EC2 API operations via EventBridge → Lambda → SNS → Security Hub automation",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "Verify reactive countermeasure chain: EventBridge injection → Lambda invocation → SNS alert → Security Hub finding",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.1_3_reactive",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "Establish steady state: Provision EC2, EventBridge, Lambda, SNS, Security Hub infrastructure",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_3_reactive",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "Execute Attack Step 1.2: DescribeInstances reconnaissance (T1087 Account Discovery)",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_3_reactive",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "Teardown: Delete CloudFormation stack and all provisioned resources",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_3_reactive",
+                "func": "rollback"
+            }
+        }
+    ]
+}

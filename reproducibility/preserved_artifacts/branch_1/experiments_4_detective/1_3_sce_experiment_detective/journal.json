@@ -1,0 +1,149 @@
+{
+  "chaoslib-version": "1.44.0",
+  "platform": "Linux-6.17.0-20-generic-x86_64-with-glibc2.39",
+  "node": "sce-user-VirtualBox",
+  "experiment": {
+    "title": "SCE 1.3 — Detect Malicious CodeBuild Project Creation",
+    "description": "Security Chaos Engineering experiment that simulates the '1.2 Create Malicious CodeBuild Project' attack step (a CodeBuild project with an overly-permissive IAM role and an exfiltration-oriented build spec) and verifies that an EventBridge detective control captures the CreateProject API call in CloudWatch Logs within the expected delivery window.",
+    "tags": [
+      "sce",
+      "codebuild",
+      "detective",
+      "eventbridge",
+      "cloudtrail",
+      "iam-privilege-escalation",
+      "1.3"
+    ],
+    "steady-state-hypothesis": {
+      "title": "EventBridge rule exists and CloudWatch Logs group is ready to receive CodeBuild CreateProject events",
+      "probes": [
+        {
+          "type": "probe",
+          "name": "codebuild-create-project-detected-in-cloudwatch-logs",
+          "tolerance": true,
+          "provider": {
+            "type": "python",
+            "module": "chaosaws.ec2.1_3_sce_experiment_detective",
+            "func": "hypothesis_verification"
+          }
+        }
+      ]
+    },
+    "method": [
+      {
+        "type": "action",
+        "name": "Deploy detective control stack — EventBridge rule, CloudWatch Logs group, malicious IAM role, S3 artefact bucket",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_sce_experiment_detective",
+          "func": "steady_state"
+        }
+      },
+      {
+        "type": "action",
+        "name": "Create malicious CodeBuild project with overly-permissive role and exfiltration environment variable",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_sce_experiment_detective",
+          "func": "attack"
+        }
+      }
+    ],
+    "rollbacks": [
+      {
+        "type": "action",
+        "name": "Delete CloudFormation stack and all provisioned resources",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_sce_experiment_detective",
+          "func": "rollback"
+        }
+      }
+    ],
+    "dry": null
+  },
+  "start": "2026-04-09T02:50:21.463236+00:00",
+  "status": "completed",
+  "deviated": false,
+  "steady_states": {
+    "before": null,
+    "after": {
+      "steady_state_met": true,
+      "probes": [
+        {
+          "activity": {
+            "type": "probe",
+            "name": "codebuild-create-project-detected-in-cloudwatch-logs",
+            "tolerance": true,
+            "provider": {
+              "type": "python",
+              "module": "chaosaws.ec2.1_3_sce_experiment_detective",
+              "func": "hypothesis_verification"
+            }
+          },
+          "output": true,
+          "start": "2026-04-09T02:51:55.421662+00:00",
+          "status": "succeeded",
+          "end": "2026-04-09T02:52:20.164107+00:00",
+          "duration": 24.742445,
+          "tolerance_met": true
+        }
+      ]
+    },
+    "during": []
+  },
+  "run": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "Deploy detective control stack — EventBridge rule, CloudWatch Logs group, malicious IAM role, S3 artefact bucket",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_sce_experiment_detective",
+          "func": "steady_state"
+        }
+      },
+      "output": true,
+      "start": "2026-04-09T02:50:21.463962+00:00",
+      "status": "succeeded",
+      "end": "2026-04-09T02:51:54.471524+00:00",
+      "duration": 93.007562
+    },
+    {
+      "activity": {
+        "type": "action",
+        "name": "Create malicious CodeBuild project with overly-permissive role and exfiltration environment variable",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_sce_experiment_detective",
+          "func": "attack"
+        }
+      },
+      "output": true,
+      "start": "2026-04-09T02:51:54.472026+00:00",
+      "status": "succeeded",
+      "end": "2026-04-09T02:51:55.420551+00:00",
+      "duration": 0.948525
+    }
+  ],
+  "rollbacks": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "Delete CloudFormation stack and all provisioned resources",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.1_3_sce_experiment_detective",
+          "func": "rollback"
+        }
+      },
+      "output": true,
+      "start": "2026-04-09T02:52:20.170999+00:00",
+      "status": "succeeded",
+      "end": "2026-04-09T02:53:02.166676+00:00",
+      "duration": 41.995677
+    }
+  ],
+  "end": "2026-04-09T02:53:02.167127+00:00",
+  "duration": 160.70753002166748
+}

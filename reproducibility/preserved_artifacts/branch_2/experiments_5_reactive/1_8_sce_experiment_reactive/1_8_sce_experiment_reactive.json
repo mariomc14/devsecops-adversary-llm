@@ -1,0 +1,59 @@
+{
+    "title": "SCE Experiment 1.8 - Reactive Probe for Malicious Build Detection",
+    "description": "Validates that reactive controls (CloudWatch Alarms, EventBridge Rules, SNS notifications) can detect and respond to unauthorized CodeBuild executions. Tests attack node 1.7 Start Malicious Build and verifies reactive detection mechanisms are operational.",
+    "tags": [
+        "sce-1.8",
+        "reactive-probe",
+        "codebuild",
+        "malicious-build-detection",
+        "cloudwatch",
+        "eventbridge",
+        "T1098.001"
+    ],
+    "steady-state-hypothesis": {
+        "title": "Reactive controls should detect malicious CodeBuild execution",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "verify-reactive-controls-detected-malicious-build",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.1_8_sce_experiment_reactive",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "deploy-codebuild-project-and-reactive-controls",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_8_sce_experiment_reactive",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "execute-malicious-build-attack",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_8_sce_experiment_reactive",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "cleanup-experiment-resources",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_8_sce_experiment_reactive",
+                "func": "rollback"
+            }
+        }
+    ]
+}

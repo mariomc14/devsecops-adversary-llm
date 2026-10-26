@@ -1,0 +1,148 @@
+{
+  "chaoslib-version": "1.44.0",
+  "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.41",
+  "node": "DESKTOP-R7NS3KO",
+  "experiment": {
+    "title": "SCE 3.3 Preventive - IAM SourceIp Condition Blocks Stolen Credential Usage",
+    "description": "Validates that IAM policy conditions (aws:SourceIp) prevent EC2 instance profile credentials from being used outside authorized VPC CIDR ranges. This experiment simulates credential theft from IMDS and verifies that preventive controls deny API calls made from unauthorized network contexts, blocking the attack before data access occurs.",
+    "tags": [
+      "preventive",
+      "iam",
+      "ec2",
+      "imds",
+      "credential-theft",
+      "network-isolation"
+    ],
+    "steady-state-hypothesis": {
+      "title": "IAM Preventive Controls Block Unauthorized Credential Usage",
+      "probes": [
+        {
+          "type": "probe",
+          "name": "verify-sourceip-condition-enforcement",
+          "tolerance": true,
+          "provider": {
+            "type": "python",
+            "module": "chaosaws.ec2.3_3_preventive",
+            "func": "hypothesis_verification"
+          }
+        }
+      ]
+    },
+    "method": [
+      {
+        "type": "action",
+        "name": "setup-ec2-instance-with-restricted-iam-role",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.3_3_preventive",
+          "func": "steady_state"
+        }
+      },
+      {
+        "type": "action",
+        "name": "simulate-imds-credential-theft-attack",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.3_3_preventive",
+          "func": "attack"
+        }
+      }
+    ],
+    "rollbacks": [
+      {
+        "type": "action",
+        "name": "cleanup-cloudformation-stack-and-resources",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.3_3_preventive",
+          "func": "rollback"
+        }
+      }
+    ],
+    "dry": null
+  },
+  "start": "2026-04-04T15:46:21.776156+00:00",
+  "status": "completed",
+  "deviated": false,
+  "steady_states": {
+    "before": null,
+    "after": {
+      "steady_state_met": true,
+      "probes": [
+        {
+          "activity": {
+            "type": "probe",
+            "name": "verify-sourceip-condition-enforcement",
+            "tolerance": true,
+            "provider": {
+              "type": "python",
+              "module": "chaosaws.ec2.3_3_preventive",
+              "func": "hypothesis_verification"
+            }
+          },
+          "output": true,
+          "start": "2026-04-04T15:50:22.604372+00:00",
+          "status": "succeeded",
+          "end": "2026-04-04T15:50:23.743489+00:00",
+          "duration": 1.139117,
+          "tolerance_met": true
+        }
+      ]
+    },
+    "during": []
+  },
+  "run": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "setup-ec2-instance-with-restricted-iam-role",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.3_3_preventive",
+          "func": "steady_state"
+        }
+      },
+      "output": true,
+      "start": "2026-04-04T15:46:21.776416+00:00",
+      "status": "succeeded",
+      "end": "2026-04-04T15:50:21.072668+00:00",
+      "duration": 239.296252
+    },
+    {
+      "activity": {
+        "type": "action",
+        "name": "simulate-imds-credential-theft-attack",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.3_3_preventive",
+          "func": "attack"
+        }
+      },
+      "output": true,
+      "start": "2026-04-04T15:50:21.072897+00:00",
+      "status": "succeeded",
+      "end": "2026-04-04T15:50:22.604141+00:00",
+      "duration": 1.531244
+    }
+  ],
+  "rollbacks": [
+    {
+      "activity": {
+        "type": "action",
+        "name": "cleanup-cloudformation-stack-and-resources",
+        "provider": {
+          "type": "python",
+          "module": "chaosaws.ec2.3_3_preventive",
+          "func": "rollback"
+        }
+      },
+      "output": true,
+      "start": "2026-04-04T15:50:23.743790+00:00",
+      "status": "succeeded",
+      "end": "2026-04-04T15:51:16.771825+00:00",
+      "duration": 53.028035
+    }
+  ],
+  "end": "2026-04-04T15:51:16.771948+00:00",
+  "duration": 294.9969754219055
+}

@@ -1,0 +1,62 @@
+{
+    "title": "SCE 1.4 Reactive Probe: Auto-Remediation Lambda for IMDS Weakening",
+    "description": "Validates that the reactive control (Auto-Remediation Lambda) automatically reverts IMDS configuration to secure settings when an attacker attempts to weaken IMDS security on EC2 instances hosting banking transaction microservices. This experiment creates an EC2 instance with IMDSv2 enforced, sets up an EventBridge rule triggering a Lambda function on ModifyInstanceMetadataOptions API calls, executes the IMDS weakening attack, and verifies the Lambda automatically remediates the configuration within the 30-minute SLA.",
+    "tags": [
+        "sce-1-4",
+        "reactive",
+        "lambda",
+        "eventbridge",
+        "auto-remediation",
+        "imds",
+        "ec2",
+        "banking-platform",
+        "t1562-001",
+        "credential-theft"
+    ],
+    "steady-state-hypothesis": {
+        "title": "Auto-Remediation Lambda reverts IMDS to secure configuration within 30-minute SLA",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "verify-lambda-remediated-imds-configuration",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.1_4_reactive",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "establish-steady-state-with-ec2-lambda-eventbridge-infrastructure",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_4_reactive",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "execute-imds-weakening-attack-to-trigger-remediation",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_4_reactive",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "cleanup-cloudformation-stack-and-all-experiment-resources",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.1_4_reactive",
+                "func": "rollback"
+            }
+        }
+    ]
+}

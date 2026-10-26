@@ -1,0 +1,51 @@
+{
+    "title": "CodeBuild Project Security Risk Detection",
+    "description": "Detect security risks in CodeBuild project with overly permissive IAM role",
+    "tags": ["codebuild", "iam", "security"],
+    "steady-state-hypothesis": {
+        "title": "Validate initial security posture",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "Check for existing security risks",
+                "tolerance": true,
+                "provider": {
+                    "type": "python",
+                    "module": "chaosaws.ec2.sce_1_3_experiment_detective",
+                    "func": "hypothesis_verification"
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "Prepare test environment",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.sce_1_3_experiment_detective",
+                "func": "steady_state"
+            }
+        },
+        {
+            "type": "action",
+            "name": "Create malicious CodeBuild project",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.sce_1_3_experiment_detective",
+                "func": "attack"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "Clean up experiment resources",
+            "provider": {
+                "type": "python",
+                "module": "chaosaws.ec2.sce_1_3_experiment_detective",
+                "func": "rollback"
+            }
+        }
+    ]
+}

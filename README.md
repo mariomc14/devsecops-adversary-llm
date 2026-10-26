@@ -10,7 +10,7 @@
 > **“LLM-Driven Chaos Attack–Defense Trees for Empirical Security Validation in DevSecOps Scenarios”**  
 > *Submitted to the International Journal of Information Security (IJIS).*
 > 
-> It merges the full Git commit history of the experimental branches (`experiments-Mario`, `experimentos-miguel`, and `feat_addMetrics`), retaining all generated experiment scripts, execution journals, metric evaluation reports, and iterative refinement tracking logs.
+> It preserves the complete experimental campaign, retaining all generated experiment scripts, execution journals, metric evaluation reports, and iterative refinement tracking logs across all evaluated foundation models.
 > 
 > *For the frozen, sanitized evaluation package prepared for peer-review validation, please see the [`reproducibility/ijis-paper`](https://github.com/mariomc14/devsecops-adversary-llm/tree/reproducibility/ijis-paper) branch.*
 
@@ -76,7 +76,7 @@ automate/
 ├── 1_tracking_summary_*.md        # Branch 1 refinement tracking tables
 ├── 2_tracking_summary_*.md        # Branch 2 refinement tracking tables
 ├── tracking_summary.md            # Execution tracking session logs
-└── mario_tracking_summary.md      # Additional preserved model tracking sessions
+└── additional_tracking_summary.md # Additional preserved model tracking sessions
 ```
 
 ---

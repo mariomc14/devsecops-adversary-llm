@@ -57,10 +57,10 @@ flowchart TD
 | **Manuscript Title** | *Anticipating Adversary Behavior in DevSecOps Scenarios through Large Language Models* | *LLM-Driven Chaos Attack–Defense Trees for Empirical Security Validation in DevSecOps Scenarios* |
 | **Primary Scope** | Feasibility study of LLMs constructing ADTs & manual translation into a single SCE experiment. | End-to-end framework automating Chaos ADT generation, multi-stage SCE translation, and iterative convergence. |
 | **Target Scenarios** | Military logistics supply chain scenario (AWS EC2 Spot Instance privilege escalation). | Cloud-native DevSecOps banking scenario with 2 distinct attack branches: (1) EC2 IMDS privilege escalation and (2) AWS CodeBuild project compromise. |
-| **Evaluated Models** | QwQ-32B and GPT-4. | 5 Anthropic Claude models via AWS Bedrock: Haiku 3.5, Haiku 4.5, Sonnet 4.6, Opus 4.5, Opus 4.6. |
+| **Evaluated Models** | QwQ-32B and GPT-4. | 6 Anthropic Claude models via AWS Bedrock: Haiku 3.5, Haiku 4.5, Sonnet 4.5, Sonnet 4.6, Opus 4.5, and Opus 4.6. |
 | **Execution Loop** | Manual prompt sequence and local Chaos Toolkit execution. | Automated closed-loop orchestrator (`sce_automation_api.py`) with programmatic AWS Bedrock Converse API invocation and refinement budgeting. |
 | **Evaluation Metrics** | 3 qualitative dimensions (Fidelity, Hierarchy, Executability). | Quantitative dual-stage metric rubric: Pre-execution structural compliance ($Q_{pre}$) and Post-execution runtime observability ($Q_{post}$). |
-| **Reproducibility** | Preserved prompt templates and experiment runner. | Full cryptographic reproducibility package (`SHA256SUMS.txt`), normalized DAGs, tracking tables, and attempt histories. |
+| **Reproducibility** | Preserved prompt templates and experiment runner. | Cryptographically verifiable reproducibility package (SHA256SUMS.txt), normalized DAGs, tracking summaries, and preserved attempt-level evidence. |
 
 ---
 

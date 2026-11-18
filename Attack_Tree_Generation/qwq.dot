@@ -185,7 +185,7 @@ digraph AttackGraph {
                         \"type\": \"LINUX_CONTAINER\",<br/>
                         \"image\": \"aws/codebuild/standard:1.0\",<br/>
                         \"computeType\": \"BUILD_GENERAL1_SMALL\"},<br/>
-                    \"serviceRole\": \"arn:aws:iam::947247140022:role/codebuild-CI-Build-service-role-2\"}" <br/>
+                    \"serviceRole\": \"arn:aws:iam::<REDACTED_AWS_ACCOUNT_ID>:role/codebuild-CI-Build-service-role-2\"}" <br/>
                 <u>Input</u>: None<br/>
                 <u>Result</u>: Malicious rev.json file with embedded reverse shell<br/>
                 <font color="#ff0000">TTP: T1530 (Data Manipulation)</font>

@@ -25,7 +25,7 @@ python reproducibility/controlled_followup/analysis/reproduce_paper_results.py  
 | Campaign network | `cvr2-network` (one fixed VPC/subnet/security group reused by every attempt) |
 | Maximum scientific attempts | 3 per trajectory (early stop at `Q_post ≥ 100`) |
 | Python | 3.12.13 |
-| Design | 2 tasks × 2 models × 4 conditions × 5 repetitions = **80 trajectories** (164 attempts executed) |
+| Design | 2 tasks × 2 models × 4 conditions × 5 repetitions = **80 trajectories** (164 attempts in total) |
 | Tasks | `cn1_p` — CN1-P, Chaos Node 1.3, preventive; `cn2_d` — CN2-D, Chaos Node 1.8, detective ([`protocol/tasks/`](protocol/tasks/)) |
 | Schedule | Predetermined sequential order, seed 20261111 ([`protocol/schedule.csv`](protocol/schedule.csv)) |
 

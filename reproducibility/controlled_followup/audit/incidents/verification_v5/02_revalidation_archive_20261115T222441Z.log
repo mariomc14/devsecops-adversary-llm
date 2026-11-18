@@ -1,0 +1,23 @@
+candidates re-validated: 71
+stored verdict reproduced by old runner: 71/71
+identical verdict old vs new: 51; changed: 20
+  cn2_d/sonnet-4.6/chaos_adt_feedback/rep_01/attempt_01: passed False -> True; new errors: []
+  cn2_d/sonnet-4.6/chaos_adt_feedback/rep_01/attempt_02: passed False -> True; new errors: []
+  cn2_d/sonnet-4.6/chaos_adt_feedback/rep_01/attempt_03: passed False -> True; new errors: []
+  cn2_d/sonnet-4.6/chaos_adt_feedback/rep_02/attempt_01: passed False -> True; new errors: []
+  cn2_d/sonnet-4.6/chaos_adt_feedback/rep_02/attempt_02: passed False -> True; new errors: []
+  cn2_d/sonnet-4.6/chaos_adt_feedback/rep_02/attempt_03: passed False -> True; new errors: []
+  cn2_d/sonnet-4.6/chaos_adt_no_feedback/rep_01/attempt_01: passed False -> True; new errors: []
+  cn2_d/sonnet-4.6/chaos_adt_no_feedback/rep_01/attempt_02: passed False -> True; new errors: []
+  cn2_d/sonnet-4.6/chaos_adt_no_feedback/rep_01/attempt_03: passed False -> True; new errors: []
+  cn2_d/sonnet-4.6/conventional_adt_feedback/rep_01/attempt_01: passed False -> True; new errors: []
+  cn2_d/sonnet-4.6/conventional_adt_feedback/rep_01/attempt_02: passed False -> True; new errors: []
+  cn2_d/sonnet-4.6/conventional_adt_feedback/rep_01/attempt_03: passed False -> True; new errors: []
+  cn2_d/sonnet-4.6/conventional_adt_feedback/rep_02/attempt_01: passed False -> True; new errors: []
+  cn2_d/sonnet-4.6/conventional_adt_feedback/rep_02/attempt_03: passed False -> True; new errors: []
+  cn2_d/sonnet-4.6/direct_sce_feedback/rep_01/attempt_01: passed False -> True; new errors: []
+  cn2_d/sonnet-4.6/direct_sce_feedback/rep_01/attempt_02: passed False -> True; new errors: []
+  cn2_d/sonnet-4.6/direct_sce_feedback/rep_01/attempt_03: passed False -> True; new errors: []
+  cn2_d/sonnet-4.6/direct_sce_feedback/rep_02/attempt_01: passed False -> True; new errors: []
+  cn2_d/sonnet-4.6/direct_sce_feedback/rep_02/attempt_02: passed False -> True; new errors: []
+  cn2_d/sonnet-4.6/direct_sce_feedback/rep_02/attempt_03: passed False -> True; new errors: []

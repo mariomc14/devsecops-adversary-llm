@@ -1,10 +1,31 @@
 # IJIS Reproducibility Package: LLM-Driven Chaos Attack–Defense Trees
 
 [![Status](https://img.shields.io/badge/Branch-Reproducibility%20IJIS-success.svg)](#)
-[![Release](https://img.shields.io/badge/Release-v2.0--ijis--reproducibility-blue.svg)](#)
+[![Release](https://img.shields.io/badge/Release-v3.0--ijis--reproducibility-blue.svg)](https://github.com/mariomc14/devsecops-adversary-llm/releases/tag/v3.0-ijis-reproducibility)
 [![Status](https://img.shields.io/badge/Status-Under_Review_at_IJIS-informational.svg)](#)
 [![Integrity](https://img.shields.io/badge/Checksums-SHA256%20Verified-brightgreen.svg)](#)
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
+
+## IJIS reproducibility material
+
+Canonical release: **`v3.0-ijis-reproducibility`**
+
+Evidence is separated into:
+
+1. **Original experimental campaign** — [`reproducibility/original_campaign/`](reproducibility/original_campaign/)
+2. **Prospective controlled follow-up** — [`reproducibility/controlled_followup/`](reproducibility/controlled_followup/) (canonical runner: [`controlled_validation/`](controlled_validation/))
+3. **Human validation** — [`reproducibility/controlled_followup/human_evaluation/`](reproducibility/controlled_followup/human_evaluation/)
+4. **Audit and integrity material** — [`reproducibility/controlled_followup/audit/`](reproducibility/controlled_followup/audit/)
+
+➡️ **Start here:** [`reproducibility/README.md`](reproducibility/README.md) · **Reviewers:** [`reproducibility/controlled_followup/REVIEWER_GUIDE.md`](reproducibility/controlled_followup/REVIEWER_GUIDE.md) · [`EXPECTED_RESULTS.md`](reproducibility/controlled_followup/analysis/EXPECTED_RESULTS.md) · [`LIMITATIONS.md`](reproducibility/LIMITATIONS.md)
+
+All controlled follow-up values reported in the paper are reproduced with one command (standard library only, no AWS access):
+
+```bash
+python reproducibility/controlled_followup/analysis/reproduce_paper_results.py
+```
+
+---
 
 > [!IMPORTANT]
 > **Artifact for Peer Review:** This branch (`reproducibility/ijis-paper`) contains the formal, frozen reproducibility package supporting the research manuscript:
@@ -13,90 +34,74 @@
 > *(Currently under review at the International Journal of Information Security - IJIS)*
 > 
 > To cite an immutable snapshot of this package in the manuscript, reference the release tag:
-> `v2.0-ijis-reproducibility`
+> `v3.0-ijis-reproducibility`
+>
+> The earlier tag `v2.0-ijis-reproducibility` (original campaign only) is kept unchanged.
 
 ---
 
 ## 📦 Package Overview
 
-This reproducibility package provides the complete preserved implementation, configuration, input specifications, attempt-level tracking summaries, generated experiment artifacts, metric reports, and sanitized runtime evidence from the evaluation campaign reported in the manuscript:
-
 ```text
+README.md                                    # This file
+controlled_validation/                       # Canonical controlled-validation runner (v6)
+automate/inputs/template.json                # Experiment template read by the runner
 reproducibility/
-├── README.md                           # Detailed reproducibility documentation & runtime config
-├── SHA256SUMS.txt                      # Cryptographic checksums of all preserved package files
-├── VALIDATION.md                       # Validation criteria & integrity verification steps
+├── README.md                                # Index of the reproducibility material
+├── LIMITATIONS.md                           # Limitations aligned with the manuscript
 │
-├── automation/                         # Preserved reference automation & dependencies
-│   ├── sce_automation_api.py           # Final reference generation & refinement orchestrator
-│   ├── run.sh                          # Automated test execution script
-│   └── requirements.txt                # Pinned Python package dependencies
+├── original_campaign/                       # ORIGINAL CAMPAIGN (unchanged content of v2.0-ijis-reproducibility)
+│   ├── README.md                            # Detailed documentation & runtime config of the original campaign
+│   ├── SHA256SUMS.txt                       # Checksums of the original-campaign files
+│   ├── VALIDATION.md                        # Validation checks of the original package
+│   ├── automation/                          # Preserved reference automation & pinned dependencies
+│   ├── inputs/                              # Historical static inputs & identifier-normalized structure
+│   ├── preserved_artifacts/                 # Generated experiments and sanitized runtime evidence
+│   ├── preserved_reports/                   # Pre-/post-execution metric reports
+│   ├── tracking/                            # Attempt-level tracking summaries
+│   └── docs/                                # Configuration, model IDs, prompts, limitations, sanitization
 │
-├── inputs/                             # Historical static inputs & normalized structure
-│   ├── structure.dot                   # Input Attack-Defense Tree graph
-│   ├── structure_identifier_normalized.dot # Identifier-normalized graph aligned with manuscript
-│   ├── attack.yaml                     # Attack scenario and safeguard definitions
-│   ├── mission.yaml                    # System context definition
-│   ├── template.json                   # Experiment JSON schema template
-│   ├── EC2Attack.txt                   # Threat intelligence input for Branch 1
-│   └── CodeBuildAttack.txt             # Threat intelligence input for Branch 2
-│
-├── preserved_artifacts/                # Preserved generated experiments and runtime evidence
-│   ├── branch_1/                       # Branch 1 (EC2 IMDS privilege escalation) experiments
-│   ├── branch_2/                       # Branch 2 (CodeBuild project compromise) experiments
-│   └── additional_model_archives/      # Additional model-organized experimental snapshots
-│
-├── preserved_reports/                  # Preserved metric evaluation reports
-│   ├── branch_1/                       # Pre- and post-execution reports for Branch 1
-│   ├── branch_2/                       # Pre- and post-execution reports for Branch 2
-│   └── additional_model_archives/      # Pre- and post-execution reports organized by model
-│
-├── tracking/                           # Preserved attempt-level tracking summaries
-│   ├── branch_1/                       # Attempt logs for preventive, detective, and reactive
-│   ├── branch_2/                       # Attempt logs for preventive, detective, and reactive
-│   └── additional_archives/            # Additional model-level tracking summaries
-│
-└── docs/                               # Methodological & archival documentation
-    ├── experimental_configuration.md   # Bedrock & Chaos Toolkit parameters
-    ├── model_identifiers.md            # Exact evaluated AWS Bedrock model IDs
-    ├── prompt_map.md                   # Prompt templates & composition
-    ├── manuscript_alignment.md         # Terminology mapping to manuscript
-    ├── source_manifest.md              # Provenance & snapshot manifest
-    ├── sanitization.md                 # Public-release sanitization policy
-    ├── archival_limitations.md         # Limitations & package coverage details
-    └── additional_archive_scope.md     # Scope and interpretation of secondary archives
+└── controlled_followup/                     # PROSPECTIVE CONTROLLED FOLLOW-UP (third revision)
+    ├── README.md                            # Protocol, conditions, runner provenance
+    ├── REVIEWER_GUIDE.md                    # Reviewer #2 points R2.1–R2.4
+    ├── protocol/                            # campaign.yaml, schedule.csv, tasks/, template.json, requirements.txt
+    ├── results_summary/                     # Runner results, human dataset, paper values
+    ├── human_evaluation/                    # README, RUBRIC, delivered package hashes
+    ├── analysis/                            # reproduce_paper_results.py, EXPECTED_RESULTS.md
+    ├── audit/                               # Final audit, runner v5/v6, diffs, incidents, sanitization, SHA256SUMS
+    └── full_archive/                        # Release assets (complete attempt-level evidence) and their SHA-256
 ```
 
 ---
 
 ## 🔍 Cryptographic Validation
 
-All files in the reproducibility directory are verified against `SHA256SUMS.txt`. To verify package integrity:
-
 ```bash
-cd reproducibility
-sha256sum -c SHA256SUMS.txt
+# controlled follow-up
+cd reproducibility/controlled_followup && sha256sum -c audit/SHA256SUMS.txt && cd -
+
+# original campaign
+cd reproducibility/original_campaign && sha256sum -c SHA256SUMS.txt && cd -
 ```
 
-Expected result: All files return `OK`.
+Expected result: All files return `OK`. The release asset `ijis_controlled_followup_public.zip` contains its own `SHA256SUMS.txt`; the SHA-256 of the asset itself is listed in [`reproducibility/controlled_followup/full_archive/README.md`](reproducibility/controlled_followup/full_archive/README.md).
 
 ---
 
 ## ⚙️ Key Runtime Configuration
 
-The experiments evaluated foundation models via AWS Bedrock Converse using:
-```python
-inferenceConfig = {
-    "maxTokens": 8192,
-    "temperature": 1.0,
-}
-```
+Both campaigns evaluated foundation models via AWS Bedrock Converse and executed compliant experiments in an AWS cloud sandbox using Chaos Toolkit (`--hypothesis-strategy=after-method-only`).
 
-The runtime validation executed compliant experiments in an AWS cloud sandbox using Chaos Toolkit:
-* Pinned Chaos Toolkit version: `chaostoolkit==1.18.0`
-* Python runtime: Python 3.12+
+| | Original campaign | Controlled follow-up |
+|---|---|---|
+| Models | 6 Claude variants | Claude Haiku 4.5, Claude Sonnet 4.6 |
+| `maxTokens` | 64000 / 8192 (per-trajectory mapping not fully reconstructable) | 8192 (uniform) |
+| `temperature` | 1.0 | 1.0 |
+| `topP` / `topK` | not overridden | not overridden |
+| Pinned Chaos Toolkit | `chaostoolkit==1.19.0` | `chaostoolkit==1.19.0` |
+| Python | 3.12+ | 3.12.13 |
 
-For detailed instructions on recreating the execution environment and running the validation suite, refer to [`reproducibility/README.md`](reproducibility/README.md) and [`reproducibility/VALIDATION.md`](reproducibility/VALIDATION.md).
+Details: [`reproducibility/original_campaign/README.md`](reproducibility/original_campaign/README.md) and [`reproducibility/controlled_followup/README.md`](reproducibility/controlled_followup/README.md).
 
 ---
 

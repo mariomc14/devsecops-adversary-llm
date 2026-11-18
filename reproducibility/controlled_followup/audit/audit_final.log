@@ -1,0 +1,23 @@
+DATE_UTC: 2026-11-16T19:49:09Z
+schedule rows: 80
+trajectory dirs missing: []  incomplete: []
+trajectory runner_revision: {'v5-paginator-never-created-cleanup': 19, 'v6-artifact-order-json-guard': 61}
+trajectories reaching Q_post>=100: 46 / 80
+attempts: 164  status: {'terminal_qpost': 46, 'qpost_insufficient': 82, 'technical_rejected': 36}
+incident events: {'cleanup_retained_never_created_resources': (7, ['5/attempt_01', '58/attempt_01', '67/attempt_01', '70/attempt_01', '70/attempt_02', '70/attempt_03', '72/attempt_01']), 'attempt_halted': (1, ['20/attempt_02']), 'attempt_resumed': (1, ['20/attempt_02'])}
+trajectory dirs outside schedule: []
+campaign_results.csv rows: 164  distinct trajectories: 80  orders: 80
+csv attempt_dir set == attempt dirs on disk: True
+campaign_results.json records: 164
+human_adjudication.csv rows: 164  columns: ['order', 'repetition', 'task', 'model', 'condition', 'attempt', 'technical_status', 'q_pre', 'q_post', 'executed', 'rater1_experiment_outcome', 'rater2_experiment_outcome', 'adjudicated_experiment_outcome', 'adjudicated_security_outcome', 'notes']
+SHA256SUMS entries: 3424  mismatching/missing: 0 []
+files in results/ not in SHA256SUMS: ['SHA256SUMS.txt'] 1
+
+== extraction v5 vs v6 over the final results/
+old: v5-paginator-never-created-cleanup  new: v6-artifact-order-json-guard
+DIFFERS: results/cn1_p/sonnet-4.6/conventional_adt_feedback/rep_02/attempt_02/generation_response.txt
+  python identical: True
+  v5 json: JSONDecodeError: Extra data: line 1 column 10 (char 9); starts '"ImageId": {\n    "{{resolve:ss'
+  v6 json: valid JSON object, keys=['description', 'method', 'rollbacks', 'steady-state-hypothesis', 'tags', 'title']
+  stored cvr2_cn1_p_s46_cad_r02_a02.py == v6 python: True
+responses identical: 163, differing: 1

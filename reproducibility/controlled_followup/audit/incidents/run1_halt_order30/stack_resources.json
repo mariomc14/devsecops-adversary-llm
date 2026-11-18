@@ -1,0 +1,17 @@
+{
+    "StackResources": [
+        {
+            "StackName": "cvr2-cn2-d-s46-can-r02-a01-20261115204336",
+            "StackId": "arn:aws:cloudformation:us-east-1:<REDACTED_AWS_ACCOUNT_ID>:stack/cvr2-cn2-d-s46-can-r02-a01-20261115204336/3b0cffe0-e135-11f1-b309-0affedf3e03d",
+            "LogicalResourceId": "SCEInstanceRole",
+            "PhysicalResourceId": "cvr2-cn2-d-s46-can-r02-a01-role-cvr2-cn2-d-s46-can-r02-a01-20261115204336",
+            "ResourceType": "AWS::IAM::Role",
+            "Timestamp": "2026-11-15T20:44:02.115000+00:00",
+            "ResourceStatus": "DELETE_FAILED",
+            "ResourceStatusReason": "Resource handler returned message: \"1 validation error detected: Value at 'roleName' failed to satisfy constraint: Member must have length less than or equal to 64 (Service: Iam, Status Code: 400, Request ID: e343602d-d14d-4d77-9147-7cadc576bf8a) (SDK Attempt Count: 1)\" (RequestToken: 1fbc8cdb-e4cb-7785-c9b1-a66bfaa4c41c, HandlerErrorCode: InvalidRequest)",
+            "DriftInformation": {
+                "StackResourceDriftStatus": "NOT_CHECKED"
+            }
+        }
+    ]
+}

@@ -1,0 +1,21 @@
+{
+ "archive": "previous_runs/run1_v4_halted_at_order30_20261115",
+ "files_moved": 1401,
+ "results": {
+  "completed_trajectories": 22,
+  "attempts": 55,
+  "attempt_statuses": {
+   "qpost_insufficient": 38,
+   "technical_rejected": 10,
+   "terminal_qpost": 6,
+   "infrastructure_cleanup_error": 1
+  }
+ },
+ "results_invalidated": {
+  "completed_trajectories": 7,
+  "attempts": 21,
+  "attempt_statuses": {
+   "technical_rejected": 21
+  }
+ }
+}

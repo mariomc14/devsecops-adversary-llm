@@ -1,0 +1,22 @@
+Intentos CN2-D rechazados por 'CN2-D must use CloudTrail Event History via lookup_events()'
+intento | llamadas ejecutables get_paginator('lookup_events') | llamadas directas .lookup_events() | nº errores de validación
+cn2_d/sonnet-4.6/chaos_adt_feedback/rep_01/attempt_01 | 1 | 0 | 1
+cn2_d/sonnet-4.6/chaos_adt_feedback/rep_01/attempt_02 | 1 | 0 | 1
+cn2_d/sonnet-4.6/chaos_adt_feedback/rep_01/attempt_03 | 1 | 0 | 1
+cn2_d/sonnet-4.6/chaos_adt_feedback/rep_02/attempt_01 | 1 | 0 | 1
+cn2_d/sonnet-4.6/chaos_adt_feedback/rep_02/attempt_02 | 1 | 0 | 1
+cn2_d/sonnet-4.6/chaos_adt_feedback/rep_02/attempt_03 | 1 | 0 | 1
+cn2_d/sonnet-4.6/chaos_adt_no_feedback/rep_01/attempt_01 | 1 | 0 | 1
+cn2_d/sonnet-4.6/chaos_adt_no_feedback/rep_01/attempt_02 | 1 | 0 | 1
+cn2_d/sonnet-4.6/chaos_adt_no_feedback/rep_01/attempt_03 | 1 | 0 | 1
+cn2_d/sonnet-4.6/conventional_adt_feedback/rep_01/attempt_01 | 1 | 0 | 1
+cn2_d/sonnet-4.6/conventional_adt_feedback/rep_01/attempt_02 | 1 | 0 | 1
+cn2_d/sonnet-4.6/conventional_adt_feedback/rep_01/attempt_03 | 1 | 0 | 1
+cn2_d/sonnet-4.6/conventional_adt_feedback/rep_02/attempt_01 | 1 | 0 | 1
+cn2_d/sonnet-4.6/conventional_adt_feedback/rep_02/attempt_03 | 1 | 0 | 1
+cn2_d/sonnet-4.6/direct_sce_feedback/rep_01/attempt_01 | 1 | 0 | 1
+cn2_d/sonnet-4.6/direct_sce_feedback/rep_01/attempt_02 | 1 | 0 | 1
+cn2_d/sonnet-4.6/direct_sce_feedback/rep_01/attempt_03 | 1 | 0 | 1
+cn2_d/sonnet-4.6/direct_sce_feedback/rep_02/attempt_01 | 1 | 0 | 1
+cn2_d/sonnet-4.6/direct_sce_feedback/rep_02/attempt_02 | 1 | 0 | 1
+cn2_d/sonnet-4.6/direct_sce_feedback/rep_02/attempt_03 | 1 | 0 | 1

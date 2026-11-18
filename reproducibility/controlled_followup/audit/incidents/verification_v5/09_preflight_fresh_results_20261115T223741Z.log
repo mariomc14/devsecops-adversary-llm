@@ -1,0 +1,57 @@
+COMMAND: python controlled_validation/campaign_runner.py --config controlled_validation/campaign.yaml --aws-profile default --preflight
+DATE_UTC: 2026-11-15T22:37:41Z (after archiving run 1; results/ empty)
+Static validation OK: 80 predetermined trajectories, 3 attempts max each
+[OK]   haiku-4.5: us.anthropic.claude-haiku-4-5-20251001-v1:0
+[OK]   sonnet-4.6: us.anthropic.claude-sonnet-4-6
+[WARN] Found 18 historical sce-* CloudFormation stacks; they are not touched by this campaign
+[WARN] Found 2 historical sce-* CloudTrail trails; CN2-D uses Event History scoped to current attempt and does not create/use these trails
+[OK]   fixed campaign network is ready
+{
+  "campaign_id": "review2-controlled-validation-v2",
+  "runner_revision": "v5-paginator-never-created-cleanup",
+  "aws_account_id": "<REDACTED_AWS_ACCOUNT_ID>",
+  "caller_arn": "arn:aws:iam::<REDACTED_AWS_ACCOUNT_ID>:user/<REDACTED_IAM_USER>",
+  "aws_region": "us-east-1",
+  "aws_profile_name": "default",
+  "chaos_executable": "<LOCAL_HOME>/ijis-experiments-controlled-validation/devsecops-adversary-llm-ijis-experiments-v2/automate/.venv/bin/chaos",
+  "chaosaws_ec2_module_dir": "<LOCAL_HOME>/ijis-experiments-controlled-validation/devsecops-adversary-llm-ijis-experiments-v2/automate/.venv/lib/python3.12/site-packages/chaosaws/ec2",
+  "model_checks": {
+    "haiku-4.5": {
+      "status": "OK",
+      "model_id": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
+      "response": "OK",
+      "usage": {
+        "inputTokens": 11,
+        "outputTokens": 4,
+        "totalTokens": 15
+      }
+    },
+    "sonnet-4.6": {
+      "status": "OK",
+      "model_id": "us.anthropic.claude-sonnet-4-6",
+      "response": "OK",
+      "usage": {
+        "inputTokens": 11,
+        "outputTokens": 4,
+        "totalTokens": 15
+      }
+    }
+  },
+  "campaign_network": {
+    "vpc_id": "<CAMPAIGN_VPC_ID>",
+    "subnet_id": "<CAMPAIGN_SUBNET_ID>",
+    "security_group_id": "<CAMPAIGN_SECURITY_GROUP_ID>",
+    "stack_name": "cvr2-network"
+  },
+  "legacy_resource_warnings": [
+    "Found 18 historical sce-* CloudFormation stacks; they are not touched by this campaign",
+    "Found 2 historical sce-* CloudTrail trails; CN2-D uses Event History scoped to current attempt and does not create/use these trails"
+  ],
+  "ready_for_run": true,
+  "timestamp": "2026-11-15T22:37:45Z",
+  "python": "3.12.13 (main, Jun 19 2026, 11:50:07) [GCC 14.2.0]"
+}
+EXIT CODE: 0
+
+results/ contents: ['campaign_environment.json']
+trajectories pending for the next --run: 80 | first: [1, 2, 3, 4, 5]

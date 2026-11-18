@@ -1,0 +1,25 @@
+{
+  "reason": "AWS access key IDs must not be shared (campaign guide). Only the key ID of the campaign's own AWS profile appeared, inside a CloudTrail event (userIdentity.accessKeyId) printed by the CN2-D probe. No secret keys or session tokens were found.",
+  "method": "Each key ID replaced by its first 4 and last 4 characters with 12 asterisks. Nothing else changed.",
+  "note": "results/SHA256SUMS.txt is the runner's original manifest and is kept unchanged: it matches the redacted files only through sha256_original below.",
+  "files": [
+    {
+      "file": "results/cn2_d/haiku-4.5/chaos_adt_feedback/rep_05/attempt_03/execution.log",
+      "sha256_original": "7e94668ae1e2f3fefaff10cc4237fa49d5d7272ea882e5d8b8f296f0d593eb67",
+      "sha256_redacted": "23e946ec0af6b652c934a5a6b8fb308c68e50fc82d25d68fcec020b7220b0802",
+      "replaced": [
+        "<REDACTED_AWS_ACCESS_KEY_ID>"
+      ],
+      "occurrences": 1
+    },
+    {
+      "file": "results/cn2_d/haiku-4.5/chaos_adt_feedback/rep_05/attempt_03/qpost_prompt.txt",
+      "sha256_original": "167f24fd74a717fc451fb5aca0aa364874e50ec99808fac96ed13739077a2024",
+      "sha256_redacted": "b9b5bfcf957b089184ba426df6d625e755ea5dd7468f9e56e528e5288de43238",
+      "replaced": [
+        "<REDACTED_AWS_ACCESS_KEY_ID>"
+      ],
+      "occurrences": 1
+    }
+  ]
+}

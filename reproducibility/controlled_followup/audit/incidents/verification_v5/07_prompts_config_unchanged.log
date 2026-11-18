@@ -1,0 +1,3 @@
+Check (v4 zip vs v5 working copy), DATE_UTC: 2026-11-15T22:29:34Z
+prompts identical v4 vs v5: 20/20 combinations (generation x16 = 2 tasks x 4 conditions x with/without feedback, Q_pre x2, Q_post x2)
+campaign.yaml, schedule.csv and tasks/ byte-identical

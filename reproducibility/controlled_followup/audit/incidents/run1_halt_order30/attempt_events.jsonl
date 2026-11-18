@@ -1,0 +1,7 @@
+{"timestamp": "2026-11-15T20:42:22Z", "event": "generation_call_started", "model_id": "us.anthropic.claude-sonnet-4-6"}
+{"timestamp": "2026-11-15T20:43:05Z", "event": "generation_call_completed"}
+{"timestamp": "2026-11-15T20:43:05Z", "event": "qpre_call_started", "model_id": "us.anthropic.claude-sonnet-4-6"}
+{"timestamp": "2026-11-15T20:43:25Z", "event": "qpre_call_completed"}
+{"timestamp": "2026-11-15T20:43:26Z", "event": "chaos_execution_started"}
+{"timestamp": "2026-11-15T20:43:58Z", "event": "chaos_execution_finished", "return_code": 1, "timed_out": false}
+{"timestamp": "2026-11-15T20:44:14Z", "event": "attempt_halted", "status": "infrastructure_cleanup_error", "error": "RuntimeError('Unresolved cleanup for cvr2-cn2-d-s46-can-r02-a01; campaign halted')"}

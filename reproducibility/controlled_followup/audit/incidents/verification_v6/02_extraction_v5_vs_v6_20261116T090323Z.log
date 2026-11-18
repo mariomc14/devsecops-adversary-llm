@@ -1,0 +1,7 @@
+old: v5-paginator-never-created-cleanup  new: v6-artifact-order-json-guard
+DIFFERS: results/cn1_p/sonnet-4.6/conventional_adt_feedback/rep_02/attempt_02/generation_response.txt
+  python identical: True
+  v5 json: JSONDecodeError: Extra data: line 1 column 10 (char 9); starts '"ImageId": {\n    "{{resolve:ss'
+  v6 json: valid JSON object, keys=['description', 'method', 'rollbacks', 'steady-state-hypothesis', 'tags', 'title']
+  stored cvr2_cn1_p_s46_cad_r02_a02.py == v6 python: True
+responses identical: 114, differing: 1

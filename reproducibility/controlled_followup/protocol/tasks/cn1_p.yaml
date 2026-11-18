@@ -1,0 +1,25 @@
+task_id: cn1_p
+display_name: "CN1-P \u2014 Enumeration Resilience (Preventive)"
+sce_node: '1.3'
+probe_type: Preventive
+attack_nodes:
+- '1.2'
+manuscript_mapping: Branch 1, Chaos Node 1.3 (Enumeration Resilience), preventive
+  probe; Attack Node 1.2; Defense Node 1.1.
+historical_reference: automate/Experimentos-Haiku-4.5/reports/1_3_preventive/pre_execution_report_1_3_preventive.md
+attack:
+  name: EC2 enumeration / IMDS configuration discovery
+  ttp: T1580 Cloud Infrastructure Discovery
+  action: ec2:DescribeInstances
+  description: Use valid scoped AWS credentials to call DescribeInstances and identify
+    the target EC2 instance and its metadata-service configuration.
+defense:
+  name: IAM Enumeration Restrictions (Node 1.1)
+  classification: Preventive
+  description: Use IAM least privilege / explicit deny-style guardrails to prevent
+    an unauthorized experimental principal from calling ec2:DescribeInstances.
+probe:
+  question: Do the preventive IAM restrictions block unauthorized EC2 enumeration?
+  expected_evidence: The real DescribeInstances request made with the attempt-owned
+    unauthorized principal is denied with verifiable AWS API evidence; the task does
+    not require success of the detective/reactive probes.

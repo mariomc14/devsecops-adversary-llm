@@ -1,0 +1,5 @@
+# reproduce_paper_results.py, analyze_campaign.py and analyze_gate_validation.py use only the Python standard library
+# (tested with Python 3.12.13). No third-party package is required to reproduce the paper values.
+#
+# Re-executing the campaign itself (controlled_validation/campaign_runner.py) needs AWS access and the pinned
+# dependencies in ../protocol/requirements.txt (= automate/requirements.txt).

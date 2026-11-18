@@ -1,0 +1,312 @@
+diff -ru --label v4/controlled_validation --label v5/controlled_validation -x results -x results_invalidated -x previous_runs -x __pycache__ v4/controlled_validation v5/controlled_validation
+--- v4/controlled_validation
++++ v5/controlled_validation
+@@ -27,7 +27,7 @@
+ import boto3
+ import yaml
+ from botocore.config import Config as BotoConfig
+-from botocore.exceptions import BotoCoreError, ClientError
++from botocore.exceptions import BotoCoreError, ClientError, WaiterError
+ 
+ 
+ ROOT = Path(__file__).resolve().parent
+@@ -97,7 +97,7 @@
+     path.write_text(json.dumps(obj, indent=2, ensure_ascii=False, default=str), encoding="utf-8")
+ 
+ 
+-RUNNER_REVISION = "v4-typed-params-audit-trail"
++RUNNER_REVISION = "v5-paginator-never-created-cleanup"
+ ATTEMPT_EVENTS_FILE = "attempt_events.jsonl"
+ 
+ 
+@@ -689,6 +689,9 @@
+ 
+         functions = set()
+         calls: List[str] = []
++        # v5: boto3 operations invoked through a paginator, e.g. client.get_paginator("lookup_events").
++        # A paginator issues exactly the same API operation (CloudTrail LookupEvents) page by page.
++        paginated_operations: set = set()
+         if tree is not None:
+             functions = {n.name for n in ast.walk(tree) if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef))}
+             for node in ast.walk(tree):
+@@ -696,6 +699,9 @@
+                     fn = node.func
+                     if isinstance(fn, ast.Attribute):
+                         calls.append(fn.attr)
++                        if (fn.attr == "get_paginator" and node.args
++                                and isinstance(node.args[0], ast.Constant) and isinstance(node.args[0].value, str)):
++                            paginated_operations.add(node.args[0].value)
+                     elif isinstance(fn, ast.Name):
+                         calls.append(fn.id)
+ 
+@@ -763,7 +769,9 @@
+             )
+ 
+         if task.get("task_id") == "cn2_d":
+-            if "lookup_events" not in calls:
++            # v4 accepted only a direct `.lookup_events(...)` call and rejected the equivalent
++            # `get_paginator("lookup_events")`, which calls the same CloudTrail LookupEvents API.
++            if "lookup_events" not in calls and "lookup_events" not in paginated_operations:
+                 errors.append("CN2-D must use CloudTrail Event History via lookup_events()")
+             if "create_trail" in calls or "aws::cloudtrail::trail" in executable_lower:
+                 errors.append("CN2-D must not create a CloudTrail trail")
+@@ -788,7 +796,8 @@
+             if not {"steady_state", "attack", "hypothesis_verification", "rollback"}.issubset(funcs):
+                 errors.append(f"Manifest does not reference all required functions; found {sorted(f for f in funcs if f)}")
+ 
+-        return {"passed": not errors, "errors": errors, "warnings": warnings, "observed_calls": sorted(set(calls))}
++        return {"passed": not errors, "errors": errors, "warnings": warnings, "observed_calls": sorted(set(calls)),
++                "observed_paginated_operations": sorted(paginated_operations)}
+ 
+     def install_module(self, source: Path, module_name: str) -> Path:
+         spec = importlib.util.find_spec("chaosaws.ec2")
+@@ -799,7 +808,59 @@
+         shutil.copy2(source, dest)
+         return dest
+ 
+-    def cleanup_stacks(self, prefix: str, report_path: Path) -> Dict[str, Any]:
++    # v5: an AWS input-validation rejection, e.g. "1 validation error detected: Value at 'roleName' failed to
++    # satisfy constraint: Member must have length less than or equal to 64". The service rejects such a
++    # request before acting on it, so a resource whose creation AND deletion were both rejected this way
++    # was never created. CloudFormation nevertheless keeps the stack in DELETE_FAILED because it re-sends
++    # the same invalid identifier on every delete attempt.
++    _AWS_INPUT_VALIDATION_ERROR = re.compile(
++        r"validation error detected: Value at '[^']+' failed to satisfy constraint", re.IGNORECASE)
++
++    def _wait_stack_deleted(self, name: str) -> None:
++        waiter = self.cfn.get_waiter("stack_delete_complete")
++        max_attempts = max(1, int(self.cfg["execution"]["cleanup_wait_seconds"] / self.cfg["execution"]["cleanup_poll_seconds"]))
++        waiter.wait(StackName=name, WaiterConfig={
++            "Delay": self.cfg["execution"]["cleanup_poll_seconds"],
++            "MaxAttempts": max_attempts,
++        })
++
++    def _never_created_delete_failures(self, stack_name: str) -> Optional[List[Dict[str, Any]]]:
++        """Return the DELETE_FAILED resources of a DELETE_FAILED stack only if ALL of them were provably never
++        created; otherwise None (the caller then halts as before). A resource qualifies only if it never
++        reached any *_COMPLETE state and every CREATE_FAILED and DELETE_FAILED event it has is an AWS
++        input-validation rejection. Retaining such a resource leaves nothing behind in the account."""
++        stacks = self.cfn.describe_stacks(StackName=stack_name).get("Stacks", [])
++        if not stacks or stacks[0].get("StackStatus") != "DELETE_FAILED":
++            return None
++        resources = self.cfn.describe_stack_resources(StackName=stack_name).get("StackResources", [])
++        failed = [r for r in resources if r.get("ResourceStatus") == "DELETE_FAILED"]
++        if not failed:
++            return None
++        history: Dict[str, List[Dict[str, Any]]] = {}
++        for page in self.cfn.get_paginator("describe_stack_events").paginate(StackName=stack_name):
++            for event in page.get("StackEvents", []):
++                history.setdefault(event.get("LogicalResourceId", ""), []).append(event)
++        qualified: List[Dict[str, Any]] = []
++        for resource in failed:
++            events = history.get(resource["LogicalResourceId"], [])
++            ever_complete = any(str(e.get("ResourceStatus", "")).endswith("_COMPLETE") for e in events)
++            create_failed = [e for e in events if e.get("ResourceStatus") == "CREATE_FAILED"]
++            delete_failed = [e for e in events if e.get("ResourceStatus") == "DELETE_FAILED"]
++            if ever_complete or not create_failed or not delete_failed:
++                return None
++            if not all(self._AWS_INPUT_VALIDATION_ERROR.search(e.get("ResourceStatusReason") or "")
++                       for e in create_failed + delete_failed):
++                return None
++            qualified.append({
++                "logical_id": resource["LogicalResourceId"],
++                "type": resource.get("ResourceType"),
++                "physical_id": resource.get("PhysicalResourceId"),
++                "create_failed_reason": create_failed[-1].get("ResourceStatusReason"),
++                "delete_failed_reason": delete_failed[0].get("ResourceStatusReason"),
++            })
++        return qualified
++
++    def cleanup_stacks(self, prefix: str, report_path: Path, attempt_dir: Optional[Path] = None) -> Dict[str, Any]:
+         active_statuses = [
+             "CREATE_IN_PROGRESS", "CREATE_FAILED", "CREATE_COMPLETE", "ROLLBACK_IN_PROGRESS",
+             "ROLLBACK_FAILED", "ROLLBACK_COMPLETE", "DELETE_IN_PROGRESS", "DELETE_FAILED",
+@@ -830,13 +891,26 @@
+                     actions.append({"name": name, "action": "delete_stack_requested", "prior_status": status})
+                 else:
+                     actions.append({"name": name, "action": "already_deleting", "prior_status": status})
+-                waiter = self.cfn.get_waiter("stack_delete_complete")
+-                max_attempts = max(1, int(self.cfg["execution"]["cleanup_wait_seconds"] / self.cfg["execution"]["cleanup_poll_seconds"]))
+-                waiter.wait(StackName=name, WaiterConfig={
+-                    "Delay": self.cfg["execution"]["cleanup_poll_seconds"],
+-                    "MaxAttempts": max_attempts,
+-                })
++                try:
++                    self._wait_stack_deleted(name)
++                except WaiterError as wait_exc:
++                    try:
++                        retained = self._never_created_delete_failures(name)
++                    except (ClientError, BotoCoreError):
++                        retained = None
++                    if not retained:
++                        raise wait_exc
++                    self.cfn.delete_stack(StackName=name, RetainResources=[r["logical_id"] for r in retained])
++                    actions.append({"name": name, "action": "delete_stack_retaining_never_created_resources",
++                                    "first_delete_error": repr(wait_exc), "retained": retained})
++                    self._wait_stack_deleted(name)
+             report = {"prefix": prefix, "found": found, "actions": actions, "clean": True}
++            retained_all = [r for a in actions for r in a.get("retained", [])]
++            if retained_all:
++                report["retained_never_created"] = retained_all
++                if attempt_dir is not None:
++                    append_attempt_event(attempt_dir, "cleanup_retained_never_created_resources",
++                                         report=report_path.name, resources=retained_all)
+         except Exception as exc:
+             report = {"prefix": prefix, "found": found, "clean": False, "error": repr(exc)}
+         dump_json(report_path, report)
+@@ -1097,7 +1171,7 @@
+                         for p in partial:
+                             p.rename(preserved_dir / p.name)
+                     cleanup_report_name = f"resume_pre_execution_cleanup_report_{stamp}.json"
+-                    resume_cleanup = self.cleanup_stacks(prefix, attempt_dir / cleanup_report_name)
++                    resume_cleanup = self.cleanup_stacks(prefix, attempt_dir / cleanup_report_name, attempt_dir)
+                     append_attempt_event(attempt_dir, "resume_pre_execution_cleanup",
+                                          clean=bool(resume_cleanup.get("clean")), report=cleanup_report_name,
+                                          preserved_partial_execution_files=[p.name for p in partial],
+@@ -1135,7 +1209,14 @@
+                         except Exception:
+                             pass
+ 
+-                cleanup = self.cleanup_stacks(prefix, attempt_dir / "cleanup_report.json")
++                # v5: a previous cleanup report of this attempt (e.g. an unresolved cleanup that halted the
++                # campaign) is preserved under a timestamped name instead of being overwritten on resume.
++                cleanup_report_path = attempt_dir / "cleanup_report.json"
++                if cleanup_report_path.exists():
++                    preserved_report = attempt_dir / f"cleanup_report_superseded_{utc_stamp()}.json"
++                    cleanup_report_path.rename(preserved_report)
++                    append_attempt_event(attempt_dir, "previous_cleanup_report_preserved", preserved_as=preserved_report.name)
++                cleanup = self.cleanup_stacks(prefix, cleanup_report_path, attempt_dir)
+                 if not cleanup.get("clean"):
+                     result.status = "infrastructure_cleanup_error"
+                     result.notes = cleanup.get("error", "Unresolved cleanup")
+diff -ru --label v4/controlled_validation --label v5/controlled_validation -x results -x results_invalidated -x previous_runs -x __pycache__ v4/controlled_validation v5/controlled_validation
+--- v4/controlled_validation
++++ v5/controlled_validation
+@@ -1,4 +1,4 @@
+-# Controlled validation campaign — runner v4 (no-resampling, audit trail) — Reviewer 2 follow-up
++# Controlled validation campaign — runner v5 (no-resampling, audit trail) — Reviewer 2 follow-up
+ 
+ This directory contains the **prospective controlled validation campaign** added after the second IJIS major-revision decision. It is isolated from the historical `automate/` workflow so that the original archive remains unchanged.
+ 
+@@ -41,6 +41,15 @@
+ 2. **Interrupted retries are no longer re-sampled.** In v3, after a failed Bedrock call (for example throttling), the failure record stayed on disk. If the retry was then interrupted, the next resume called the model again instead of stopping as ambiguous. v4 clears the failure record only when a new call starts, so an interrupted retry is reported as `ambiguous_*_state`.
+ 3. **Append-only audit trail per attempt.** See "Audit trail per attempt" below.
+ 
++## Changes in v5 (applied on 2026-11-15, after the campaign halted at trajectory 30/80)
++
++v5 changes only the runner's technical validation and per-attempt stack cleanup. Prompts, models, tasks, thresholds, schedule, conditions and the fixed `cvr2-network` are identical to v4. The working directory keeps its `-v4` name so that the running campaign's paths do not change; the code revision is recorded as `runner_revision = v5-paginator-never-created-cleanup`.
++
++1. **CN2-D validator false positive fixed.** v4 required a direct `cloudtrail.lookup_events()` call and rejected the equivalent `cloudtrail.get_paginator("lookup_events")`, which issues the same CloudTrail LookupEvents API. This rejected 20 of the 21 Sonnet 4.6 CN2-D candidates generated before the halt, and it was their only validation error. None of them was executed. Offline re-validation of all 71 archived candidates with v5 changes exactly those 20 verdicts (all now pass with no error) and leaves the other 51 unchanged. Calls that never use LookupEvents are still rejected.
++2. **Campaign restarted from scratch.** The 7 Sonnet 4.6 CN2-D trajectories completed under the false positive (orders 5, 11, 12, 15, 17, 26, 28) are listed in `INVALIDATED.json`. To keep every trajectory under the same runner revision and in the predetermined schedule order, the whole first run (runner v4, trajectories 1–30) was archived unmodified, with SHA-256 hashes, in `previous_runs/run1_v4_halted_at_order30_20261115/` (see `ARCHIVE.json` there), and the campaign restarts all 80 trajectories under v5. Nothing was deleted. The runner only reads `results/`, so the archive is never resumed or overwritten.
++3. **Per-attempt stacks stuck in `DELETE_FAILED` by a resource that was never created.** At trajectory 30, a generated template named its IAM role `<attempt>-role-<stack name>` (73 characters; IAM allows 64). IAM rejected the creation, but CloudFormation sends the same invalid name on every delete, so the stack stayed in `DELETE_FAILED` and the campaign halted. v5 retries the delete with `RetainResources` only for resources that never reached any `*_COMPLETE` state and whose creation **and** deletion were both rejected by AWS input validation (`validation error detected ... failed to satisfy constraint`); such a resource cannot exist. Anything else still halts the campaign, as before. Retained resources are listed in the cleanup report and in `attempt_events.jsonl` (`cleanup_retained_never_created_resources`). The candidate's own failure (stack creation failed) is unchanged and is scored by `Q_post` as usual.
++4. **Cleanup reports are no longer overwritten on resume.** A previous `cleanup_report.json` of the attempt is kept as `cleanup_report_superseded_<UTC>.json` (event `previous_cleanup_report_preserved`).
++
+ ## Audit trail per attempt
+ 
+ Each attempt directory contains `attempt_events.jsonl`, which is only ever appended to. One timestamped line is written for each:
+diff -ru --label v4/controlled_validation --label v5/controlled_validation -x results -x results_invalidated -x previous_runs -x __pycache__ v4/controlled_validation v5/controlled_validation
+--- v4/controlled_validation
++++ v5/controlled_validation
+@@ -138,4 +138,100 @@
+ def test_v4_attempt_result_has_audit_counters():
+     fields=set(mod.AttemptResult.__dataclass_fields__)
+     assert {'resume_count','model_call_retries','infrastructure_errors'}<=fields
+-    assert mod.RUNNER_REVISION.startswith('v4')
++    assert mod.RUNNER_REVISION.startswith('v5')
++
++
++# ---------------------------------------------------------------------------
++# v5 tests
++# ---------------------------------------------------------------------------
++from botocore.exceptions import WaiterError as _WaiterError
++
++def _validate_cn2(lookup_line):
++    runner=object.__new__(mod.CampaignRunner)
++    py=f'''\nREGION="us-east-1"\nPREFIX="cvr2-test"\nSUBNET="{NETWORK['subnet_id']}"\nSG="{NETWORK['security_group_id']}"\ndef steady_state():\n    cfn.create_stack(StackName=PREFIX+"-1")\ndef attack():\n    return True\ndef hypothesis_verification():\n    {lookup_line}\n    return False\ndef rollback():\n    cfn.delete_stack(StackName=PREFIX+"-1")\n'''
++    task=mod.read_yaml(ROOT/'tasks'/'cn2_d.yaml')
++    return mod.CampaignRunner.technical_validate(runner,py,_MANIFEST,'cvr2-test','cvr2_test',task,NETWORK)
++
++def test_v5_cn2_lookup_events_direct_call_accepted():
++    report=_validate_cn2('ct.lookup_events(LookupAttributes=[])')
++    assert report['passed'], report
++
++def test_v5_cn2_lookup_events_paginator_accepted():
++    # get_paginator("lookup_events") issues the same CloudTrail LookupEvents API call page by page.
++    report=_validate_cn2('pages=ct.get_paginator("lookup_events").paginate(LookupAttributes=[])')
++    assert report['passed'], report
++    assert report['observed_paginated_operations']==['lookup_events']
++
++def test_v5_cn2_without_lookup_events_still_rejected():
++    for line in ['pages=ct.get_paginator("describe_trails").paginate()', 'x="lookup_events"', 'pass']:
++        report=_validate_cn2(line)
++        assert any('lookup_events' in e for e in report['errors']), line
++
++_IAM_LENGTH_ERROR=("Resource handler returned message: \"1 validation error detected: Value at 'roleName' failed to satisfy "
++                   "constraint: Member must have length less than or equal to 64 (Service: Iam, Status Code: 400)\"")
++
++class _FakeDeleteFailedCfn:
++    """A per-attempt stack stuck in DELETE_FAILED because of one resource with the given event history."""
++    def __init__(self, events):
++        self.stack="cvr2-test-a01-20261115000000"; self.events=events; self.deleted=False; self.delete_calls=[]
++    def list_stacks(self, **kw):
++        return {"StackSummaries": [] if self.deleted else [{"StackName":self.stack,"StackStatus":"DELETE_FAILED"}]}
++    def delete_stack(self, StackName, RetainResources=None):
++        self.delete_calls.append(RetainResources)
++        if RetainResources: self.deleted=True
++    def get_waiter(self, name):
++        cfn=self
++        class _W:
++            def wait(self, StackName, WaiterConfig):
++                if not cfn.deleted: raise _WaiterError("StackDeleteComplete","terminal failure state: DELETE_FAILED",{})
++        return _W()
++    def describe_stacks(self, StackName):
++        return {"Stacks":[{"StackName":StackName,"StackStatus":"DELETE_FAILED"}]}
++    def describe_stack_resources(self, StackName):
++        return {"StackResources":[{"LogicalResourceId":"Role","ResourceType":"AWS::IAM::Role",
++                                   "PhysicalResourceId":"r"*73,"ResourceStatus":"DELETE_FAILED"}]}
++    def get_paginator(self, name):
++        cfn=self
++        class _P:
++            def paginate(self, StackName):
++                return [{"StackEvents":[dict(LogicalResourceId="Role",**e) for e in cfn.events]}]
++        return _P()
++
++def _cleanup_with(events):
++    runner=object.__new__(mod.CampaignRunner)
++    runner.cfg={"execution":{"cleanup_wait_seconds":1,"cleanup_poll_seconds":1}}
++    runner.cfn=_FakeDeleteFailedCfn(events)
++    with _tempfile.TemporaryDirectory() as d:
++        d=Path(d)
++        report=runner.cleanup_stacks("cvr2-test-a01", d/"cleanup_report.json", d)
++        events_logged=[e['event'] for e in mod.read_attempt_events(d)]
++    return report, runner.cfn.delete_calls, events_logged
++
++def test_v5_cleanup_retains_resource_that_was_never_created():
++    report, calls, logged=_cleanup_with([
++        {"ResourceStatus":"CREATE_IN_PROGRESS","ResourceStatusReason":None},
++        {"ResourceStatus":"CREATE_FAILED","ResourceStatusReason":_IAM_LENGTH_ERROR},
++        {"ResourceStatus":"DELETE_FAILED","ResourceStatusReason":_IAM_LENGTH_ERROR},
++    ])
++    assert report['clean'], report
++    assert calls==[None,["Role"]]
++    assert report['retained_never_created'][0]['logical_id']=="Role"
++    assert logged==['cleanup_retained_never_created_resources']
++
++def test_v5_cleanup_still_halts_when_resource_may_exist():
++    cases={
++        "resource was created": [
++            {"ResourceStatus":"CREATE_COMPLETE","ResourceStatusReason":None},
++            {"ResourceStatus":"DELETE_FAILED","ResourceStatusReason":"Cannot delete entity, must detach all policies first. (Service: Iam, Status Code: 409)"}],
++        "creation failed for another reason": [
++            {"ResourceStatus":"CREATE_FAILED","ResourceStatusReason":"Rate exceeded"},
++            {"ResourceStatus":"DELETE_FAILED","ResourceStatusReason":_IAM_LENGTH_ERROR}],
++        "deletion failed for another reason": [
++            {"ResourceStatus":"CREATE_FAILED","ResourceStatusReason":_IAM_LENGTH_ERROR},
++            {"ResourceStatus":"DELETE_FAILED","ResourceStatusReason":"Access denied"}],
++    }
++    for name, events in cases.items():
++        report, calls, logged=_cleanup_with(events)
++        assert not report['clean'], name
++        assert calls==[None], name           # never retried with RetainResources
++        assert logged==[], name
+Only in devsecops-adversary-llm-ijis-experiments-v4/controlled_validation: V5_CORRECTIONS.md

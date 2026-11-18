@@ -1,0 +1,231 @@
+{
+  "invalidated_at_utc": "2026-11-15T22:27:27Z",
+  "reason": "Runner v4 technical validation rejected every candidate in these trajectories only because the CN2-D rule accepted a direct cloudtrail.lookup_events() call but not the equivalent cloudtrail.get_paginator('lookup_events'), which issues the same CloudTrail LookupEvents API. None of these candidates was executed. Runner v5 fixes the rule; offline re-validation with v5 passes all 20 affected candidates with no other error and leaves the other 51 archived verdicts unchanged.",
+  "evidence": [
+    "02_revalidation_archive_20261115T222441Z.log",
+    "campaign_logs/v5/Informe_errores_v5.docx"
+  ],
+  "decision": "Trajectories regenerated from scratch by runner v5 on the next --run; originals preserved here unmodified.",
+  "undo_before_relaunch": "move each rep_XX directory back to the same relative path under results/",
+  "affected_trajectories": [
+    {
+      "order": 5,
+      "repetition": 1,
+      "condition": "chaos_adt_no_feedback",
+      "path": "cn2_d/sonnet-4.6/chaos_adt_no_feedback/rep_01",
+      "runner_revision": "v4-typed-params-audit-trail",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "technical_rejected",
+          "validation_errors": [
+            "CN2-D must use CloudTrail Event History via lookup_events()"
+          ]
+        },
+        {
+          "attempt": 2,
+          "status": "technical_rejected",
+          "validation_errors": [
+            "CN2-D must use CloudTrail Event History via lookup_events()"
+          ]
+        },
+        {
+          "attempt": 3,
+          "status": "technical_rejected",
+          "validation_errors": [
+            "CN2-D must use CloudTrail Event History via lookup_events()"
+          ]
+        }
+      ],
+      "files": 31
+    },
+    {
+      "order": 11,
+      "repetition": 1,
+      "condition": "conventional_adt_feedback",
+      "path": "cn2_d/sonnet-4.6/conventional_adt_feedback/rep_01",
+      "runner_revision": "v4-typed-params-audit-trail",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "technical_rejected",
+          "validation_errors": [
+            "CN2-D must use CloudTrail Event History via lookup_events()"
+          ]
+        },
+        {
+          "attempt": 2,
+          "status": "technical_rejected",
+          "validation_errors": [
+            "CN2-D must use CloudTrail Event History via lookup_events()"
+          ]
+        },
+        {
+          "attempt": 3,
+          "status": "technical_rejected",
+          "validation_errors": [
+            "CN2-D must use CloudTrail Event History via lookup_events()"
+          ]
+        }
+      ],
+      "files": 33
+    },
+    {
+      "order": 12,
+      "repetition": 1,
+      "condition": "direct_sce_feedback",
+      "path": "cn2_d/sonnet-4.6/direct_sce_feedback/rep_01",
+      "runner_revision": "v4-typed-params-audit-trail",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "technical_rejected",
+          "validation_errors": [
+            "CN2-D must use CloudTrail Event History via lookup_events()"
+          ]
+        },
+        {
+          "attempt": 2,
+          "status": "technical_rejected",
+          "validation_errors": [
+            "CN2-D must use CloudTrail Event History via lookup_events()"
+          ]
+        },
+        {
+          "attempt": 3,
+          "status": "technical_rejected",
+          "validation_errors": [
+            "CN2-D must use CloudTrail Event History via lookup_events()"
+          ]
+        }
+      ],
+      "files": 33
+    },
+    {
+      "order": 15,
+      "repetition": 1,
+      "condition": "chaos_adt_feedback",
+      "path": "cn2_d/sonnet-4.6/chaos_adt_feedback/rep_01",
+      "runner_revision": "v4-typed-params-audit-trail",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "technical_rejected",
+          "validation_errors": [
+            "CN2-D must use CloudTrail Event History via lookup_events()"
+          ]
+        },
+        {
+          "attempt": 2,
+          "status": "technical_rejected",
+          "validation_errors": [
+            "CN2-D must use CloudTrail Event History via lookup_events()"
+          ]
+        },
+        {
+          "attempt": 3,
+          "status": "technical_rejected",
+          "validation_errors": [
+            "CN2-D must use CloudTrail Event History via lookup_events()"
+          ]
+        }
+      ],
+      "files": 33
+    },
+    {
+      "order": 17,
+      "repetition": 2,
+      "condition": "chaos_adt_feedback",
+      "path": "cn2_d/sonnet-4.6/chaos_adt_feedback/rep_02",
+      "runner_revision": "v4-typed-params-audit-trail",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "technical_rejected",
+          "validation_errors": [
+            "CN2-D must use CloudTrail Event History via lookup_events()"
+          ]
+        },
+        {
+          "attempt": 2,
+          "status": "technical_rejected",
+          "validation_errors": [
+            "CN2-D must use CloudTrail Event History via lookup_events()"
+          ]
+        },
+        {
+          "attempt": 3,
+          "status": "technical_rejected",
+          "validation_errors": [
+            "CN2-D must use CloudTrail Event History via lookup_events()"
+          ]
+        }
+      ],
+      "files": 33
+    },
+    {
+      "order": 26,
+      "repetition": 2,
+      "condition": "conventional_adt_feedback",
+      "path": "cn2_d/sonnet-4.6/conventional_adt_feedback/rep_02",
+      "runner_revision": "v4-typed-params-audit-trail",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "technical_rejected",
+          "validation_errors": [
+            "CN2-D must use CloudTrail Event History via lookup_events()"
+          ]
+        },
+        {
+          "attempt": 2,
+          "status": "technical_rejected",
+          "validation_errors": [
+            "Could not extract both Python and JSON fenced artifacts"
+          ]
+        },
+        {
+          "attempt": 3,
+          "status": "technical_rejected",
+          "validation_errors": [
+            "CN2-D must use CloudTrail Event History via lookup_events()"
+          ]
+        }
+      ],
+      "files": 31
+    },
+    {
+      "order": 28,
+      "repetition": 2,
+      "condition": "direct_sce_feedback",
+      "path": "cn2_d/sonnet-4.6/direct_sce_feedback/rep_02",
+      "runner_revision": "v4-typed-params-audit-trail",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "technical_rejected",
+          "validation_errors": [
+            "CN2-D must use CloudTrail Event History via lookup_events()"
+          ]
+        },
+        {
+          "attempt": 2,
+          "status": "technical_rejected",
+          "validation_errors": [
+            "CN2-D must use CloudTrail Event History via lookup_events()"
+          ]
+        },
+        {
+          "attempt": 3,
+          "status": "technical_rejected",
+          "validation_errors": [
+            "CN2-D must use CloudTrail Event History via lookup_events()"
+          ]
+        }
+      ],
+      "files": 33
+    }
+  ],
+  "aggregate_outputs_at_halt": "copies of results/ aggregate files as written by the runner at the order-30 halt",
+  "decision_update": "2026-11-15: superseded. Instead of regenerating only these 7 trajectories, the whole campaign restarts from scratch under runner v5; this directory was archived together with the rest of run 1 (see ../../ARCHIVE.json). Nothing was deleted."
+}

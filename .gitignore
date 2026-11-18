@@ -10,3 +10,7 @@ chaostk/
 *:Zone.Identifier
 __pycache__/
 *.pyc
+# controlled-validation runner outputs (published as a release asset, not in Git)
+controlled_validation/results/
+controlled_validation/previous_runs/
+.pytest_cache/

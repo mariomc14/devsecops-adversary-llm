@@ -1,0 +1,35 @@
+campaign_id: review2-controlled-validation-v2
+aws:
+  region: us-east-1
+  profile: null
+  expected_account_id: null
+inference:
+  max_tokens: 8192
+  temperature: 1.0
+thresholds:
+  q_pre: 80
+  q_post: 100
+models:
+  haiku-4.5: us.anthropic.claude-haiku-4-5-20251001-v1:0
+  sonnet-4.6: us.anthropic.claude-sonnet-4-6
+tasks:
+- cn1_p
+- cn2_d
+conditions:
+- chaos_adt_feedback
+- chaos_adt_no_feedback
+- conventional_adt_feedback
+- direct_sce_feedback
+repetitions: 5
+max_attempts: 3
+schedule_seed: 20261111
+execution:
+  hypothesis_strategy: after-method-only
+  sequential: true
+  cleanup_wait_seconds: 900
+  cleanup_poll_seconds: 15
+  chaos_timeout_seconds: 1800
+infrastructure:
+  stack_name: cvr2-network
+  vpc_cidr: 10.77.0.0/24
+  subnet_cidr: 10.77.0.0/26

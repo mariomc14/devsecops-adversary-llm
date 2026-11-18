@@ -1,0 +1,243 @@
+Offline resume/cleanup harness (mocked Bedrock/CloudFormation/Chaos; no AWS calls)
+DATE_UTC: 2026-11-15T22:25:41Z
+Reproduce: python campaign_logs/v5/tools/resume_harness.py <package>/controlled_validation/campaign_runner.py
+
+################ v4 (runner used by the campaign up to order 30; package extracted from the v4 zip)
+PASS | baseline, no interruption
+     halts: []
+     gen_calls: 3
+     qpre_calls: 3
+     qpost_calls: 3
+     chaos_runs: 3
+     statuses: ['qpost_insufficient', 'qpost_insufficient', 'qpost_insufficient']
+RESUME existing attempt without re-sampling -> results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_02
+REUSE archived Bedrock candidate for results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_02
+PASS | interrupt during chaos run (attempt 2)
+     halts: ['Interrupt']
+     gen_calls: 3
+     qpre_calls: 3
+     qpost_calls: 3
+     chaos_runs: 3
+     statuses: ['qpost_insufficient', 'qpost_insufficient', 'qpost_insufficient']
+     attempt_02 generation prompt identical to baseline: True
+     attempt_03 generation prompt identical to baseline: True
+RESUME existing attempt without re-sampling -> results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+RESUME existing attempt without re-sampling -> results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+RESUME existing attempt without re-sampling -> results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+PASS | interrupt during generation call (attempt 1)
+     halts: ['Interrupt', 'RuntimeError: Generation call started but no response/failure record exists; manual adjudication required before any re-sampling', 'RuntimeError: Generation call started but no response/failure record exists; manual adjudication required before any re-sampling', 'RuntimeError: Generation call started but no response/failure record exists; manual adjudication required before any re-sampling']
+     gen_calls: 0
+     qpre_calls: 0
+     qpost_calls: 0
+     chaos_runs: 0
+     statuses: ['ambiguous_generation_state']
+RESUME existing attempt without re-sampling -> results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+PASS | ClientError on generation call (attempt 1)
+     halts: ['ClientError: An error occurred (ThrottlingException) when calling the Converse operation: x']
+     gen_calls: 3
+     qpre_calls: 3
+     qpost_calls: 3
+     chaos_runs: 3
+     statuses: ['qpost_insufficient', 'qpost_insufficient', 'qpost_insufficient']
+RESUME existing attempt without re-sampling -> results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+REUSE archived Bedrock candidate for results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+REUSE archived Chaos execution for results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+RESUME existing attempt without re-sampling -> results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+REUSE archived Bedrock candidate for results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+REUSE archived Chaos execution for results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+RESUME existing attempt without re-sampling -> results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+REUSE archived Bedrock candidate for results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+REUSE archived Chaos execution for results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+PASS | interrupt during Q_post call (attempt 1)
+     halts: ['Interrupt', 'RuntimeError: Q_post call started but no response/failure record exists; evaluator will not be re-sampled automatically', 'RuntimeError: Q_post call started but no response/failure record exists; evaluator will not be re-sampled automatically', 'RuntimeError: Q_post call started but no response/failure record exists; evaluator will not be re-sampled automatically']
+     gen_calls: 1
+     qpre_calls: 1
+     qpost_calls: 0
+     chaos_runs: 1
+     statuses: ['ambiguous_qpost_state']
+PASS | unparseable Q_pre
+     halts: []
+     gen_calls: 3
+     qpre_calls: 3
+     qpost_calls: 0
+     chaos_runs: 0
+     statuses: ['gate_evaluation_error', 'gate_evaluation_error', 'gate_evaluation_error']
+PASS | unparseable Q_post
+     halts: []
+     gen_calls: 3
+     qpre_calls: 3
+     qpost_calls: 3
+     chaos_runs: 3
+     statuses: ['qpost_evaluation_error', 'qpost_evaluation_error', 'qpost_evaluation_error']
+RESUME existing attempt without re-sampling -> results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+RESUME existing attempt without re-sampling -> results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+RESUME existing attempt without re-sampling -> results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+PASS | ClientError then interrupted retry (generation)
+     halts: ['ClientError: An error occurred (ThrottlingException) when calling the Converse operation: x', 'Interrupt', 'RuntimeError: Generation call started but no response/failure record exists; manual adjudication required before any re-sampling', 'RuntimeError: Generation call started but no response/failure record exists; manual adjudication required before any re-sampling']
+     gen_calls: 0
+     qpre_calls: 0
+     qpost_calls: 0
+     chaos_runs: 0
+     statuses: ['ambiguous_generation_state']
+RESUME existing attempt without re-sampling -> results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+REUSE archived Bedrock candidate for results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+REUSE archived Chaos execution for results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+RESUME existing attempt without re-sampling -> results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+REUSE archived Bedrock candidate for results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+REUSE archived Chaos execution for results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+RESUME existing attempt without re-sampling -> results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+REUSE archived Bedrock candidate for results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+REUSE archived Chaos execution for results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+PASS | ClientError then interrupted retry (Q_post)
+     halts: ['ClientError: An error occurred (ThrottlingException) when calling the Converse operation: x', 'Interrupt', 'RuntimeError: Q_post call started but no response/failure record exists; evaluator will not be re-sampled automatically', 'RuntimeError: Q_post call started but no response/failure record exists; evaluator will not be re-sampled automatically']
+     gen_calls: 1
+     qpre_calls: 1
+     qpost_calls: 0
+     chaos_runs: 1
+     statuses: ['ambiguous_qpost_state']
+RESUME existing attempt without re-sampling -> results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+REUSE archived Bedrock candidate for results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+REUSE archived Chaos execution for results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+FAIL | DELETE_FAILED (resource may exist): halt, manual fix, resume
+     halts: 1
+     gen_calls: 3
+     qpre_calls: 3
+     qpost_calls: 3
+     chaos_runs: 3
+     statuses: ['qpost_insufficient', 'qpost_insufficient', 'qpost_insufficient']
+     check never retried with RetainResources: True
+     check halt evidence preserved (cleanup_report_superseded_*.json, clean=false): False
+     check resume reused candidate and execution: False
+RESUME existing attempt without re-sampling -> results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+REUSE archived Bedrock candidate for results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+REUSE archived Chaos execution for results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+RESUME existing attempt without re-sampling -> results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+REUSE archived Bedrock candidate for results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+REUSE archived Chaos execution for results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+FAIL | DELETE_FAILED (never-created IAM role, name > 64 chars): no halt
+     halts: 3   <-- expected 0
+     gen_calls: 1   <-- expected 3
+     qpre_calls: 1   <-- expected 3
+     qpost_calls: 0   <-- expected 3
+     chaos_runs: 1   <-- expected 3
+     statuses: ['infrastructure_cleanup_error']   <-- expected ['qpost_insufficient', 'qpost_insufficient', 'qpost_insufficient']
+     check RetainResources=['Role'] used once: False
+     check retained resource recorded in cleanup_report.json: False
+     check event cleanup_retained_never_created_resources: False
+
+################ v5
+PASS | baseline, no interruption
+     halts: []
+     gen_calls: 3
+     qpre_calls: 3
+     qpost_calls: 3
+     chaos_runs: 3
+     statuses: ['qpost_insufficient', 'qpost_insufficient', 'qpost_insufficient']
+RESUME existing attempt without re-sampling -> results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_02
+REUSE archived Bedrock candidate for results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_02
+PASS | interrupt during chaos run (attempt 2)
+     halts: ['Interrupt']
+     gen_calls: 3
+     qpre_calls: 3
+     qpost_calls: 3
+     chaos_runs: 3
+     statuses: ['qpost_insufficient', 'qpost_insufficient', 'qpost_insufficient']
+     attempt_02 generation prompt identical to baseline: True
+     attempt_03 generation prompt identical to baseline: True
+RESUME existing attempt without re-sampling -> results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+RESUME existing attempt without re-sampling -> results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+RESUME existing attempt without re-sampling -> results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+PASS | interrupt during generation call (attempt 1)
+     halts: ['Interrupt', 'RuntimeError: Generation call started but no response/failure record exists; manual adjudication required before any re-sampling', 'RuntimeError: Generation call started but no response/failure record exists; manual adjudication required before any re-sampling', 'RuntimeError: Generation call started but no response/failure record exists; manual adjudication required before any re-sampling']
+     gen_calls: 0
+     qpre_calls: 0
+     qpost_calls: 0
+     chaos_runs: 0
+     statuses: ['ambiguous_generation_state']
+RESUME existing attempt without re-sampling -> results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+PASS | ClientError on generation call (attempt 1)
+     halts: ['ClientError: An error occurred (ThrottlingException) when calling the Converse operation: x']
+     gen_calls: 3
+     qpre_calls: 3
+     qpost_calls: 3
+     chaos_runs: 3
+     statuses: ['qpost_insufficient', 'qpost_insufficient', 'qpost_insufficient']
+RESUME existing attempt without re-sampling -> results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+REUSE archived Bedrock candidate for results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+REUSE archived Chaos execution for results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+RESUME existing attempt without re-sampling -> results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+REUSE archived Bedrock candidate for results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+REUSE archived Chaos execution for results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+RESUME existing attempt without re-sampling -> results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+REUSE archived Bedrock candidate for results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+REUSE archived Chaos execution for results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+PASS | interrupt during Q_post call (attempt 1)
+     halts: ['Interrupt', 'RuntimeError: Q_post call started but no response/failure record exists; evaluator will not be re-sampled automatically', 'RuntimeError: Q_post call started but no response/failure record exists; evaluator will not be re-sampled automatically', 'RuntimeError: Q_post call started but no response/failure record exists; evaluator will not be re-sampled automatically']
+     gen_calls: 1
+     qpre_calls: 1
+     qpost_calls: 0
+     chaos_runs: 1
+     statuses: ['ambiguous_qpost_state']
+PASS | unparseable Q_pre
+     halts: []
+     gen_calls: 3
+     qpre_calls: 3
+     qpost_calls: 0
+     chaos_runs: 0
+     statuses: ['gate_evaluation_error', 'gate_evaluation_error', 'gate_evaluation_error']
+PASS | unparseable Q_post
+     halts: []
+     gen_calls: 3
+     qpre_calls: 3
+     qpost_calls: 3
+     chaos_runs: 3
+     statuses: ['qpost_evaluation_error', 'qpost_evaluation_error', 'qpost_evaluation_error']
+RESUME existing attempt without re-sampling -> results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+RESUME existing attempt without re-sampling -> results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+RESUME existing attempt without re-sampling -> results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+PASS | ClientError then interrupted retry (generation)
+     halts: ['ClientError: An error occurred (ThrottlingException) when calling the Converse operation: x', 'Interrupt', 'RuntimeError: Generation call started but no response/failure record exists; manual adjudication required before any re-sampling', 'RuntimeError: Generation call started but no response/failure record exists; manual adjudication required before any re-sampling']
+     gen_calls: 0
+     qpre_calls: 0
+     qpost_calls: 0
+     chaos_runs: 0
+     statuses: ['ambiguous_generation_state']
+RESUME existing attempt without re-sampling -> results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+REUSE archived Bedrock candidate for results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+REUSE archived Chaos execution for results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+RESUME existing attempt without re-sampling -> results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+REUSE archived Bedrock candidate for results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+REUSE archived Chaos execution for results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+RESUME existing attempt without re-sampling -> results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+REUSE archived Bedrock candidate for results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+REUSE archived Chaos execution for results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+PASS | ClientError then interrupted retry (Q_post)
+     halts: ['ClientError: An error occurred (ThrottlingException) when calling the Converse operation: x', 'Interrupt', 'RuntimeError: Q_post call started but no response/failure record exists; evaluator will not be re-sampled automatically', 'RuntimeError: Q_post call started but no response/failure record exists; evaluator will not be re-sampled automatically']
+     gen_calls: 1
+     qpre_calls: 1
+     qpost_calls: 0
+     chaos_runs: 1
+     statuses: ['ambiguous_qpost_state']
+RESUME existing attempt without re-sampling -> results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+REUSE archived Bedrock candidate for results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+REUSE archived Chaos execution for results/cn1_p/haiku-4.5/chaos_adt_feedback/rep_01/attempt_01
+PASS | DELETE_FAILED (resource may exist): halt, manual fix, resume
+     halts: 1
+     gen_calls: 3
+     qpre_calls: 3
+     qpost_calls: 3
+     chaos_runs: 3
+     statuses: ['qpost_insufficient', 'qpost_insufficient', 'qpost_insufficient']
+     check never retried with RetainResources: True
+     check halt evidence preserved (cleanup_report_superseded_*.json, clean=false): True
+     check resume reused candidate and execution: True
+PASS | DELETE_FAILED (never-created IAM role, name > 64 chars): no halt
+     halts: 0
+     gen_calls: 3
+     qpre_calls: 3
+     qpost_calls: 3
+     chaos_runs: 3
+     statuses: ['qpost_insufficient', 'qpost_insufficient', 'qpost_insufficient']
+     check RetainResources=['Role'] used once: True
+     check retained resource recorded in cleanup_report.json: True
+     check event cleanup_retained_never_created_resources: True

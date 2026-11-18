@@ -1,0 +1,34 @@
+task_id: cn2_d
+display_name: "CN2-D \u2014 Downgrade Prevention (Detective)"
+sce_node: '1.8'
+probe_type: Detective
+attack_nodes:
+- '1.7'
+manuscript_mapping: Branch 1, Chaos Node 1.8 (Downgrade Prevention), detective probe;
+  Attack Node 1.7; Defense Node 1.9.
+historical_reference: automate/Experimentos-Haiku-4.5/reports/2_3_detective/pre_execution_report_2_3_detective.md
+historical_reference_note: The preserved implementation folders use an earlier/internal
+  experiment numbering that does not exactly match the final manuscript node identifiers.
+  The final manuscript mapping above is authoritative.
+attack:
+  name: Weaken EC2 IMDS protections
+  ttp: T1562.001 Impair Defenses
+  action: ec2:ModifyInstanceMetadataOptions
+  description: Against an attempt-owned EC2 instance initially configured with IMDSv2
+    protections, invoke ModifyInstanceMetadataOptions to set HttpTokens=optional and
+    HttpPutResponseHopLimit=2.
+defense:
+  name: IMDS Configuration Monitoring (Node 1.9)
+  classification: Detective
+  description: Obtain real AWS-native evidence that the attempt-owned ModifyInstanceMetadataOptions
+    action occurred and is attributable to the current attempt. The controlled campaign
+    uses CloudTrail Event History (LookupEvents), which does not require provisioning
+    a trail or AWS Config.
+probe:
+  question: Can the detective path observe and attribute the current attempt to weaken
+    IMDS protection within a bounded observation window?
+  expected_evidence: CloudTrail Event History identifies ModifyInstanceMetadataOptions
+    for the current EC2 instance within the current attempt time window, and the CloudTrailEvent
+    payload is checked for the attempt-owned instance identifier and weakening parameters.
+    No AWS Config, CloudTrail trail, S3 trail bucket, EventBridge, or CloudWatch telemetry
+    resource is required.

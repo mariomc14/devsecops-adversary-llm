@@ -1,0 +1,151 @@
+--- <LOCAL_HOME>/ijis-experiments-controlled-validation/campaign_logs/v6/snapshot_v5_code/campaign_runner.py	2026-11-15 23:23:22.420805514 +0100
++++ campaign_runner.py	2026-11-16 10:03:15.155863365 +0100
+@@ -97,7 +97,7 @@
+     path.write_text(json.dumps(obj, indent=2, ensure_ascii=False, default=str), encoding="utf-8")
+ 
+ 
+-RUNNER_REVISION = "v5-paginator-never-created-cleanup"
++RUNNER_REVISION = "v6-artifact-order-json-guard"
+ ATTEMPT_EVENTS_FILE = "attempt_events.jsonl"
+ 
+ 
+@@ -199,15 +199,43 @@
+     return None
+ 
+ 
+-def extract_fenced(text: str, languages: Iterable[str]) -> Optional[str]:
++def _first_fenced_match(text: str, languages: Iterable[str], pos: int = 0) -> Optional["re.Match[str]"]:
+     for language in languages:
+-        pattern = rf"```{language}\s*\n(.*?)```"
+-        match = re.search(pattern, text, re.IGNORECASE | re.DOTALL)
++        pattern = re.compile(rf"```{language}\s*\n(.*?)```", re.IGNORECASE | re.DOTALL)
++        match = pattern.search(text, pos)
+         if match:
+-            return match.group(1).strip() + "\n"
++            return match
+     return None
+ 
+ 
++def extract_fenced(text: str, languages: Iterable[str]) -> Optional[str]:
++    match = _first_fenced_match(text, languages)
++    return match.group(1).strip() + "\n" if match else None
++
++
++def extract_generation_artifacts(text: str) -> Tuple[Optional[str], Optional[str]]:
++    """Return the (Python, JSON) artifacts of a generation response.
++
++    v6: the generation prompt asks for "exactly two fenced artifacts, first Python
++    and then JSON". The Python artifact is the first Python block (as in v5). The
++    JSON artifact is the first JSON block that starts after that Python block; only
++    if there is none does it fall back to the first JSON block of the response (the
++    v5 rule). A JSON snippet quoted in the explanation before the code is therefore
++    not taken as the Chaos Toolkit manifest. For every response whose blocks follow
++    the requested order, the result is identical to v5.
++    """
++    py_match = _first_fenced_match(text, ["python", "py"])
++    py = py_match.group(1).strip() + "\n" if py_match else None
++    js = None
++    if py_match is not None:
++        js_match = _first_fenced_match(text, ["json"], py_match.end())
++        if js_match:
++            js = js_match.group(1).strip() + "\n"
++    if js is None:
++        js = extract_fenced(text, ["json"])
++    return py, js
++
++
+ def executable_source_without_docstrings(tree: ast.AST) -> str:
+     """Return executable Python source without comments/docstrings for marker checks.
+ 
+@@ -670,6 +698,15 @@
+         walk(manifest)
+         return json.dumps(manifest, indent=2, ensure_ascii=False) + "\n"
+ 
++    @classmethod
++    def safe_rewrite_manifest_modules(cls, manifest_text: str, module_name: str) -> Tuple[str, Optional[str]]:
++        """v6: like rewrite_manifest_modules, but an unparseable manifest is returned
++        unchanged together with the parse error instead of raising."""
++        try:
++            return cls.rewrite_manifest_modules(manifest_text, module_name), None
++        except (ValueError, RecursionError) as exc:
++            return manifest_text, repr(exc)
++
+     def technical_validate(self, python_code: str, manifest_text: str,
+                            attempt_prefix: str, module_name: str,
+                            task: Dict[str, Any], network: Dict[str, str]) -> Dict[str, Any]:
+@@ -1086,8 +1123,9 @@
+ 
+                 py_files_existing = list(attempt_dir.glob("cvr2_*.py"))
+                 js_files_existing = list(attempt_dir.glob("cvr2_*.json"))
+-                py = py_files_existing[0].read_text(encoding="utf-8") if py_files_existing else extract_fenced(response_text, ["python", "py"])
+-                js = js_files_existing[0].read_text(encoding="utf-8") if js_files_existing else extract_fenced(response_text, ["json"])
++                extracted_py, extracted_js = extract_generation_artifacts(response_text)
++                py = py_files_existing[0].read_text(encoding="utf-8") if py_files_existing else extracted_py
++                js = js_files_existing[0].read_text(encoding="utf-8") if js_files_existing else extracted_js
+                 if not py or not js:
+                     result.status = "technical_rejected"
+                     result.notes = "Could not extract both Python and JSON fenced artifacts"
+@@ -1103,7 +1141,12 @@
+                 else:
+                     py = py_path.read_text(encoding="utf-8")
+                 if not json_path.exists():
+-                    js = self.rewrite_manifest_modules(js, module_name)
++                    js, rewrite_error = self.safe_rewrite_manifest_modules(js, module_name)
++                    if rewrite_error:
++                        # v6: an unparseable manifest is a technical rejection of the
++                        # candidate (technical_validate reports the JSON parse error),
++                        # never a campaign halt. The extracted text is kept verbatim.
++                        append_attempt_event(attempt_dir, "manifest_unparseable_kept_verbatim", error=rewrite_error)
+                     json_path.write_text(js, encoding="utf-8")
+                 else:
+                     js = json_path.read_text(encoding="utf-8")
+--- <LOCAL_HOME>/ijis-experiments-controlled-validation/campaign_logs/v6/snapshot_v5_code/tests/test_static.py	2026-11-15 23:23:58.600800815 +0100
++++ tests/test_static.py	2026-11-16 10:03:15.155863365 +0100
+@@ -138,7 +138,7 @@
+ def test_v4_attempt_result_has_audit_counters():
+     fields=set(mod.AttemptResult.__dataclass_fields__)
+     assert {'resume_count','model_call_retries','infrastructure_errors'}<=fields
+-    assert mod.RUNNER_REVISION.startswith('v5')
++    assert mod.RUNNER_REVISION.startswith('v6')
+ 
+ 
+ # ---------------------------------------------------------------------------
+@@ -235,3 +235,38 @@
+         assert not report['clean'], name
+         assert calls==[None], name           # never retried with RetainResources
+         assert logged==[], name
++
++
++# ---------------------------------------------------------------------------
++# v6 tests
++# ---------------------------------------------------------------------------
++_PY_BLOCK = "```python\ndef steady_state():\n    return True\n```"
++_JSON_BLOCK = '```json\n{"title": "t", "method": [{"provider": {"type": "python", "module": "x"}}]}\n```'
++
++def test_v6_standard_order_is_unchanged():
++    text = f"Intro.\n\n{_PY_BLOCK}\n\n{_JSON_BLOCK}\n"
++    assert mod.extract_generation_artifacts(text) == (mod.extract_fenced(text, ['python', 'py']), mod.extract_fenced(text, ['json']))
++
++def test_v6_json_snippet_before_python_is_not_the_manifest():
++    snippet = '```json\n"ImageId": {\n    "{{resolve:ssm:/aws/x}}": {}\n}\n```'
++    text = f"The previous template was wrong:\n\n{snippet}\n\nFixed:\n\n{_PY_BLOCK}\n\n{_JSON_BLOCK}\n"
++    py, js = mod.extract_generation_artifacts(text)
++    assert 'def steady_state' in py
++    assert mod.json.loads(js)['title'] == 't'
++    assert mod.extract_fenced(text, ['json']).startswith('"ImageId"')  # what v5 took
++
++def test_v6_falls_back_to_first_json_when_none_after_python():
++    text = f"{_JSON_BLOCK}\n\n{_PY_BLOCK}\n"
++    py, js = mod.extract_generation_artifacts(text)
++    assert js == mod.extract_fenced(text, ['json'])
++
++def test_v6_unparseable_manifest_is_rejected_not_raised():
++    bad = '"ImageId": {\n  "x": {}\n}\n'
++    js, err = mod.CampaignRunner.safe_rewrite_manifest_modules(bad, 'cvr2_test')
++    assert js == bad and 'JSONDecodeError' in err
++    good, err2 = mod.CampaignRunner.safe_rewrite_manifest_modules('{"method": [{"provider": {"type": "python", "module": "x"}}]}', 'cvr2_test')
++    assert err2 is None and 'chaosaws.ec2.cvr2_test' in good
++    runner = object.__new__(mod.CampaignRunner)
++    task = mod.read_yaml(ROOT/'tasks'/'cn1_p.yaml')
++    report = mod.CampaignRunner.technical_validate(runner, 'def steady_state():\n    pass\n', js, 'cvr2-test', 'cvr2_test', task, NETWORK)
++    assert not report['passed'] and any('JSON parse error' in e for e in report['errors'])

@@ -1,0 +1,108 @@
+{
+    "TemplateBody": {
+        "AWSTemplateFormatVersion": "2010-09-09",
+        "Description": "SCE CN2-D attempt stack: EC2 instance with IMDSv2-only IMDS config. Attempt=cvr2-cn2-d-s46-can-r02-a01",
+        "Parameters": {
+            "SubnetId": {
+                "Type": "String"
+            },
+            "SecurityGroupId": {
+                "Type": "String"
+            }
+        },
+        "Resources": {
+            "SCEInstanceRole": {
+                "Type": "AWS::IAM::Role",
+                "Properties": {
+                    "RoleName": {
+                        "Fn::Sub": "cvr2-cn2-d-s46-can-r02-a01-role-${AWS::StackName}"
+                    },
+                    "AssumeRolePolicyDocument": {
+                        "Version": "2012-10-17",
+                        "Statement": [
+                            {
+                                "Effect": "Allow",
+                                "Principal": {
+                                    "Service": "ec2.amazonaws.com"
+                                },
+                                "Action": "sts:AssumeRole"
+                            }
+                        ]
+                    },
+                    "Tags": [
+                        {
+                            "Key": "Campaign",
+                            "Value": "review2-controlled-validation-v2"
+                        },
+                        {
+                            "Key": "Attempt",
+                            "Value": "cvr2-cn2-d-s46-can-r02-a01"
+                        }
+                    ]
+                }
+            },
+            "SCEInstanceProfile": {
+                "Type": "AWS::IAM::InstanceProfile",
+                "Properties": {
+                    "InstanceProfileName": {
+                        "Fn::Sub": "cvr2-cn2-d-s46-can-r02-a01-profile-${AWS::StackName}"
+                    },
+                    "Roles": [
+                        {
+                            "Ref": "SCEInstanceRole"
+                        }
+                    ]
+                }
+            },
+            "SCEInstance": {
+                "Type": "AWS::EC2::Instance",
+                "Properties": {
+                    "InstanceType": "t3.micro",
+                    "SubnetId": {
+                        "Ref": "SubnetId"
+                    },
+                    "SecurityGroupIds": [
+                        {
+                            "Ref": "SecurityGroupId"
+                        }
+                    ],
+                    "IamInstanceProfile": {
+                        "Ref": "SCEInstanceProfile"
+                    },
+                    "MetadataOptions": {
+                        "HttpTokens": "required",
+                        "HttpPutResponseHopLimit": 1,
+                        "HttpEndpoint": "enabled"
+                    },
+                    "Tags": [
+                        {
+                            "Key": "Name",
+                            "Value": "cvr2-cn2-d-s46-can-r02-a01-instance"
+                        },
+                        {
+                            "Key": "Campaign",
+                            "Value": "review2-controlled-validation-v2"
+                        },
+                        {
+                            "Key": "Attempt",
+                            "Value": "cvr2-cn2-d-s46-can-r02-a01"
+                        }
+                    ],
+                    "ImageId": "{{resolve:ssm:/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2}}"
+                }
+            }
+        },
+        "Outputs": {
+            "InstanceId": {
+                "Description": "Attempt-owned EC2 instance ID",
+                "Value": {
+                    "Ref": "SCEInstance"
+                }
+            }
+        }
+    },
+    "StagesAvailable": [
+        "Original",
+        "Processed"
+    ]
+}

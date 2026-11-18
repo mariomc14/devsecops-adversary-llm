@@ -1,0 +1,65 @@
+{
+  "source_files": {
+    "mapping": "Adjudicacion_Master.xlsx",
+    "rater_A_final": "Evaluador_A_second try.xlsx",
+    "rater_B": "Evaluador_B-2.xlsx",
+    "adjudicator_C": "Evaluador_C_Adjudicacion_FINAL_3_casos_COMPLETADO.xlsx"
+  },
+  "attempts": 164,
+  "trajectories": 80,
+  "pre_adjudication": {
+    "experiment_exact_agreement_count": 161,
+    "experiment_exact_agreement_rate": 0.9817073170731707,
+    "experiment_cohens_kappa": 0.9047434656340754,
+    "security_exact_agreement_count": 161,
+    "security_exact_agreement_rate": 0.9817073170731707,
+    "security_cohens_kappa": 0.8990147783251231,
+    "disputed_blind_ids": [
+      "HR033",
+      "HR051",
+      "HR112"
+    ]
+  },
+  "final_attempt_outcomes": {
+    "experiment": {
+      "VALID": 18,
+      "INVALID": 145,
+      "INCONCLUSIVE": 1
+    },
+    "security": {
+      "EFFECTIVE": 18,
+      "NOT_ASSESSABLE": 146
+    },
+    "label_source": {
+      "A_B_AGREEMENT": 161,
+      "C_ADJUDICATION": 3
+    }
+  },
+  "final_trajectory_outcomes": {
+    "VALID": 18,
+    "INVALID": 61,
+    "INCONCLUSIVE": 1
+  },
+  "valid_trajectories_by_condition": {
+    "chaos_adt_feedback": {
+      "valid": 4,
+      "total": 20,
+      "rate": 0.2
+    },
+    "chaos_adt_no_feedback": {
+      "valid": 4,
+      "total": 20,
+      "rate": 0.2
+    },
+    "conventional_adt_feedback": {
+      "valid": 4,
+      "total": 20,
+      "rate": 0.2
+    },
+    "direct_sce_feedback": {
+      "valid": 6,
+      "total": 20,
+      "rate": 0.3
+    }
+  }
+}

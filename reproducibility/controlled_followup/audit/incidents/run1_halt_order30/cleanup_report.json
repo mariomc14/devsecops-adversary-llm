@@ -1,0 +1,11 @@
+{
+  "prefix": "cvr2-cn2-d-s46-can-r02-a01",
+  "found": [
+    {
+      "name": "cvr2-cn2-d-s46-can-r02-a01-20261115204336",
+      "status": "DELETE_FAILED"
+    }
+  ],
+  "clean": false,
+  "error": "WaiterError('Waiter StackDeleteComplete failed: Waiter encountered a terminal failure state: For expression \"Stacks[].StackStatus\" we matched expected path: \"DELETE_FAILED\" at least once')"
+}

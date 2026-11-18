@@ -1,0 +1,24 @@
+1) prompts identical v5 vs v6: 20/20 combinations
+2) functions changed v5->v6: ['extract_fenced', 'run_trajectory']; added: ['_first_fenced_match', 'extract_generation_artifacts', 'safe_rewrite_manifest_modules']; removed: []
+3) executed trajectories (current results/):
+    1 cn1_p sonnet-4.6 chaos_adt_feedback         rep1 completed=True  rev=v5-paginator-never-created-cleanup  attempts=['terminal_qpost'] 
+    2 cn1_p haiku-4.5  chaos_adt_feedback         rep1 completed=True  rev=v5-paginator-never-created-cleanup  attempts=['qpost_insufficient', 'terminal_qpost'] 
+    3 cn1_p sonnet-4.6 chaos_adt_no_feedback      rep1 completed=True  rev=v5-paginator-never-created-cleanup  attempts=['qpost_insufficient', 'terminal_qpost'] 
+    4 cn2_d haiku-4.5  direct_sce_feedback        rep1 completed=True  rev=v5-paginator-never-created-cleanup  attempts=['qpost_insufficient', 'qpost_insufficient', 'qpost_insufficient'] 
+    5 cn2_d sonnet-4.6 chaos_adt_no_feedback      rep1 completed=True  rev=v5-paginator-never-created-cleanup  attempts=['qpost_insufficient', 'terminal_qpost'] {'cleanup_retained_never_created_resources': 1}
+    6 cn1_p haiku-4.5  conventional_adt_feedback  rep1 completed=True  rev=v5-paginator-never-created-cleanup  attempts=['qpost_insufficient', 'qpost_insufficient', 'qpost_insufficient'] 
+    7 cn1_p sonnet-4.6 direct_sce_feedback        rep1 completed=True  rev=v5-paginator-never-created-cleanup  attempts=['terminal_qpost'] 
+    8 cn2_d haiku-4.5  conventional_adt_feedback  rep1 completed=True  rev=v5-paginator-never-created-cleanup  attempts=['qpost_insufficient', 'terminal_qpost'] 
+    9 cn1_p haiku-4.5  chaos_adt_no_feedback      rep1 completed=True  rev=v5-paginator-never-created-cleanup  attempts=['qpost_insufficient', 'technical_rejected', 'qpost_insufficient'] 
+   10 cn2_d haiku-4.5  chaos_adt_no_feedback      rep1 completed=True  rev=v5-paginator-never-created-cleanup  attempts=['qpost_insufficient', 'qpost_insufficient', 'qpost_insufficient'] 
+   11 cn2_d sonnet-4.6 conventional_adt_feedback  rep1 completed=True  rev=v5-paginator-never-created-cleanup  attempts=['terminal_qpost'] 
+   12 cn2_d sonnet-4.6 direct_sce_feedback        rep1 completed=True  rev=v5-paginator-never-created-cleanup  attempts=['terminal_qpost'] 
+   13 cn1_p haiku-4.5  direct_sce_feedback        rep1 completed=True  rev=v5-paginator-never-created-cleanup  attempts=['qpost_insufficient', 'qpost_insufficient', 'qpost_insufficient'] 
+   14 cn2_d haiku-4.5  chaos_adt_feedback         rep1 completed=True  rev=v5-paginator-never-created-cleanup  attempts=['technical_rejected', 'technical_rejected', 'technical_rejected'] 
+   15 cn2_d sonnet-4.6 chaos_adt_feedback         rep1 completed=True  rev=v5-paginator-never-created-cleanup  attempts=['terminal_qpost'] 
+   16 cn1_p sonnet-4.6 conventional_adt_feedback  rep1 completed=True  rev=v5-paginator-never-created-cleanup  attempts=['terminal_qpost'] 
+   17 cn2_d sonnet-4.6 chaos_adt_feedback         rep2 completed=True  rev=v5-paginator-never-created-cleanup  attempts=['terminal_qpost'] 
+   18 cn1_p haiku-4.5  direct_sce_feedback        rep2 completed=True  rev=v5-paginator-never-created-cleanup  attempts=['terminal_qpost'] 
+   19 cn2_d haiku-4.5  direct_sce_feedback        rep2 completed=True  rev=v5-paginator-never-created-cleanup  attempts=['qpost_insufficient', 'qpost_insufficient', 'terminal_qpost'] 
+   20 cn1_p sonnet-4.6 conventional_adt_feedback  rep2 completed=False rev=-                                   attempts=['qpost_insufficient', 'started'] {'attempt_halted': 1}
+   incomplete trajectories other than order 20: 0; incident events overall: {'cleanup_retained_never_created_resources': 1, 'attempt_halted': 1}

@@ -1,0 +1,50 @@
+Removal of the order-30 leftover stack with the v5 runner's cleanup_stacks() (attempt_dir=None: results/ not touched)
+DATE_UTC: 2026-11-15T22:26:00Z
+--- before:
+cvr2-cn2-d-s46-can-r02-a01-20261115204336	DELETE_FAILED
+cvr2-network	CREATE_COMPLETE
+--- cleanup_stacks report:
+{
+  "prefix": "cvr2-cn2-d-s46-can-r02-a01",
+  "found": [
+    {
+      "name": "cvr2-cn2-d-s46-can-r02-a01-20261115204336",
+      "status": "DELETE_FAILED"
+    }
+  ],
+  "actions": [
+    {
+      "name": "cvr2-cn2-d-s46-can-r02-a01-20261115204336",
+      "action": "delete_stack_requested",
+      "prior_status": "DELETE_FAILED"
+    },
+    {
+      "name": "cvr2-cn2-d-s46-can-r02-a01-20261115204336",
+      "action": "delete_stack_retaining_never_created_resources",
+      "first_delete_error": "WaiterError('Waiter StackDeleteComplete failed: Waiter encountered a terminal failure state: For expression \"Stacks[].StackStatus\" we matched expected path: \"DELETE_FAILED\" at least once')",
+      "retained": [
+        {
+          "logical_id": "SCEInstanceRole",
+          "type": "AWS::IAM::Role",
+          "physical_id": "cvr2-cn2-d-s46-can-r02-a01-role-cvr2-cn2-d-s46-can-r02-a01-20261115204336",
+          "create_failed_reason": "Resource handler returned message: \"1 validation error detected: Value at 'roleName' failed to satisfy constraint: Member must have length less than or equal to 64 (Service: Iam, Status Code: 400, Request ID: bcd12e24-ac45-4240-a330-ced5d152eafd) (SDK Attempt Count: 1)\" (RequestToken: ee2670a3-2d9f-bdd5-69d4-7ca0bdab3e01, HandlerErrorCode: InvalidRequest)",
+          "delete_failed_reason": "Resource handler returned message: \"1 validation error detected: Value at 'roleName' failed to satisfy constraint: Member must have length less than or equal to 64 (Service: Iam, Status Code: 400, Request ID: ac2484f6-aab6-49de-9851-4c775947d3d7) (SDK Attempt Count: 1)\" (RequestToken: 9cd70d75-ce94-6cb3-d779-6286ecab111b, HandlerErrorCode: InvalidRequest)"
+        }
+      ]
+    }
+  ],
+  "clean": true,
+  "retained_never_created": [
+    {
+      "logical_id": "SCEInstanceRole",
+      "type": "AWS::IAM::Role",
+      "physical_id": "cvr2-cn2-d-s46-can-r02-a01-role-cvr2-cn2-d-s46-can-r02-a01-20261115204336",
+      "create_failed_reason": "Resource handler returned message: \"1 validation error detected: Value at 'roleName' failed to satisfy constraint: Member must have length less than or equal to 64 (Service: Iam, Status Code: 400, Request ID: bcd12e24-ac45-4240-a330-ced5d152eafd) (SDK Attempt Count: 1)\" (RequestToken: ee2670a3-2d9f-bdd5-69d4-7ca0bdab3e01, HandlerErrorCode: InvalidRequest)",
+      "delete_failed_reason": "Resource handler returned message: \"1 validation error detected: Value at 'roleName' failed to satisfy constraint: Member must have length less than or equal to 64 (Service: Iam, Status Code: 400, Request ID: ac2484f6-aab6-49de-9851-4c775947d3d7) (SDK Attempt Count: 1)\" (RequestToken: 9cd70d75-ce94-6cb3-d779-6286ecab111b, HandlerErrorCode: InvalidRequest)"
+    }
+  ]
+}
+--- after:
+cvr2-network	CREATE_COMPLETE
+--- IAM roles/instance profiles with prefix cvr2:
+(end)
